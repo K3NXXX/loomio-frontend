@@ -2,7 +2,7 @@ import { PAGES } from '@/constants/pages.constants'
 import { IconType } from 'react-icons'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { IoHome } from 'react-icons/io5'
-import { FaKey } from "react-icons/fa";
+import { FaKey } from 'react-icons/fa'
 
 interface IHomeHeaderItems {
 	id: number
