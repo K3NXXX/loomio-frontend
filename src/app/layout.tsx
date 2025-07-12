@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/sonner'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import './globals.css'
@@ -21,6 +22,17 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={`${montserratSans.variable}  antialiased`}>
 				{children}
+
+				<Toaster
+				position='top-right'
+					toastOptions={{
+						duration: 3000,
+						style: {
+							maxWidth: '320px',
+							width: '100%',
+						},
+					}}
+				/>
 			</body>
 		</html>
 	)

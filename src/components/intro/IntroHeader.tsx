@@ -5,11 +5,11 @@ import { Logo } from '../ui/Logo'
 
 export function IntroHeader() {
 	return (
-		<Card className='bg-neutral-900 absolute right-0 left-0 top-10 mx-auto max-w-[1200px] relative z-50 py-1  rounded-[12px]  px-6 py-4'>
+		<Card className='bg-neutral-900 absolute right-0 left-0 top-10  relative z-50 py-1  rounded-[12px]  px-6 py-4'>
 			<header className='flex justify-between'>
 				<Logo />
 
-				<ul className='flex items-center gap-6'>
+				<ul className='flex items-center gap-8'>
 					{homeHeaderItems.map(item => (
 						<li key={item.id}>
 							<Link

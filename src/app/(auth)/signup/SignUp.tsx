@@ -1,23 +1,22 @@
+'use client'
 import { SignUpForm } from '@/components/intro/auth/SignUpForm'
 import { IntroHeader } from '@/components/intro/IntroHeader'
-import Image from 'next/image'
-import ImageLayout from "/public/images/auth-layout.png"
+import Lottie from 'lottie-react'
+import animationData from '../../../assets/animations/planet2.json'
 
 export function SignUp() {
 	return (
-		<div className='relative'>
+		<div className='relative min-h-screen mx-auto max-w-[1200px] px-5 pb-10'>
 			<IntroHeader />
-			{/* <div className='absolute top-0 left-0  w-170 h-screen'>
-				<Image
-					src={ImageLayout}
-					alt='auth background'
-					fill
-					style={{ objectFit: 'cover' }}
-				/>
-			</div> */}
-			<div className='flex'>
-				<div className='w-[60%]'></div>
-			<SignUpForm />
+			<div className='flex justify-between relative'>
+				<div>
+					<Lottie
+						animationData={animationData}
+						loop={true}
+						className='w-150 h-150 absolute top-40 left-0'
+					/>
+				</div>
+				<SignUpForm />
 			</div>
 		</div>
 	)
