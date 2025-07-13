@@ -1,17 +1,17 @@
 import { SITE_NAME } from '@/constants/seo.constants'
 import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
-import { SignUp } from './SignUp'
+import LogIn from './LogIn'
 
 export const metadata: Metadata = {
-	title: 'Registration',
-	description: `${SITE_NAME} registration page`,
+	title: 'Log in',
+	description: `${SITE_NAME} log in page`,
 }
 
-export default function SignUpPage() {
+export default function LogInPage() {
 	return (
 		<>
-			<SignUp />
+			<LogIn />
 			<Toaster
 				position='top-right'
 				toastOptions={{

@@ -1,4 +1,4 @@
-import { Toaster } from '@/components/ui/sonner'
+import ClientProviders from '@/components/providers/ClientProviders'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import './globals.css'
@@ -21,9 +21,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={`${montserratSans.variable}  antialiased`}>
-				{children}
-
-				
+				<ClientProviders>{children}</ClientProviders>
 			</body>
 		</html>
 	)

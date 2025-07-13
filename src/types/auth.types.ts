@@ -6,3 +6,8 @@ export interface ISignupData {
 	passwordConfirm: string
 	termsAccepted: boolean
 }
+
+export interface ILogInData {
+	email: string
+	password: string
+}

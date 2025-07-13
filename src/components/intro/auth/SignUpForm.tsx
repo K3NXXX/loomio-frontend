@@ -68,7 +68,7 @@ export function SignUpForm() {
 	])
 
 	return (
-		<div className='mt-20 flex flex-col items-center max-[1020px]:w-screen'>
+		<div className='mt-20 flex flex-col items-center max-[1120px]:w-screen px-3'>
 			<p className='text-white font-bold text-[30px] max-[540px]:text-[24px]'>
 				Welcome back!
 			</p>
@@ -76,7 +76,7 @@ export function SignUpForm() {
 			<p className='text-gray-200  text-[18px] max-[540px]:text-[16px] text-center'>
 				Register your account to stay on top of your business.
 			</p>
-			<Card className='bg-neutral-900 py-7 px-7 w-[95%] mt-5 max-w-[500px] max-[370px]:px-5 '>
+			<Card className='bg-neutral-900 py-7 px-7 w-[471px] mt-5 max-w-[500px] max-[370px]:px-5 max-[1120px]:w-[95%]'>
 				<div className='flex flex-col gap-4'>
 					<p className='text-white text-center'>Sign up with</p>
 					<div className='flex justify-center gap-5'>
