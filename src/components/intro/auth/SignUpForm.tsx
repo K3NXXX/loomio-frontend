@@ -7,7 +7,7 @@ import { PAGES } from '@/constants/pages.constants'
 import { ISignupData } from '@/types/auth.types'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { BsFillEyeSlashFill } from 'react-icons/bs'
 import { FaFacebook, FaGoogle } from 'react-icons/fa'
 import { HiEye } from 'react-icons/hi'
@@ -19,6 +19,7 @@ export function SignUpForm() {
 		register,
 		handleSubmit,
 		watch,
+		control,
 		formState: { errors },
 	} = useForm<ISignupData>({ reValidateMode: 'onSubmit' })
 	const [showPassword, setShowPassword] = useState(false)
@@ -54,22 +55,28 @@ export function SignUpForm() {
 		if (errors.passwordConfirm?.message) {
 			toast(errors.passwordConfirm.message)
 		}
+		if (errors.termsAccepted?.message) {
+			toast(errors.termsAccepted.message)
+		}
 	}, [
 		errors.firstName,
 		errors.lastName,
 		errors.email,
 		errors.password,
 		errors.passwordConfirm,
+		errors.termsAccepted,
 	])
 
 	return (
-		<div className='mt-20 flex flex-col items-center'>
-			<p className='text-white font-bold text-[30px]'>Welcome back!</p>
+		<div className='mt-20 flex flex-col items-center max-[1020px]:w-screen'>
+			<p className='text-white font-bold text-[30px] max-[540px]:text-[24px]'>
+				Welcome back!
+			</p>
 
-			<p className='text-gray-200  text-[18px]'>
+			<p className='text-gray-200  text-[18px] max-[540px]:text-[16px] text-center'>
 				Register your account to stay on top of your business.
 			</p>
-			<Card className='bg-neutral-900 py-7 px-7 w-[470px] mt-5'>
+			<Card className='bg-neutral-900 py-7 px-7 w-[95%] mt-5 max-w-[500px] max-[370px]:px-5 '>
 				<div className='flex flex-col gap-4'>
 					<p className='text-white text-center'>Sign up with</p>
 					<div className='flex justify-center gap-5'>
@@ -91,8 +98,8 @@ export function SignUpForm() {
 					onSubmit={handleSubmit(onSubmit)}
 					className='flex flex-col gap-5 justify-center'
 				>
-					<div className='flex gap-3'>
-						<div className='flex flex-col flex-1'>
+					<div className='flex gap-3 max-[540px]:flex-col'>
+						<div className='flex flex-col flex-1 '>
 							<p className='text-white mb-2'>First name</p>
 							<Input
 								placeholder='Your first name'
@@ -155,7 +162,7 @@ export function SignUpForm() {
 							})}
 						/>
 					</div>
-					<div className='flex gap-3'>
+					<div className='flex gap-3 max-[540px]:flex-col'>
 						<div className='flex flex-col'>
 							<p className='text-white mb-2'>Password</p>
 							<div className='relative'>
@@ -183,8 +190,10 @@ export function SignUpForm() {
 											message: 'Password requires min 10 characters',
 										},
 										pattern: {
-											value: /\d/,
-											message: 'Password requires at least one digit',
+											value:
+												/^(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).+$/,
+											message:
+												'Password must contain at least one digit and one special character',
 										},
 									})}
 								/>
@@ -219,19 +228,33 @@ export function SignUpForm() {
 							</div>
 						</div>
 					</div>
-					<div className='flex items-center gap-3 px-2'>
-						<Checkbox />
+					<div className='flex items-center gap-3 px-2 max-[408px]:items-start'>
+						<Controller
+							name='termsAccepted'
+							control={control}
+							rules={{ required: 'You must agree to the terms and conditions' }}
+							render={({ field }) => (
+								<div className='flex items-center gap-3 px-2 max-[408px]:items-start'>
+									<Checkbox
+										checked={field.value}
+										onCheckedChange={field.onChange}
+										className='max-[408px]:mt-[5px]'
+									/>
+								</div>
+							)}
+						/>
 						<p className='text-white'>I agree to the terms and conditions</p>
 					</div>
 					<Button className='mt-1 font-bold text-[16px] py-5.5'>Sign up</Button>
-					<p className='text-white text-center'>
-						Already have an account?{' '}
+					<div className='flex justify-center gap-1 max-[380px]:flex-col max-[380px]:items-center'>
+						<p className='text-white text-center'> Already have an account? </p>
+
 						<Link href={PAGES.LOGIN}>
 							<span className='text-[color:var(--primary)] text-bold'>
 								Log in here
 							</span>
 						</Link>
-					</p>
+					</div>
 				</form>
 			</Card>
 		</div>

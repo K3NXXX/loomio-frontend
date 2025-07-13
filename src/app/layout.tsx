@@ -23,16 +23,7 @@ export default function RootLayout({
 			<body className={`${montserratSans.variable}  antialiased`}>
 				{children}
 
-				<Toaster
-					position='top-right'
-					toastOptions={{
-						duration: 3000,
-						style: {
-							maxWidth: '320px',
-							width: '100%',
-						},
-					}}
-				/>
+				
 			</body>
 		</html>
 	)
