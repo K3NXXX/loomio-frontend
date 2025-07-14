@@ -1,18 +1,21 @@
 'use client'
+import loader from '@/assets/animations/loader.json'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
-import { ISignupData } from '@/types/auth.types'
+import { useSignUp } from '@/hooks/auth/useSignUp'
+import { ISignupFormData } from '@/types/auth.types'
+import Lottie from 'lottie-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { BsFillEyeSlashFill } from 'react-icons/bs'
-import { FaFacebook, FaGoogle } from 'react-icons/fa'
 import { HiEye } from 'react-icons/hi'
-import { IoLogoGithub } from 'react-icons/io'
 import { toast } from 'sonner'
+import { EmailVerificationForm } from './EmailVerificationForm'
+import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
 
 export function SignUpForm() {
 	const {
@@ -21,11 +24,12 @@ export function SignUpForm() {
 		watch,
 		control,
 		formState: { errors },
-	} = useForm<ISignupData>({ reValidateMode: 'onSubmit' })
+	} = useForm<ISignupFormData>({ reValidateMode: 'onSubmit' })
 	const [showPassword, setShowPassword] = useState(false)
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-
 	const password = watch('password')
+
+	const { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading } = useSignUp()
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword)
@@ -35,8 +39,15 @@ export function SignUpForm() {
 		setShowConfirmPassword(!showConfirmPassword)
 	}
 
-	const onSubmit: SubmitHandler<ISignupData> = data => {
-		console.log('data', data)
+	const onSubmit: SubmitHandler<ISignupFormData> = data => {
+		const signUpData = {
+			email: data.email,
+			password: data.password,
+			confirmPassword: data.passwordConfirm,
+			firstName: data.firstName,
+			lastName: data.lastName,
+		}
+		signUp(signUpData)
 	}
 
 	useEffect(() => {
@@ -79,19 +90,7 @@ export function SignUpForm() {
 			<Card className='bg-neutral-900 py-7 px-7 w-[471px] mt-5 max-w-[500px] max-[370px]:px-5 max-[1120px]:w-[95%]'>
 				<div className='flex flex-col gap-4'>
 					<p className='text-white text-center'>Sign up with</p>
-					<div className='flex justify-center gap-5'>
-						<Card className='bg-neutral-900 py-5 px-5 cursor-pointer flex justify-center items-center w-full'>
-							<FaGoogle color='#fb2c36' size={20} />
-						</Card>
-						<Card className='bg-neutral-900 py-5 px-5 cursor-pointer flex justify-center items-center w-full'>
-							{' '}
-							<FaFacebook color='#0866ff' size={20} />
-						</Card>
-						<Card className='bg-neutral-900 py-5 px-5 cursor-pointer flex justify-center items-center w-full'>
-							{' '}
-							<IoLogoGithub color='white' size={22} />
-						</Card>
-					</div>
+					<AuthSocialButtons/>
 					<p className='text-white text-center'>or</p>
 				</div>
 				<form
@@ -245,7 +244,20 @@ export function SignUpForm() {
 						/>
 						<p className='text-white'>I agree to the terms and conditions</p>
 					</div>
-					<Button className='mt-1 font-bold text-[16px] py-5.5'>Sign up</Button>
+					<Button
+						disabled={isLoading}
+						className='mt-1 font-bold text-[16px] py-5.5'
+					>
+						{isLoading ? (
+							<Lottie
+								animationData={loader}
+								loop={true}
+								className='w-25 h-25'
+							/>
+						) : (
+							'Sign up'
+						)}
+					</Button>
 					<div className='flex justify-center gap-1 max-[380px]:flex-col max-[380px]:items-center'>
 						<p className='text-white text-center'> Already have an account? </p>
 
@@ -257,6 +269,10 @@ export function SignUpForm() {
 					</div>
 				</form>
 			</Card>
+			<EmailVerificationForm
+				open={isSuccessSignUp}
+				onOpenChange={setIsSuccessSignUp}
+			/>
 		</div>
 	)
 }

@@ -1,5 +1,6 @@
 export const PAGES = {
 	SIGNUP: '/signup',
 	LOGIN: '/login',
-	HOME: '/'
+	HOME: '/',
+	DASHBOARD: '/dashboard'
 }

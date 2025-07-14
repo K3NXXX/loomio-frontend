@@ -1,16 +1,16 @@
 'use client'
+import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
-import { ILogInData } from '@/types/auth.types'
+import { useLogIn } from '@/hooks/auth/useLogIn'
+import { ILogInFormData } from '@/types/auth.types'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { BsFillEyeSlashFill } from 'react-icons/bs'
-import { FaFacebook, FaGoogle } from 'react-icons/fa'
 import { HiEye } from 'react-icons/hi'
-import { IoLogoGithub } from 'react-icons/io'
 import { toast } from 'sonner'
 
 export function LogInForm() {
@@ -18,15 +18,20 @@ export function LogInForm() {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<ILogInData>({ reValidateMode: 'onSubmit' })
+	} = useForm<ILogInFormData>({ reValidateMode: 'onSubmit' })
 	const [showPassword, setShowPassword] = useState(false)
+	const { logIn } = useLogIn()
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword)
 	}
 
-	const onSubmit: SubmitHandler<ILogInData> = data => {
-		console.log('data', data)
+	const onSubmit: SubmitHandler<ILogInFormData> = data => {
+		const logInData = {
+			email: data.email,
+			password: data.password,
+		}
+		logIn(logInData)
 	}
 
 	useEffect(() => {
@@ -50,19 +55,7 @@ export function LogInForm() {
 			<Card className='bg-neutral-900 py-7 px-7 w-[471px] mt-5 max-w-[500px] max-[370px]:px-5 max-[1120px]:w-[95%]'>
 				<div className='flex flex-col gap-4'>
 					<p className='text-white text-center'>Log in with</p>
-					<div className='flex justify-center gap-5'>
-						<Card className='bg-neutral-900 py-5 px-5 cursor-pointer flex justify-center items-center w-full'>
-							<FaGoogle color='#fb2c36' size={20} />
-						</Card>
-						<Card className='bg-neutral-900 py-5 px-5 cursor-pointer flex justify-center items-center w-full'>
-							{' '}
-							<FaFacebook color='#0866ff' size={20} />
-						</Card>
-						<Card className='bg-neutral-900 py-5 px-5 cursor-pointer flex justify-center items-center w-full'>
-							{' '}
-							<IoLogoGithub color='white' size={22} />
-						</Card>
-					</div>
+					<AuthSocialButtons />
 					<p className='text-white text-center'>or</p>
 				</div>
 				<form
@@ -112,12 +105,6 @@ export function LogInForm() {
 									minLength: {
 										value: 10,
 										message: 'Password requires min 10 characters',
-									},
-									pattern: {
-										value:
-											/^(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).+$/,
-										message:
-											'Password must contain at least one digit and one special character',
 									},
 								})}
 							/>
