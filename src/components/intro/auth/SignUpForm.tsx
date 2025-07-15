@@ -27,9 +27,10 @@ export function SignUpForm() {
 	} = useForm<ISignupFormData>({ reValidateMode: 'onSubmit' })
 	const [showPassword, setShowPassword] = useState(false)
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+	const [email, setEmail] = useState('')
 	const password = watch('password')
 
-	const { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading, retryAfter } = useSignUp()
+	const { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading, expiresAt, setExpiresAt } = useSignUp()
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword)
@@ -48,6 +49,7 @@ export function SignUpForm() {
 			lastName: data.lastName,
 		}
 		signUp(signUpData)
+		setEmail(data.email)
 	}
 
 	useEffect(() => {
@@ -272,7 +274,8 @@ export function SignUpForm() {
 			<EmailVerificationForm
 				open={isSuccessSignUp}
 				onOpenChange={setIsSuccessSignUp}
-				retryAfter={retryAfter}
+				expiresAt={expiresAt}
+				email={email}
 			/>
 		</div>
 	)

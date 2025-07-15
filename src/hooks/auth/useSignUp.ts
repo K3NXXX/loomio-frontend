@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 
 export const useSignUp = () => {
 	const [isSuccessSignUp, setIsSuccessSignUp] = useState(false)
-	const [retryAfter, setRetryAfter] = useState<number>(60)
+	const [expiresAt, setExpiresAt] = useState<number>(60)
 	const { mutate: signUp, isPending } = useMutation({
 		mutationKey: ['signup'],
 		mutationFn: (data: ISignupApiData) => authService.signup(data),
@@ -18,8 +18,8 @@ export const useSignUp = () => {
 				error?.response?.status === 409 &&
 				error?.response?.data?.message !== 'User with this email already exists'
 			) {
-				const serverRetry = error.response.data?.seconds || 60
-				setRetryAfter(serverRetry)
+				const expiresAt = error.response.data?.expiresAt || 60
+				setExpiresAt(expiresAt)
 				setIsSuccessSignUp(true)
 			}
 			if (
@@ -30,5 +30,5 @@ export const useSignUp = () => {
 		},
 	})
 
-	return { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading: isPending, retryAfter }
+	return { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading: isPending, expiresAt, setExpiresAt }
 }

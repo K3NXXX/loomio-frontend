@@ -28,6 +28,10 @@ export interface IEmailVerification {
 	code: string
 }
 
+export interface IResendCode{
+	email: string
+}
+
 export interface IUser {
 	id: string
 	firstName: string

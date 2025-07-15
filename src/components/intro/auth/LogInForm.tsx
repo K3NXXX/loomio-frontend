@@ -110,6 +110,7 @@ export function LogInForm() {
 							/>
 						</div>
 					</div>
+					<p className='cursor-pointer'>Forgot password?</p>
 
 					<Button className='mt-1 font-bold text-[16px] py-5.5'>Log in</Button>
 					<div className='flex justify-center gap-1 max-[380px]:flex-col max-[380px]:items-center'>

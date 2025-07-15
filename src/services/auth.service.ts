@@ -1,4 +1,4 @@
-import { IEmailVerification, IEmailVerificationResponse, ILogInApiData, ISignupApiData } from '@/types/auth.types'
+import { IEmailVerification, IEmailVerificationResponse, ILogInApiData, IResendCode, ISignupApiData } from '@/types/auth.types'
 import axios from 'axios'
 
 class AuthService {
@@ -15,6 +15,11 @@ class AuthService {
 
 	async emailVerification(code: IEmailVerification): Promise<IEmailVerificationResponse> {
 		const {data} = await axios.post(`${this.BASE_URL}/register/verify`, code)
+		return data
+	}
+
+	async resendCode(email: IResendCode) {
+		const {data} = await axios.post(`${this.BASE_URL}/register/resend`, email)
 		return data
 	}
 }

@@ -8,50 +8,48 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { useEmailVerification } from '@/hooks/auth/useEmailVerification'
+import { useResendCode } from '@/hooks/auth/useResendCode'
 import { useEffect, useState } from 'react'
 
 interface IEmailVerificationFormProps {
 	open: boolean
 	onOpenChange: (isSuccessSignUp: boolean) => void
-	retryAfter: number
+	expiresAt: number
+	email: string
 }
 
 export function EmailVerificationForm({
 	open,
 	onOpenChange,
-	retryAfter,
+	expiresAt,
+	email,
 }: IEmailVerificationFormProps) {
 	const [code, setCode] = useState('')
-	const [timer, setTimer] = useState(retryAfter)
 	const { confirmEmail } = useEmailVerification()
+	const [, forceUpdate] = useState(0)
+	const { resendCode, expiresAtResend } = useResendCode()
+
+	const isResendDisabled = Date.now() < new Date(expiresAt).getTime()
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			forceUpdate(prev => prev + 1)
+		}, 1000)
+
+		if (Date.now() > new Date(expiresAt).getTime()) {
+			clearInterval(interval)
+		}
+
+		return () => clearInterval(interval)
+	}, [expiresAt])
 
 	const handleEmailVerification = () => {
-		confirmEmail({ code: code })
+		confirmEmail({ code })
 	}
 
 	const handleResendCode = () => {
-		setTimer(retryAfter)
+		resendCode({ email: email })
 	}
-
-	useEffect(() => {
-		let interval: NodeJS.Timeout | null = null
-		if (open) {
-			setTimer(retryAfter)
-			interval = setInterval(() => {
-				setTimer(prev => {
-					if (prev <= 1 && interval) {
-						clearInterval(interval)
-						return 0
-					}
-					return prev - 1
-				})
-			}, 1000)
-		}
-
-		return () => {
-			if (interval) clearInterval(interval)
-		}
-	}, [open, retryAfter])
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
@@ -70,17 +68,17 @@ export function EmailVerificationForm({
 					/>
 					<div className='flex gap-3'>
 						<Button
-							onClick={() => handleEmailVerification()}
+							onClick={handleEmailVerification}
 							className='max-w-[170px] font-bold'
 						>
 							Complete registration
 						</Button>
 						<Button
+							onClick={() => handleResendCode()}
 							className='bg-neutral-700'
-							onClick={handleResendCode}
-							disabled={timer > 0}
+							disabled={isResendDisabled}
 						>
-							{timer > 0 ? `Resend in ${timer}s` : 'Resend code'}
+							Resend code
 						</Button>
 					</div>
 				</DialogHeader>
