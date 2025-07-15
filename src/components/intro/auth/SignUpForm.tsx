@@ -1,21 +1,21 @@
-'use client'
-import loader from '@/assets/animations/loader.json'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Input } from '@/components/ui/input'
-import { PAGES } from '@/constants/pages.constants'
-import { useSignUp } from '@/hooks/auth/useSignUp'
-import { ISignupFormData } from '@/types/auth.types'
-import Lottie from 'lottie-react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { BsFillEyeSlashFill } from 'react-icons/bs'
-import { HiEye } from 'react-icons/hi'
-import { toast } from 'sonner'
-import { EmailVerificationForm } from './EmailVerificationForm'
-import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
+'use client';
+import loader from '@/assets/animations/loader.json';
+import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { PAGES } from '@/constants/pages.constants';
+import { useSignUp } from '@/hooks/auth/useSignUp';
+import { ISignupFormData } from '@/types/auth.types';
+import Lottie from 'lottie-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { BsFillEyeSlashFill } from 'react-icons/bs';
+import { HiEye } from 'react-icons/hi';
+import { toast } from 'sonner';
+import { EmailVerificationForm } from './EmailVerificationForm';
 
 export function SignUpForm() {
 	const {
@@ -24,21 +24,22 @@ export function SignUpForm() {
 		watch,
 		control,
 		formState: { errors },
-	} = useForm<ISignupFormData>({ reValidateMode: 'onSubmit' })
-	const [showPassword, setShowPassword] = useState(false)
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-	const [email, setEmail] = useState('')
-	const password = watch('password')
+	} = useForm<ISignupFormData>({ reValidateMode: 'onSubmit' });
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [email, setEmail] = useState('');
+	const password = watch('password');
 
-	const { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading, expiresAt, setExpiresAt } = useSignUp()
+	const { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading, expiresAt, setExpiresAt } =
+		useSignUp();
 
 	const handleClickShowPassword = () => {
-		setShowPassword(!showPassword)
-	}
+		setShowPassword(!showPassword);
+	};
 
 	const handleClickShowConfirmPassword = () => {
-		setShowConfirmPassword(!showConfirmPassword)
-	}
+		setShowConfirmPassword(!showConfirmPassword);
+	};
 
 	const onSubmit: SubmitHandler<ISignupFormData> = data => {
 		const signUpData = {
@@ -47,29 +48,29 @@ export function SignUpForm() {
 			confirmPassword: data.passwordConfirm,
 			firstName: data.firstName,
 			lastName: data.lastName,
-		}
-		signUp(signUpData)
-		setEmail(data.email)
-	}
+		};
+		signUp(signUpData);
+		setEmail(data.email);
+	};
 
 	useEffect(() => {
 		if (errors.firstName?.message) {
-			toast(errors.firstName.message)
+			toast(errors.firstName.message);
 		}
 		if (errors.lastName?.message) {
-			toast(errors.lastName.message)
+			toast(errors.lastName.message);
 		}
 		if (errors.email?.message) {
-			toast(errors.email.message)
+			toast(errors.email.message);
 		}
 		if (errors.password?.message) {
-			toast(errors.password.message)
+			toast(errors.password.message);
 		}
 		if (errors.passwordConfirm?.message) {
-			toast(errors.passwordConfirm.message)
+			toast(errors.passwordConfirm.message);
 		}
 		if (errors.termsAccepted?.message) {
-			toast(errors.termsAccepted.message)
+			toast(errors.termsAccepted.message);
 		}
 	}, [
 		errors.firstName,
@@ -78,13 +79,11 @@ export function SignUpForm() {
 		errors.password,
 		errors.passwordConfirm,
 		errors.termsAccepted,
-	])
+	]);
 
 	return (
 		<div className='mt-20 flex flex-col items-center max-[1120px]:w-screen px-3'>
-			<p className='text-white font-bold text-[30px] max-[540px]:text-[24px]'>
-				Welcome back!
-			</p>
+			<p className='text-white font-bold text-[30px] max-[540px]:text-[24px]'>Welcome back!</p>
 
 			<p className='text-gray-200  text-[18px] max-[540px]:text-[16px] text-center'>
 				Register your account to stay on top of your business.
@@ -92,7 +91,7 @@ export function SignUpForm() {
 			<Card className='bg-neutral-900 py-7 px-7 w-[471px] mt-5 max-w-[500px] max-[370px]:px-5 max-[1120px]:w-[95%]'>
 				<div className='flex flex-col gap-4'>
 					<p className='text-white text-center'>Sign up with</p>
-					<AuthSocialButtons/>
+					<AuthSocialButtons />
 					<p className='text-white text-center'>or</p>
 				</div>
 				<form
@@ -191,10 +190,8 @@ export function SignUpForm() {
 											message: 'Password requires min 10 characters',
 										},
 										pattern: {
-											value:
-												/^(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).+$/,
-											message:
-												'Password must contain at least one digit and one special character',
+											value: /^(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).+$/,
+											message: 'Password must contain at least one digit and one special character',
 										},
 									})}
 								/>
@@ -222,8 +219,7 @@ export function SignUpForm() {
 									className='text-white py-6 pr-10'
 									{...register('passwordConfirm', {
 										required: true,
-										validate: value =>
-											value === password || 'Passwords do not match',
+										validate: value => value === password || 'Passwords do not match',
 									})}
 								/>
 							</div>
@@ -254,7 +250,7 @@ export function SignUpForm() {
 							<Lottie
 								animationData={loader}
 								loop={true}
-								className='w-25 h-25'
+								className='w-24 h-24'
 							/>
 						) : (
 							'Sign up'
@@ -264,9 +260,7 @@ export function SignUpForm() {
 						<p className='text-white text-center'> Already have an account? </p>
 
 						<Link href={PAGES.LOGIN}>
-							<span className='text-[color:var(--primary)] text-bold'>
-								Log in here
-							</span>
+							<span className='text-[color:var(--primary)] text-bold'>Log in here</span>
 						</Link>
 					</div>
 				</form>
@@ -275,8 +269,9 @@ export function SignUpForm() {
 				open={isSuccessSignUp}
 				onOpenChange={setIsSuccessSignUp}
 				expiresAt={expiresAt}
+				setExpiresAt={setExpiresAt}
 				email={email}
 			/>
 		</div>
-	)
+	);
 }
