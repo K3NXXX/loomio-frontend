@@ -13,15 +13,16 @@ import { useEffect, useState } from 'react'
 interface IEmailVerificationFormProps {
 	open: boolean
 	onOpenChange: (isSuccessSignUp: boolean) => void
+	retryAfter: number
 }
 
-const RESEND_TIMEOUT = 60
 export function EmailVerificationForm({
 	open,
 	onOpenChange,
+	retryAfter,
 }: IEmailVerificationFormProps) {
 	const [code, setCode] = useState('')
-	const [timer, setTimer] = useState(RESEND_TIMEOUT)
+	const [timer, setTimer] = useState(retryAfter)
 	const { confirmEmail } = useEmailVerification()
 
 	const handleEmailVerification = () => {
@@ -29,13 +30,13 @@ export function EmailVerificationForm({
 	}
 
 	const handleResendCode = () => {
-		setTimer(RESEND_TIMEOUT)
+		setTimer(retryAfter)
 	}
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout | null = null
 		if (open) {
-			setTimer(RESEND_TIMEOUT)
+			setTimer(retryAfter)
 			interval = setInterval(() => {
 				setTimer(prev => {
 					if (prev <= 1 && interval) {
@@ -50,7 +51,7 @@ export function EmailVerificationForm({
 		return () => {
 			if (interval) clearInterval(interval)
 		}
-	}, [open])
+	}, [open, retryAfter])
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>

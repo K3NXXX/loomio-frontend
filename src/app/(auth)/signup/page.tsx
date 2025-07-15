@@ -1,6 +1,5 @@
 import { SITE_NAME } from '@/constants/seo.constants'
 import type { Metadata } from 'next'
-import { Toaster } from 'sonner'
 import { SignUp } from './SignUp'
 
 export const metadata: Metadata = {
@@ -9,19 +8,5 @@ export const metadata: Metadata = {
 }
 
 export default function SignUpPage() {
-	return (
-		<>
-			<SignUp />
-			<Toaster
-				position='top-right'
-				toastOptions={{
-					duration: 3000,
-					style: {
-						maxWidth: '320px',
-						width: '100%',
-					},
-				}}
-			/>
-		</>
-	)
+	return <SignUp />
 }

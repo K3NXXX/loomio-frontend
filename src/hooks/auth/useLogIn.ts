@@ -6,19 +6,17 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 export const useLogIn = () => {
-	const {push} = useRouter()
+	const { push } = useRouter()
 	const { mutate: logIn } = useMutation({
 		mutationKey: ['logIn'],
 		mutationFn: (data: ILogInApiData) => authService.login(data),
 		onSuccess: (data: IEmailVerificationResponse) => {
-			console.log("userData", data)
-			localStorage.setItem('token', data.accessToken)
 			localStorage.setItem('user', JSON.stringify(data.user))
 			push(PAGES.DASHBOARD)
 		},
-		onError: () => {
-			toast("Invalid email or password")
-		}
+		onError: (error: any) => {
+			toast(error?.response?.data?.message)
+		},
 	})
 
 	return { logIn }

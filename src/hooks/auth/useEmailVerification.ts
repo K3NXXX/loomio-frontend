@@ -15,8 +15,9 @@ export const useEmailVerification = () => {
 		mutationFn: (data: IEmailVerification) =>
 			authService.emailVerification(data),
 		onSuccess: (data: IEmailVerificationResponse) => {
-			localStorage.setItem('token', data.accessToken)
-			localStorage.setItem('user', JSON.stringify(data.user))
+			if (data.user) {
+				localStorage.setItem('user', JSON.stringify(data.user))
+			}
 			toast('Registration completed!')
 			push(PAGES.DASHBOARD)
 		},

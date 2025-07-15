@@ -18,7 +18,7 @@ export const useSignUp = () => {
 				error?.response?.status === 409 &&
 				error?.response?.data?.message !== 'User with this email already exists'
 			) {
-				const serverRetry = error.response.data?.retryAfter || 60
+				const serverRetry = error.response.data?.seconds || 60
 				setRetryAfter(serverRetry)
 				setIsSuccessSignUp(true)
 			}
@@ -30,5 +30,5 @@ export const useSignUp = () => {
 		},
 	})
 
-	return { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading: isPending }
+	return { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading: isPending, retryAfter }
 }

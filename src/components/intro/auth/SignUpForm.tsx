@@ -29,7 +29,7 @@ export function SignUpForm() {
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 	const password = watch('password')
 
-	const { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading } = useSignUp()
+	const { signUp, isSuccessSignUp, setIsSuccessSignUp, isLoading, retryAfter } = useSignUp()
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword)
@@ -272,6 +272,7 @@ export function SignUpForm() {
 			<EmailVerificationForm
 				open={isSuccessSignUp}
 				onOpenChange={setIsSuccessSignUp}
+				retryAfter={retryAfter}
 			/>
 		</div>
 	)
