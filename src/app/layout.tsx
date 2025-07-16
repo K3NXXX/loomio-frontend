@@ -1,6 +1,7 @@
 import ClientProviders from '@/components/providers/ClientProviders'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 const montserratSans = Montserrat({
@@ -18,11 +19,22 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	  const isDarkMode = true; 
+	const isDarkMode = true
 	return (
-		   <html lang="en" className={isDarkMode ? 'dark' : ''}>
+		<html lang='en' className={isDarkMode ? 'dark' : ''}>
 			<body className={`${montserratSans.variable}  antialiased`}>
 				<ClientProviders>{children}</ClientProviders>
+				<Toaster
+					className='w-full max-w-[320px] max-[350px]:max-w-[280px]'
+					position='top-right'
+					toastOptions={{
+						duration: 3000,
+						style: {
+							maxWidth: '320px',
+							width: '100%',
+						},
+					}}
+				/>
 			</body>
 		</html>
 	)

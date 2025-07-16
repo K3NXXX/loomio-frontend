@@ -47,18 +47,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 					)}
 				</div>
 			</div>
-				<Toaster
-				className="w-full max-w-[320px] max-[350px]:max-w-[280px]"
-				position='top-right'
-				toastOptions={{
-					duration: 3000,
-					style: {
-						maxWidth: '320px',
-						width: '100%',
-						
-					},
-				}}
-			/>
+				
 		</div>
 	)
 }

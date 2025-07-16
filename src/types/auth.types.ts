@@ -12,6 +12,15 @@ export interface ILogInFormData {
 	password: string
 }
 
+export interface IResetPasswordFormData {
+	password: string
+	confirmPassword: string
+}
+
+export interface IForgotPasswordFormData {
+	email: string
+}
+
 export interface ISignupApiData {
 	firstName: string
 	lastName: string
@@ -28,8 +37,16 @@ export interface IEmailVerification {
 	code: string
 }
 
-export interface IResendCode{
+export interface IResendCode {
 	email: string
+}
+
+export interface IForgotPasswordApiData extends IResendCode {}
+
+export interface IResetPasswordApiData {
+	password: string
+	confirmPassword: string
+	token: string
 }
 
 export interface IUser {
@@ -39,8 +56,8 @@ export interface IUser {
 	email: string
 	avatarUrl: string | null
 	avatarPublicId: string | null
-	role: 'USER' | 'ADMIN' 
-	createdAt: string 
+	role: 'USER' | 'ADMIN'
+	createdAt: string
 	updatedAt: string
 }
 

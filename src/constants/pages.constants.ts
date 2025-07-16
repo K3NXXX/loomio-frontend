@@ -3,5 +3,6 @@ export const PAGES = {
 	LOGIN: '/login',
 	HOME: '/',
 	DASHBOARD: '/dashboard',
-	FORGOT_PASSWORD: 'forgot-password'
+	FORGOT_PASSWORD: 'forgot-password',
+	PASSWORD_RESET: 'password-reset',
 }

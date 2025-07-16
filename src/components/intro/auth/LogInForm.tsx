@@ -56,7 +56,11 @@ export function LogInForm() {
 				<div className='flex flex-col gap-4'>
 					<p className='text-white text-center'>Log in with</p>
 					<AuthSocialButtons />
-					<p className='text-white text-center'>or</p>
+					<div className='flex items-center gap-3'>
+						<div className='h-[1px] bg-neutral-800 flex-1'></div>
+						<p className='text-white text-center'>or</p>
+						<div className='h-[1px] bg-neutral-800 flex-1'></div>
+					</div>
 				</div>
 				<form
 					onSubmit={handleSubmit(onSubmit)}
@@ -110,7 +114,9 @@ export function LogInForm() {
 							/>
 						</div>
 					</div>
-					<Link href={PAGES.FORGOT_PASSWORD} className='cursor-pointer'>Forgot password?</Link>
+					<Link href={PAGES.FORGOT_PASSWORD} className='cursor-pointer'>
+						Forgot password?
+					</Link>
 
 					<Button className='mt-1 font-bold text-[16px] py-5.5'>Log in</Button>
 					<div className='flex justify-center gap-1 max-[380px]:flex-col max-[380px]:items-center'>
