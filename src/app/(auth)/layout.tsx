@@ -3,7 +3,6 @@ import { IntroHeader } from '@/components/intro/IntroHeader'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import animationData from '../../assets/animations/planet.json'
-import { Toaster } from 'sonner'
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
 	const lottieRef = useRef<LottieRefCurrentProps>(null)
@@ -47,7 +46,6 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 					)}
 				</div>
 			</div>
-				
 		</div>
 	)
 }

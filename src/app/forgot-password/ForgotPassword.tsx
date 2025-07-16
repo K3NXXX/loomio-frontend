@@ -27,7 +27,7 @@ export function ForgotPassword() {
 		formState: { errors },
 	} = useForm<IForgotPasswordFormData>({ reValidateMode: 'onSubmit' })
 	const [step, setStep] = useState(1)
-	const { forgotPassword, loading, expiresAt, setExpiresAt } =
+	const { forgotPassword, loading, expiresAt} =
 		useForgotPassword(setStep)
 	const [timeLeft, setTimeLeft] = useState(0)
 	const isResendDisabled = timeLeft > 0

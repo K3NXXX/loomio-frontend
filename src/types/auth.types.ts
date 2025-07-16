@@ -41,7 +41,7 @@ export interface IResendCode {
 	email: string
 }
 
-export interface IForgotPasswordApiData extends IResendCode {}
+export type IForgotPasswordApiData = IResendCode
 
 export interface IResetPasswordApiData {
 	password: string
