@@ -12,7 +12,7 @@ import { BsFillEyeSlashFill } from 'react-icons/bs'
 import { HiEye } from 'react-icons/hi'
 import { toast } from 'sonner'
 
-export default  function PasswordReset() {
+export default function PasswordReset() {
 	const {
 		register,
 		handleSubmit,
