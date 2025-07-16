@@ -17,6 +17,12 @@ export const useResetPassword = () => {
 		},
 		onError: (error: any) => {
 			toast(error?.response?.data?.message)
+			if (
+				error?.response?.data?.message ===
+				'The password reset link is invalid or has expired. Please request a new one'
+			) {
+				push(PAGES.FORGOT_PASSWORD)
+			}
 		},
 	})
 	return { resetPassword, loading }

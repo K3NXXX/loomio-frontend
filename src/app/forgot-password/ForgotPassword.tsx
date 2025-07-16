@@ -11,6 +11,15 @@ import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+function formatTime(ms: number): string {
+	const totalSeconds = Math.max(0, Math.floor(ms / 1000))
+	const minutes = Math.floor(totalSeconds / 60)
+	const seconds = totalSeconds % 60
+	return `${minutes.toString().padStart(2, '0')}:${seconds
+		.toString()
+		.padStart(2, '0')}`
+}
+
 export function ForgotPassword() {
 	const {
 		register,
@@ -18,11 +27,27 @@ export function ForgotPassword() {
 		formState: { errors },
 	} = useForm<IForgotPasswordFormData>({ reValidateMode: 'onSubmit' })
 	const [step, setStep] = useState(1)
-	const { forgotPassword, loading } = useForgotPassword(setStep)
+	const { forgotPassword, loading, expiresAt, setExpiresAt } =
+		useForgotPassword(setStep)
+	const [timeLeft, setTimeLeft] = useState(0)
+	const isResendDisabled = timeLeft > 0
 
 	const onSubmit: SubmitHandler<IForgotPasswordFormData> = data => {
 		forgotPassword({ email: data.email })
 	}
+
+	useEffect(() => {
+		if (expiresAt) {
+			const updateTimer = () => {
+				const diff = new Date(expiresAt).getTime() - Date.now()
+				setTimeLeft(Math.max(0, diff))
+			}
+
+			updateTimer()
+			const interval = setInterval(updateTimer, 1000)
+			return () => clearInterval(interval)
+		}
+	}, [expiresAt])
 
 	useEffect(() => {
 		if (errors.email?.message) {
@@ -65,23 +90,36 @@ export function ForgotPassword() {
 										},
 									})}
 								/>
-								<div className='flex gap-3 pt-2'>
-									<Button className='mt-1 font-bold text-[14px] py-3 w-[90px]'>
-										{loading ? (
-											<Lottie
-												animationData={loader}
-												loop={true}
-												className='absolute w-20 h-20'
-											/>
-										) : (
-											'Confirm'
-										)}
-									</Button>
-									<Link href={PAGES.LOGIN}>
-										<Button className='bg-neutral-700 mt-1 font-bold text-[14px] py-3'>
-											Return
+								<div className='flex justify-between items-center'>
+									<div className='flex gap-3 pt-2'>
+										<Button
+											disabled={isResendDisabled}
+											className='mt-1 font-bold text-[14px] py-3 w-[90px]'
+										>
+											{loading ? (
+												<Lottie
+													animationData={loader}
+													loop={true}
+													className='absolute w-20 h-20'
+												/>
+											) : (
+												'Confirm'
+											)}
 										</Button>
-									</Link>
+										<Link href={PAGES.LOGIN}>
+											<Button className='bg-neutral-700 mt-1 font-bold text-[14px] py-3'>
+												Return
+											</Button>
+										</Link>
+									</div>
+
+									<div>
+										{isResendDisabled && (
+											<span className='text-sm text-muted-foreground w-[50px]'>
+												{formatTime(timeLeft)}
+											</span>
+										)}
+									</div>
 								</div>
 							</form>
 						</div>
@@ -95,13 +133,23 @@ export function ForgotPassword() {
 								password. If you don’t see the email, check your spam or junk
 								folder.
 							</p>
+							<div className='flex gap-3'>
+								<Link href={PAGES.LOGIN}>
+								<Button
+									onClick={() => setStep(1)}
+									className='mt-1 font-bold text-[14px] py-3 max-w-[100px]'
+								>
+									Close
+								</Button>
 
-							<Button
-								onClick={() => setStep(1)}
-								className='bg-neutral-700 mt-1 font-bold text-[14px] py-3 max-w-[100px]'
-							>
-								Start over
-							</Button>
+								</Link>
+								<Button
+									onClick={() => setStep(1)}
+									className='bg-neutral-700 mt-1 font-bold text-[14px] py-3 max-w-[100px]'
+								>
+									Start over
+								</Button>
+							</div>
 						</div>
 					)}
 				</div>

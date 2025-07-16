@@ -48,6 +48,13 @@ class AuthService {
 		)
 		return data
 	}
+
+	async oauth(provider: string) {
+		const { data } = await axios.get(`${this.BASE_URL}${provider}/callback`, {
+			withCredentials: true,
+		})
+		return data
+	}
 }
 
 export const authService = new AuthService()
