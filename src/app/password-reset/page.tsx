@@ -1,12 +1,19 @@
-import { SITE_NAME } from '@/constants/seo.constants'
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 import { Metadata } from 'next'
-import { PasswordReset } from './PasswordReset'
+import { SITE_NAME } from '@/constants/seo.constants'
+
+const PasswordReset = dynamic(() => import('./PasswordReset'))
 
 export const metadata: Metadata = {
-	title: 'Reset password',
-	description: `${SITE_NAME} reset password page`,
+  title: 'Reset password',
+  description: `${SITE_NAME} reset password page`,
 }
 
 export default function PasswordResetPage() {
-	return <PasswordReset />
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PasswordReset />
+    </Suspense>
+  )
 }

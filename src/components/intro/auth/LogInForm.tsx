@@ -120,7 +120,7 @@ export function LogInForm() {
 
 					<Button className='mt-1 font-bold text-[16px] py-5.5'>Log in</Button>
 					<div className='flex justify-center gap-1 max-[380px]:flex-col max-[380px]:items-center'>
-						<p className='text-white text-center'> Don't have an account? </p>
+						<p className='text-white text-center'>{`Don't have an account?`}</p>
 
 						<Link href={PAGES.SIGNUP}>
 							<span className='text-[color:var(--primary)] text-bold'>
