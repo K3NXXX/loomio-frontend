@@ -3,7 +3,7 @@ import { FaGoogle } from 'react-icons/fa';
 import { IoLogoGithub } from 'react-icons/io5';
 
 export function AuthSocialButtons() {
-	const handleOAuthLogin = (provider: 'google' | 'github') => {
+	const handleOAuthLogin = (provider: 'google' | "github") => {
 		const authUrl =
 			provider === 'google'
 				? process.env.NEXT_PUBLIC_GOOGLE_AUTH!
