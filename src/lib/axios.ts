@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-	baseURL: 'https://nextgen-n55f.onrender.com',
+	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	withCredentials: true,
 })
 
