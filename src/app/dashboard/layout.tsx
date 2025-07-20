@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 				</div>
 				<div className='w-[100%]'>
 					<DashboardHeader />
-					{children}
+					<div className='pt-5'>{children}</div>
 				</div>
 			</div>
 			<Button className='w-[45px] h-[45px] p-0 fixed right-6 bottom-6 rounded-lg'>
