@@ -1,6 +1,6 @@
 export interface ISignupFormData {
-	firstName: string
-	lastName: string
+	fullName: string
+	username: string
 	email: string
 	password: string
 	passwordConfirm: string
@@ -8,7 +8,7 @@ export interface ISignupFormData {
 }
 
 export interface ILogInFormData {
-	email: string
+	identifier: string
 	password: string
 }
 
@@ -22,14 +22,14 @@ export interface IForgotPasswordFormData {
 }
 
 export interface ISignupApiData {
-	firstName: string
-	lastName: string
+	fullName: string
+	username: string
 	email: string
 	password: string
 }
 
 export interface ILogInApiData {
-	email: string
+	identifier: string
 	password: string
 }
 

@@ -5,4 +5,7 @@ export const PAGES = {
 	DASHBOARD: '/dashboard',
 	FORGOT_PASSWORD: 'forgot-password',
 	PASSWORD_RESET: 'password-reset',
+	PROJECTS: '/dashboard/projects',
+	EDITOR: '/dashboard/editor',
+	TASKS: '/dashboard/tasks',
 }

@@ -23,6 +23,7 @@ export default function RootLayout({
 	return (
 		<html lang='en' className={isDarkMode ? 'dark' : ''}>
 			<body className={`${montserratSans.variable}  antialiased`}>
+				
 				<ClientProviders>{children}</ClientProviders>
 				<Toaster
 					className='w-full max-w-[320px] max-[350px]:max-w-[280px]'

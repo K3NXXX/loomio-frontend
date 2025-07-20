@@ -52,19 +52,19 @@ export function SignUpForm() {
 			email: data.email,
 			password: data.password,
 			confirmPassword: data.passwordConfirm,
-			firstName: data.firstName,
-			lastName: data.lastName,
+			fullName: data.fullName,
+			username: data.username,
 		}
 		signUp(signUpData)
 		setEmail(data.email)
 	}
 
 	useEffect(() => {
-		if (errors.firstName?.message) {
-			toast(errors.firstName.message)
+		if (errors.fullName?.message) {
+			toast(errors.fullName.message)
 		}
-		if (errors.lastName?.message) {
-			toast(errors.lastName.message)
+		if (errors.username?.message) {
+			toast(errors.username.message)
 		}
 		if (errors.email?.message) {
 			toast(errors.email.message)
@@ -79,8 +79,8 @@ export function SignUpForm() {
 			toast(errors.termsAccepted.message)
 		}
 	}, [
-		errors.firstName,
-		errors.lastName,
+		errors.fullName,
+		errors.username,
 		errors.email,
 		errors.password,
 		errors.passwordConfirm,
@@ -112,45 +112,47 @@ export function SignUpForm() {
 				>
 					<div className='flex gap-3 max-[540px]:flex-col'>
 						<div className='flex flex-col flex-1 '>
-							<p className='text-white mb-2'>First name</p>
+							<p className='text-white mb-2'>Full name</p>
 							<Input
-								placeholder='Your first name'
+								placeholder='John Smith'
 								className='w-full text-white py-6'
-								{...register('firstName', {
-									required: true,
+								{...register('fullName', {
+									required: 'Full name is required',
+									pattern: {
+										value: /^[A-Z][a-z]+ [A-Z][a-z]+$/,
+										message:
+											'Enter a valid full name with a capitalized first and last name (e.g. John Smith)',
+									},
 									minLength: {
-										value: 3,
-										message: 'First name requires min 3 characters',
+										value: 5,
+										message: 'Full name must be at least 5 characters long',
 									},
 									maxLength: {
-										value: 50,
-										message: 'First name requires max 50 characters',
-									},
-									pattern: {
-										value: /^[a-zA-Z]+$/,
-										message: 'Only English letters are allowed in first name',
+										value: 100,
+										message: 'Full name must be less than 100 characters',
 									},
 								})}
 							/>
 						</div>
 						<div className='flex flex-col flex-1'>
-							<p className='text-white mb-2'>Last name</p>
+							<p className='text-white mb-2'>Username</p>
 							<Input
-								placeholder='Your last name'
+								placeholder='johnsmith'
 								className='w-full text-white py-6'
-								{...register('lastName', {
-									required: true,
+								{...register('username', {
+									required: 'Username is required',
 									minLength: {
-										value: 3,
-										message: 'Last name requires min 3 characters',
+										value: 1,
+										message: 'Username must be at least 1 character',
 									},
 									maxLength: {
-										value: 50,
-										message: 'Last name requires max 50 characters',
+										value: 39,
+										message: 'Username must be at most 39 characters',
 									},
 									pattern: {
-										value: /^[a-zA-Z]+$/,
-										message: 'Only English letters are allowed in last name',
+										value: /^(?!-)(?!.*--)[a-zA-Z0-9-]{1,39}(?<!-)$/,
+										message:
+											'Only letters, numbers, single hyphens. No leading/trailing hyphen or double hyphens',
 									},
 								})}
 							/>
