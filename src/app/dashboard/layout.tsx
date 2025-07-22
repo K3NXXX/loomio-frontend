@@ -1,12 +1,14 @@
 'use client'
-import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
 import { DashboardSidebarMenu } from '@/components/dashboard/DashboardSidebarMenu'
+import { DashboardThemesMenu } from '@/components/dashboard/DashboardThemesMenu'
 import { Button } from '@/components/ui/button'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { useGlobalStore } from '@/zustand/store/globalStore'
 import { ReactNode } from 'react'
 import { IoMdSettings } from 'react-icons/io'
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
+	const { toggleThemeMenuOpened } = useGlobalStore()
 	return (
 		<div
 			style={{
@@ -26,9 +28,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 					<div className='pt-15 px-3'>{children}</div>
 				</div>
 			</div>
-			<Button className='w-[45px] h-[45px] p-0 fixed right-6 bottom-6 rounded-lg'>
+			<Button
+				onClick={() => toggleThemeMenuOpened()}
+				className='w-[45px] h-[45px] p-0 fixed right-6 bottom-6 rounded-lg'
+			>
 				<IoMdSettings size={100} className='size-[25px] text-white' />
 			</Button>
+			<DashboardThemesMenu />
 		</div>
 	)
 }

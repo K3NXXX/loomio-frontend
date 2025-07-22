@@ -25,7 +25,7 @@ export function ProjectsList() {
 						<p className='text-[16px]'>Create project</p>
 					</Button>
 				</Card>
-				<Card className='px-7 gap-1 border-l border-red-500 min-h-[450px]'>
+				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
@@ -54,14 +54,14 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
-				<Card className='px-7 gap-1 border-l border-red-500 min-h-[450px]'>
+				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
 						enhanced functionality
 					</p>
 					<div className='flex justify-between my-3 mb-5'>
-						<Badge className='font-bold text-[14px] px-4 bg-yellow-700'>Pending</Badge>
+						<Badge className='font-bold text-[14px] px-4 bg-green-700'>Active</Badge>
 						<p className='font-bold'>75%</p>
 					</div>
 					<Progress className='mb-5' value={75} />
@@ -83,14 +83,14 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
-				<Card className='px-7 gap-1 border-l border-red-500 min-h-[450px]'>
+				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
 						enhanced functionality
 					</p>
 					<div className='flex justify-between my-3 mb-5'>
-						<Badge className='font-bold text-[14px] px-4 bg-yellow-700'>Pending</Badge>
+						<Badge className='font-bold text-[14px] px-4 bg-green-700'>Active</Badge>
 						<p className='font-bold'>75%</p>
 					</div>
 					<Progress className='mb-5' value={75} />
@@ -112,14 +112,14 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
-				<Card className='px-7 gap-1 border-l border-red-500 min-h-[450px]'>
+				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
 						enhanced functionality
 					</p>
 					<div className='flex justify-between my-3 mb-5'>
-						<Badge className='font-bold text-[14px] px-4 bg-yellow-700'>Active</Badge>
+						<Badge className='font-bold text-[14px] px-4 bg-green-700'>Active</Badge>
 						<p className='font-bold'>75%</p>
 					</div>
 					<Progress className='mb-5' value={75} />
@@ -141,14 +141,14 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
-				<Card className='px-7 gap-1 border-l border-red-500 min-h-[450px]'>
+				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
 						enhanced functionality
 					</p>
 					<div className='flex justify-between my-3 mb-5'>
-						<Badge className='font-bold text-[14px] px-4 bg-yellow-700'>Pending</Badge>
+						<Badge className='font-bold text-[14px] px-4 bg-green-700'>Active</Badge>
 						<p className='font-bold'>75%</p>
 					</div>
 					<Progress className='mb-5' value={75} />
@@ -170,6 +170,7 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
+			
 			</div>
 		</div>
 	)
