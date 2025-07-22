@@ -21,9 +21,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 						<SidebarTrigger />
 					</SidebarProvider>
 				</div>
-				<div className='w-[100%]'>
-					<DashboardHeader />
-					<div className='pt-5'>{children}</div>
+				<div className='w-full'>
+					{/* <DashboardHeader /> */}
+					<div className='pt-15 px-3'>{children}</div>
 				</div>
 			</div>
 			<Button className='w-[45px] h-[45px] p-0 fixed right-6 bottom-6 rounded-lg'>
