@@ -1,8 +1,9 @@
 import { ProjectsInput } from '@/components/dashboard/projects/ProjectsInput'
+import { ProjectsList } from '@/components/dashboard/projects/ProjectsList'
+import { ProjectsTotalInfo } from '@/components/dashboard/projects/ProjectsTotalInfo'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useState } from 'react'
+
 
 import { TiPlus } from 'react-icons/ti'
 
@@ -30,7 +31,11 @@ export function Projects() {
 					</Button>
 				</div>
 			</div>
-			<ProjectsInput/>
+			<div className='flex flex-col gap-5'>
+				<ProjectsInput />
+				<ProjectsTotalInfo />
+				<ProjectsList/>
+			</div>
 		</div>
 	)
 }
