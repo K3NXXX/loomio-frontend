@@ -22,7 +22,7 @@ export function Projects() {
 						<Badge className='font-bold text-[14px] px-4' variant='secondary'>
 							5 in total
 						</Badge>
-						<Badge className='font-bold text-[14px] px-4' variant='destructive'>
+						<Badge className='font-bold text-[14px] px-4'>
 							3 active
 						</Badge>
 					</div>
@@ -31,7 +31,7 @@ export function Projects() {
 					</Button>
 				</div>
 			</div>
-			<div className='flex flex-col gap-5'>
+			<div className='flex flex-col gap-5 pb-20'>
 				<ProjectsInput />
 				<ProjectsTotalInfo />
 				<ProjectsList/>

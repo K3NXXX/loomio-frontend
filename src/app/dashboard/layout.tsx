@@ -1,4 +1,5 @@
 'use client'
+import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
 import { DashboardSidebarMenu } from '@/components/dashboard/DashboardSidebarMenu'
 import { DashboardThemesMenu } from '@/components/dashboard/DashboardThemesMenu'
 import { Button } from '@/components/ui/button'
@@ -24,7 +25,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 					</SidebarProvider>
 				</div>
 				<div className='w-full'>
-					{/* <DashboardHeader /> */}
+					<DashboardHeader />
 					<div className='pt-15 px-3'>{children}</div>
 				</div>
 			</div>
@@ -32,7 +33,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 				onClick={() => toggleThemeMenuOpened()}
 				className='w-[45px] h-[45px] p-0 fixed right-6 bottom-6 rounded-lg'
 			>
-				<IoMdSettings size={100} className='size-[25px] text-white' />
+				<IoMdSettings size={100} className='size-[25px]' />
 			</Button>
 			<DashboardThemesMenu />
 		</div>

@@ -1,8 +1,6 @@
-export const setCSSThemeColor = (color: string) => {
-	const root = document.documentElement
-
-	root.style.setProperty('--primary', color)
-	root.style.setProperty('--ring', color)
-	root.style.setProperty('--sidebar-primary', color)
-	root.style.setProperty('--sidebar-ring', color)
+export const applyTheme = (theme: Record<string, string>) => {
+  const root = document.documentElement
+  for (const [key, value] of Object.entries(theme)) {
+    root.style.setProperty(key, value)
+  }
 }

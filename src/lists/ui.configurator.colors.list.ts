@@ -13,26 +13,22 @@ export const UIConfiguratorColors: IUIConfiguratorColors[] = [
 	},
 	{
 		id: 3,
-		color: '#ff2056',
-	},
-	{
-		id: 4,
 		color: '#00c951',
 	},
 	{
-		id: 5,
+		id: 4,
 		color: '#2b7fff',
 	},
 	{
-		id: 6,
+		id: 5,
 		color: '#efb100',
 	},
     {
-		id: 7,
+		id: 6,
 		color: '#8e51ff',
 	},
      {
-		id: 8,
+		id: 7,
 		color: '#fafafa',
 	},
 ]

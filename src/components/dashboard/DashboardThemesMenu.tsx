@@ -7,34 +7,46 @@ import {
 	SheetTitle,
 } from '@/components/ui/sheet'
 import { UIConfiguratorColors } from '@/lists/ui.configurator.colors.list'
-import { setCSSThemeColor } from '@/utils/themeUtils'
+import {
+	blueTheme,
+	greenTheme,
+	orangeTheme,
+	redTheme,
+	violetTheme,
+	whiteTheme,
+	yellowTheme,
+} from '@/themes/themes'
+import { applyTheme } from '@/utils/themeUtils'
 import { useGlobalStore } from '@/zustand/store/globalStore'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function DashboardThemesMenu() {
 	const { isThemesMenuOpened, toggleThemeMenuOpened } = useGlobalStore()
 	const [activeColor, setActiveColor] = useState(0)
-	const {setActiveTheme, activeTheme} = useGlobalStore()
-	const [activeType, setActiveType] = useState(0)
-	const [isSwitchOn, setIsSwitchOn] = useState(true)
+	const themesList = [
+		redTheme,
+		orangeTheme,
+		greenTheme,
+		blueTheme,
+		yellowTheme,
+		violetTheme,
+		whiteTheme,
+	]
 
-
-	const handleClickColor = (index: number, color: string) => {
+	const handleClickColor = (index: number) => {
 		setActiveColor(index)
-		setActiveTheme(color)
-		setCSSThemeColor(color)
-		localStorage.setItem('colorTheme', color)
+		applyTheme(themesList[index])
+		localStorage.setItem('colorTheme', String(index))
 	}
 
-	const handleClickButtonType = (index: number) => {
-		setActiveType(index)
-		// TODO: setSideNavType(UIConfiguratorButtonTypes[index].type)
-	}
-
-	const handleSwitchChange = (checked: boolean) => {
-		setIsSwitchOn(checked)
-		// TODO: setNavBarFixed(checked)
-	}
+	useEffect(() => {
+		const savedThemeIndex = localStorage.getItem('colorTheme')
+		if (savedThemeIndex !== null) {
+			const index = parseInt(savedThemeIndex)
+			setActiveColor(index)
+			applyTheme(themesList[index])
+		}
+	}, [])
 
 	return (
 		<Sheet open={isThemesMenuOpened} onOpenChange={toggleThemeMenuOpened}>
@@ -52,14 +64,10 @@ export function DashboardThemesMenu() {
 							{UIConfiguratorColors.map((item, index) => (
 								<button
 									key={index}
-									onClick={() => handleClickColor(index, item.color)}
+									onClick={() => handleClickColor(index)}
 									aria-pressed={activeColor === index}
 									className={`w-7 h-7 rounded-full border transition-all duration-200 ease-in-out
-  									${
-											activeColor === index
-												? 'border-3 border-white'
-												: ' hover:scale-120'
-										}
+  									${activeColor === index ? 'border-3 border-white' : ' hover:scale-120'}
 									cursor-pointer
 									`}
 									style={{ backgroundColor: item.color }}
