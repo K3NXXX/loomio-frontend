@@ -1,3 +1,4 @@
+import axiosInstance from '@/lib/axios'
 import {
 	IEmailVerification,
 	IEmailVerificationResponse,
@@ -50,9 +51,14 @@ class AuthService {
 	}
 
 	async oauth(provider: string) {
-		const { data } = await axios.get(`${this.BASE_URL}${provider}/callback`, {
+		const { data } = await axiosInstance.get(`${this.BASE_URL}${provider}/callback`, {
 			withCredentials: true,
 		})
+		return data
+	}
+
+	async getMe() {
+		const { data } = await axiosInstance.get(`${this.BASE_URL}/me`)
 		return data
 	}
 

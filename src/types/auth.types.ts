@@ -66,3 +66,12 @@ export interface IEmailVerificationResponse {
 	user: IUser
 	accessToken: string
 }
+
+export interface IGetUserData {
+	avatarUrl: string
+	email: string
+	fullName: string
+	id: string
+	isActive: boolean
+	username: string
+}
