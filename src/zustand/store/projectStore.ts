@@ -9,7 +9,7 @@ interface IActions {
 }
 
 export const useProjectStore = create<IState & IActions>(set => ({
-	isProjectCreatingFormOpened: true,
+	isProjectCreatingFormOpened: false,
 	setIsProjectCreatingFormOpened: (value: boolean) =>
 		set({ isProjectCreatingFormOpened: value }),
 }))

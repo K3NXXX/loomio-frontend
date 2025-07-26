@@ -51,18 +51,17 @@ class AuthService {
 	}
 
 	async oauth(provider: string) {
-		const { data } = await axiosInstance.get(`${this.BASE_URL}${provider}/callback`, {
-			withCredentials: true,
-		})
+		const { data } = await axiosInstance.get(
+			`${this.BASE_URL}${provider}/callback`
+		)
 		return data
 	}
 
-	async getMe() {
-		const { data } = await axiosInstance.get(`${this.BASE_URL}/me`)
+
+	async refreshToken() {
+		const { data } = await axiosInstance.post(`${this.BASE_URL}/refresh`)
 		return data
 	}
-
-	
 }
 
 export const authService = new AuthService()

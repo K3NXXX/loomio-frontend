@@ -6,45 +6,40 @@ import {
 	SheetHeader,
 	SheetTitle,
 } from '@/components/ui/sheet'
+import { useChangeColorTheme } from '@/hooks/user/useChangeColorTheme'
 import { UIConfiguratorColors } from '@/lists/ui.configurator.colors.list'
-import {
-	blueTheme,
-	greenTheme,
-	orangeTheme,
-	redTheme,
-	violetTheme,
-	whiteTheme,
-	yellowTheme,
-} from '@/themes/themes'
-import { applyTheme } from '@/utils/themeUtils'
+import { THEME_COLORS } from '@/types/colors.types'
 import { useGlobalStore } from '@/zustand/store/globalStore'
+import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 
 export function DashboardThemesMenu() {
 	const { isThemesMenuOpened, toggleThemeMenuOpened } = useGlobalStore()
-	const [activeColor, setActiveColor] = useState(0)
-	const themesList = [
-		redTheme,
-		orangeTheme,
-		greenTheme,
-		blueTheme,
-		yellowTheme,
-		violetTheme,
-		whiteTheme,
-	]
+	const [activeColor, setActiveColor] = useState<THEME_COLORS>(
+		UIConfiguratorColors[0].color
+	)
+	const { changeColorTheme } = useChangeColorTheme()
 
-	const handleClickColor = (index: number) => {
-		setActiveColor(index)
-		applyTheme(themesList[index])
-		localStorage.setItem('colorTheme', String(index))
+	const handleClickColor = (color: THEME_COLORS) => {
+		setActiveColor(color)
+		changeColorTheme(color)
+
+		const root = document.documentElement
+		Array.from(root.classList)
+			.filter(cls => cls.startsWith('theme-'))
+			.forEach(cls => root.classList.remove(cls))
+
+		root.classList.add(`theme-${color.toLowerCase()}`)
 	}
 
 	useEffect(() => {
-		const savedThemeIndex = localStorage.getItem('colorTheme')
-		if (savedThemeIndex !== null) {
-			const index = parseInt(savedThemeIndex)
-			setActiveColor(index)
-			applyTheme(themesList[index])
+		const themeFromCookie = Cookies.get('theme') as THEME_COLORS | undefined
+		if (
+			themeFromCookie &&
+			UIConfiguratorColors.some(c => c.color === themeFromCookie)
+		) {
+			setActiveColor(themeFromCookie)
+			changeColorTheme(themeFromCookie)
 		}
 	}, [])
 
@@ -64,44 +59,17 @@ export function DashboardThemesMenu() {
 							{UIConfiguratorColors.map((item, index) => (
 								<button
 									key={index}
-									onClick={() => handleClickColor(index)}
-									aria-pressed={activeColor === index}
+									onClick={() => handleClickColor(item.color)}
+									aria-pressed={activeColor === item.color}
 									className={`w-7 h-7 rounded-full border transition-all duration-200 ease-in-out
-  									${activeColor === index ? 'border-3 border-white' : ' hover:scale-120'}
+  									${activeColor === item.color ? 'border-3 border-white' : ' hover:scale-120'}
 									cursor-pointer
 									`}
-									style={{ backgroundColor: item.color }}
+									style={{ backgroundColor: item.colorCss }}
 								/>
 							))}
 						</div>
 					</div>
-
-					{/* <div>
-						<p className='text-sm font-medium text-muted-foreground mb-1'>
-							Sidenav Type
-						</p>
-						<p className='text-xs text-muted-foreground mb-2'>
-							Choose between 2 different sidenav types.
-						</p>
-						<div className='flex gap-2'>
-							{UIConfiguratorButtonTypes.map((item, index) => (
-								<Button
-									key={index}
-									variant={activeType === index ? 'default' : 'outline'}
-									onClick={() => handleClickButtonType(index)}
-								>
-									{item.label}
-								</Button>
-							))}
-						</div>
-					</div>
-
-					<div>
-						<p className='text-sm font-medium text-muted-foreground mb-1'>
-							Navbar Fixed
-						</p>
-						<Switch checked={isSwitchOn} onCheckedChange={handleSwitchChange} />
-					</div> */}
 				</div>
 			</SheetContent>
 		</Sheet>

@@ -40,8 +40,8 @@ export function DashboardSidebarMenu() {
 								<SidebarMenuItem key={item.id}>
 									<SidebarMenuButton asChild>
 										<a href={item.url}>
-											<item.icon size={50} />
-											<span className='text-[16px]'>{item.label}</span>
+											<item.icon size={20} />
+											<span className='text-[18px]'>{item.label}</span>
 										</a>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
@@ -57,11 +57,12 @@ export function DashboardSidebarMenu() {
 						<AvatarFallback>{getInitials(userData?.fullName)}</AvatarFallback>
 					</Avatar>
 					<div className='flex flex-col'>
-						<p className='font-bold'>{userData?.username}</p>
-						<p className='text-[14px]'>{userData?.email}</p>
+						<p className='font-semibold text-sm'>{userData?.username}</p>
+						<p className='text-xs text-muted-foreground'>{userData?.email}</p>
 					</div>
 				</div>
 			</SidebarFooter>
 		</Sidebar>
 	)
 }
+	
