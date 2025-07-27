@@ -1,37 +1,32 @@
-import { Card } from '@/components/ui/card';
-import { FaGoogle } from 'react-icons/fa';
-import { IoLogoGithub } from 'react-icons/io5';
+'use client'
+import { Card } from '@/components/ui/card'
+import { providers } from '@/lists/auth.providers.list'
+
+import { toast } from 'sonner'
 
 export function AuthSocialButtons() {
-	const handleOAuthLogin = (provider: 'google' | "github") => {
-		const authUrl =
-			provider === 'google'
-				? process.env.NEXT_PUBLIC_GOOGLE_AUTH!
-				: process.env.NEXT_PUBLIC_GITHUB_AUTH!;
-
-		window.location.href = authUrl;
-	};
-
+	const handleOAuthLogin = (url: string | undefined, name: string) => {
+		if (!url) {
+			console.error(`OAuth URL for ${name} is not configured.`)
+			toast.error('Authorization failed: OAuth URL is not configured.')
+			return
+		}
+		window.location.href = url
+	}
 	return (
 		<div className='flex justify-center gap-5'>
-			<Card
-				onClick={() => handleOAuthLogin('google')}
-				className='bg-neutral-900 py-5 px-5 cursor-pointer flex justify-center items-center w-full'
-			>
-				<FaGoogle
-					color='#fb2c36'
-					size={20}
-				/>
-			</Card>
-			<Card
-				onClick={() => handleOAuthLogin('github')}
-				className='bg-neutral-900 py-5 px-5 cursor-pointer flex justify-center items-center w-full'
-			>
-				<IoLogoGithub
-					color='white'
-					size={22}
-				/>
-			</Card>
+			{providers.map(provider => (
+				<button
+					key={provider.name}
+					aria-label={`Login with ${provider.name}`}
+					onClick={() => handleOAuthLogin(provider.url, provider.name)}
+					className='w-full cursor-pointer'
+				>
+					<Card className='bg-neutral-900 py-5 px-5 flex justify-center items-center w-full'>
+						<provider.icon color={provider.color} />
+					</Card>
+				</button>
+			))}
 		</div>
-	);
+	)
 }

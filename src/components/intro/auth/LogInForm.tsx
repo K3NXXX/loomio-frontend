@@ -71,6 +71,10 @@ export function LogInForm() {
 						<Input
 							placeholder='Your email address or username'
 							className='text-white py-6'
+							aria-invalid={errors.identifier ? 'true' : 'false'}
+							aria-describedby={
+								errors.identifier ? 'identifier-error' : undefined
+							}
 							{...register('identifier', {
 								required: 'Please enter your email or username',
 								maxLength: {
@@ -105,8 +109,12 @@ export function LogInForm() {
 								type={showPassword ? 'text' : 'password'}
 								placeholder='Your password'
 								className='text-white py-6 pr-10'
+								aria-invalid={errors.password ? 'true' : 'false'}
+								aria-describedby={
+									errors.password ? 'password-error' : undefined
+								}
 								{...register('password', {
-									required: true,
+									required: 'Password is required',
 									minLength: {
 										value: 10,
 										message: 'Password requires min 10 characters',

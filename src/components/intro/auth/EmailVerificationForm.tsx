@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 import { useEmailVerification } from '@/hooks/auth/useEmailVerification'
 import { useResendCode } from '@/hooks/auth/useResendCode'
 import Lottie from 'lottie-react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface IEmailVerificationFormProps {
 	open: boolean
@@ -82,7 +82,9 @@ export function EmailVerificationForm({
 					</DialogDescription>
 					<Input
 						value={code}
-						onChange={e => setCode(e.target.value)}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+							setCode(e.target.value)
+						}
 						placeholder='Your verification code here'
 						className='uppercase placeholder:normal-case'
 					/>
@@ -91,6 +93,7 @@ export function EmailVerificationForm({
 							<Button
 								onClick={handleEmailVerification}
 								className='max-w-[170px] font-bold'
+								disabled={code.trim().length === 0}
 							>
 								Complete registration
 							</Button>
@@ -112,7 +115,10 @@ export function EmailVerificationForm({
 						</div>
 						<div>
 							{isResendDisabled && (
-								<span className='text-sm text-muted-foreground w-[50px]'>
+								<span
+									aria-live='polite'
+									className='text-sm text-muted-foreground w-[50px]'
+								>
 									{formatTime(timeLeft)}
 								</span>
 							)}

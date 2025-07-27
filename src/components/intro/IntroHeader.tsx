@@ -5,7 +5,7 @@ import { Logo } from '../ui/Logo'
 
 export function IntroHeader() {
 	return (
-		<Card className='bg-neutral-900 absolute right-0 left-0 top-10  relative z-50 py-1  rounded-[12px]  px-6 py-4 max-[540px]:px-[15px]'>
+		<Card className='bg-neutral-900 right-0 left-0 top-10 relative z-50  rounded-[12px]  px-6 py-4 max-[540px]:px-[15px]'>
 			<header className='flex justify-between max-[540px]:flex-col max-[540px]:items-center max-[540px]:gap-3 '>
 				<Logo />
 
@@ -16,7 +16,7 @@ export function IntroHeader() {
 								href={item.href}
 								className='flex gap-2 items-center text-[16px] font-medium text-white'
 							>
-								<item.icon className='max-[355px]:hidden'/>
+								<item.icon className='max-[355px]:hidden' />
 								<p>{item.label}</p>
 							</Link>
 						</li>
