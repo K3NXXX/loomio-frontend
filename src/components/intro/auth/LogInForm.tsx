@@ -1,17 +1,21 @@
 'use client'
+import { useEffect, useState } from 'react'
+
+import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { BsFillEyeSlashFill } from 'react-icons/bs'
+import { HiEye } from 'react-icons/hi'
+import { toast } from 'sonner'
+
 import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useLogIn } from '@/hooks/auth/useLogIn'
-import { ILogInFormData } from '@/types/auth.types'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { BsFillEyeSlashFill } from 'react-icons/bs'
-import { HiEye } from 'react-icons/hi'
-import { toast } from 'sonner'
+
+import type { ILogInFormData } from '@/types/auth.types'
+import type { SubmitHandler } from 'react-hook-form'
 
 export function LogInForm() {
 	const {
@@ -26,7 +30,7 @@ export function LogInForm() {
 		setShowPassword(!showPassword)
 	}
 
-	const onSubmit: SubmitHandler<ILogInFormData> = data => {
+	const onSubmit: SubmitHandler<ILogInFormData> = (data) => {
 		const logInData = {
 			identifier: data.identifier,
 			password: data.password,

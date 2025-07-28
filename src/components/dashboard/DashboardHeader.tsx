@@ -1,5 +1,7 @@
-import { usePathname } from 'next/navigation'
 import React from 'react'
+
+import { usePathname } from 'next/navigation'
+
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -36,7 +38,9 @@ export function DashboardHeader() {
 								{index > 0 && <BreadcrumbSeparator />}
 								<BreadcrumbItem>
 									{isLast ? (
-										<BreadcrumbPage className='font-bold'>{formatSegment(segment)}</BreadcrumbPage>
+										<BreadcrumbPage className='font-bold'>
+											{formatSegment(segment)}
+										</BreadcrumbPage>
 									) : (
 										<BreadcrumbLink className='font-bold' href={href}>
 											{formatSegment(segment)}

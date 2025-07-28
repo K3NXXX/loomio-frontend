@@ -1,14 +1,15 @@
 import { create } from 'zustand'
 
-interface IState  {
-  isThemesMenuOpened: boolean
+interface IState {
+	isThemesMenuOpened: boolean
 }
 
 interface IActions {
-  toggleThemeMenuOpened: () => void,
+	toggleThemeMenuOpened: () => void
 }
 
 export const useGlobalStore = create<IState & IActions>((set) => ({
-  isThemesMenuOpened: false,
-  toggleThemeMenuOpened: () => set((state) => ({ isThemesMenuOpened: !state.isThemesMenuOpened })),
+	isThemesMenuOpened: false,
+	toggleThemeMenuOpened: () =>
+		set((state) => ({ isThemesMenuOpened: !state.isThemesMenuOpened })),
 }))

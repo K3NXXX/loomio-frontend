@@ -1,9 +1,12 @@
-import { PAGES } from '@/constants/pages.constants'
-import { IconType } from 'react-icons'
-import { FaTasks } from "react-icons/fa"
+import { FaRegChartBar } from 'react-icons/fa'
+import { FaTasks } from 'react-icons/fa'
 import { GrProjects } from 'react-icons/gr'
 import { IoFolderOpen } from 'react-icons/io5'
-import { FaRegChartBar } from "react-icons/fa";
+
+import { PAGES } from '@/constants/pages.constants'
+
+import type { IconType } from 'react-icons'
+
 interface ISidebarMenu {
 	id: number
 	label: string
@@ -25,13 +28,13 @@ export const sidebarMenu: ISidebarMenu[] = [
 		icon: GrProjects,
 	},
 
-		{
+	{
 		id: 3,
-		label: "Tasks",
+		label: 'Tasks',
 		url: PAGES.TASKS,
-		icon: FaTasks
+		icon: FaTasks,
 	},
-		{
+	{
 		id: 4,
 		label: 'Editor',
 		url: PAGES.EDITOR,

@@ -1,5 +1,9 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
+import Cookies from 'js-cookie'
+
 import {
 	Sheet,
 	SheetContent,
@@ -8,15 +12,14 @@ import {
 } from '@/components/ui/sheet'
 import { useChangeColorTheme } from '@/hooks/user/useChangeColorTheme'
 import { UIConfiguratorColors } from '@/lists/ui.configurator.colors.list'
-import { THEME_COLORS } from '@/types/colors.types'
 import { useGlobalStore } from '@/zustand/store/globalStore'
-import Cookies from 'js-cookie'
-import { useEffect, useState } from 'react'
+
+import type { THEME_COLORS } from '@/types/colors.types'
 
 export function DashboardThemesMenu() {
 	const { isThemesMenuOpened, toggleThemeMenuOpened } = useGlobalStore()
 	const [activeColor, setActiveColor] = useState<THEME_COLORS>(
-		UIConfiguratorColors[0].color
+		UIConfiguratorColors[0].color,
 	)
 	const { changeColorTheme } = useChangeColorTheme()
 
@@ -26,8 +29,8 @@ export function DashboardThemesMenu() {
 
 		const root = document.documentElement
 		Array.from(root.classList)
-			.filter(cls => cls.startsWith('theme-'))
-			.forEach(cls => root.classList.remove(cls))
+			.filter((cls) => cls.startsWith('theme-'))
+			.forEach((cls) => root.classList.remove(cls))
 
 		root.classList.add(`theme-${color.toLowerCase()}`)
 	}
@@ -36,12 +39,12 @@ export function DashboardThemesMenu() {
 		const themeFromCookie = Cookies.get('theme') as THEME_COLORS | undefined
 		if (
 			themeFromCookie &&
-			UIConfiguratorColors.some(c => c.color === themeFromCookie)
+			UIConfiguratorColors.some((c) => c.color === themeFromCookie)
 		) {
 			setActiveColor(themeFromCookie)
 			changeColorTheme(themeFromCookie)
 		}
-	}, [])
+	}, [changeColorTheme])
 
 	return (
 		<Sheet open={isThemesMenuOpened} onOpenChange={toggleThemeMenuOpened}>

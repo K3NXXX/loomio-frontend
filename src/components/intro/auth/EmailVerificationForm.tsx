@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from 'react'
+
+import Lottie from 'lottie-react'
+
 import loader from '@/assets/animations/loader.json'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,8 +14,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { useEmailVerification } from '@/hooks/auth/useEmailVerification'
 import { useResendCode } from '@/hooks/auth/useResendCode'
-import Lottie from 'lottie-react'
-import React, { useEffect, useState } from 'react'
 
 interface IEmailVerificationFormProps {
 	open: boolean

@@ -1,21 +1,21 @@
 'use client'
+import { toast } from 'sonner'
+
 import { Card } from '@/components/ui/card'
 import { providers } from '@/lists/auth.providers.list'
-
-import { toast } from 'sonner'
 
 export function AuthSocialButtons() {
 	const handleOAuthLogin = (url: string | undefined, name: string) => {
 		if (!url) {
 			console.error(`OAuth URL for ${name} is not configured.`)
-			toast.error("Authorization failed: OAuth URL is not configured.")
+			toast.error('Authorization failed: OAuth URL is not configured.')
 			return
 		}
 		window.location.href = url
 	}
 	return (
 		<div className='flex justify-center gap-5'>
-			{providers.map(provider => (
+			{providers.map((provider) => (
 				<button
 					key={provider.name}
 					aria-label={`Login with ${provider.name}`}

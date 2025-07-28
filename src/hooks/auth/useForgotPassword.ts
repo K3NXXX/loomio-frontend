@@ -1,14 +1,17 @@
-import { authService } from '@/services/auth.service'
-import { IForgotPasswordApiData } from '@/types/auth.types'
-import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
+
+import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
+
+import { authService } from '@/services/auth.service'
+
+import type { IForgotPasswordRequest } from '@/types/auth.types'
 
 export const useForgotPassword = (setStep: (step: number) => void) => {
 	const [expiresAt, setExpiresAt] = useState<Date | undefined>()
 	const { mutate: forgotPassword, isPending: loading } = useMutation({
 		mutationKey: ['forgotPassword'],
-		mutationFn: (data: IForgotPasswordApiData) =>
+		mutationFn: (data: IForgotPasswordRequest) =>
 			authService.forgotPassword(data),
 		onSuccess: (data) => {
 			setStep(2)
@@ -16,7 +19,7 @@ export const useForgotPassword = (setStep: (step: number) => void) => {
 		},
 		onError: (error: any) => {
 			if (error?.response?.data?.statusCode === 429) {
-				toast(error?.response?.data?.message )
+				toast(error?.response?.data?.message)
 			}
 			setExpiresAt(error.response.data?.expiresAt || 60)
 		},

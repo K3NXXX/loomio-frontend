@@ -1,4 +1,13 @@
 'use client'
+import { useEffect, useState } from 'react'
+
+import Lottie from 'lottie-react'
+import Link from 'next/link'
+import { Controller, useForm } from 'react-hook-form'
+import { BsFillEyeSlashFill } from 'react-icons/bs'
+import { HiEye } from 'react-icons/hi'
+import { toast } from 'sonner'
+
 import loader from '@/assets/animations/loader.json'
 import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
 import { Button } from '@/components/ui/button'
@@ -7,15 +16,11 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useSignUp } from '@/hooks/auth/useSignUp'
-import { ISignupFormData } from '@/types/auth.types'
-import Lottie from 'lottie-react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { BsFillEyeSlashFill } from 'react-icons/bs'
-import { HiEye } from 'react-icons/hi'
-import { toast } from 'sonner'
+
 import { EmailVerificationForm } from './EmailVerificationForm'
+
+import type { ISignupFormData } from '@/types/auth.types'
+import type { SubmitHandler } from 'react-hook-form'
 
 export function SignUpForm() {
 	const {
@@ -47,7 +52,7 @@ export function SignUpForm() {
 		setShowConfirmPassword(!showConfirmPassword)
 	}
 
-	const onSubmit: SubmitHandler<ISignupFormData> = data => {
+	const onSubmit: SubmitHandler<ISignupFormData> = (data) => {
 		const signUpData = {
 			email: data.email,
 			password: data.password,
@@ -235,7 +240,7 @@ export function SignUpForm() {
 									className='text-white py-6 pr-10'
 									{...register('passwordConfirm', {
 										required: true,
-										validate: value =>
+										validate: (value) =>
 											value === password || 'Passwords do not match',
 									})}
 								/>

@@ -1,17 +1,21 @@
 'use client'
+import { useEffect, useState } from 'react'
+
+import Lottie from 'lottie-react'
+import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+
 import loader from '@/assets/animations/loader.json'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useCountdown } from '@/hooks/auth/useCountDown'
 import { useForgotPassword } from '@/hooks/auth/useForgotPassword'
-import { IForgotPasswordFormData } from '@/types/auth.types'
 import { formatTime } from '@/utils/format-time'
-import Lottie from 'lottie-react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+
+import type { IForgotPasswordFormData } from '@/types/auth.types'
+import type { SubmitHandler } from 'react-hook-form'
 
 export function ForgotPassword() {
 	const {
@@ -27,7 +31,7 @@ export function ForgotPassword() {
 
 	const isResendDisabled = timeLeft > 0
 
-	const onSubmit: SubmitHandler<IForgotPasswordFormData> = data => {
+	const onSubmit: SubmitHandler<IForgotPasswordFormData> = (data) => {
 		forgotPassword({ email: data.email })
 	}
 

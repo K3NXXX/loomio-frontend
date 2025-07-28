@@ -1,6 +1,7 @@
+import axios from 'axios'
+
 import { PAGES } from '@/constants/pages.constants'
 import { authService } from '@/services/auth.service'
-import axios from 'axios'
 
 const axiosInstance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -8,24 +9,29 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.response.use(
-	response => response,
-	async error => {
+	(response) => response,
+	async (error) => {
 		const originalRequest = error?.config
 
-		console.log("error", error)
+		console.log('error', error)
 
-		  if (!error || !error.config || !error.response) {
-      return Promise.reject(error);
-    }
+		if (!error || !error.config || !error.response) {
+			return Promise.reject(error)
+		}
 
 		const isAuthRefreshRequest = originalRequest.url?.includes('/auth/refresh')
 
-		if (error.response.status === 401 && !originalRequest._retry && !isAuthRefreshRequest) {
+		if (
+			error.response.status === 401 &&
+			!originalRequest._retry &&
+			!isAuthRefreshRequest
+		) {
 			originalRequest._retry = true
 			try {
 				const { accessToken } = await authService.refreshToken()
 
-				axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+				axiosInstance.defaults.headers.common['Authorization'] =
+					`Bearer ${accessToken}`
 				originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
 
 				return axiosInstance(originalRequest)
@@ -36,7 +42,7 @@ axiosInstance.interceptors.response.use(
 		}
 
 		return Promise.reject(error)
-	}
+	},
 )
 
 export default axiosInstance

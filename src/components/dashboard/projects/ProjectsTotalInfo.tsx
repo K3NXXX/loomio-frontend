@@ -1,8 +1,9 @@
-import { Card } from '@/components/ui/card'
 import { FaProjectDiagram } from 'react-icons/fa'
+import { FaRegCalendarDays } from 'react-icons/fa6'
 import { IoStatsChart } from 'react-icons/io5'
-import { RiTeamFill } from "react-icons/ri";
-import { FaRegCalendarDays } from "react-icons/fa6";
+import { RiTeamFill } from 'react-icons/ri'
+
+import { Card } from '@/components/ui/card'
 export function ProjectsTotalInfo() {
 	return (
 		<div className='grid grid-cols-4 gap-5'>

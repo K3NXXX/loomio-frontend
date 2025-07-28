@@ -42,5 +42,3 @@ export const UIConfiguratorColors: IUIConfiguratorColors[] = [
 		colorCss: '#fafafa',
 	},
 ]
-
-

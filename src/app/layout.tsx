@@ -1,8 +1,10 @@
-import ClientProviders from '@/components/providers/ClientProviders'
-import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import { cookies } from 'next/headers'
 import { Toaster } from 'sonner'
+
+import ClientProviders from '@/components/providers/ClientProviders'
+
+import type { Metadata } from 'next'
 import './globals.css'
 
 const montserratSans = Montserrat({
@@ -24,7 +26,10 @@ export default async function RootLayout({
 	const cookiesList = await cookies()
 	const theme = cookiesList.get('theme')?.value || 'RED'
 	return (
-		<html lang='en' className={`theme-${theme.toLowerCase()} ${isDarkMode ? 'dark' : ''}`}>
+		<html
+			lang='en'
+			className={`theme-${theme.toLowerCase()} ${isDarkMode ? 'dark' : ''}`}
+		>
 			<body className={`${montserratSans.variable}  antialiased`}>
 				<ClientProviders>{children}</ClientProviders>
 				<Toaster

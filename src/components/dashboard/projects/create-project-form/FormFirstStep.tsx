@@ -1,7 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+
+import type { ICreateProjectFormData } from '@/types/project.types'
+import type { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
 interface IFormFirstStepProps {
 	register: UseFormRegister<ICreateProjectFormData>
@@ -36,7 +38,7 @@ export function FormFirstStep({
 							message:
 								'Only letters, numbers, spaces, apostrophes, dots and dashes are allowed',
 						},
-						validate: value => {
+						validate: (value) => {
 							if (value.trim() !== value) {
 								return 'Name must not start or end with spaces'
 							}
@@ -68,7 +70,7 @@ export function FormFirstStep({
 							message:
 								'Only letters, numbers, common punctuation, and whitespace are allowed',
 						},
-						validate: value => {
+						validate: (value) => {
 							if (value.trim() !== value) {
 								return 'Description must not start or end with spaces'
 							}

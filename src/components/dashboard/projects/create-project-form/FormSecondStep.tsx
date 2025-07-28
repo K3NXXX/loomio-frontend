@@ -1,13 +1,14 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { useState } from 'react'
-import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+
 import { IoClose, IoSearchSharp } from 'react-icons/io5'
 
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+
 interface IFormSecondStepProps {
-	register: UseFormRegister<ICreateProjectFormData>
-	handleSubmit: UseFormHandleSubmit<ICreateProjectFormData>
+	// register: UseFormRegister<ICreateProjectFormData>
+	// handleSubmit: UseFormHandleSubmit<ICreateProjectFormData>
 	setStep: (step: number) => void
 }
 
@@ -32,7 +33,7 @@ export function FormSecondStep({ setStep }: IFormSecondStepProps) {
 						)}
 						<Input
 							value={searchValue}
-							onChange={e => setSearchValue(e.target.value)}
+							onChange={(e) => setSearchValue(e.target.value)}
 							className='py-5 px-10 w-full'
 							placeholder='Search members...'
 						/>

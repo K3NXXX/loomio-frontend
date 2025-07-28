@@ -1,65 +1,84 @@
+import axios from 'axios'
+
 import axiosInstance from '@/lib/axios'
-import {
+
+import type {
 	IEmailVerification,
 	IEmailVerificationResponse,
-	IForgotPasswordApiData,
-	ILogInApiData,
-	IResendCode,
-	IResetPasswordApiData,
-	ISignupApiData,
+	IForgotPasswordRequest,
+	IForgotPasswordResponse,
+	ILogInRequest,
+	IResendCodeRequest,
+	IResendCodeResponse,
+	IResetPasswordRequest,
+	IResetPasswordResponse,
+	ISignupRequest,
+	ISignUpResponse,
+	IUser,
 } from '@/types/auth.types'
-import axios from 'axios'
 
 class AuthService {
 	private BASE_URL = `${process.env.NEXT_PUBLIC_API_URL!}/auth`
 
-	async signup(signUpData: ISignupApiData) {
-		const { data } = await axios.post(`${this.BASE_URL}/register`, signUpData)
+	async signup(signUpData: ISignupRequest): Promise<ISignUpResponse> {
+		const { data } = await axios.post<ISignUpResponse>(
+			`${this.BASE_URL}/register`,
+			signUpData,
+		)
 		return data
 	}
-	async login(logInData: ILogInApiData) {
-		const { data } = await axios.post(`${this.BASE_URL}/login`, logInData)
+	async login(logInData: ILogInRequest): Promise<IEmailVerificationResponse> {
+		const { data } = await axios.post<IEmailVerificationResponse>(
+			`${this.BASE_URL}/login`,
+			logInData,
+		)
 		return data
 	}
 
 	async emailVerification(
-		code: IEmailVerification
+		code: IEmailVerification,
 	): Promise<IEmailVerificationResponse> {
-		const { data } = await axios.post(`${this.BASE_URL}/register/verify`, code)
+		const { data } = await axios.post<IEmailVerificationResponse>(
+			`${this.BASE_URL}/register/verify`,
+			code,
+		)
 		return data
 	}
 
-	async resendCode(email: IResendCode) {
-		const { data } = await axios.post(`${this.BASE_URL}/register/resend`, email)
+	async resendCode(email: IResendCodeRequest): Promise<IResendCodeResponse> {
+		const { data } = await axios.post<IResendCodeResponse>(
+			`${this.BASE_URL}/register/resend`,
+			email,
+		)
 		return data
 	}
 
-	async forgotPassword(email: IForgotPasswordApiData) {
-		const { data } = await axios.post(
+	async forgotPassword(
+		email: IForgotPasswordRequest,
+	): Promise<IForgotPasswordResponse> {
+		const { data } = await axios.post<IForgotPasswordResponse>(
 			`${this.BASE_URL}/password-reset/request`,
-			email
+			email,
 		)
 		return data
 	}
 
-	async resetPassword(resetPasswordData: IResetPasswordApiData) {
-		const { data } = await axios.post(
+	async resetPassword(
+		resetPasswordData: IResetPasswordRequest,
+	): Promise<IResetPasswordResponse> {
+		const { data } = await axios.post<IResetPasswordResponse>(
 			`${this.BASE_URL}/password-reset/confirm`,
-			resetPasswordData
+			resetPasswordData,
 		)
 		return data
 	}
 
-	async oauth(provider: string) {
-		const { data } = await axiosInstance.get(
-			`${this.BASE_URL}${provider}/callback`
-		)
-		return data
+	async oauth(provider: string): Promise<void> {
+		await axiosInstance.get(`${this.BASE_URL}${provider}/callback`)
 	}
 
-
-	async refreshToken() {
-		const { data } = await axiosInstance.post(`${this.BASE_URL}/refresh`)
+	async refreshToken(): Promise<IUser> {
+		const { data } = await axiosInstance.post<IUser>(`${this.BASE_URL}/refresh`)
 		return data
 	}
 }

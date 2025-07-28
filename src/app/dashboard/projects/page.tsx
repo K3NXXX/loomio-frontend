@@ -1,6 +1,8 @@
 import { SITE_NAME } from '@/constants/seo.constants'
-import type { Metadata } from 'next'
+
 import { Projects } from './Projects'
+
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Projects',

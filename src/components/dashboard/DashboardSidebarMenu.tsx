@@ -1,6 +1,7 @@
 'use client'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { sidebarMenu } from '@/lists/sidebar.menu.items'
+
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Logo } from '../ui/Logo'
 import {
@@ -19,10 +20,12 @@ export function DashboardSidebarMenu() {
 	const { userData } = useGetMe()
 
 	const getInitials = (name: string | undefined): string => {
-		if (!name) return ''
+		if (!name) {
+			return ''
+		}
 		return name
 			.split(' ')
-			.map(part => part[0])
+			.map((part) => part[0])
 			.join('')
 			.toUpperCase()
 	}
@@ -36,7 +39,7 @@ export function DashboardSidebarMenu() {
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{sidebarMenu.map(item => (
+							{sidebarMenu.map((item) => (
 								<SidebarMenuItem key={item.id}>
 									<SidebarMenuButton asChild>
 										<a href={item.url}>
@@ -65,4 +68,3 @@ export function DashboardSidebarMenu() {
 		</Sidebar>
 	)
 }
-	

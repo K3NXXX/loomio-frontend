@@ -1,20 +1,23 @@
-'use client';
+'use client'
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect } from 'react'
+
+import { useRouter } from 'next/navigation'
+
+import { PAGES } from '@/constants/pages.constants'
 
 export default function AuthCallbackPage() {
-	const router = useRouter();
+	const router = useRouter()
 
 	useEffect(() => {
-		// optionally перевірка токена на бекенді
-		// або просто редірект
-		router.replace('/dashboard');
-	}, [router]);
+		router.replace(PAGES.DASHBOARD)
+	}, [router])
 
 	return (
 		<div className='flex h-screen items-center justify-center'>
-			<p className='text-lg text-neutral-200'>Авторизація успішна. Завантаження...</p>
+			<p className='text-lg text-neutral-200'>
+				Авторизація успішна. Завантаження...
+			</p>
 		</div>
-	);
+	)
 }

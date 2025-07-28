@@ -1,9 +1,4 @@
-"use client"
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
-import { useProjectStore } from '@/zustand/store/projectStore'
+'use client'
 import {
 	FaCirclePlus,
 	FaRegCalendarDays,
@@ -11,8 +6,14 @@ import {
 } from 'react-icons/fa6'
 import { RiTeamFill } from 'react-icons/ri'
 import { TiPlus } from 'react-icons/ti'
+
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { useProjectStore } from '@/zustand/store/projectStore'
 export function ProjectsList() {
-	const {setIsProjectCreatingFormOpened} = useProjectStore()
+	const { setIsProjectCreatingFormOpened } = useProjectStore()
 	return (
 		<div>
 			<p className='font-bold text-[24px] mb-5'>Your projects</p>
@@ -23,19 +24,27 @@ export function ProjectsList() {
 					<p className='max-w-[250px]'>
 						Start new project and reach your goals together with teams
 					</p>
-					<Button onClick={() => setIsProjectCreatingFormOpened(true)} className='font-bold mt-2 flex'>
+					<Button
+						onClick={() => setIsProjectCreatingFormOpened(true)}
+						className='font-bold mt-2 flex'
+					>
 						<TiPlus />
 						<p className='text-[16px]'>Create project</p>
 					</Button>
 				</Card>
-				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
+				<Card
+					className='px-7 gap-1 min-h-[450px]'
+					style={{ border: '1px solid var(--primary)' }}
+				>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
 						enhanced functionality
 					</p>
 					<div className='flex justify-between my-3 mb-5'>
-						<Badge className='font-bold text-[14px] px-4 bg-green-700'>Active</Badge>
+						<Badge className='font-bold text-[14px] px-4 bg-green-700'>
+							Active
+						</Badge>
 						<p className='font-bold'>75%</p>
 					</div>
 					<Progress className='mb-5' value={75} />
@@ -57,14 +66,19 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
-				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
+				<Card
+					className='px-7 gap-1 min-h-[450px]'
+					style={{ border: '1px solid var(--primary)' }}
+				>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
 						enhanced functionality
 					</p>
 					<div className='flex justify-between my-3 mb-5'>
-						<Badge className='font-bold text-[14px] px-4 bg-green-700'>Active</Badge>
+						<Badge className='font-bold text-[14px] px-4 bg-green-700'>
+							Active
+						</Badge>
 						<p className='font-bold'>75%</p>
 					</div>
 					<Progress className='mb-5' value={75} />
@@ -86,14 +100,19 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
-				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
+				<Card
+					className='px-7 gap-1 min-h-[450px]'
+					style={{ border: '1px solid var(--primary)' }}
+				>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
 						enhanced functionality
 					</p>
 					<div className='flex justify-between my-3 mb-5'>
-						<Badge className='font-bold text-[14px] px-4 bg-green-700'>Active</Badge>
+						<Badge className='font-bold text-[14px] px-4 bg-green-700'>
+							Active
+						</Badge>
 						<p className='font-bold'>75%</p>
 					</div>
 					<Progress className='mb-5' value={75} />
@@ -115,14 +134,19 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
-				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
+				<Card
+					className='px-7 gap-1 min-h-[450px]'
+					style={{ border: '1px solid var(--primary)' }}
+				>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
 						enhanced functionality
 					</p>
 					<div className='flex justify-between my-3 mb-5'>
-						<Badge className='font-bold text-[14px] px-4 bg-green-700'>Active</Badge>
+						<Badge className='font-bold text-[14px] px-4 bg-green-700'>
+							Active
+						</Badge>
 						<p className='font-bold'>75%</p>
 					</div>
 					<Progress className='mb-5' value={75} />
@@ -144,14 +168,19 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
-				<Card className='px-7 gap-1 min-h-[450px]' style={{border: '1px solid var(--primary)'}}>
+				<Card
+					className='px-7 gap-1 min-h-[450px]'
+					style={{ border: '1px solid var(--primary)' }}
+				>
 					<p className='font-bold text-[20px]'>Website redesign</p>
 					<p className='text-[#838383]'>
 						Complete revamp of the corporate website with a new design and
 						enhanced functionality
 					</p>
 					<div className='flex justify-between my-3 mb-5'>
-						<Badge className='font-bold text-[14px] px-4 bg-green-700'>Active</Badge>
+						<Badge className='font-bold text-[14px] px-4 bg-green-700'>
+							Active
+						</Badge>
 						<p className='font-bold'>75%</p>
 					</div>
 					<Progress className='mb-5' value={75} />
@@ -173,7 +202,6 @@ export function ProjectsList() {
 						</Button>
 					</div>
 				</Card>
-			
 			</div>
 		</div>
 	)

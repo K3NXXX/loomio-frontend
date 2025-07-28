@@ -4,7 +4,9 @@ export const useCountdown = (expiresAt: Date | undefined) => {
 	const [timeLeft, setTimeLeft] = useState(0)
 
 	useEffect(() => {
-		if (!expiresAt) return
+		if (!expiresAt) {
+			return
+		}
 		const updateTimer = () => {
 			const diff = new Date(expiresAt).getTime() - Date.now()
 			setTimeLeft(Math.max(0, diff))
@@ -14,5 +16,5 @@ export const useCountdown = (expiresAt: Date | undefined) => {
 		return () => clearInterval(interval)
 	}, [expiresAt])
 
-	return {timeLeft}
+	return { timeLeft }
 }

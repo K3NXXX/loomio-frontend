@@ -1,6 +1,7 @@
-import { IconType } from 'react-icons'
 import { FaGoogle } from 'react-icons/fa'
 import { IoLogoGithub } from 'react-icons/io5'
+
+import type { IconType } from 'react-icons'
 
 interface IProvidersList {
 	name: string

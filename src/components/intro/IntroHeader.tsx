@@ -1,5 +1,7 @@
-import { homeHeaderItems } from '@/lists/home.header.items.list'
 import Link from 'next/link'
+
+import { homeHeaderItems } from '@/lists/home.header.items.list'
+
 import { Card } from '../ui/card'
 import { Logo } from '../ui/Logo'
 
@@ -10,7 +12,7 @@ export function IntroHeader() {
 				<Logo />
 
 				<ul className='flex items-center gap-8  max-[355px]:gap-10'>
-					{homeHeaderItems.map(item => (
+					{homeHeaderItems.map((item) => (
 						<li key={item.id}>
 							<Link
 								href={item.href}

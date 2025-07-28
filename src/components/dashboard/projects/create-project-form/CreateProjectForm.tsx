@@ -1,21 +1,25 @@
 'use client'
-import { Button } from '@/components/ui/button'
+import { useEffect, useState } from 'react'
+
+import { DialogDescription } from '@radix-ui/react-dialog'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
 import { useProjectStore } from '@/zustand/store/projectStore'
-import { DialogDescription } from '@radix-ui/react-dialog'
-import { useEffect, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+
 import { FormFirstStep } from './FormFirstStep'
-import { StepIndicator } from './StepIndicator'
 import { FormSecondStep } from './FormSecondStep'
+import { StepIndicator } from './StepIndicator'
+
+import type { ICreateProjectFormData } from '@/types/project.types'
+import type { SubmitHandler } from 'react-hook-form'
 
 export function CreateProjectForm() {
 	const { isProjectCreatingFormOpened, setIsProjectCreatingFormOpened } =
@@ -28,7 +32,7 @@ export function CreateProjectForm() {
 		formState: { errors },
 	} = useForm<ICreateProjectFormData>({ reValidateMode: 'onSubmit' })
 
-	const onSubmit: SubmitHandler<ICreateProjectFormData> = data => {
+	const onSubmit: SubmitHandler<ICreateProjectFormData> = (data) => {
 		console.log(data)
 	}
 
@@ -70,9 +74,7 @@ export function CreateProjectForm() {
 							register={register}
 						/>
 					)}
-					{step === 2 && (
-						<FormSecondStep setStep={setStep}/>
-					)}
+					{step === 2 && <FormSecondStep setStep={setStep} />}
 				</form>
 			</DialogContent>
 		</Dialog>

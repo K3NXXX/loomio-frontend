@@ -1,6 +1,8 @@
 import { SITE_NAME } from '@/constants/seo.constants'
-import { Metadata } from 'next'
+
 import { ForgotPassword } from './ForgotPassword'
+
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Forgot password',

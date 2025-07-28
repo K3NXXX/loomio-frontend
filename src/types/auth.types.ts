@@ -7,9 +7,36 @@ export interface ISignupFormData {
 	termsAccepted: boolean
 }
 
+export interface ISignupRequest {
+	fullName: string
+	username: string
+	email: string
+	password: string
+}
+
+export interface ISignUpResponse {
+	message: string
+	expiresAt: Date | undefined
+}
+
 export interface ILogInFormData {
 	identifier: string
 	password: string
+}
+
+export interface ILogInRequest {
+	identifier: string
+	password: string
+}
+
+export interface ILogInResponse {
+	id: string
+	fullName: string
+	username: string
+	email: string
+	password: string | null
+	avatarUrl: string | null
+	avatarPublicId: string | null
 }
 
 export interface IResetPasswordFormData {
@@ -17,36 +44,43 @@ export interface IResetPasswordFormData {
 	confirmPassword: string
 }
 
+export interface IResetPasswordRequest {
+	password: string
+	confirmPassword: string
+	token: string
+}
+
+export interface IResetPasswordResponse {
+	message: string
+}
+
 export interface IForgotPasswordFormData {
 	email: string
 }
 
-export interface ISignupApiData {
-	fullName: string
-	username: string
-	email: string
-	password: string
-}
+export type IForgotPasswordRequest = IResendCodeRequest
 
-export interface ILogInApiData {
-	identifier: string
-	password: string
+export interface IForgotPasswordResponse {
+	expiresAt: Date | undefined
 }
 
 export interface IEmailVerification {
 	code: string
 }
 
-export interface IResendCode {
+export interface IEmailVerificationResponse {
+	message: string
+	user: IUser
+	accessToken: string
+}
+
+export interface IResendCodeRequest {
 	email: string
 }
 
-export type IForgotPasswordApiData = IResendCode
-
-export interface IResetPasswordApiData {
-	password: string
-	confirmPassword: string
-	token: string
+export interface IResendCodeResponse {
+	message: string
+	expiresAt: Date | undefined
 }
 
 export interface IUser {
@@ -61,12 +95,6 @@ export interface IUser {
 	updatedAt: string
 }
 
-export interface IEmailVerificationResponse {
-	message: string
-	user: IUser
-	accessToken: string
-}
-
 export interface IGetUserData {
 	avatarUrl: string
 	email: string
@@ -74,4 +102,26 @@ export interface IGetUserData {
 	id: string
 	isActive: boolean
 	username: string
+}
+
+interface AxiosErrorResponse {
+	status?: number
+	data?: {
+		message?: string
+		expiresAt?: string | number
+	}
+}
+
+interface ResponseData {
+	message?: string
+	expiresAt?: string | number
+}
+
+interface AxiosErrorResponse {
+	status?: number
+	data?: ResponseData
+}
+
+export interface AxiosError {
+	response?: AxiosErrorResponse
 }

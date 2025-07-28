@@ -1,5 +1,6 @@
-import { PAGES } from '@/constants/pages.constants'
 import Link from 'next/link'
+
+import { PAGES } from '@/constants/pages.constants'
 
 export function Logo() {
 	return (
