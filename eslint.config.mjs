@@ -11,12 +11,13 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
 	...compat.extends('next/core-web-vitals', 'next/typescript'),
-
 	{
 		rules: {
-			'@typescript-eslint/no-explicit-any': 'off',
-			'@typescript-eslint/no-unused-expressions': 'off', 
-		}
+			semi: ['error', 'never'],
+			quotes: ['error', 'single'],
+			'no-unused-vars': 'warn',
+			eqeqeq: ['error', 'always'],
+		},
 	},
 ]
 

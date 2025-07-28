@@ -8,7 +8,7 @@ export function AuthSocialButtons() {
 	const handleOAuthLogin = (url: string | undefined, name: string) => {
 		if (!url) {
 			console.error(`OAuth URL for ${name} is not configured.`)
-			toast.error('Authorization failed: OAuth URL is not configured.')
+			toast.error("Authorization failed: OAuth URL is not configured.")
 			return
 		}
 		window.location.href = url
