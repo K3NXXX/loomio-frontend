@@ -125,3 +125,7 @@ interface AxiosErrorResponse {
 export interface AxiosError {
 	response?: AxiosErrorResponse
 }
+
+export interface IRefreshTokenResponse {
+	accessToken: string
+}

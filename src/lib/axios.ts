@@ -13,8 +13,6 @@ axiosInstance.interceptors.response.use(
 	async (error) => {
 		const originalRequest = error?.config
 
-		console.log('error', error)
-
 		if (!error || !error.config || !error.response) {
 			return Promise.reject(error)
 		}

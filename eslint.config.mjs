@@ -53,6 +53,9 @@ export default [
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unsafe-member-access': 'off',
 			'@typescript-eslint/no-unsafe-argument': 'warn',
+			'@typescript-eslint/no-unsafe-assignment': 'off',
+			'@typescript-eslint/prefer-promise-reject-errors': 'off',
+			'@typescript-eslint/no-unsafe-call': 'off',
 
 			'react/react-in-jsx-scope': 'off',
 			'react/jsx-uses-react': 'off',
