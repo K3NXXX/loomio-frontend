@@ -101,7 +101,6 @@ export default [
 				},
 			],
 
-			curly: ['error', 'all'],
 			'block-scoped-var': 'error',
 			'max-depth': ['warn', 3],
 

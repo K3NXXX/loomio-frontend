@@ -1,12 +1,11 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import Lottie from 'lottie-react'
 import Link from 'next/link'
 import { Controller, useForm } from 'react-hook-form'
 import { BsFillEyeSlashFill } from 'react-icons/bs'
 import { HiEye } from 'react-icons/hi'
-import { toast } from 'sonner'
 
 import loader from '@/assets/animations/loader.json'
 import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
@@ -17,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useSignUp } from '@/hooks/auth/useSignUp'
 
+import { SignupFormErrors } from './auth-form-errors/SignupFormErrors'
 import { EmailVerificationForm } from './EmailVerificationForm'
 
 import type { ISignupFormData } from '@/types/auth.types'
@@ -63,34 +63,6 @@ export function SignUpForm() {
 		signUp(signUpData)
 		setEmail(data.email)
 	}
-
-	useEffect(() => {
-		if (errors.fullName?.message) {
-			toast(errors.fullName.message)
-		}
-		if (errors.username?.message) {
-			toast(errors.username.message)
-		}
-		if (errors.email?.message) {
-			toast(errors.email.message)
-		}
-		if (errors.password?.message) {
-			toast(errors.password.message)
-		}
-		if (errors.passwordConfirm?.message) {
-			toast(errors.passwordConfirm.message)
-		}
-		if (errors.termsAccepted?.message) {
-			toast(errors.termsAccepted.message)
-		}
-	}, [
-		errors.fullName,
-		errors.username,
-		errors.email,
-		errors.password,
-		errors.passwordConfirm,
-		errors.termsAccepted,
-	])
 
 	return (
 		<div className='mt-20 flex flex-col items-center max-[1120px]:w-screen px-3'>
@@ -157,7 +129,7 @@ export function SignUpForm() {
 									pattern: {
 										value: /^(?!-)(?!.*--)[a-zA-Z0-9-]{1,39}(?<!-)$/,
 										message:
-											'Only letters, numbers, single hyphens. No leading/trailing hyphen or double hyphens',
+											'Username should contain only letters, numbers, single hyphens.',
 									},
 								})}
 							/>
@@ -289,6 +261,7 @@ export function SignUpForm() {
 					</div>
 				</form>
 			</Card>
+			<SignupFormErrors errors={errors} />
 			<EmailVerificationForm
 				open={isSuccessSignUp}
 				onOpenChange={setIsSuccessSignUp}
