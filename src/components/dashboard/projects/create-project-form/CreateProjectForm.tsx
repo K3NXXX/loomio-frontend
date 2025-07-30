@@ -20,6 +20,7 @@ import { StepIndicator } from './StepIndicator'
 
 import type { ICreateProjectFormData } from '@/types/project.types'
 import type { SubmitHandler } from 'react-hook-form'
+import { FormThirdStep } from './FormThirdStep'
 
 export function CreateProjectForm() {
 	const { isProjectCreatingFormOpened, setIsProjectCreatingFormOpened } =
@@ -29,9 +30,12 @@ export function CreateProjectForm() {
 	const {
 		register,
 		handleSubmit,
-
+		watch,
 		formState: { errors },
 	} = useForm<ICreateProjectFormData>({ reValidateMode: 'onSubmit' })
+
+	const projectName = watch('name')
+	const projectDescription = watch('description')
 
 	const onSubmit: SubmitHandler<ICreateProjectFormData> = (data) => {
 		console.log(data)
@@ -55,7 +59,7 @@ export function CreateProjectForm() {
 					<DialogTitle className='text-[25px]'>Create project</DialogTitle>
 					<DialogDescription className='text-muted-foreground text-sm'>
 						Create a new project to start organizing your business tasks, invite
-						your team, and work together toward shared goals.ц
+						your team, and work together toward shared goals
 					</DialogDescription>
 				</DialogHeader>
 				<Progress value={step * 33.3} />
@@ -76,6 +80,13 @@ export function CreateProjectForm() {
 						/>
 					)}
 					{step === 2 && <FormSecondStep setStep={setStep} />}
+					{step === 3 && (
+						<FormThirdStep
+							projectName={projectName}
+							projectDescription={projectDescription}
+							setStep={setStep}
+						/>
+					)}
 				</form>
 			</DialogContent>
 		</Dialog>

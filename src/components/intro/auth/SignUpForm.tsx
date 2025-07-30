@@ -57,7 +57,7 @@ export function SignUpForm() {
 			email: data.email,
 			password: data.password,
 			confirmPassword: data.passwordConfirm,
-			fullName: data.fullName,
+			name: data.name,
 			username: data.username,
 		}
 		signUp(signUpData)
@@ -65,8 +65,8 @@ export function SignUpForm() {
 	}
 
 	useEffect(() => {
-		if (errors.fullName?.message) {
-			toast(errors.fullName.message)
+		if (errors.name?.message) {
+			toast(errors.name.message)
 		}
 		if (errors.username?.message) {
 			toast(errors.username.message)
@@ -84,7 +84,7 @@ export function SignUpForm() {
 			toast(errors.termsAccepted.message)
 		}
 	}, [
-		errors.fullName,
+		errors.name,
 		errors.username,
 		errors.email,
 		errors.password,
@@ -117,16 +117,16 @@ export function SignUpForm() {
 				>
 					<div className='flex gap-3 max-[540px]:flex-col'>
 						<div className='flex flex-col flex-1 '>
-							<p className='text-white mb-2'>Full name</p>
+							<p className='text-white mb-2'>Name</p>
 							<Input
-								placeholder='John Smith'
+								placeholder='John'
 								className='w-full text-white py-6'
-								{...register('fullName', {
-									required: 'Full name is required',
+								{...register('name', {
+									required: 'Name is required',
 									pattern: {
-										value: /^[A-Z][a-z]+ [A-Z][a-z]+$/,
+										value: /^[A-Za-z]{2,}$/, 
 										message:
-											'Enter a valid full name with a capitalized first and last name (e.g. John Smith)',
+											'Name must be at least 2 letters with no spaces or symbols',
 									},
 									minLength: {
 										value: 5,

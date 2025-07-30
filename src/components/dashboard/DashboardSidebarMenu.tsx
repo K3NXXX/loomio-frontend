@@ -2,6 +2,7 @@
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { sidebarMenu } from '@/lists/sidebar.menu.items'
 
+import { getInitials } from '@/utils/get-initials'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Logo } from '../ui/Logo'
 import {
@@ -15,11 +16,9 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '../ui/sidebar'
-import { getInitials } from '@/utils/get-initials'
 
 export function DashboardSidebarMenu() {
 	const { userData } = useGetMe()
-
 
 	return (
 		<Sidebar side='left'>
@@ -49,7 +48,7 @@ export function DashboardSidebarMenu() {
 				<div className='flex items-center gap-3'>
 					<Avatar>
 						<AvatarImage src={userData?.avatarUrl} />
-						<AvatarFallback>{getInitials(userData?.fullName)}</AvatarFallback>
+						<AvatarFallback>{getInitials(userData?.name)}</AvatarFallback>
 					</Avatar>
 					<div className='flex flex-col'>
 						<p className='font-semibold text-sm'>{userData?.username}</p>

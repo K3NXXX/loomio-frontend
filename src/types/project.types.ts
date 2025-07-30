@@ -1,3 +1,9 @@
+export enum PROJECT_MEMBER_ROLES {
+	MEMBER = 'Member',
+	VIEWER = 'Viewer',
+	ADMIN = 'Admin',
+}
+
 export interface ICreateProjectFormData {
 	name: string
 	description: string
@@ -12,7 +18,12 @@ export interface ISearchProjectMembersRequest {
 
 export interface ISearchProjectMembersResponse {
 	id: string
-	fullName: string
+	name: string
 	username: string
 	avatarUrl: null | string
+}
+
+export interface IAddedProjectMembersList
+	extends ISearchProjectMembersResponse {
+	role: PROJECT_MEMBER_ROLES
 }

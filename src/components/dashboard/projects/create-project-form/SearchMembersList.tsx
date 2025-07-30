@@ -4,6 +4,7 @@ import { getInitials } from '@/utils/get-initials'
 
 import { SearchProjectMembersSkeleton } from '@/components/skeletons/SearchProjectMembersSkeleton'
 import type { ISearchProjectMembersResponse } from '@/types/project.types'
+import { truncateName } from '@/utils/truncateName'
 import { useProjectStore } from '@/zustand/store/projectStore'
 
 interface ISearchMembersListProps {
@@ -45,12 +46,14 @@ export function SearchMembersList({
 						>
 							<Avatar>
 								<AvatarImage src={member.avatarUrl ?? undefined} />
-								<AvatarFallback>{getInitials(member.fullName)}</AvatarFallback>
+								<AvatarFallback>{getInitials(member.name)}</AvatarFallback>
 							</Avatar>
 							<div className='flex flex-col'>
-								<p className='font-semibold text-sm'>{member?.username}</p>
+								<p className='font-semibold text-sm'>
+									{truncateName(member?.username || '')}
+								</p>
 								<p className='text-xs text-muted-foreground'>
-									{member?.fullName}
+									{truncateName(member?.name || '')}
 								</p>
 							</div>
 						</li>

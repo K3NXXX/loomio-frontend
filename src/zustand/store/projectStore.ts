@@ -1,15 +1,18 @@
-import type { ISearchProjectMembersResponse } from '@/types/project.types'
+import type { IAddedProjectMembersList } from '@/types/project.types'
+
+import { PROJECT_MEMBER_ROLES } from '@/types/project.types'
 import { create } from 'zustand'
 
 interface IState {
 	isProjectCreatingFormOpened: boolean
-	selectedMembers: ISearchProjectMembersResponse[]
+	selectedMembers: IAddedProjectMembersList[]
 }
 
 interface IActions {
 	setIsProjectCreatingFormOpened: (value: boolean) => void
-	addSelectedMember: (member: ISearchProjectMembersResponse) => void
+	addSelectedMember: (member: IAddedProjectMembersList) => void
 	removeSelectedMember: (id: string) => void
+	updateRole: (id: string, role: PROJECT_MEMBER_ROLES) => void
 }
 
 export const useProjectStore = create<IState & IActions>((set, get) => ({
@@ -23,12 +26,22 @@ export const useProjectStore = create<IState & IActions>((set, get) => ({
 		const exists = get().selectedMembers.some((m) => m.id === member.id)
 		if (!exists) {
 			set((state) => ({
-				selectedMembers: [...state.selectedMembers, member],
+				selectedMembers: [
+					...state.selectedMembers,
+					{ ...member, role: member.role ?? PROJECT_MEMBER_ROLES.MEMBER },
+				],
 			}))
 		}
 	},
 	removeSelectedMember: (id) =>
 		set((state) => ({
 			selectedMembers: state.selectedMembers.filter((m) => m.id !== id),
+		})),
+
+	updateRole: (id, role) =>
+		set((state) => ({
+			selectedMembers: state.selectedMembers.map((m) =>
+				m.id === id ? { ...m, role } : m,
+			),
 		})),
 }))

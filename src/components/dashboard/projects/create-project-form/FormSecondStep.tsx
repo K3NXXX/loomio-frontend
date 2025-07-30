@@ -11,8 +11,6 @@ import { AddedMembersList } from './AddedMembersList'
 import { SearchMembersList } from './SearchMembersList'
 
 interface IFormSecondStepProps {
-	// register: UseFormRegister<ICreateProjectFormData>
-	// handleSubmit: UseFormHandleSubmit<ICreateProjectFormData>
 	setStep: (step: number) => void
 }
 

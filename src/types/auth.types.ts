@@ -1,5 +1,5 @@
 export interface ISignupFormData {
-	fullName: string
+	name: string
 	username: string
 	email: string
 	password: string
@@ -8,7 +8,7 @@ export interface ISignupFormData {
 }
 
 export interface ISignupRequest {
-	fullName: string
+	name: string
 	username: string
 	email: string
 	password: string
@@ -98,7 +98,7 @@ export interface IUser {
 export interface IGetUserData {
 	avatarUrl: string
 	email: string
-	fullName: string
+	name: string
 	id: string
 	isActive: boolean
 	username: string

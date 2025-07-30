@@ -26,7 +26,8 @@ export const useSignUp = () => {
 				setIsSuccessSignUp(true)
 			}
 			if (
-				error?.response?.data?.message === 'User with this email already exists'
+				error?.response?.data?.message ===
+				'User with this email or username already exists'
 			) {
 				toast(error?.response?.data?.message)
 			}
