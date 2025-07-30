@@ -366,3 +366,19 @@
 		animation: fade-in 0.4s ease-out both;
 	}
 }
+
+/* Стилі для scrollbars */
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 120, 120, 0.6); /* сірий */
+	border-radius: 4px;
+}
+
+

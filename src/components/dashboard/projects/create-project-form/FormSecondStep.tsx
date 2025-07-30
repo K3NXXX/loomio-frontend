@@ -1,10 +1,14 @@
 'use client'
-import { useState } from 'react'
-
-import { IoClose, IoSearchSharp } from 'react-icons/io5'
+import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useSearchProjectMembers } from '@/hooks/project/useSearchProjectMembers'
+import { useProjectStore } from '@/zustand/store/projectStore'
+import { IoClose, IoSearchSharp } from 'react-icons/io5'
+import { useDebounce } from 'use-debounce'
+import { AddedMembersList } from './AddedMembersList'
+import { SearchMembersList } from './SearchMembersList'
 
 interface IFormSecondStepProps {
 	// register: UseFormRegister<ICreateProjectFormData>
@@ -14,6 +18,20 @@ interface IFormSecondStepProps {
 
 export function FormSecondStep({ setStep }: IFormSecondStepProps) {
 	const [searchValue, setSearchValue] = useState('')
+	const [debouncedSearchValue] = useDebounce(searchValue, 500)
+	const { selectedMembers } = useProjectStore()
+	const [isSearchListVisible, setIsSearchListVisible] = useState(true)
+	const { members, searchProjectMembersLoading } = useSearchProjectMembers({
+		name: debouncedSearchValue,
+		take: 3,
+		cursor: 'fsdfdsfds',
+	})
+
+	useEffect(() => {
+		if (searchValue) {
+			setIsSearchListVisible(true)
+		}
+	}, [searchValue])
 
 	return (
 		<div className='flex flex-col h-full'>
@@ -37,6 +55,15 @@ export function FormSecondStep({ setStep }: IFormSecondStepProps) {
 							className='py-5 px-10 w-full'
 							placeholder='Search members...'
 						/>
+						{isSearchListVisible && searchValue && members && (
+							<SearchMembersList
+								members={members}
+								setSearchValue={setSearchValue}
+								setIsSearchListVisible={setIsSearchListVisible}
+								searchProjectMembersLoading={searchProjectMembersLoading}
+							/>
+						)}
+						{selectedMembers.length > 0 && <AddedMembersList />}
 					</div>
 				</div>
 			</div>

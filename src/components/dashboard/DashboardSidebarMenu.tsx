@@ -15,20 +15,12 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '../ui/sidebar'
+import { getInitials } from '@/utils/get-initials'
 
 export function DashboardSidebarMenu() {
 	const { userData } = useGetMe()
 
-	const getInitials = (name: string | undefined): string => {
-		if (!name) {
-			return ''
-		}
-		return name
-			.split(' ')
-			.map((part) => part[0])
-			.join('')
-			.toUpperCase()
-	}
+
 	return (
 		<Sidebar side='left'>
 			<SidebarHeader className='px-6'>

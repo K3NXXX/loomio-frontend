@@ -29,6 +29,7 @@ export function CreateProjectForm() {
 	const {
 		register,
 		handleSubmit,
+
 		formState: { errors },
 	} = useForm<ICreateProjectFormData>({ reValidateMode: 'onSubmit' })
 
@@ -64,7 +65,7 @@ export function CreateProjectForm() {
 					<StepIndicator number={3} label='Step 3' active={step >= 3} />
 				</div>
 				<form
-					className='w-[460px] min-h-[326px]'
+					className='w-[460px] min-h-[370px]'
 					onSubmit={handleSubmit(onSubmit)}
 				>
 					{step === 1 && (
