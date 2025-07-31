@@ -9,10 +9,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
+import { PROJECT_MEMBER_ROLES } from '@/types/project.types'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { useProjectStore } from '@/zustand/store/projectStore'
-import { PROJECT_MEMBER_ROLES } from '@/types/project.types'
 
 export function AddedMembersList() {
 	const { selectedMembers, removeSelectedMember, updateRole } =

@@ -124,7 +124,7 @@ export function SignUpForm() {
 								{...register('name', {
 									required: 'Name is required',
 									pattern: {
-										value: /^[A-Za-z]{2,}$/, 
+										value: /^[A-Za-z]{2,}$/,
 										message:
 											'Name must be at least 2 letters with no spaces or symbols',
 									},

@@ -23,7 +23,7 @@ export function FormThirdStep({
 				<div className='flex flex-col flex-1'>
 					<p className='mb-2'>Total project info</p>
 					<div className='flex flex-col gap-1 h-70 overflow-y-auto'>
-						<div className='w-[98%] break-words text-muted-foreground flex flex-col'>
+						<div className='w-[98%] break-words text-muted-foreground flex flex-col mb-2'>
 							<span
 								className='font-medium mr-1'
 								style={{ color: 'var(--primary)' }}
@@ -32,7 +32,7 @@ export function FormThirdStep({
 							</span>
 							<p>{projectName}</p>
 						</div>
-						<div className='w-[98%] break-words  text-muted-foreground'>
+						<div className='w-[98%] break-words text-muted-foreground mb-2'>
 							<span
 								className='font-medium mr-1'
 								style={{ color: 'var(--primary)' }}

@@ -1,7 +1,8 @@
-import type { IAddedProjectMembersList } from '@/types/project.types'
+import { create } from 'zustand'
 
 import { PROJECT_MEMBER_ROLES } from '@/types/project.types'
-import { create } from 'zustand'
+
+import type { IAddedProjectMembersList } from '@/types/project.types'
 
 interface IState {
 	isProjectCreatingFormOpened: boolean

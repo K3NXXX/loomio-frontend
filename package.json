@@ -7,6 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
+		"lint:fix": "next lint --fix",
 		"test": "jest"
 	},
 	"dependencies": {
@@ -34,6 +35,7 @@
 		"react-dom": "^19.0.0",
 		"react-hook-form": "^7.60.0",
 		"react-icons": "^5.5.0",
+		"react-intersection-observer": "^9.16.0",
 		"sonner": "^2.0.6",
 		"tailwind-merge": "^3.3.1",
 		"use-debounce": "^10.0.5",

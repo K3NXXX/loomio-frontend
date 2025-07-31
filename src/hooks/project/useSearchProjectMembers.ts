@@ -10,18 +10,17 @@ import type {
 export const useSearchProjectMembers = (
 	searchingData: ISearchProjectMembersRequest,
 ) => {
-	const { data: members, isFetching: searchProjectMembersLoading } = useQuery<
-		ISearchProjectMembersResponse[]
-	>({
-		queryKey: [
-			'searchProjectMembers',
-			searchingData.name,
-			searchingData.take,
-			searchingData.cursor,
-		],
-		queryFn: () => projectService.searchProjectMembers(searchingData),
-		enabled: !!searchingData.name,
-	})
+	const { data: fetchedMembers, isFetching: searchProjectMembersLoading } =
+		useQuery<ISearchProjectMembersResponse[]>({
+			queryKey: [
+				'searchProjectMembers',
+				searchingData.name,
+				searchingData.take,
+				searchingData.cursor,
+			],
+			queryFn: () => projectService.searchProjectMembers(searchingData),
+			enabled: searchingData.name.length >= 2,
+		})
 
-	return { members, searchProjectMembersLoading }
+	return { fetchedMembers, searchProjectMembersLoading }
 }

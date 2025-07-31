@@ -1,11 +1,14 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-
-import { getInitials } from '@/utils/get-initials'
-
 import { SearchProjectMembersSkeleton } from '@/components/skeletons/SearchProjectMembersSkeleton'
-import type { ISearchProjectMembersResponse } from '@/types/project.types'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { useProjectStore } from '@/zustand/store/projectStore'
+
+import {
+	PROJECT_MEMBER_ROLES,
+	type ISearchProjectMembersResponse,
+} from '@/types/project.types'
+import { useRef } from 'react'
 
 interface ISearchMembersListProps {
 	members: ISearchProjectMembersResponse[]
@@ -20,14 +23,21 @@ export function SearchMembersList({
 	setIsSearchListVisible,
 }: ISearchMembersListProps) {
 	const { addSelectedMember } = useProjectStore()
+	const listRef = useRef<HTMLDivElement>(null)
 
 	const handleAddMember = (member: ISearchProjectMembersResponse) => {
-		addSelectedMember(member)
+		addSelectedMember({
+			...member,
+			role: PROJECT_MEMBER_ROLES.MEMBER,
+		})
 		setSearchValue('')
 		setIsSearchListVisible(false)
 	}
 	return (
-		<div className='absolute top-13 left-0 -right-2 h-58 overflow-y-auto pr-2 z-10 bg-[#121212]'>
+		<div
+			ref={listRef}
+			className='absolute top-13 left-0 -right-2 h-58 overflow-y-auto pr-2 z-10 bg-[#121212]'
+		>
 			<ul className='flex flex-col gap-2'>
 				{searchProjectMembersLoading ? (
 					[...new Array(4)].map((_, index) => (

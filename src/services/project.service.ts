@@ -9,8 +9,18 @@ class ProjectService {
 	private BASE_URL = `${process.env.NEXT_PUBLIC_API_URL!}/`
 
 	async searchProjectMembers(searchingData: ISearchProjectMembersRequest) {
+		const { name, take, cursor } = searchingData
+
+		const params = new URLSearchParams({
+			query: name,
+			take: String(take),
+		})
+
+		if (cursor) {
+			params.append('cursor', cursor)
+		}
 		const { data } = await axiosInstance.get<ISearchProjectMembersResponse[]>(
-			`${this.BASE_URL}user/search?query=${searchingData.name}&take=10`,
+			`${this.BASE_URL}user/search?${params.toString()}`,
 		)
 		return data
 	}

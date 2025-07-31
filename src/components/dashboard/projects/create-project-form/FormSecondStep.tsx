@@ -1,12 +1,15 @@
 'use client'
 import { useEffect, useState } from 'react'
 
+import { IoClose, IoSearchSharp } from 'react-icons/io5'
+import { useDebounce } from 'use-debounce'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useSearchProjectMembers } from '@/hooks/project/useSearchProjectMembers'
 import { useProjectStore } from '@/zustand/store/projectStore'
-import { IoClose, IoSearchSharp } from 'react-icons/io5'
-import { useDebounce } from 'use-debounce'
+
+import { ISearchProjectMembersResponse } from '@/types/project.types'
 import { AddedMembersList } from './AddedMembersList'
 import { SearchMembersList } from './SearchMembersList'
 
@@ -15,16 +18,30 @@ interface IFormSecondStepProps {
 }
 
 export function FormSecondStep({ setStep }: IFormSecondStepProps) {
+	const [cursor, setCursor] = useState<string | undefined>(undefined)
+	const [members, setMembers] = useState<ISearchProjectMembersResponse[]>([])
 	const [searchValue, setSearchValue] = useState('')
 	const [debouncedSearchValue] = useDebounce(searchValue, 500)
 	const { selectedMembers } = useProjectStore()
 	const [isSearchListVisible, setIsSearchListVisible] = useState(true)
-	const { members, searchProjectMembersLoading } = useSearchProjectMembers({
-		name: debouncedSearchValue,
-		take: 3,
-		cursor: 'fsdfdsfds',
-	})
+	const { fetchedMembers, searchProjectMembersLoading } =
+		useSearchProjectMembers({
+			name: debouncedSearchValue,
+			take: 3,
+			cursor,
+		})
 
+	useEffect(() => {
+		setMembers([])
+		setCursor(undefined)
+	}, [debouncedSearchValue])
+
+	useEffect(() => {
+		if (fetchedMembers && fetchedMembers.length > 0) {
+			setMembers((prev) => [...prev, ...fetchedMembers])
+			setCursor(fetchedMembers[fetchedMembers.length - 1].id)
+		}
+	}, [fetchedMembers])
 	useEffect(() => {
 		if (searchValue) {
 			setIsSearchListVisible(true)

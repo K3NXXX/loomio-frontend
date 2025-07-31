@@ -16,11 +16,11 @@ import { useProjectStore } from '@/zustand/store/projectStore'
 
 import { FormFirstStep } from './FormFirstStep'
 import { FormSecondStep } from './FormSecondStep'
+import { FormThirdStep } from './FormThirdStep'
 import { StepIndicator } from './StepIndicator'
 
 import type { ICreateProjectFormData } from '@/types/project.types'
 import type { SubmitHandler } from 'react-hook-form'
-import { FormThirdStep } from './FormThirdStep'
 
 export function CreateProjectForm() {
 	const { isProjectCreatingFormOpened, setIsProjectCreatingFormOpened } =

@@ -1,8 +1,8 @@
 'use client'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { sidebarMenu } from '@/lists/sidebar.menu.items'
-
 import { getInitials } from '@/utils/get-initials'
+
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Logo } from '../ui/Logo'
 import {
