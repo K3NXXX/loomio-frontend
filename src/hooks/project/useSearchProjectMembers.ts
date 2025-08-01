@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { projectService } from '@/services/project.service'
-
+import { userService } from '@/services/user.service'
 import type {
 	ISearchProjectMembersRequest,
 	ISearchProjectMembersResponse,
@@ -15,10 +14,9 @@ export const useSearchProjectMembers = (
 			queryKey: [
 				'searchProjectMembers',
 				searchingData.name,
-				searchingData.take,
 				searchingData.cursor,
 			],
-			queryFn: () => projectService.searchProjectMembers(searchingData),
+			queryFn: () => userService.searchProjectMembers(searchingData),
 			enabled: searchingData.name.length >= 2,
 		})
 

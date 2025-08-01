@@ -19,6 +19,7 @@ import { FormSecondStep } from './FormSecondStep'
 import { FormThirdStep } from './FormThirdStep'
 import { StepIndicator } from './StepIndicator'
 
+import { useCreateProject } from '@/hooks/project/useCreateProject'
 import type { ICreateProjectFormData } from '@/types/project.types'
 import type { SubmitHandler } from 'react-hook-form'
 
@@ -36,9 +37,20 @@ export function CreateProjectForm() {
 
 	const projectName = watch('name')
 	const projectDescription = watch('description')
+	const { selectedMembers } = useProjectStore()
+
+	const { createProject } = useCreateProject()
 
 	const onSubmit: SubmitHandler<ICreateProjectFormData> = (data) => {
-		console.log(data)
+		const projectData = {
+			name: data.name,
+			description: data.description,
+			members: selectedMembers.map((member) => ({
+				userId: member.id,
+				role: member.role,
+			})),
+		}
+		createProject(projectData)
 	}
 
 	useEffect(() => {
@@ -49,6 +61,7 @@ export function CreateProjectForm() {
 			toast(errors.description.message)
 		}
 	}, [errors.name, errors.description])
+
 	return (
 		<Dialog
 			open={isProjectCreatingFormOpened}

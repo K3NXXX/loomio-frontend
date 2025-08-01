@@ -72,7 +72,11 @@ export function FormThirdStep({
 											</div>
 											<div className='absolute top-[8px] right-3 flex items-center gap-3'></div>
 										</div>
-										<p className='font-medium text-[14px]'>{member.role}</p>
+										<p className='font-medium text-[14px]'>
+											{' '}
+											{member.role.charAt(0) +
+												member.role.slice(1).toLowerCase()}
+										</p>
 									</li>
 								))
 							) : (
@@ -102,7 +106,7 @@ export function FormThirdStep({
 				</Button>
 				<Button
 					onClick={() => setStep(3)}
-					type='button'
+					type='submit'
 					className='w-25 font-bold px-5'
 				>
 					Confirm

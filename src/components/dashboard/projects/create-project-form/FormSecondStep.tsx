@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { useSearchProjectMembers } from '@/hooks/project/useSearchProjectMembers'
 import { useProjectStore } from '@/zustand/store/projectStore'
 
-import { ISearchProjectMembersResponse } from '@/types/project.types'
+import type { ISearchProjectMembersResponse } from '@/types/project.types'
 import { AddedMembersList } from './AddedMembersList'
 import { SearchMembersList } from './SearchMembersList'
 
@@ -27,21 +27,30 @@ export function FormSecondStep({ setStep }: IFormSecondStepProps) {
 	const { fetchedMembers, searchProjectMembersLoading } =
 		useSearchProjectMembers({
 			name: debouncedSearchValue,
-			take: 3,
+			take: 5,
 			cursor,
 		})
 
 	useEffect(() => {
-		setMembers([])
-		setCursor(undefined)
-	}, [debouncedSearchValue])
+		if (!fetchedMembers) return
 
-	useEffect(() => {
-		if (fetchedMembers && fetchedMembers.length > 0) {
+		if (cursor) {
 			setMembers((prev) => [...prev, ...fetchedMembers])
-			setCursor(fetchedMembers[fetchedMembers.length - 1].id)
+		} else {
+			setMembers(fetchedMembers)
 		}
-	}, [fetchedMembers])
+	}, [fetchedMembers, cursor])
+
+	const onLoadMore = () => {
+		if (
+			!searchProjectMembersLoading &&
+			members.length > 0 &&
+			fetchedMembers?.length === 5
+		) {
+			setCursor(members[members.length - 1].id)
+		}
+	}
+
 	useEffect(() => {
 		if (searchValue) {
 			setIsSearchListVisible(true)
@@ -76,9 +85,12 @@ export function FormSecondStep({ setStep }: IFormSecondStepProps) {
 								setSearchValue={setSearchValue}
 								setIsSearchListVisible={setIsSearchListVisible}
 								searchProjectMembersLoading={searchProjectMembersLoading}
+								onLoadMore={onLoadMore}
 							/>
 						)}
-						{selectedMembers.length > 0 && <AddedMembersList />}
+						{selectedMembers.length > 0 && (
+							<AddedMembersList searchValue={searchValue} />
+						)}
 					</div>
 				</div>
 			</div>
