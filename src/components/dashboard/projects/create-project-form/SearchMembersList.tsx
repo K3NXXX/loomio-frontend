@@ -1,15 +1,16 @@
+import { useEffect, useMemo, useRef } from 'react'
+
+import { useVirtualizer } from '@tanstack/react-virtual'
+
 import { SearchProjectMembersSkeleton } from '@/components/skeletons/SearchProjectMembersSkeleton'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+	type ISearchProjectMembersResponse,
+	PROJECT_MEMBER_ROLES,
+} from '@/types/project.types'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { useProjectStore } from '@/zustand/store/projectStore'
-import { useVirtualizer } from '@tanstack/react-virtual'
-
-import {
-	PROJECT_MEMBER_ROLES,
-	type ISearchProjectMembersResponse,
-} from '@/types/project.types'
-import { useEffect, useMemo, useRef } from 'react'
 
 interface ISearchMembersListProps {
 	members: ISearchProjectMembersResponse[]
@@ -17,6 +18,7 @@ interface ISearchMembersListProps {
 	setSearchValue: (searchValue: string) => void
 	setIsSearchListVisible: (value: boolean) => void
 	onLoadMore: () => void
+	searchValue: string
 }
 
 const ITEM_GAP = 8
@@ -25,6 +27,7 @@ export function SearchMembersList({
 	members,
 	searchProjectMembersLoading,
 	setSearchValue,
+	searchValue,
 	setIsSearchListVisible,
 	onLoadMore,
 }: ISearchMembersListProps) {
@@ -40,9 +43,7 @@ export function SearchMembersList({
 		setIsSearchListVisible(false)
 	}
 
-	const virtualCount = useMemo(() => {
-		return members.length + (searchProjectMembersLoading ? 2 : 0)
-	}, [members.length, searchProjectMembersLoading])
+	const virtualCount = useMemo(() => members.length, [members.length])
 
 	const rowVirtualizer = useVirtualizer({
 		count: virtualCount,
@@ -71,22 +72,34 @@ export function SearchMembersList({
 	return (
 		<div
 			ref={listParentRef}
-			className='absolute top-13 left-0 -right-2 h-58 overflow-y-auto pr-2 z-10 bg-[#121212]'
+			className='absolute top-13 left-0 -right-2 max-h-58 overflow-y-auto pr-2 z-10 bg-[#121212] rounded-sm'
 		>
-			<ul
-				style={{
-					height: `${rowVirtualizer.getTotalSize() + ITEM_GAP * (virtualCount - 1)}px`,
-				}}
-				className='relative'
-			>
-				{members.length === 0 && !searchProjectMembersLoading ? (
-					<li className='text-center text-sm text-muted-foreground py-4'>
-						Users not found
-					</li>
-				) : (
-					rowVirtualizer.getVirtualItems().map((virtualItem) => {
-						const isLoadingItem = virtualItem.index >= members.length
+			{searchProjectMembersLoading && members.length === 0 && (
+				<div className='p-4'>
+					<SearchProjectMembersSkeleton />
+				</div>
+			)}
 
+			{!searchProjectMembersLoading &&
+				members.length === 0 &&
+				searchValue.length >= 2 && (
+					<div className='p-4 text-sm text-center text-muted-foreground'>
+						Users not found
+					</div>
+				)}
+
+			{members.length > 0 && (
+				<ul
+					style={{
+						height: `${Math.max(
+							0,
+							rowVirtualizer.getTotalSize() + ITEM_GAP * (virtualCount - 1),
+						)}px`,
+					}}
+					className='relative'
+				>
+					{rowVirtualizer.getVirtualItems().map((virtualItem) => {
+						const isLoadingItem = virtualItem.index >= members.length
 						if (isLoadingItem) {
 							return (
 								<div
@@ -97,7 +110,9 @@ export function SearchMembersList({
 										left: 0,
 										width: '100%',
 										height: virtualItem.size,
-										transform: `translateY(${virtualItem.start + virtualItem.index * ITEM_GAP}px)`,
+										transform: `translateY(${
+											virtualItem.start + virtualItem.index * ITEM_GAP
+										}px)`,
 									}}
 								>
 									<SearchProjectMembersSkeleton />
@@ -119,7 +134,9 @@ export function SearchMembersList({
 									left: 0,
 									width: '100%',
 									height: virtualItem.size,
-									transform: `translateY(${virtualItem.start + virtualItem.index * ITEM_GAP}px)`,
+									transform: `translateY(${
+										virtualItem.start + virtualItem.index * ITEM_GAP
+									}px)`,
 								}}
 							>
 								<Avatar>
@@ -136,9 +153,9 @@ export function SearchMembersList({
 								</div>
 							</li>
 						)
-					})
-				)}
-			</ul>
+					})}
+				</ul>
+			)}
 		</div>
 	)
 }

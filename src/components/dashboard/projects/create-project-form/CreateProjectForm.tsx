@@ -12,6 +12,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog'
 import { Progress } from '@/components/ui/progress'
+import { useCreateProject } from '@/hooks/project/useCreateProject'
 import { useProjectStore } from '@/zustand/store/projectStore'
 
 import { FormFirstStep } from './FormFirstStep'
@@ -19,7 +20,6 @@ import { FormSecondStep } from './FormSecondStep'
 import { FormThirdStep } from './FormThirdStep'
 import { StepIndicator } from './StepIndicator'
 
-import { useCreateProject } from '@/hooks/project/useCreateProject'
 import type { ICreateProjectFormData } from '@/types/project.types'
 import type { SubmitHandler } from 'react-hook-form'
 
