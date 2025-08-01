@@ -32,6 +32,7 @@ export function CreateProjectForm() {
 		register,
 		handleSubmit,
 		watch,
+		reset,
 		formState: { errors },
 	} = useForm<ICreateProjectFormData>({ reValidateMode: 'onSubmit' })
 
@@ -39,7 +40,8 @@ export function CreateProjectForm() {
 	const projectDescription = watch('description')
 	const { selectedMembers } = useProjectStore()
 
-	const { createProject } = useCreateProject()
+	const { createProject, creatingProjectLoading, createdProjectSuccess } =
+		useCreateProject()
 
 	const onSubmit: SubmitHandler<ICreateProjectFormData> = (data) => {
 		const projectData = {
@@ -52,6 +54,14 @@ export function CreateProjectForm() {
 		}
 		createProject(projectData)
 	}
+
+	useEffect(() => {
+		if (createdProjectSuccess) {
+			setIsProjectCreatingFormOpened(false)
+			reset()
+			setStep(1)
+		}
+	}, [createdProjectSuccess, setIsProjectCreatingFormOpened, reset])
 
 	useEffect(() => {
 		if (errors.name?.message) {
@@ -98,6 +108,7 @@ export function CreateProjectForm() {
 							projectName={projectName}
 							projectDescription={projectDescription}
 							setStep={setStep}
+							creatingProjectLoading={creatingProjectLoading}
 						/>
 					)}
 				</form>

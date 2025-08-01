@@ -1,20 +1,24 @@
 'use client'
+import loader from '@/assets/animations/loader.json'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { useProjectStore } from '@/zustand/store/projectStore'
+import Lottie from 'lottie-react'
 
 interface IFormThirdStepProps {
 	setStep: (step: number) => void
 	projectName: string
 	projectDescription: string
+	creatingProjectLoading: boolean
 }
 
 export function FormThirdStep({
 	setStep,
 	projectName,
 	projectDescription,
+	creatingProjectLoading,
 }: IFormThirdStepProps) {
 	const { selectedMembers } = useProjectStore()
 	return (
@@ -107,9 +111,18 @@ export function FormThirdStep({
 				<Button
 					onClick={() => setStep(3)}
 					type='submit'
-					className='w-25 font-bold px-5'
+					className='w-25 font-bold px-5  disabled:bg-neutral-800'
+					disabled={creatingProjectLoading}
 				>
-					Confirm
+					{creatingProjectLoading ? (
+						<Lottie
+							animationData={loader}
+							loop={true}
+							className='absolute w-20 h-20'
+						/>
+					) : (
+						'Confirm'
+					)}
 				</Button>
 			</div>
 		</div>
