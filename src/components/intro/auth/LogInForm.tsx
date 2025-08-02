@@ -1,17 +1,21 @@
 'use client'
+import { useEffect, useState } from 'react'
+
+import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { BsFillEyeSlashFill } from 'react-icons/bs'
+import { HiEye } from 'react-icons/hi'
+import { toast } from 'sonner'
+
 import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useLogIn } from '@/hooks/auth/useLogIn'
-import { ILogInFormData } from '@/types/auth.types'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { BsFillEyeSlashFill } from 'react-icons/bs'
-import { HiEye } from 'react-icons/hi'
-import { toast } from 'sonner'
+
+import type { ILogInFormData } from '@/types/auth.types'
+import type { SubmitHandler } from 'react-hook-form'
 
 export function LogInForm() {
 	const {
@@ -26,22 +30,22 @@ export function LogInForm() {
 		setShowPassword(!showPassword)
 	}
 
-	const onSubmit: SubmitHandler<ILogInFormData> = data => {
+	const onSubmit: SubmitHandler<ILogInFormData> = (data) => {
 		const logInData = {
-			email: data.email,
+			identifier: data.identifier,
 			password: data.password,
 		}
 		logIn(logInData)
 	}
 
 	useEffect(() => {
-		if (errors.email?.message) {
-			toast(errors.email.message)
+		if (errors.identifier?.message) {
+			toast(errors.identifier.message)
 		}
 		if (errors.password?.message) {
 			toast(errors.password.message)
 		}
-	}, [errors.email, errors.password])
+	}, [errors.identifier, errors.password])
 
 	return (
 		<div className='mt-20 flex flex-col items-center max-[1120px]:w-screen px-3'>
@@ -67,19 +71,24 @@ export function LogInForm() {
 					className='flex flex-col gap-5 justify-center'
 				>
 					<div className='flex flex-col'>
-						<p className='text-white mb-2'>Email</p>
+						<p className='text-white mb-2'>Email or username</p>
 						<Input
-							placeholder='Your email address'
+							placeholder='Your email address or username'
 							className='text-white py-6'
-							{...register('email', {
-								required: true,
-								pattern: {
-									value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-									message: 'Incorrect email',
-								},
+							aria-invalid={errors.identifier ? 'true' : 'false'}
+							aria-describedby={
+								errors.identifier ? 'identifier-error' : undefined
+							}
+							{...register('identifier', {
+								required: 'Please enter your email or username',
 								maxLength: {
 									value: 100,
-									message: 'Email requires max 100 characters',
+									message: 'Must be less than 100 characters',
+								},
+								pattern: {
+									value:
+										/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|(?!-)(?!.*--)[a-zA-Z0-9-]{1,39}(?<!-))$/,
+									message: 'Enter a valid email address or username',
 								},
 							})}
 						/>
@@ -104,8 +113,12 @@ export function LogInForm() {
 								type={showPassword ? 'text' : 'password'}
 								placeholder='Your password'
 								className='text-white py-6 pr-10'
+								aria-invalid={errors.password ? 'true' : 'false'}
+								aria-describedby={
+									errors.password ? 'password-error' : undefined
+								}
 								{...register('password', {
-									required: true,
+									required: 'Password is required',
 									minLength: {
 										value: 10,
 										message: 'Password requires min 10 characters',

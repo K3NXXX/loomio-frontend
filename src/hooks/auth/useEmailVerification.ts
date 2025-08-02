@@ -1,15 +1,17 @@
-import { PAGES } from '@/constants/pages.constants'
-import { authService } from '@/services/auth.service'
-import {
-	IEmailVerification,
-	IEmailVerificationResponse,
-} from '@/types/auth.types'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
+import { PAGES } from '@/constants/pages.constants'
+import { authService } from '@/services/auth.service'
+
+import type {
+	IEmailVerification,
+	IEmailVerificationResponse,
+} from '@/types/auth.types'
+
 export const useEmailVerification = () => {
-	const { push } = useRouter()
+	const router = useRouter()
 	const { mutate: confirmEmail } = useMutation({
 		mutationKey: ['emailVerification'],
 		mutationFn: (data: IEmailVerification) =>
@@ -19,7 +21,7 @@ export const useEmailVerification = () => {
 				localStorage.setItem('user', JSON.stringify(data.user))
 			}
 			toast('Registration completed!')
-			push(PAGES.DASHBOARD)
+			router.push(PAGES.DASHBOARD)
 		},
 		onError: () => {
 			toast('Invalid code. Try again')

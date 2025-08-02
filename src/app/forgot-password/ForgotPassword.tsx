@@ -1,24 +1,21 @@
 'use client'
+import { useEffect, useState } from 'react'
+
+import Lottie from 'lottie-react'
+import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+
 import loader from '@/assets/animations/loader.json'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
+import { useCountdown } from '@/hooks/auth/useCountDown'
 import { useForgotPassword } from '@/hooks/auth/useForgotPassword'
-import { IForgotPasswordFormData } from '@/types/auth.types'
-import Lottie from 'lottie-react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { formatTime } from '@/utils/format-time'
 
-function formatTime(ms: number): string {
-	const totalSeconds = Math.max(0, Math.floor(ms / 1000))
-	const minutes = Math.floor(totalSeconds / 60)
-	const seconds = totalSeconds % 60
-	return `${minutes.toString().padStart(2, '0')}:${seconds
-		.toString()
-		.padStart(2, '0')}`
-}
+import type { IForgotPasswordFormData } from '@/types/auth.types'
+import type { SubmitHandler } from 'react-hook-form'
 
 export function ForgotPassword() {
 	const {
@@ -26,28 +23,17 @@ export function ForgotPassword() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<IForgotPasswordFormData>({ reValidateMode: 'onSubmit' })
+
 	const [step, setStep] = useState(1)
-	const { forgotPassword, loading, expiresAt} =
-		useForgotPassword(setStep)
-	const [timeLeft, setTimeLeft] = useState(0)
+
+	const { forgotPassword, loading, expiresAt } = useForgotPassword(setStep)
+	const { timeLeft } = useCountdown(expiresAt)
+
 	const isResendDisabled = timeLeft > 0
 
-	const onSubmit: SubmitHandler<IForgotPasswordFormData> = data => {
+	const onSubmit: SubmitHandler<IForgotPasswordFormData> = (data) => {
 		forgotPassword({ email: data.email })
 	}
-
-	useEffect(() => {
-		if (expiresAt) {
-			const updateTimer = () => {
-				const diff = new Date(expiresAt).getTime() - Date.now()
-				setTimeLeft(Math.max(0, diff))
-			}
-
-			updateTimer()
-			const interval = setInterval(updateTimer, 1000)
-			return () => clearInterval(interval)
-		}
-	}, [expiresAt])
 
 	useEffect(() => {
 		if (errors.email?.message) {
@@ -76,8 +62,12 @@ export function ForgotPassword() {
 								onSubmit={handleSubmit(onSubmit)}
 							>
 								<Input
+									autoFocus
+									type='email'
 									placeholder='Your email address'
 									className='text-white py-5'
+									aria-invalid={!!errors.email}
+									aria-describedby={errors.email ? 'email-error' : undefined}
 									{...register('email', {
 										required: { value: true, message: 'Email is required' },
 										pattern: {
@@ -95,6 +85,7 @@ export function ForgotPassword() {
 										<Button
 											disabled={isResendDisabled}
 											className='mt-1 font-bold text-[14px] py-3 w-[90px]'
+											aria-busy={loading}
 										>
 											{loading ? (
 												<Lottie
@@ -115,7 +106,10 @@ export function ForgotPassword() {
 
 									<div>
 										{isResendDisabled && (
-											<span className='text-sm text-muted-foreground w-[50px]'>
+											<span
+												aria-live='polite'
+												className='text-sm text-muted-foreground w-[50px]'
+											>
 												{formatTime(timeLeft)}
 											</span>
 										)}
@@ -135,13 +129,12 @@ export function ForgotPassword() {
 							</p>
 							<div className='flex gap-3'>
 								<Link href={PAGES.LOGIN}>
-								<Button
-									onClick={() => setStep(1)}
-									className='mt-1 font-bold text-[14px] py-3 max-w-[100px]'
-								>
-									Close
-								</Button>
-
+									<Button
+										onClick={() => setStep(1)}
+										className='mt-1 font-bold text-[14px] py-3 max-w-[100px]'
+									>
+										Close
+									</Button>
 								</Link>
 								<Button
 									onClick={() => setStep(1)}

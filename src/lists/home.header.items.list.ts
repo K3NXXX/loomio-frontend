@@ -1,8 +1,10 @@
-import { PAGES } from '@/constants/pages.constants'
-import { IconType } from 'react-icons'
 import { FaRegUserCircle } from 'react-icons/fa'
-import { IoHome } from 'react-icons/io5'
 import { FaKey } from 'react-icons/fa'
+import { IoHome } from 'react-icons/io5'
+
+import { PAGES } from '@/constants/pages.constants'
+
+import type { IconType } from 'react-icons'
 
 interface IHomeHeaderItems {
 	id: number
@@ -24,7 +26,7 @@ export const homeHeaderItems: IHomeHeaderItems[] = [
 		icon: FaRegUserCircle,
 		href: PAGES.SIGNUP,
 	},
-		{
+	{
 		id: 3,
 		label: 'Log in',
 		icon: FaKey,

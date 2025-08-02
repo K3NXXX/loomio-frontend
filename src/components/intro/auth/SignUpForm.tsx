@@ -1,4 +1,12 @@
 'use client'
+import { useState } from 'react'
+
+import Lottie from 'lottie-react'
+import Link from 'next/link'
+import { Controller, useForm } from 'react-hook-form'
+import { BsFillEyeSlashFill } from 'react-icons/bs'
+import { HiEye } from 'react-icons/hi'
+
 import loader from '@/assets/animations/loader.json'
 import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
 import { Button } from '@/components/ui/button'
@@ -7,15 +15,12 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useSignUp } from '@/hooks/auth/useSignUp'
-import { ISignupFormData } from '@/types/auth.types'
-import Lottie from 'lottie-react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { BsFillEyeSlashFill } from 'react-icons/bs'
-import { HiEye } from 'react-icons/hi'
-import { toast } from 'sonner'
+
+import { SignupFormErrors } from './auth-form-errors/SignupFormErrors'
 import { EmailVerificationForm } from './EmailVerificationForm'
+
+import type { ISignupFormData } from '@/types/auth.types'
+import type { SubmitHandler } from 'react-hook-form'
 
 export function SignUpForm() {
 	const {
@@ -47,45 +52,17 @@ export function SignUpForm() {
 		setShowConfirmPassword(!showConfirmPassword)
 	}
 
-	const onSubmit: SubmitHandler<ISignupFormData> = data => {
+	const onSubmit: SubmitHandler<ISignupFormData> = (data) => {
 		const signUpData = {
 			email: data.email,
 			password: data.password,
 			confirmPassword: data.passwordConfirm,
-			firstName: data.firstName,
-			lastName: data.lastName,
+			name: data.name,
+			username: data.username,
 		}
 		signUp(signUpData)
 		setEmail(data.email)
 	}
-
-	useEffect(() => {
-		if (errors.firstName?.message) {
-			toast(errors.firstName.message)
-		}
-		if (errors.lastName?.message) {
-			toast(errors.lastName.message)
-		}
-		if (errors.email?.message) {
-			toast(errors.email.message)
-		}
-		if (errors.password?.message) {
-			toast(errors.password.message)
-		}
-		if (errors.passwordConfirm?.message) {
-			toast(errors.passwordConfirm.message)
-		}
-		if (errors.termsAccepted?.message) {
-			toast(errors.termsAccepted.message)
-		}
-	}, [
-		errors.firstName,
-		errors.lastName,
-		errors.email,
-		errors.password,
-		errors.passwordConfirm,
-		errors.termsAccepted,
-	])
 
 	return (
 		<div className='mt-20 flex flex-col items-center max-[1120px]:w-screen px-3'>
@@ -112,45 +89,47 @@ export function SignUpForm() {
 				>
 					<div className='flex gap-3 max-[540px]:flex-col'>
 						<div className='flex flex-col flex-1 '>
-							<p className='text-white mb-2'>First name</p>
+							<p className='text-white mb-2'>Name</p>
 							<Input
-								placeholder='Your first name'
+								placeholder='John'
 								className='w-full text-white py-6'
-								{...register('firstName', {
-									required: true,
+								{...register('name', {
+									required: 'Name is required',
+									pattern: {
+										value: /^[A-Za-z]{2,}$/,
+										message:
+											'Name must be at least 2 letters with no spaces or symbols',
+									},
 									minLength: {
-										value: 3,
-										message: 'First name requires min 3 characters',
+										value: 5,
+										message: 'Full name must be at least 5 characters long',
 									},
 									maxLength: {
-										value: 50,
-										message: 'First name requires max 50 characters',
-									},
-									pattern: {
-										value: /^[a-zA-Z]+$/,
-										message: 'Only English letters are allowed in first name',
+										value: 100,
+										message: 'Full name must be less than 100 characters',
 									},
 								})}
 							/>
 						</div>
 						<div className='flex flex-col flex-1'>
-							<p className='text-white mb-2'>Last name</p>
+							<p className='text-white mb-2'>Username</p>
 							<Input
-								placeholder='Your last name'
+								placeholder='johnsmith'
 								className='w-full text-white py-6'
-								{...register('lastName', {
-									required: true,
+								{...register('username', {
+									required: 'Username is required',
 									minLength: {
-										value: 3,
-										message: 'Last name requires min 3 characters',
+										value: 1,
+										message: 'Username must be at least 1 character',
 									},
 									maxLength: {
-										value: 50,
-										message: 'Last name requires max 50 characters',
+										value: 39,
+										message: 'Username must be at most 39 characters',
 									},
 									pattern: {
-										value: /^[a-zA-Z]+$/,
-										message: 'Only English letters are allowed in last name',
+										value: /^(?!-)(?!.*--)[a-zA-Z0-9-]{1,39}(?<!-)$/,
+										message:
+											'Username should contain only letters, numbers, single hyphens.',
 									},
 								})}
 							/>
@@ -233,7 +212,7 @@ export function SignUpForm() {
 									className='text-white py-6 pr-10'
 									{...register('passwordConfirm', {
 										required: true,
-										validate: value =>
+										validate: (value) =>
 											value === password || 'Passwords do not match',
 									})}
 								/>
@@ -282,6 +261,7 @@ export function SignUpForm() {
 					</div>
 				</form>
 			</Card>
+			<SignupFormErrors errors={errors} />
 			<EmailVerificationForm
 				open={isSuccessSignUp}
 				onOpenChange={setIsSuccessSignUp}

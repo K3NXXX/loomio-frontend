@@ -1,16 +1,20 @@
 'use client'
+import { useEffect, useState } from 'react'
+
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { BsFillEyeSlashFill } from 'react-icons/bs'
+import { HiEye } from 'react-icons/hi'
+import { toast } from 'sonner'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useResetPassword } from '@/hooks/auth/useResetPassword'
-import { IResetPasswordFormData } from '@/types/auth.types'
-import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { BsFillEyeSlashFill } from 'react-icons/bs'
-import { HiEye } from 'react-icons/hi'
-import { toast } from 'sonner'
+
+import type { IResetPasswordFormData } from '@/types/auth.types'
+import type { SubmitHandler } from 'react-hook-form'
 
 export default function PasswordReset() {
 	const {
@@ -35,7 +39,7 @@ export default function PasswordReset() {
 		setShowConfirmPassword(!showConfirmPassword)
 	}
 
-	const onSubmit: SubmitHandler<IResetPasswordFormData> = data => {
+	const onSubmit: SubmitHandler<IResetPasswordFormData> = (data) => {
 		if (!token) {
 			toast.error('Invalid or missing token.')
 			return
@@ -134,7 +138,7 @@ export default function PasswordReset() {
 										className='text-white py-5 pr-10'
 										{...register('confirmPassword', {
 											required: true,
-											validate: value =>
+											validate: (value) =>
 												value === password || 'Passwords do not match',
 										})}
 									/>

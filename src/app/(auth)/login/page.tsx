@@ -1,6 +1,8 @@
 import { SITE_NAME } from '@/constants/seo.constants'
-import type { Metadata } from 'next'
+
 import LogIn from './LogIn'
+
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Log in',

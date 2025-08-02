@@ -1,8 +1,14 @@
 'use client'
+import type { ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+import Lottie from 'lottie-react'
+
 import { IntroHeader } from '@/components/intro/IntroHeader'
-import Lottie, { LottieRefCurrentProps } from 'lottie-react'
-import { ReactNode, useEffect, useRef, useState } from 'react'
+
 import animationData from '../../assets/animations/planet.json'
+
+import type { LottieRefCurrentProps } from 'lottie-react'
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
 	const lottieRef = useRef<LottieRefCurrentProps>(null)
@@ -10,7 +16,9 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		const lottie = lottieRef.current
-		if (!lottie) return
+		if (!lottie) {
+			return
+		}
 
 		const waitUntilLoaded = setInterval(() => {
 			if (lottie.getDuration()! > 0) {
