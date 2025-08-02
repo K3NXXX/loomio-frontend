@@ -1,20 +1,27 @@
 'use client'
+import Lottie from 'lottie-react'
+
 import loader from '@/assets/animations/loader.json'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { useProjectStore } from '@/zustand/store/projectStore'
-import Lottie from 'lottie-react'
+
+import {
+	CREATE_PROJECT_FORM_STEPS,
+	type TCreateProjectSteps,
+} from '@/types/project.types'
+import { capitalize } from '@/utils/capitalize'
 
 interface IFormThirdStepProps {
-	setStep: (step: number) => void
+	setStep: (step: TCreateProjectSteps) => void
 	projectName: string
-	projectDescription: string
+	projectDescription?: string
 	creatingProjectLoading: boolean
 }
 
-export function FormThirdStep({
+export default function FormThirdStep({
 	setStep,
 	projectName,
 	projectDescription,
@@ -28,25 +35,19 @@ export function FormThirdStep({
 					<p className='mb-2'>Total project info</p>
 					<div className='flex flex-col gap-1 h-70 overflow-y-auto'>
 						<div className='w-[98%] break-words text-muted-foreground flex flex-col mb-2'>
-							<span
-								className='font-medium mr-1'
-								style={{ color: 'var(--primary)' }}
-							>
+							<span className='font-medium mr-1 text-primary'>
 								Project name
 							</span>
 							<p>{projectName}</p>
 						</div>
 						<div className='w-[98%] break-words text-muted-foreground mb-2'>
-							<span
-								className='font-medium mr-1'
-								style={{ color: 'var(--primary)' }}
-							>
+							<span className='font-medium mr-1 text-primary'>
 								Project description
 							</span>
 							<p>{projectDescription}</p>
 						</div>
 						<div>
-							<p className='font-medium' style={{ color: 'var(--primary)' }}>
+							<p className='font-medium text-primary'>
 								<span>Project members</span>
 							</p>
 						</div>
@@ -74,12 +75,10 @@ export function FormThirdStep({
 													{truncateName(member?.name || '')}
 												</p>
 											</div>
-											<div className='absolute top-[8px] right-3 flex items-center gap-3'></div>
 										</div>
 										<p className='font-medium text-[14px]'>
 											{' '}
-											{member.role.charAt(0) +
-												member.role.slice(1).toLowerCase()}
+											{capitalize(member.role)}
 										</p>
 									</li>
 								))
@@ -101,7 +100,7 @@ export function FormThirdStep({
 
 			<div className='pt-5 flex justify-between'>
 				<Button
-					onClick={() => setStep(2)}
+					onClick={() => setStep(CREATE_PROJECT_FORM_STEPS.SECOND)}
 					type='button'
 					variant='secondary'
 					className='w-25 font-bold'
@@ -109,7 +108,6 @@ export function FormThirdStep({
 					Back
 				</Button>
 				<Button
-					onClick={() => setStep(3)}
 					type='submit'
 					className='w-25 font-bold px-5  disabled:bg-neutral-800'
 					disabled={creatingProjectLoading}

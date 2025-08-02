@@ -31,8 +31,9 @@ export function SearchMembersList({
 	setIsSearchListVisible,
 	onLoadMore,
 }: ISearchMembersListProps) {
-	const { addSelectedMember } = useProjectStore()
 	const listParentRef = useRef<HTMLDivElement>(null)
+
+	const { addSelectedMember } = useProjectStore()
 
 	const handleAddMember = (member: ISearchProjectMembersResponse) => {
 		addSelectedMember({

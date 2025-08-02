@@ -12,19 +12,23 @@ import { useProjectStore } from '@/zustand/store/projectStore'
 import { AddedMembersList } from './AddedMembersList'
 import { SearchMembersList } from './SearchMembersList'
 
-import type { ISearchProjectMembersResponse } from '@/types/project.types'
+import type {
+	ISearchProjectMembersResponse,
+	TCreateProjectSteps,
+} from '@/types/project.types'
 
 interface IFormSecondStepProps {
-	setStep: (step: number) => void
+	setStep: (step: TCreateProjectSteps) => void
 }
 
-export function FormSecondStep({ setStep }: IFormSecondStepProps) {
+export default function FormSecondStep({ setStep }: IFormSecondStepProps) {
+	const [searchValue, setSearchValue] = useState('')
 	const [cursor, setCursor] = useState<string | undefined>(undefined)
 	const [members, setMembers] = useState<ISearchProjectMembersResponse[]>([])
-	const [searchValue, setSearchValue] = useState('')
-	const [debouncedSearchValue] = useDebounce(searchValue, 500)
-	const { selectedMembers } = useProjectStore()
 	const [isSearchListVisible, setIsSearchListVisible] = useState(true)
+	const [debouncedSearchValue] = useDebounce(searchValue, 500)
+
+	const { selectedMembers } = useProjectStore()
 	const { fetchedMembers, searchProjectMembersLoading } =
 		useSearchProjectMembers({
 			name: debouncedSearchValue,
@@ -71,19 +75,22 @@ export function FormSecondStep({ setStep }: IFormSecondStepProps) {
 		<div className='flex flex-col h-full'>
 			<div className='flex flex-col gap-3 flex-grow'>
 				<div className='flex flex-col flex-1'>
-					<p className='text-white mb-2'>
+					<label htmlFor='project-members' className='text-white mb-2'>
 						Add members to your project (optional)
-					</p>
+					</label>
 					<div className='relative flex-1'>
 						<IoSearchSharp size={20} className='absolute top-3 left-3' />
 						{searchValue && (
 							<IoClose
+								aria-label='Clear search'
 								onClick={() => setSearchValue('')}
 								size={20}
 								className='absolute top-3 right-3 cursor-pointer'
 							/>
 						)}
 						<Input
+							id='project-members'
+							autoFocus
 							value={searchValue}
 							onChange={(e) => setSearchValue(e.target.value)}
 							className='py-5 px-10 w-full'

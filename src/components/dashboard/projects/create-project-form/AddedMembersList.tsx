@@ -40,11 +40,9 @@ export function AddedMembersList({ searchValue }: IAddedMembersListProps) {
 									</Avatar>
 									<div className='flex flex-col'>
 										<p className='font-semibold text-sm'>
-											{' '}
 											{truncateName(member?.username || '')}
 										</p>
 										<p className='text-xs text-muted-foreground'>
-											{' '}
 											{truncateName(member?.name || '')}
 										</p>
 									</div>

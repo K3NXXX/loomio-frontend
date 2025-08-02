@@ -4,11 +4,14 @@ export enum PROJECT_MEMBER_ROLES {
 	ADMIN = 'ADMIN',
 }
 
-export interface ICreateProjectFormData {
-	name: string
-	description: string
-	members: string[]
+export const CREATE_PROJECT_FORM_STEPS = {
+	FIRST: 1,
+	SECOND: 2,
+	THIRD: 3,
 }
+
+export type TCreateProjectSteps =
+	(typeof CREATE_PROJECT_FORM_STEPS)[keyof typeof CREATE_PROJECT_FORM_STEPS]
 
 export interface ISearchProjectMembersRequest {
 	name: string
@@ -30,7 +33,7 @@ export interface IAddedProjectMembersList
 
 export interface ICreateProjectRequest {
 	name: string
-	description: string
+	description: string | undefined
 	members: {
 		userId: string
 		role: PROJECT_MEMBER_ROLES

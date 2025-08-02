@@ -2,16 +2,17 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
-import type { ICreateProjectFormData } from '@/types/project.types'
+import type { TCreateProjectSchema } from '@/schemas/create-project.schema'
+import type { TCreateProjectSteps } from '@/types/project.types'
 import type { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
 interface IFormFirstStepProps {
-	register: UseFormRegister<ICreateProjectFormData>
-	handleSubmit: UseFormHandleSubmit<ICreateProjectFormData>
-	setStep: (step: number) => void
+	register: UseFormRegister<TCreateProjectSchema>
+	handleSubmit: UseFormHandleSubmit<TCreateProjectSchema>
+	setStep: (step: TCreateProjectSteps) => void
 }
 
-export function FormFirstStep({
+export default function FormFirstStep({
 	register,
 	setStep,
 	handleSubmit,
@@ -20,67 +21,26 @@ export function FormFirstStep({
 		<div className='flex flex-col gap-3 h-full'>
 			<div className='flex flex-col flex-grow'>
 				<div className='flex flex-col flex-1 '>
-					<p className='text-white mb-2'>Project name</p>
+					<label htmlFor='project-name' className='text-white mb-2'>
+						Project name
+					</label>
 					<Input
+						id='project-name'
+						autoFocus
 						placeholder='e.g. Team Collaboration App'
 						className='text-white py-5'
-						{...register('name', {
-							required: 'Project name is required',
-							minLength: {
-								value: 3,
-								message: 'Project name must be at least 3 characters long',
-							},
-							maxLength: {
-								value: 100,
-								message: 'Project name must be less than 100 characters',
-							},
-							pattern: {
-								value: /^[\p{L}\d\s'.\-]{3,100}$/u,
-								message:
-									'Only letters, numbers, spaces, apostrophes, dots and dashes are allowed',
-							},
-							validate: (value) => {
-								if (value.trim() !== value) {
-									return 'Name must not start or end with spaces'
-								}
-								if (/\s{2,}/.test(value)) {
-									return 'Avoid double spaces in project name'
-								}
-								return true
-							},
-						})}
+						{...register('name')}
 					/>
 				</div>
 				<div className='flex flex-col flex-1'>
-					<p className='text-white mb-2'>Project description</p>
+					<label htmlFor='project-description' className='text-white mb-2'>
+						Project description (optional)
+					</label>
 					<Textarea
+						id='project-description'
 						placeholder='Your project description'
 						className='w-full text-white h-45 py-3 resize-none whitespace-pre-wrap'
-						{...register('description', {
-							required: 'Project description is required',
-							minLength: {
-								value: 10,
-								message: 'Description must be at least 10 characters long',
-							},
-							maxLength: {
-								value: 500,
-								message: 'Description must be less than 500 characters',
-							},
-							pattern: {
-								value: /^[\p{L}\d\s.,:;!?"'’“”()\-–—\n\r]{10,500}$/u,
-								message:
-									'Only letters, numbers, common punctuation, and whitespace are allowed',
-							},
-							validate: (value) => {
-								if (value.trim() !== value) {
-									return 'Description must not start or end with spaces'
-								}
-								if (/^\s*$/.test(value)) {
-									return 'Description cannot be only whitespace'
-								}
-								return true
-							},
-						})}
+						{...register('description')}
 					/>
 				</div>
 			</div>
