@@ -12,8 +12,12 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { useCountdown } from '@/hooks/auth/useCountDown'
 import { useEmailVerification } from '@/hooks/auth/useEmailVerification'
 import { useResendCode } from '@/hooks/auth/useResendCode'
+import { emailVerificationSchema } from '@/schemas/auth/email-verify-schema'
+import { formatTime } from '@/utils/format-time'
+import { toast } from 'sonner'
 
 interface IEmailVerificationFormProps {
 	open: boolean
@@ -21,15 +25,6 @@ interface IEmailVerificationFormProps {
 	expiresAt: Date | undefined
 	setExpiresAt: (date: Date) => void
 	email: string
-}
-
-function formatTime(ms: number): string {
-	const totalSeconds = Math.max(0, Math.floor(ms / 1000))
-	const minutes = Math.floor(totalSeconds / 60)
-	const seconds = totalSeconds % 60
-	return `${minutes.toString().padStart(2, '0')}:${seconds
-		.toString()
-		.padStart(2, '0')}`
 }
 
 export function EmailVerificationForm({
@@ -40,38 +35,34 @@ export function EmailVerificationForm({
 	email,
 }: IEmailVerificationFormProps) {
 	const [code, setCode] = useState('')
+
 	const { confirmEmail } = useEmailVerification()
 	const { resendCode, expiresAtResend, loading } = useResendCode()
-	const [timeLeft, setTimeLeft] = useState(0)
+	const { timeLeft } = useCountdown(expiresAt)
 
-	useEffect(() => {
-		if (expiresAt) {
-			const updateTimer = () => {
-				const diff = new Date(expiresAt).getTime() - Date.now()
-				setTimeLeft(Math.max(0, diff))
-			}
+	const isResendDisabled = timeLeft > 0
 
-			updateTimer()
-			const interval = setInterval(updateTimer, 1000)
-			return () => clearInterval(interval)
+	const handleEmailVerification = () => {
+		const result = emailVerificationSchema.safeParse({ code })
+
+		if (!result.success) {
+			const message = result.error.issues[0]?.message || 'Invalid code'
+			toast.error(message)
+			return
 		}
-	}, [expiresAt])
+
+		confirmEmail({ code: result.data.code })
+	}
+
+	const handleResendCode = () => {
+		resendCode({ email })
+	}
 
 	useEffect(() => {
 		if (expiresAtResend) {
 			setExpiresAt(new Date(expiresAtResend))
 		}
 	}, [expiresAtResend, setExpiresAt])
-
-	const isResendDisabled = timeLeft > 0
-
-	const handleEmailVerification = () => {
-		confirmEmail({ code })
-	}
-
-	const handleResendCode = () => {
-		resendCode({ email })
-	}
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
@@ -101,7 +92,7 @@ export function EmailVerificationForm({
 							</Button>
 							<Button
 								onClick={handleResendCode}
-								className='relative w-[113px] bg-neutral-700'
+								className='relative w-[113px] font-bold '
 								disabled={isResendDisabled}
 							>
 								{loading ? (

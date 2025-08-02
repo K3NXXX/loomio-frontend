@@ -56,6 +56,7 @@ export function SignUpFormFields() {
 					Email
 				</label>
 				<Input
+					type='email'
 					id='signup-email'
 					placeholder='Your email address'
 					className='text-white py-6'

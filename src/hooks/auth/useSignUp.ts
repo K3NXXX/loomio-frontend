@@ -20,17 +20,15 @@ export const useSignUp = () => {
 		onError: (error: any) => {
 			if (
 				error?.response?.status === 409 &&
-				error?.response?.data?.message !== 'User with this email already exists'
+				error?.response?.data?.message !==
+					'User with this email already exists' &&
+				error?.response?.data?.message !==
+					'User with this username already exists'
 			) {
 				setExpiresAt(error.response.data?.expiresAt || 60)
 				setIsSuccessSignUp(true)
 			}
-			if (
-				error?.response?.data?.message ===
-				'User with this email or username already exists'
-			) {
-				toast(error?.response?.data?.message)
-			}
+			toast.error(error?.response?.data?.message)
 		},
 	})
 
