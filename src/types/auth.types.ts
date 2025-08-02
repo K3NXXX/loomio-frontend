@@ -1,11 +1,11 @@
-export interface ISignupFormData {
-	name: string
-	username: string
-	email: string
-	password: string
-	passwordConfirm: string
-	termsAccepted: boolean
-}
+// export interface ISignupFormData {
+// 	name: string
+// 	username: string
+// 	email: string
+// 	password: string
+// 	passwordConfirm: string
+// 	termsAccepted: boolean
+// }
 
 export interface ISignupRequest {
 	name: string
@@ -19,10 +19,10 @@ export interface ISignUpResponse {
 	expiresAt: Date | undefined
 }
 
-export interface ILogInFormData {
-	identifier: string
-	password: string
-}
+// export interface ILogInFormData {
+// 	identifier: string
+// 	password: string
+// }
 
 export interface ILogInRequest {
 	identifier: string

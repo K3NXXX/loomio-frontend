@@ -1,11 +1,11 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { BsFillEyeSlashFill } from 'react-icons/bs'
 import { HiEye } from 'react-icons/hi'
-import { toast } from 'sonner'
 
 import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
 import { Button } from '@/components/ui/button'
@@ -13,39 +13,38 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useLogIn } from '@/hooks/auth/useLogIn'
+import { useLoginFormErrors } from '@/hooks/auth/useLoginFormErrors'
+import { loginSchema } from '@/schemas/auth/login-schema'
 
-import type { ILogInFormData } from '@/types/auth.types'
+import type { TLoginSchema } from '@/schemas/auth/login-schema'
 import type { SubmitHandler } from 'react-hook-form'
 
 export function LogInForm() {
+	const [showPassword, setShowPassword] = useState(false)
+
+	const { logIn } = useLogIn()
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<ILogInFormData>({ reValidateMode: 'onSubmit' })
-	const [showPassword, setShowPassword] = useState(false)
-	const { logIn } = useLogIn()
+	} = useForm<TLoginSchema>({
+		reValidateMode: 'onSubmit',
+		resolver: zodResolver(loginSchema),
+	})
+	useLoginFormErrors(errors)
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword)
 	}
 
-	const onSubmit: SubmitHandler<ILogInFormData> = (data) => {
+	const onSubmit: SubmitHandler<TLoginSchema> = (data) => {
 		const logInData = {
 			identifier: data.identifier,
 			password: data.password,
 		}
 		logIn(logInData)
 	}
-
-	useEffect(() => {
-		if (errors.identifier?.message) {
-			toast(errors.identifier.message)
-		}
-		if (errors.password?.message) {
-			toast(errors.password.message)
-		}
-	}, [errors.identifier, errors.password])
 
 	return (
 		<div className='mt-20 flex flex-col items-center max-[1120px]:w-screen px-3'>
@@ -71,30 +70,20 @@ export function LogInForm() {
 					className='flex flex-col gap-5 justify-center'
 				>
 					<div className='flex flex-col'>
-						<p className='text-white mb-2'>Email or username</p>
+						<label htmlFor='login-identifier' className='text-white mb-2'>
+							Email or username
+						</label>
 						<Input
+							id='login-identifier'
 							placeholder='Your email address or username'
 							className='text-white py-6'
-							aria-invalid={errors.identifier ? 'true' : 'false'}
-							aria-describedby={
-								errors.identifier ? 'identifier-error' : undefined
-							}
-							{...register('identifier', {
-								required: 'Please enter your email or username',
-								maxLength: {
-									value: 100,
-									message: 'Must be less than 100 characters',
-								},
-								pattern: {
-									value:
-										/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|(?!-)(?!.*--)[a-zA-Z0-9-]{1,39}(?<!-))$/,
-									message: 'Enter a valid email address or username',
-								},
-							})}
+							{...register('identifier')}
 						/>
 					</div>
 					<div className='flex flex-col'>
-						<p className='text-white mb-2'>Password</p>
+						<label htmlFor='login-password' className='text-white mb-2'>
+							Password
+						</label>
 						<div className='relative'>
 							{showPassword ? (
 								<HiEye
@@ -110,20 +99,11 @@ export function LogInForm() {
 								/>
 							)}
 							<Input
+								id='login-password'
 								type={showPassword ? 'text' : 'password'}
 								placeholder='Your password'
 								className='text-white py-6 pr-10'
-								aria-invalid={errors.password ? 'true' : 'false'}
-								aria-describedby={
-									errors.password ? 'password-error' : undefined
-								}
-								{...register('password', {
-									required: 'Password is required',
-									minLength: {
-										value: 10,
-										message: 'Password requires min 10 characters',
-									},
-								})}
+								{...register('password')}
 							/>
 						</div>
 					</div>

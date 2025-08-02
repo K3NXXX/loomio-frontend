@@ -4,15 +4,14 @@ import Lottie from 'lottie-react'
 import loader from '@/assets/animations/loader.json'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { getInitials } from '@/utils/get-initials'
-import { truncateName } from '@/utils/truncateName'
-import { useProjectStore } from '@/zustand/store/projectStore'
-
 import {
 	CREATE_PROJECT_FORM_STEPS,
 	type TCreateProjectSteps,
 } from '@/types/project.types'
 import { capitalize } from '@/utils/capitalize'
+import { getInitials } from '@/utils/get-initials'
+import { truncateName } from '@/utils/truncateName'
+import { useProjectStore } from '@/zustand/store/projectStore'
 
 interface IFormThirdStepProps {
 	setStep: (step: TCreateProjectSteps) => void

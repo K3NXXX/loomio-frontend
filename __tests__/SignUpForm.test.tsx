@@ -1,4 +1,4 @@
-import { SignUpForm } from '@/components/intro/auth/SignUpForm'
+import { SignUpForm } from '@/components/intro/auth/signup/SignUpForm'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
