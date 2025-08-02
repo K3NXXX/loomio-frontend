@@ -27,7 +27,6 @@ export default function FormSecondStep({ setStep }: IFormSecondStepProps) {
 	const [members, setMembers] = useState<ISearchProjectMembersResponse[]>([])
 	const [isSearchListVisible, setIsSearchListVisible] = useState(true)
 	const [debouncedSearchValue] = useDebounce(searchValue, 500)
-
 	const { selectedMembers } = useProjectStore()
 	const { fetchedMembers, searchProjectMembersLoading } =
 		useSearchProjectMembers({
@@ -95,6 +94,7 @@ export default function FormSecondStep({ setStep }: IFormSecondStepProps) {
 							onChange={(e) => setSearchValue(e.target.value)}
 							className='py-5 px-10 w-full'
 							placeholder='Search members...'
+							aria-label='Add members to your project (optional)'
 						/>
 						{isSearchListVisible && searchValue && members && (
 							<SearchMembersList

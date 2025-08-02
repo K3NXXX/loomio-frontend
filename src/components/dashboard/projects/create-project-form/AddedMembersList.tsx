@@ -72,6 +72,7 @@ export function AddedMembersList({ searchValue }: IAddedMembersListProps) {
 											size={20}
 											onClick={() => removeSelectedMember(member.id)}
 											className='cursor-pointer'
+											aria-label='Remove member'
 										/>
 									</div>
 								</li>

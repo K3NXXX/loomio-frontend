@@ -57,6 +57,7 @@ export default [
 			'@typescript-eslint/prefer-promise-reject-errors': 'off',
 			'@typescript-eslint/no-unsafe-call': 'off',
 
+			'react/display-name': 'off',
 			'react/react-in-jsx-scope': 'off',
 			'react/jsx-uses-react': 'off',
 			'react/jsx-uses-vars': 'error',
