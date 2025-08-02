@@ -14,13 +14,18 @@ export function ProjectsInput() {
 		<div className='flex justify-between'>
 			<div className='flex w-full'>
 				<div className='relative flex-1 max-w-[350px]'>
-					<IoSearchSharp size={20} className='absolute top-3 left-3' />
+					<IoSearchSharp
+						aria-hidden='true'
+						size={20}
+						className='absolute top-3 left-3'
+					/>
 
 					{searchValue && (
 						<IoClose
 							onClick={() => setSearchValue('')}
 							size={20}
 							className='absolute top-3 right-3 cursor-pointer'
+							aria-label='Clear search'
 						/>
 					)}
 					<Input
@@ -33,10 +38,10 @@ export function ProjectsInput() {
 			</div>
 			<div className='flex gap-2'>
 				<Button>
-					<BsGridFill />
+					<BsGridFill aria-label='Grid view' />
 				</Button>
 				<Button>
-					<FaList />
+					<FaList aria-label='List view' />
 				</Button>
 			</div>
 		</div>

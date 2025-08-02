@@ -15,7 +15,6 @@ import type {
 	IResetPasswordResponse,
 	ISignupRequest,
 	ISignUpResponse,
-	IUser,
 } from '@/types/auth.types'
 
 class AuthService {

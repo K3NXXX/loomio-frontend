@@ -25,8 +25,9 @@ export function ProjectsHeader() {
 				<Button
 					onClick={() => setIsProjectCreatingFormOpened(true)}
 					className='font-bold text-[16px] py-5 flex items-center'
+					aria-label='Create new project'
 				>
-					<TiPlus /> <p>Create project</p>
+					<TiPlus aria-hidden='true' /> <p>Create project</p>
 				</Button>
 			</div>
 		</div>
