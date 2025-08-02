@@ -7,9 +7,27 @@ import type {
 	ISearchProjectMembersResponse,
 } from '@/types/project.types'
 
+const buildSearchParams = ({
+	name,
+	cursor,
+	take,
+}: ISearchProjectMembersRequest) => {
+	const params = new URLSearchParams({
+		query: name,
+		take: String(take),
+	})
+
+	if (cursor) {
+		params.append('cursor', cursor)
+	}
+
+	return params.toString()
+}
+
 export const useSearchProjectMembers = (
 	searchingData: ISearchProjectMembersRequest,
 ) => {
+	const paramsString = buildSearchParams(searchingData)
 	const { data: fetchedMembers, isFetching: searchProjectMembersLoading } =
 		useQuery<ISearchProjectMembersResponse[]>({
 			queryKey: [
@@ -17,7 +35,7 @@ export const useSearchProjectMembers = (
 				searchingData.name,
 				searchingData.cursor,
 			],
-			queryFn: () => userService.searchProjectMembers(searchingData),
+			queryFn: () => userService.searchProjectMembers(paramsString),
 			enabled: searchingData.name.length >= 2,
 		})
 
