@@ -1,11 +1,7 @@
-// export interface ISignupFormData {
-// 	name: string
-// 	username: string
-// 	email: string
-// 	password: string
-// 	passwordConfirm: string
-// 	termsAccepted: boolean
-// }
+export enum FORGOT_PASSWORD_STEPS {
+	FIRST = 1,
+	SECOND = 2,
+}
 
 export interface ISignupRequest {
 	name: string
@@ -18,11 +14,6 @@ export interface ISignUpResponse {
 	message: string
 	expiresAt: Date | undefined
 }
-
-// export interface ILogInFormData {
-// 	identifier: string
-// 	password: string
-// }
 
 export interface ILogInRequest {
 	identifier: string

@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Intro',
-	description: `${SITE_NAME} log in page`,
+	description: `${SITE_NAME} intro page`,
 }
 
 export default function IntroPage() {

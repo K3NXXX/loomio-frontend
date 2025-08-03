@@ -1,21 +1,21 @@
+import type { ReactNode } from 'react'
+
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { PAGES } from '@/constants/pages.constants'
 
-import { ClientDashboardLayout } from './ClientDashboardLayout'
+import { ClientAuthLayout } from './ClientAuthLayout'
 
-export default async function DashboardLayout({
+export default async function AuthLayout({
 	children,
 }: {
-	children: React.ReactNode
+	children: ReactNode
 }) {
 	const cookieStore = await cookies()
 	const token = cookieStore.get('accessToken')?.value
 
-	if (!token) {
-		redirect(PAGES.LOGIN)
-	}
+	if (token) redirect(PAGES.DASHBOARD)
 
-	return <ClientDashboardLayout>{children}</ClientDashboardLayout>
+	return <ClientAuthLayout>{children}</ClientAuthLayout>
 }

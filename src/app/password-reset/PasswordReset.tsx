@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -12,24 +13,28 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useResetPassword } from '@/hooks/auth/useResetPassword'
+import { resetPasswordSchema } from '@/schemas/auth/reset-password-schema'
 
-import type { IResetPasswordFormData } from '@/types/auth.types'
+import type { TResetPasswordSchema } from '@/schemas/auth/reset-password-schema'
 import type { SubmitHandler } from 'react-hook-form'
 
 export default function PasswordReset() {
+	const [showPassword, setShowPassword] = useState(false)
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+	const searchParams = useSearchParams()
+
+	const { resetPassword } = useResetPassword()
+
 	const {
 		register,
 		handleSubmit,
-		watch,
 		formState: { errors },
-	} = useForm<IResetPasswordFormData>({ reValidateMode: 'onSubmit' })
+	} = useForm<TResetPasswordSchema>({
+		reValidateMode: 'onSubmit',
+		resolver: zodResolver(resetPasswordSchema),
+	})
 
-	const [showPassword, setShowPassword] = useState(false)
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-	const { resetPassword } = useResetPassword()
-	const searchParams = useSearchParams()
 	const token = searchParams.get('token')
-	const password = watch('password')
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword)
@@ -39,7 +44,7 @@ export default function PasswordReset() {
 		setShowConfirmPassword(!showConfirmPassword)
 	}
 
-	const onSubmit: SubmitHandler<IResetPasswordFormData> = (data) => {
+	const onSubmit: SubmitHandler<TResetPasswordSchema> = (data) => {
 		if (!token) {
 			toast.error('Invalid or missing token.')
 			return
@@ -53,11 +58,11 @@ export default function PasswordReset() {
 	}
 
 	useEffect(() => {
-		if (errors.password?.message) {
-			toast(errors.password.message)
-		}
 		if (errors.confirmPassword?.message) {
 			toast(errors.confirmPassword.message)
+		}
+		if (errors.password?.message) {
+			toast(errors.password.message)
 		}
 	}, [errors.password, errors.confirmPassword])
 
@@ -71,7 +76,9 @@ export default function PasswordReset() {
 			<div className='min-h-screen mx-auto max-w-[1200px] px-5 pb-10'>
 				<div className='flex justify-center py-10'>
 					<div className='flex flex-col'>
-						<p className='font-bold text-[24px]'>Create a new password</p>
+						<p className='font-bold text-[24px]  max-[450px]:text-[20px]'>
+							Create a new password
+						</p>
 						<p className='text-neutral-400 text-[14px] max-w-[400px] mb-5'>
 							Create a new password for your account. Make sure it’s strong and
 							unique to keep your account secure.
@@ -81,7 +88,9 @@ export default function PasswordReset() {
 							onSubmit={handleSubmit(onSubmit)}
 						>
 							<div className='flex flex-col'>
-								<p className='text-white mb-2'>Password</p>
+								<label htmlFor='reset-password' className='text-white mb-2'>
+									Password
+								</label>
 								<div className='relative'>
 									{showPassword ? (
 										<HiEye
@@ -97,27 +106,21 @@ export default function PasswordReset() {
 										/>
 									)}
 									<Input
+										id='reset-password'
 										type={showPassword ? 'text' : 'password'}
 										placeholder='Your password'
 										className='text-white py-5 pr-10'
-										{...register('password', {
-											required: true,
-											minLength: {
-												value: 10,
-												message: 'Password requires min 10 characters',
-											},
-											pattern: {
-												value:
-													/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).+$/,
-												message:
-													'Password must contain at least one latin letter, one digit, and one special character',
-											},
-										})}
+										{...register('password')}
 									/>
 								</div>
 							</div>
 							<div className='flex flex-col'>
-								<p className='text-white mb-2'>Confirm password</p>
+								<label
+									htmlFor='reset-password-confirm'
+									className='text-white mb-2'
+								>
+									Confirm password
+								</label>
 								<div className='relative'>
 									{showConfirmPassword ? (
 										<HiEye
@@ -133,14 +136,11 @@ export default function PasswordReset() {
 										/>
 									)}
 									<Input
+										id='reset-password-confirm'
 										type={showConfirmPassword ? 'text' : 'password'}
 										placeholder='Confirm your password'
 										className='text-white py-5 pr-10'
-										{...register('confirmPassword', {
-											required: true,
-											validate: (value) =>
-												value === password || 'Passwords do not match',
-										})}
+										{...register('confirmPassword')}
 									/>
 								</div>
 							</div>

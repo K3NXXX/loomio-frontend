@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Lottie from 'lottie-react'
+import { toast } from 'sonner'
 
 import loader from '@/assets/animations/loader.json'
 import { Button } from '@/components/ui/button'
@@ -17,7 +18,6 @@ import { useEmailVerification } from '@/hooks/auth/useEmailVerification'
 import { useResendCode } from '@/hooks/auth/useResendCode'
 import { emailVerificationSchema } from '@/schemas/auth/email-verify-schema'
 import { formatTime } from '@/utils/format-time'
-import { toast } from 'sonner'
 
 interface IEmailVerificationFormProps {
 	open: boolean

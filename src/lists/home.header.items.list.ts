@@ -1,35 +1,25 @@
-import { FaRegUserCircle } from 'react-icons/fa'
-import { FaKey } from 'react-icons/fa'
+import { FaKey, FaRegUserCircle } from 'react-icons/fa'
 import { IoHome } from 'react-icons/io5'
+import { RiDashboardFill } from 'react-icons/ri'
 
 import { PAGES } from '@/constants/pages.constants'
 
 import type { IconType } from 'react-icons'
 
-interface IHomeHeaderItems {
+export interface IHomeHeaderItem {
 	id: number
 	label: string
 	icon: IconType
 	href: string
 }
 
-export const homeHeaderItems: IHomeHeaderItems[] = [
-	{
-		id: 1,
-		label: 'Home',
-		icon: IoHome,
-		href: PAGES.HOME,
-	},
-	{
-		id: 2,
-		label: 'Sign up',
-		icon: FaRegUserCircle,
-		href: PAGES.SIGNUP,
-	},
-	{
-		id: 3,
-		label: 'Log in',
-		icon: FaKey,
-		href: PAGES.LOGIN,
-	},
+export const loggedOutItems: IHomeHeaderItem[] = [
+	{ id: 1, label: 'Home', href: PAGES.HOME, icon: IoHome },
+	{ id: 2, label: 'Sign up', href: PAGES.SIGNUP, icon: FaRegUserCircle },
+	{ id: 3, label: 'Log in', href: PAGES.LOGIN, icon: FaKey },
+]
+
+export const loggedInItems: IHomeHeaderItem[] = [
+	{ id: 1, label: 'Home', href: PAGES.HOME, icon: IoHome },
+	{ id: 4, label: 'Dashboard', href: PAGES.DASHBOARD, icon: RiDashboardFill },
 ]
