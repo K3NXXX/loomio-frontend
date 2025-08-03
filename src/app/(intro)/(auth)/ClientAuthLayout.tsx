@@ -9,8 +9,8 @@ import animationData from '@/assets/animations/planet.json'
 import type { LottieRefCurrentProps } from 'lottie-react'
 
 export function ClientAuthLayout({ children }: { children: ReactNode }) {
-	const lottieRef = useRef<LottieRefCurrentProps>(null)
 	const [isReady, setIsReady] = useState(false)
+	const lottieRef = useRef<LottieRefCurrentProps>(null)
 
 	useEffect(() => {
 		const lottie = lottieRef.current
@@ -27,15 +27,16 @@ export function ClientAuthLayout({ children }: { children: ReactNode }) {
 
 		return () => clearInterval(waitUntilLoaded)
 	}, [])
+
 	return (
 		<div className='relative mx-auto max-w-[1200px] px-5 pb-10'>
-			<div className='flex justify-between relative max-[1120px]:justify-center'>
+			<div className='flex justify-between relative max-[1150px]:justify-center'>
 				<div>
 					<Lottie
 						lottieRef={lottieRef}
 						animationData={animationData}
 						loop={true}
-						className='w-150 h-150 absolute top-40 left-0 max-[1120px]:hidden'
+						className='w-150 h-150 absolute top-40 left-0 max-[1150px]:hidden'
 					/>
 				</div>
 				{isReady && (
