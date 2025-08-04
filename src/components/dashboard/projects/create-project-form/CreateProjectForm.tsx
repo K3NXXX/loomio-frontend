@@ -75,10 +75,7 @@ export function CreateProjectForm() {
 		>
 			<DialogContent className='z-50'>
 				<CreateProjectFormHeader step={step} />
-				<form
-					className='w-[460px] min-h-[370px]'
-					onSubmit={handleSubmit(onSubmit)}
-				>
+				<form className=' min-h-[370px]' onSubmit={handleSubmit(onSubmit)}>
 					<Suspense
 						fallback={
 							<div className='w-full h-[370px] flex items-center justify-center'>

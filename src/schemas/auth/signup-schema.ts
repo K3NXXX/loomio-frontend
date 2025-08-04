@@ -8,7 +8,8 @@ export const signupSchema = z
 			.min(2, { message: 'Name must be at least 2 letters' })
 			.max(100, { message: 'Name must be less than 100 characters' })
 			.regex(/^[A-Za-z]+$/, {
-				message: 'Name must contain only letters with no spaces or symbols',
+				message:
+					'Name must contain only latin letters with no spaces or symbols',
 			}),
 		username: z
 			.string()
