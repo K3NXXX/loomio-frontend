@@ -3,6 +3,7 @@ import axiosInstance from '@/lib/axios'
 import type {
 	ICreateProjectRequest,
 	ICreateProjectRequestResponse,
+	IGetAllProjects,
 } from '@/types/project.types'
 
 class ProjectService {
@@ -14,6 +15,13 @@ class ProjectService {
 		const { data } = await axiosInstance.post<ICreateProjectRequestResponse>(
 			`${this.BASE_URL}`,
 			projectData,
+		)
+		return data
+	}
+
+	async getAllProjects(): Promise<IGetAllProjects[]> {
+		const { data } = await axiosInstance.get<IGetAllProjects[]>(
+			`${this.BASE_URL}`,
 		)
 		return data
 	}

@@ -51,3 +51,15 @@ export interface ICreateProjectRequestResponse {
 	createdAt: Date
 	updatedAt: Date
 }
+
+export interface IGetAllProjects {
+	id: string
+	name: string
+	description: string
+	color: string | null
+	isPrivate: boolean
+	isArchived: boolean
+	ownerId: string
+	createdAt: string
+	updatedAt: string
+}

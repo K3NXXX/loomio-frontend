@@ -34,7 +34,7 @@ axiosInstance.interceptors.response.use(
 
 				return axiosInstance(originalRequest)
 			} catch (refreshError) {
-				window.location.href = PAGES.LOGIN
+				// window.location.href = PAGES.LOGIN
 				return Promise.reject(refreshError)
 			}
 		}

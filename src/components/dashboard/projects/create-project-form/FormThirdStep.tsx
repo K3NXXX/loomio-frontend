@@ -66,10 +66,10 @@ export default function FormThirdStep({
 											</Avatar>
 											<div className='flex flex-col'>
 												<p className='font-semibold text-sm'>
-													{truncateName(member.username || '')}
+													{truncateName(member.username || '', 20)}
 												</p>
 												<p className='text-xs text-muted-foreground'>
-													{truncateName(member.name || '')}
+													{truncateName(member.name || '', 20)}
 												</p>
 												<p className='font-medium text-[14px] min-[360px]:hidden'>
 													{' '}
