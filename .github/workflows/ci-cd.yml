@@ -2,9 +2,9 @@ name: CI/CD Pipeline # Назва пайплайну, просто для від
 
 on: # Коли запускати пайплайн
   push: # При кожному пуші в ці гілки
-    branches: [ main, dev, feature/projects ]
+    branches: [ main, develop, feature/projects ]
   pull_request: # При кожному створенні pull request в ці гілки
-    branches: [ main, dev ]
+    branches: [ main, develop ]
 
 jobs: # Список робіт (jobs), які виконає GitHub Actions
 
