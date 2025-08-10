@@ -1,0 +1,63 @@
+name: CI/CD Pipeline # Назва пайплайну, просто для відображення в GitHub Actions
+
+on: # Коли запускати пайплайн
+  push: # При кожному пуші в ці гілки
+    branches: [ main, dev, feature/projects ]
+  pull_request: # При кожному створенні pull request в ці гілки
+    branches: [ main, dev ]
+
+jobs: # Список робіт (jobs), які виконає GitHub Actions
+
+  build_and_test: # Назва першої роботи
+    runs-on: windows-latest # Середовище, де виконується пайплайн
+
+    steps: # Кроки, які виконуються по черзі
+      - name: Checkout code # 1. Завантаження коду з репозиторію
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js # 2. Встановлення Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies # 3. Встановлення залежностей
+        run: npm install
+
+      #- name: Lint check # 4. Перевірка стилю коду
+       # run: npm run lint
+
+      - name: Run tests # 5. Запуск тестів
+        run: npm test -- --ci --coverage
+
+      - name: Build project # 6. Збірка проєкту
+        run: npm run build
+
+  deploy: # Друга робота — деплой
+    runs-on: windows-latest
+    needs: build_and_test
+    if: github.ref == 'refs/heads/dev'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel --prod --confirm --token $VERCEL_TOKEN
