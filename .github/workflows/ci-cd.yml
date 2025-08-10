@@ -33,6 +33,9 @@ jobs: # Список робіт (jobs), які виконає GitHub Actions
       - name: Build project # 6. Збірка проєкту
         run: npm run build
 
+      - name: Show github.ref
+        run: echo "github.ref is ${{ github.ref }}"
+
   deploy: # Друга робота — деплой
     runs-on: windows-latest
     needs: build_and_test
