@@ -1,8 +1,9 @@
 import Link from 'next/link'
 
-import type { IHomeHeaderItem } from '@/lists/home.header.items.list'
 import { Card } from '../ui/card'
 import { Logo } from '../ui/Logo'
+
+import type { IHomeHeaderItem } from '@/lists/home.header.items.list'
 
 interface IIntroHeaderProps {
 	items: IHomeHeaderItem[]

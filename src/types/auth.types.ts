@@ -120,3 +120,7 @@ export interface AxiosError {
 export interface IRefreshTokenResponse {
 	accessToken: string
 }
+
+export interface ILogoutResponse {
+	message: string
+}

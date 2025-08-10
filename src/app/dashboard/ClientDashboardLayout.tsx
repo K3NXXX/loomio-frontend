@@ -3,11 +3,11 @@ import type { ReactNode } from 'react'
 
 import { IoMdSettings } from 'react-icons/io'
 
+import { DashboardSidebarMenu } from '@/components/dashboard/dashboard-sidebar/DashboardSidebarMenu'
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
-import { DashboardSidebarMenu } from '@/components/dashboard/DashboardSidebarMenu'
-import { DashboardThemesMenu } from '@/components/dashboard/DashboardThemesMenu'
+import { DashboardUIConfiguratorMenu } from '@/components/dashboard/DashboardUIConfiguratorMenu'
 import { Button } from '@/components/ui/button'
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarProvider } from '@/components/ui/sidebar'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 
 export function ClientDashboardLayout({ children }: { children: ReactNode }) {
@@ -20,16 +20,15 @@ export function ClientDashboardLayout({ children }: { children: ReactNode }) {
 			}}
 			className='w-full min-h-screen'
 		>
-			<div className='flex gap-3 '>
+			<div>
 				<div>
-					<SidebarProvider>
+					<SidebarProvider className='flex gap-3  px-3'>
 						<DashboardSidebarMenu />
-						<SidebarTrigger />
+						<div className='w-full'>
+							<DashboardHeader />
+							<div className='pt-15  px-1'>{children}</div>
+						</div>
 					</SidebarProvider>
-				</div>
-				<div className='w-full'>
-					<DashboardHeader />
-					<div className='pt-15 px-3'>{children}</div>
 				</div>
 			</div>
 			<Button
@@ -38,7 +37,7 @@ export function ClientDashboardLayout({ children }: { children: ReactNode }) {
 			>
 				<IoMdSettings size={100} className='size-[25px]' />
 			</Button>
-			<DashboardThemesMenu />
+			<DashboardUIConfiguratorMenu />
 		</div>
 	)
 }

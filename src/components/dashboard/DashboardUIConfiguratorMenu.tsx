@@ -14,13 +14,21 @@ import { useChangeColorTheme } from '@/hooks/user/useChangeColorTheme'
 import { UIConfiguratorColors } from '@/lists/ui.configurator.colors.list'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 
+import { Label } from '../ui/label'
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
+
 import type { THEME_COLORS } from '@/types/colors.types'
 
-export function DashboardThemesMenu() {
-	const { isThemesMenuOpened, toggleThemeMenuOpened } = useGlobalStore()
+export function DashboardUIConfiguratorMenu() {
 	const [activeColor, setActiveColor] = useState<THEME_COLORS>(
 		UIConfiguratorColors[0].color,
 	)
+	const {
+		isThemesMenuOpened,
+		toggleThemeMenuOpened,
+		setIsHeaderSticky,
+		isHeaderSticky,
+	} = useGlobalStore()
 	const { changeColorTheme } = useChangeColorTheme()
 
 	const handleClickColor = (color: THEME_COLORS) => {
@@ -53,7 +61,7 @@ export function DashboardThemesMenu() {
 					<SheetTitle className='text-xl'>Dashboard Configurator</SheetTitle>
 					<p className='font-medium'>See our dashboard options</p>
 				</SheetHeader>
-				<div className='px-5'>
+				<div className='px-5 flex flex-col gap-5'>
 					<div>
 						<p className='text-sm font-medium text-muted-foreground mb-2'>
 							Theme colors
@@ -71,6 +79,40 @@ export function DashboardThemesMenu() {
 									style={{ backgroundColor: item.colorCss }}
 								/>
 							))}
+						</div>
+					</div>
+					<div>
+						<p className='text-sm font-medium text-muted-foreground mb-2'>
+							Header configuration
+						</p>
+						<div className='flex flex-wrap gap-3 items-center'>
+							<RadioGroup
+								value={isHeaderSticky ? 'sticky' : 'static'}
+								onValueChange={(v) => setIsHeaderSticky(v === 'sticky')}
+							>
+								<div className='flex gap-5'>
+									<div className='flex items-center gap-2'>
+										<RadioGroupItem
+											value='sticky'
+											id='sticky'
+											className='h-6 w-6'
+										/>
+										<Label className='text-base' htmlFor='sticky'>
+											Sticky
+										</Label>
+									</div>
+									<div className='flex items-center gap-2'>
+										<RadioGroupItem
+											value='static'
+											id='static'
+											className='h-6 w-6'
+										/>
+										<Label className='text-base' htmlFor='static'>
+											Static
+										</Label>
+									</div>
+								</div>
+							</RadioGroup>
 						</div>
 					</div>
 				</div>

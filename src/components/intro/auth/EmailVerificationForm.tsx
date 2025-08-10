@@ -67,8 +67,8 @@ export function EmailVerificationForm({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent>
-				<DialogHeader className='flex-col gap-3'>
-					<DialogTitle>Email verification</DialogTitle>
+				<DialogHeader className='flex-col gap-3 text-start'>
+					<DialogTitle className=''>Email verification</DialogTitle>
 					<DialogDescription>
 						We have sent a verification code to your email address. Please check
 						your inbox and enter the code to continue.
@@ -82,39 +82,54 @@ export function EmailVerificationForm({
 						className='uppercase placeholder:normal-case'
 					/>
 					<div className='flex gap-3 justify-between items-center'>
-						<div className='flex gap-3 items-center'>
+						<div className='flex gap-3 items-center max-[430px]:flex-col w-full '>
 							<Button
 								onClick={handleEmailVerification}
-								className='max-w-[170px] font-bold'
+								className='max-w-[170px] font-bold max-[430px]:max-w-none max-[430px]:w-full'
 								disabled={code.trim().length === 0}
 							>
 								Complete registration
 							</Button>
-							<Button
-								onClick={handleResendCode}
-								className='relative w-[113px] font-bold '
-								disabled={isResendDisabled}
-							>
-								{loading ? (
-									<Lottie
-										animationData={loader}
-										loop={true}
-										className='absolute w-20 h-20'
-									/>
-								) : (
-									'Resend code'
-								)}
-							</Button>
-						</div>
-						<div>
-							{isResendDisabled && (
-								<span
-									aria-live='polite'
-									className='text-sm text-muted-foreground w-[50px]'
+							<div className='flex items-center w-full justify-between'>
+								<Button
+									onClick={handleResendCode}
+									className='relative w-[113px] font-bold max-[430px]:w-full'
+									disabled={isResendDisabled}
 								>
-									{formatTime(timeLeft)}
-								</span>
-							)}
+									{loading ? (
+										<Lottie
+											animationData={loader}
+											loop={true}
+											className='absolute w-20 h-20'
+										/>
+									) : (
+										<div className='flex items-center justify-center gap-1'>
+											<div className='flex items-center'>
+												<span className=''>Resend code</span>
+												{isResendDisabled && (
+													<span
+														aria-live='polite'
+														className='text-sm w-[50px]  min-[430px]:hidden'
+													>
+														{formatTime(timeLeft)}
+													</span>
+												)}
+											</div>
+										</div>
+									)}
+								</Button>
+
+								<div className='max-[430px]:hidden'>
+									{isResendDisabled && (
+										<span
+											aria-live='polite'
+											className='text-sm text-muted-foreground w-[50px]'
+										>
+											{formatTime(timeLeft)}
+										</span>
+									)}
+								</div>
+							</div>
 						</div>
 					</div>
 				</DialogHeader>

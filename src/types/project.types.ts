@@ -51,3 +51,34 @@ export interface ICreateProjectRequestResponse {
 	createdAt: Date
 	updatedAt: Date
 }
+
+export interface IGetAllProjectsResponse {
+	id: string
+	name: string
+	description: string
+	color: string | null
+	isPrivate: boolean
+	isArchived: boolean
+	ownerId: string
+	createdAt: string
+	updatedAt: string
+	_count: {
+		members: number
+	}
+}
+
+export interface IGetOneProjectResponse {
+	id: string
+	name: string
+	description: string
+	color: string | null
+	isPrivate: boolean
+	isArchived: boolean
+	ownerId: string
+	createdAt: string
+	updatedAt: string
+}
+
+export interface IGetOneProjectRequest {
+	projectId: string
+}
