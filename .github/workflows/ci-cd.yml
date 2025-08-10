@@ -22,7 +22,7 @@ jobs: # Список робіт (jobs), які виконає GitHub Actions
           cache: 'npm'
 
       - name: Install dependencies # 3. Встановлення залежностей
-        run: install
+        run: npm install
 
       - name: Lint check # 4. Перевірка стилю коду
         run: npm run lint
