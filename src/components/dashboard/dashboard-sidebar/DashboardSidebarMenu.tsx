@@ -13,6 +13,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '../../ui/sidebar'
+
 import { DashboardUserMenu } from './DashboardUserMenu'
 
 export function DashboardSidebarMenu() {

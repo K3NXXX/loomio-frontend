@@ -4,6 +4,7 @@ import React from 'react'
 import { usePathname } from 'next/navigation'
 
 import { useGlobalStore } from '@/zustand/store/globalStore'
+
 import {
 	Breadcrumb,
 	BreadcrumbItem,

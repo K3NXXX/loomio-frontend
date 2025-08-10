@@ -1,9 +1,11 @@
+import { useQuery } from '@tanstack/react-query'
+
 import { projectService } from '@/services/project.service'
+
 import type {
 	IGetOneProjectRequest,
 	IGetOneProjectResponse,
 } from '@/types/project.types'
-import { useQuery } from '@tanstack/react-query'
 
 export const useGetOneProject = (projectId: IGetOneProjectRequest) => {
 	const { data: project, isLoading: getProjectLoading } =

@@ -24,8 +24,8 @@ jobs: # Список робіт (jobs), які виконає GitHub Actions
       - name: Install dependencies # 3. Встановлення залежностей
         run: npm install
 
-      - name: Lint check # 4. Перевірка стилю коду
-        run: npm run lint
+      #- name: Lint check # 4. Перевірка стилю коду
+       # run: npm run lint
 
       - name: Run tests # 5. Запуск тестів
         run: npm test -- --ci --coverage

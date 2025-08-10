@@ -1,8 +1,9 @@
-import { PAGES } from '@/constants/pages.constants'
-import { authService } from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+
+import { PAGES } from '@/constants/pages.constants'
+import { authService } from '@/services/auth.service'
 
 export const useLogout = () => {
 	const router = useRouter()

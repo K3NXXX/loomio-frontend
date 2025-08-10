@@ -14,9 +14,10 @@ import { useChangeColorTheme } from '@/hooks/user/useChangeColorTheme'
 import { UIConfiguratorColors } from '@/lists/ui.configurator.colors.list'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 
-import type { THEME_COLORS } from '@/types/colors.types'
 import { Label } from '../ui/label'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
+
+import type { THEME_COLORS } from '@/types/colors.types'
 
 export function DashboardUIConfiguratorMenu() {
 	const [activeColor, setActiveColor] = useState<THEME_COLORS>(

@@ -1,4 +1,11 @@
 'use client'
+import { ChevronsUpDown } from 'lucide-react'
+import { FaRegCircleUser } from 'react-icons/fa6'
+import { FiBell } from 'react-icons/fi'
+import { GoCreditCard } from 'react-icons/go'
+import { LuCrown } from 'react-icons/lu'
+import { MdLogout } from 'react-icons/md'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
 	DropdownMenu,
@@ -12,12 +19,6 @@ import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useLogout } from '@/hooks/auth/useLogout'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
-import { ChevronsUpDown } from 'lucide-react'
-import { FaRegCircleUser } from 'react-icons/fa6'
-import { FiBell } from 'react-icons/fi'
-import { GoCreditCard } from 'react-icons/go'
-import { LuCrown } from 'react-icons/lu'
-import { MdLogout } from 'react-icons/md'
 
 export function DashboardUserMenu() {
 	const { userData } = useGetMe()
