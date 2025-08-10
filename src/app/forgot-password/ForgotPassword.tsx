@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -12,26 +13,31 @@ import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useCountdown } from '@/hooks/auth/useCountDown'
 import { useForgotPassword } from '@/hooks/auth/useForgotPassword'
+import { forgotPasswordSchema } from '@/schemas/auth/forgot-password-schema'
+import { FORGOT_PASSWORD_STEPS } from '@/types/auth.types'
 import { formatTime } from '@/utils/format-time'
 
-import type { IForgotPasswordFormData } from '@/types/auth.types'
+import type { TForgotPasswordSchema } from '@/schemas/auth/forgot-password-schema'
 import type { SubmitHandler } from 'react-hook-form'
 
 export function ForgotPassword() {
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<IForgotPasswordFormData>({ reValidateMode: 'onSubmit' })
-
-	const [step, setStep] = useState(1)
+	const [step, setStep] = useState(FORGOT_PASSWORD_STEPS.FIRST)
 
 	const { forgotPassword, loading, expiresAt } = useForgotPassword(setStep)
 	const { timeLeft } = useCountdown(expiresAt)
 
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<TForgotPasswordSchema>({
+		reValidateMode: 'onSubmit',
+		resolver: zodResolver(forgotPasswordSchema),
+	})
+
 	const isResendDisabled = timeLeft > 0
 
-	const onSubmit: SubmitHandler<IForgotPasswordFormData> = (data) => {
+	const onSubmit: SubmitHandler<TForgotPasswordSchema> = (data) => {
 		forgotPassword({ email: data.email })
 	}
 
@@ -50,9 +56,11 @@ export function ForgotPassword() {
 		>
 			<div className='min-h-screen mx-auto max-w-[1200px] px-5 pb-10'>
 				<div className='flex justify-center py-10'>
-					{step === 1 && (
+					{step === FORGOT_PASSWORD_STEPS.FIRST && (
 						<div className='flex flex-col'>
-							<p className='font-bold text-[24px]'>Please enter your email</p>
+							<p className='font-bold text-[24px] max-[450px]:text-[20px]'>
+								Please enter your email
+							</p>
 							<p className=' text-neutral-400 text-[14px] max-w-[400px] mb-5'>
 								We’ll send you a link to reset your password. Make sure you
 								enter the email you used to register.
@@ -63,29 +71,16 @@ export function ForgotPassword() {
 							>
 								<Input
 									autoFocus
-									type='email'
 									placeholder='Your email address'
 									className='text-white py-5'
-									aria-invalid={!!errors.email}
-									aria-describedby={errors.email ? 'email-error' : undefined}
-									{...register('email', {
-										required: { value: true, message: 'Email is required' },
-										pattern: {
-											value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-											message: 'Incorrect email',
-										},
-										maxLength: {
-											value: 100,
-											message: 'Email requires max 100 characters',
-										},
-									})}
+									aria-label='email'
+									{...register('email')}
 								/>
-								<div className='flex justify-between items-center'>
-									<div className='flex gap-3 pt-2'>
+								<div className='flex justify-between items-center  pt-2'>
+									<div className='flex gap-3'>
 										<Button
 											disabled={isResendDisabled}
 											className='mt-1 font-bold text-[14px] py-3 w-[90px]'
-											aria-busy={loading}
 										>
 											{loading ? (
 												<Lottie
@@ -118,9 +113,11 @@ export function ForgotPassword() {
 							</form>
 						</div>
 					)}
-					{step === 2 && (
+					{step === FORGOT_PASSWORD_STEPS.SECOND && (
 						<div className='flex flex-col'>
-							<p className='font-bold text-[24px]'>Please check your email</p>
+							<p className='font-bold text-[24px]  max-[450px]:text-[20px]'>
+								Please check your email
+							</p>
 							<p className='text-neutral-400 text-[14px] max-w-[400px] mb-5'>
 								We’ve sent a password reset link to your email address. Please
 								check your inbox and follow the instructions to reset your
@@ -129,15 +126,12 @@ export function ForgotPassword() {
 							</p>
 							<div className='flex gap-3'>
 								<Link href={PAGES.LOGIN}>
-									<Button
-										onClick={() => setStep(1)}
-										className='mt-1 font-bold text-[14px] py-3 max-w-[100px]'
-									>
+									<Button className='mt-1 font-bold text-[14px] py-3 max-w-[100px]'>
 										Close
 									</Button>
 								</Link>
 								<Button
-									onClick={() => setStep(1)}
+									onClick={() => setStep(FORGOT_PASSWORD_STEPS.FIRST)}
 									className='bg-neutral-700 mt-1 font-bold text-[14px] py-3 max-w-[100px]'
 								>
 									Start over

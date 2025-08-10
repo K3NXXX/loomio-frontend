@@ -8,6 +8,7 @@ import type {
 	IForgotPasswordRequest,
 	IForgotPasswordResponse,
 	ILogInRequest,
+	ILogoutResponse,
 	IRefreshTokenResponse,
 	IResendCodeRequest,
 	IResendCodeResponse,
@@ -80,6 +81,13 @@ class AuthService {
 	async refreshToken(): Promise<IRefreshTokenResponse> {
 		const { data } = await axiosInstance.post<IRefreshTokenResponse>(
 			`${this.BASE_URL}/refresh`,
+		)
+		return data
+	}
+
+	async logout(): Promise<ILogoutResponse> {
+		const { data } = await axiosInstance.post<ILogoutResponse>(
+			`${this.BASE_URL}/logout`,
 		)
 		return data
 	}

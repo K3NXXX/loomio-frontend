@@ -4,15 +4,14 @@ import Lottie from 'lottie-react'
 import loader from '@/assets/animations/loader.json'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { getInitials } from '@/utils/get-initials'
-import { truncateName } from '@/utils/truncateName'
-import { useProjectStore } from '@/zustand/store/projectStore'
-
 import {
 	CREATE_PROJECT_FORM_STEPS,
 	type TCreateProjectSteps,
 } from '@/types/project.types'
 import { capitalize } from '@/utils/capitalize'
+import { getInitials } from '@/utils/get-initials'
+import { truncateName } from '@/utils/truncateName'
+import { useProjectStore } from '@/zustand/store/projectStore'
 
 interface IFormThirdStepProps {
 	setStep: (step: TCreateProjectSteps) => void
@@ -44,10 +43,10 @@ export default function FormThirdStep({
 							<span className='font-medium mr-1 text-primary'>
 								Project description
 							</span>
-							<p>{projectDescription}</p>
+							<p>{projectDescription ? projectDescription : 'None'}</p>
 						</div>
 						<div>
-							<p className='font-medium text-primary'>
+							<p className='font-medium text-primary pb-1'>
 								<span>Project members</span>
 							</p>
 						</div>
@@ -58,7 +57,7 @@ export default function FormThirdStep({
 										className='flex items-center justify-between gap-3 bg-neutral-800 rounded-sm py-[6px] px-4 relative'
 										key={member.id}
 									>
-										<div className='flex justify-between gap-3'>
+										<div className='flex justify-between gap-3 items-center'>
 											<Avatar>
 												<AvatarImage src={member.avatarUrl ?? undefined} />
 												<AvatarFallback>
@@ -67,31 +66,35 @@ export default function FormThirdStep({
 											</Avatar>
 											<div className='flex flex-col'>
 												<p className='font-semibold text-sm'>
-													{' '}
-													{truncateName(member?.username || '')}
+													{truncateName(member.username || '', 20)}
 												</p>
 												<p className='text-xs text-muted-foreground'>
+													{truncateName(member.name || '', 20)}
+												</p>
+												<p className='font-medium text-[14px] min-[360px]:hidden'>
 													{' '}
-													{truncateName(member?.name || '')}
+													Role: {capitalize(member.role)}
 												</p>
 											</div>
 										</div>
-										<p className='font-medium text-[14px]'>
+										<p className='font-medium text-[14px] max-[360px]:hidden'>
 											{' '}
 											{capitalize(member.role)}
 										</p>
 									</li>
 								))
 							) : (
-								<p className='text-muted-foreground'>
-									You did not add any members.{' '}
-									<span
+								<div className='flex gap-2 max-[402px]: flex-col'>
+									<p className='text-muted-foreground'>
+										You did not add any members.
+									</p>
+									<p
 										onClick={() => setStep(2)}
 										className='text-white cursor-pointer'
 									>
 										Add members?
-									</span>
-								</p>
+									</p>
+								</div>
 							)}
 						</ul>
 					</div>

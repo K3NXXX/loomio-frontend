@@ -4,8 +4,10 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { authService } from '@/services/auth.service'
-
-import type { IForgotPasswordRequest } from '@/types/auth.types'
+import {
+	FORGOT_PASSWORD_STEPS,
+	type IForgotPasswordRequest,
+} from '@/types/auth.types'
 
 export const useForgotPassword = (setStep: (step: number) => void) => {
 	const [expiresAt, setExpiresAt] = useState<Date | undefined>()
@@ -14,7 +16,7 @@ export const useForgotPassword = (setStep: (step: number) => void) => {
 		mutationFn: (data: IForgotPasswordRequest) =>
 			authService.forgotPassword(data),
 		onSuccess: (data) => {
-			setStep(2)
+			setStep(FORGOT_PASSWORD_STEPS.SECOND)
 			setExpiresAt(data.expiresAt)
 		},
 		onError: (error: any) => {

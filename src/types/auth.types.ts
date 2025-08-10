@@ -1,10 +1,6 @@
-export interface ISignupFormData {
-	name: string
-	username: string
-	email: string
-	password: string
-	passwordConfirm: string
-	termsAccepted: boolean
+export enum FORGOT_PASSWORD_STEPS {
+	FIRST = 1,
+	SECOND = 2,
 }
 
 export interface ISignupRequest {
@@ -17,11 +13,6 @@ export interface ISignupRequest {
 export interface ISignUpResponse {
 	message: string
 	expiresAt: Date | undefined
-}
-
-export interface ILogInFormData {
-	identifier: string
-	password: string
 }
 
 export interface ILogInRequest {
@@ -128,4 +119,8 @@ export interface AxiosError {
 
 export interface IRefreshTokenResponse {
 	accessToken: string
+}
+
+export interface ILogoutResponse {
+	message: string
 }

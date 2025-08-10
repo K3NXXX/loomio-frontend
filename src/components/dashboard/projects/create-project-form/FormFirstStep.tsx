@@ -20,7 +20,7 @@ export default function FormFirstStep({
 	return (
 		<div className='flex flex-col gap-3 h-full'>
 			<div className='flex flex-col flex-grow'>
-				<div className='flex flex-col flex-1 '>
+				<div className='flex flex-col flex-1'>
 					<label htmlFor='project-name' className='text-white mb-2'>
 						Project name
 					</label>
@@ -39,7 +39,7 @@ export default function FormFirstStep({
 					<Textarea
 						id='project-description'
 						placeholder='Your project description'
-						className='w-full text-white h-45 py-3 resize-none whitespace-pre-wrap'
+						className='text-white h-45 py-3 resize-none w-0 min-w-full'
 						{...register('description')}
 					/>
 				</div>

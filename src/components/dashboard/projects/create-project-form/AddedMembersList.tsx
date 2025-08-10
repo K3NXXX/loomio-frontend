@@ -34,16 +34,16 @@ export function AddedMembersList({ searchValue }: IAddedMembersListProps) {
 									className='flex items-center gap-3 bg-neutral-800 rounded-sm py-[6px] px-2 relative'
 									key={member.id}
 								>
-									<Avatar>
+									<Avatar className='max-[370px]:hidden'>
 										<AvatarImage src={member.avatarUrl ?? undefined} />
 										<AvatarFallback>{getInitials(member.name)}</AvatarFallback>
 									</Avatar>
 									<div className='flex flex-col'>
 										<p className='font-semibold text-sm'>
-											{truncateName(member?.username || '')}
+											{truncateName(member.username || '', 20)}
 										</p>
 										<p className='text-xs text-muted-foreground'>
-											{truncateName(member?.name || '')}
+											{truncateName(member.name || '', 20)}
 										</p>
 									</div>
 									<div className='absolute top-[8px] right-3 flex items-center gap-3'>
@@ -53,7 +53,7 @@ export function AddedMembersList({ searchValue }: IAddedMembersListProps) {
 												updateRole(member.id, role as PROJECT_MEMBER_ROLES)
 											}
 										>
-											<SelectTrigger className='w-[100px] h-[24px] px-2 py-0 data-[size=default]:h-8'>
+											<SelectTrigger className='w-[100px] max-[435px]:w-[40px] h-[24px] px-2 py-0 data-[size=default]:h-8'>
 												<SelectValue placeholder='Role' />
 											</SelectTrigger>
 											<SelectContent>
