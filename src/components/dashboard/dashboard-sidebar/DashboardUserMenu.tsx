@@ -22,6 +22,7 @@ import { MdLogout } from 'react-icons/md'
 export function DashboardUserMenu() {
 	const { userData } = useGetMe()
 	const { logout } = useLogout()
+	console.log('userData', userData)
 
 	return (
 		<DropdownMenu>

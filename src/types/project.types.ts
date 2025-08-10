@@ -52,7 +52,7 @@ export interface ICreateProjectRequestResponse {
 	updatedAt: Date
 }
 
-export interface IGetAllProjects {
+export interface IGetAllProjectsResponse {
 	id: string
 	name: string
 	description: string
@@ -62,4 +62,23 @@ export interface IGetAllProjects {
 	ownerId: string
 	createdAt: string
 	updatedAt: string
+	_count: {
+		members: number
+	}
+}
+
+export interface IGetOneProjectResponse {
+	id: string
+	name: string
+	description: string
+	color: string | null
+	isPrivate: boolean
+	isArchived: boolean
+	ownerId: string
+	createdAt: string
+	updatedAt: string
+}
+
+export interface IGetOneProjectRequest {
+	projectId: string
 }

@@ -18,7 +18,7 @@ import { DashboardUserMenu } from './DashboardUserMenu'
 export function DashboardSidebarMenu() {
 	return (
 		<Sidebar className='bg-background border-r shadow-sm min-w-[250px]'>
-			<SidebarHeader className='px-8 py-3 border-b'>
+			<SidebarHeader className='px-9 py-3 border-b'>
 				<Logo />
 			</SidebarHeader>
 

@@ -1,10 +1,10 @@
 import { projectService } from '@/services/project.service'
-import type { IGetAllProjects } from '@/types/project.types'
+import type { IGetAllProjectsResponse } from '@/types/project.types'
 import { useQuery } from '@tanstack/react-query'
 
 export const useGetAllProjects = () => {
 	const { data: allProjects, isLoading: getAllProjectsLoading } = useQuery<
-		IGetAllProjects[]
+		IGetAllProjectsResponse[]
 	>({
 		queryKey: ['getAllProjects'],
 		queryFn: () => projectService.getAllProjects(),
