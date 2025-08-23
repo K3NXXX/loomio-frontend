@@ -2,9 +2,9 @@ name: CI/CD Pipeline # Назва пайплайну, просто для від
 
 on: # Коли запускати пайплайн
   push: # При кожному пуші в ці гілки
-    branches: [ main, dev, feature/projects ]
+    branches: [main, dev, feature/projects]
   pull_request: # При кожному створенні pull request в ці гілки
-    branches: [ main, dev ]
+    branches: [main, dev]
 
 jobs: # Список робіт (jobs), які виконає GitHub Actions
 
@@ -25,7 +25,7 @@ jobs: # Список робіт (jobs), які виконає GitHub Actions
         run: npm install
 
       #- name: Lint check # 4. Перевірка стилю коду
-       # run: npm run lint
+      #  run: npm run lint
 
       - name: Run tests # 5. Запуск тестів
         run: npm test -- --ci --coverage
@@ -36,14 +36,18 @@ jobs: # Список робіт (jobs), які виконає GitHub Actions
       - name: Show github.ref
         run: echo "github.ref is ${{ github.ref }}"
 
-  deploy: # Друга робота — деплой
-    runs-on: windows-latest
+  deploy:
+    runs-on: windows-latest # бажано linux, бо vercel CLI краще працює там
     needs: build_and_test
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/dev' # чи інша гілка
+
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -52,15 +56,13 @@ jobs: # Список робіт (jobs), які виконає GitHub Actions
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build project
-        run: npm run build
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token $VERCEL_TOKEN
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel
+      - name: Build Project Artifacts
+        run: vercel build --prod --token $VERCEL_TOKEN
 
-      - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: vercel --prod --confirm
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token $VERCEL_TOKEN
