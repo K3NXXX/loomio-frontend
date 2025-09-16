@@ -1,21 +1,19 @@
 'use client'
-import { useState } from 'react'
-
 import { zodResolver } from '@hookform/resolvers/zod'
+import { motion } from 'framer-motion'
 import Lottie from 'lottie-react'
 import Link from 'next/link'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { FaRecordVinyl } from 'react-icons/fa6'
 
 import loader from '@/assets/animations/loader.json'
 import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { PAGES } from '@/constants/pages.constants'
 import { useSignUp } from '@/hooks/auth/useSignUp'
 import { signupSchema } from '@/schemas/auth/signup-schema'
-
 import { EmailVerificationForm } from '../EmailVerificationForm'
-
 import { SignUpFormFields } from './SignUpFormFields'
 
 import type { TSignupSchema } from '@/schemas/auth/signup-schema'
@@ -36,77 +34,82 @@ export function SignUpForm() {
 	const methods = useForm<TSignupSchema>({
 		reValidateMode: 'onSubmit',
 		resolver: zodResolver(signupSchema),
-		defaultValues: {
-			termsAccepted: false,
-		},
+		defaultValues: { termsAccepted: false },
 	})
 
 	const onSubmit: SubmitHandler<TSignupSchema> = (data) => {
-		const signUpData = {
+		signUp({
 			email: data.email,
 			password: data.password,
 			confirmPassword: data.passwordConfirm,
 			name: data.name,
 			username: data.username,
-		}
-		signUp(signUpData)
+		})
 		setEmail(data.email)
 	}
 
 	return (
-		<div className='mt-20 flex flex-col items-center max-[1120px]:w-screen px-3'>
-			<p className='text-white font-bold text-[30px] max-[540px]:text-[24px]'>
-				Welcome back!
-			</p>
+		<div className='relative min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-black via-neutral-900 to-black'>
+			<div className='absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-red-500/20 blur-3xl rounded-full'></div>
+			<div className='absolute bottom-0 right-1/2 translate-x-1/2 w-[300px] h-[300px] bg-purple-500/10 blur-3xl rounded-full'></div>
 
-			<p className='text-gray-200  text-[18px] max-[540px]:text-[16px] text-center'>
-				Register your account to stay on top of your business.
-			</p>
-			<Card className='bg-neutral-900 py-7 px-7 w-[471px] mt-5 max-w-[500px] max-[370px]:px-5 max-[1120px]:w-[95%]'>
-				<div className='flex flex-col gap-4'>
-					<p className='text-white text-center'>Sign up with</p>
-					<AuthSocialButtons />
-					<div className='flex items-center gap-3'>
-						<div className='h-[1px] bg-neutral-800 flex-1'></div>
-						<p className='text-white text-center'>or</p>
-						<div className='h-[1px] bg-neutral-800 flex-1'></div>
+			<motion.div
+				initial={{ opacity: 0, scale: 0.95 }}
+				animate={{ opacity: 1, scale: 1 }}
+				transition={{ duration: 0.4 }}
+				className='w-full max-w-md bg-neutral-900/80 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-neutral-800'
+			>
+				<div className='flex flex-col items-center mb-6'>
+					<div className='w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.6)]'>
+						<FaRecordVinyl />
 					</div>
+					<h1 className='text-white text-2xl font-bold mt-4'>
+						Create your account
+					</h1>
+					<p className='text-gray-400 text-sm mt-1 text-center'>
+						Join Loomio and start streaming today.
+					</p>
 				</div>
+
+				<AuthSocialButtons />
+				<div className='flex items-center gap-3 my-5'>
+					<div className='h-[1px] bg-neutral-700 flex-1'></div>
+					<p className='text-gray-400 text-xs uppercase'>or</p>
+					<div className='h-[1px] bg-neutral-700 flex-1'></div>
+				</div>
+
 				<FormProvider {...methods}>
 					<form
 						onSubmit={methods.handleSubmit(onSubmit)}
-						className='flex flex-col gap-5 justify-center'
+						className='flex flex-col gap-5'
 					>
 						<SignUpFormFields />
+
 						<Button
 							disabled={isLoading}
-							className='mt-1 font-bold text-[16px] py-5.5'
+							type='submit'
+							className='bg-red-600 hover:bg-red-700 text-white font-semibold text-lg py-6 rounded-xl shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_25px_rgba(239,68,68,0.5)] transition-all flex justify-center'
 						>
 							{isLoading ? (
-								<Lottie
-									animationData={loader}
-									loop={true}
-									className='w-24 h-24'
-								/>
+								<Lottie animationData={loader} loop className='w-8 h-8' />
 							) : (
-								'Sign up'
+								'Sign Up'
 							)}
 						</Button>
-						<div className='flex justify-center gap-1 max-[380px]:flex-col max-[380px]:items-center'>
-							<p className='text-white text-center'>
-								{' '}
-								Already have an account?{' '}
-							</p>
 
-							<Link href={PAGES.LOGIN}>
-								<span className='text-[color:var(--primary)] text-bold'>
-									Log in here
-								</span>
+						<p className='text-gray-400 text-sm text-center mt-3'>
+							Already have an account?{' '}
+							<Link
+								href={PAGES.LOGIN}
+								className='text-red-400 hover:text-red-300 font-medium'
+							>
+								Log in
 							</Link>
-						</div>
+						</p>
 					</form>
 				</FormProvider>
-			</Card>
+			</motion.div>
+
 			<EmailVerificationForm
 				open={isSuccessSignUp}
 				onOpenChange={setIsSuccessSignUp}
