@@ -367,7 +367,6 @@
 	}
 }
 
-/* Стилі для scrollbars */
 ::-webkit-scrollbar {
 	width: 8px;
 }
@@ -377,7 +376,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: rgba(120, 120, 120, 0.6); /* сірий */
+	background-color: rgba(120, 120, 120, 0.6);
 	border-radius: 4px;
 }
 

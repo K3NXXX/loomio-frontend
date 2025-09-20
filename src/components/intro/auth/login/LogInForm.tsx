@@ -4,7 +4,8 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { HiEye, HiEyeOff } from 'react-icons/hi'
+import { BsFillEyeSlashFill } from 'react-icons/bs'
+import { HiEye } from 'react-icons/hi'
 
 import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
 import { Button } from '@/components/ui/button'
@@ -39,7 +40,7 @@ export function LogInForm() {
 
 	return (
 		<div className='relative min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-black via-neutral-900 to-black'>
-			<div className='absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-red-500/20 blur-3xl rounded-full'></div>
+			<div className='absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-primary/20 blur-3xl rounded-full'></div>
 			<div className='absolute bottom-0 right-1/2 translate-x-1/2 w-[300px] h-[300px] bg-purple-500/10 blur-3xl rounded-full'></div>
 
 			<motion.div
@@ -49,8 +50,8 @@ export function LogInForm() {
 				className='w-full max-w-md bg-neutral-900/80 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-neutral-800'
 			>
 				<div className='flex flex-col items-center mb-6'>
-					<div className='w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.6)]'>
-						<FaRecordVinyl />
+					<div className='w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-md'>
+						<FaRecordVinyl className='text-primary-foreground' />
 					</div>
 					<h1 className='text-white text-2xl font-bold mt-4'>
 						Log in to Loomio
@@ -69,55 +70,63 @@ export function LogInForm() {
 
 				<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
 					<div className='flex flex-col'>
-						<label
-							htmlFor='login-identifier'
-							className='text-gray-300 text-sm mb-1'
-						>
+						<label htmlFor='login-identifier' className='text-white mb-2'>
 							Email or username
 						</label>
 						<Input
 							id='login-identifier'
 							placeholder='example@mail.com'
-							className='bg-neutral-800 border-neutral-700 text-white focus:border-red-500'
+							className='w-full text-white py-6'
 							{...register('identifier')}
 						/>
 					</div>
 
 					<div className='flex flex-col'>
-						<label
-							htmlFor='login-password'
-							className='text-gray-300 text-sm mb-1'
-						>
+						<label htmlFor='login-password' className='text-white mb-2'>
 							Password
 						</label>
 						<div className='relative'>
+							{showPassword ? (
+								<HiEye
+									onClick={() => setShowPassword(!showPassword)}
+									className='absolute top-[17px] right-[15px] cursor-pointer'
+									color='white'
+								/>
+							) : (
+								<BsFillEyeSlashFill
+									onClick={() => setShowPassword(!showPassword)}
+									className='absolute top-[17px] right-[15px] cursor-pointer'
+									color='white'
+								/>
+							)}
 							<Input
 								id='login-password'
 								type={showPassword ? 'text' : 'password'}
-								placeholder='••••••••'
-								className='bg-neutral-800 border-neutral-700 text-white focus:border-red-500 pr-10'
+								placeholder='Your password'
+								className='text-white py-6 pr-10'
 								{...register('password')}
 							/>
-							<button
-								type='button'
-								onClick={() => setShowPassword(!showPassword)}
-								className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200'
-							>
-								{showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
-							</button>
 						</div>
 					</div>
 
 					<Link
 						href={PAGES.FORGOT_PASSWORD}
-						className='text-xs text-red-400 hover:text-red-300 self-end'
+						className='text-xs text-primary hover:text-primary/80 self-end'
 					>
 						Forgot password?
 					</Link>
 
 					<Button
 						type='submit'
-						className='bg-red-600 hover:bg-red-700 text-white font-semibold text-lg py-6 rounded-xl shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_25px_rgba(239,68,68,0.5)] transition-all'
+						className='
+              bg-primary 
+              hover:bg-primary/90 
+              text-primary-foreground 
+              font-semibold text-lg py-6 rounded-xl
+              shadow-md hover:shadow-lg
+              active:scale-[0.98]
+              transition-all
+            '
 					>
 						Log In
 					</Button>
@@ -126,7 +135,7 @@ export function LogInForm() {
 						Don&apos;t have an account?{' '}
 						<Link
 							href={PAGES.SIGNUP}
-							className='text-red-400 hover:text-red-300 font-medium'
+							className='text-primary hover:text-primary/80 font-medium'
 						>
 							Sign up
 						</Link>

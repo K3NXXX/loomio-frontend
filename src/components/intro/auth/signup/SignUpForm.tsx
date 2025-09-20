@@ -49,9 +49,9 @@ export function SignUpForm() {
 	}
 
 	return (
-		<div className='relative min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-black via-neutral-900 to-black'>
-			<div className='absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-red-500/20 blur-3xl rounded-full'></div>
-			<div className='absolute bottom-0 right-1/2 translate-x-1/2 w-[300px] h-[300px] bg-purple-500/10 blur-3xl rounded-full'></div>
+		<div className='relative min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-black via-neutral-900 to-black max-[540px]:py-20'>
+			<div className='absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-primary/20 blur-3xl rounded-full max-[450px]:hidden'></div>
+			<div className='absolute bottom-0 right-1/2 translate-x-1/2 w-[300px] h-[300px] bg-purple-500/10 blur-3xl rounded-full max-[450px]:hidden'></div>
 
 			<motion.div
 				initial={{ opacity: 0, scale: 0.95 }}
@@ -60,8 +60,8 @@ export function SignUpForm() {
 				className='w-full max-w-md bg-neutral-900/80 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-neutral-800'
 			>
 				<div className='flex flex-col items-center mb-6'>
-					<div className='w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.6)]'>
-						<FaRecordVinyl />
+					<div className='w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-[0_0_15px_var(--color-primary)]'>
+						<FaRecordVinyl className='text-primary-foreground' />
 					</div>
 					<h1 className='text-white text-2xl font-bold mt-4'>
 						Create your account
@@ -72,6 +72,7 @@ export function SignUpForm() {
 				</div>
 
 				<AuthSocialButtons />
+
 				<div className='flex items-center gap-3 my-5'>
 					<div className='h-[1px] bg-neutral-700 flex-1'></div>
 					<p className='text-gray-400 text-xs uppercase'>or</p>
@@ -88,7 +89,16 @@ export function SignUpForm() {
 						<Button
 							disabled={isLoading}
 							type='submit'
-							className='bg-red-600 hover:bg-red-700 text-white font-semibold text-lg py-6 rounded-xl shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_25px_rgba(239,68,68,0.5)] transition-all flex justify-center'
+							className='
+							bg-primary 
+							hover:bg-primary/90 
+							active:scale-[0.98]
+							text-primary-foreground 
+							font-semibold text-lg py-6 rounded-xl
+							shadow-md hover:shadow-lg
+							transition-all duration-200
+							flex justify-center
+						'
 						>
 							{isLoading ? (
 								<Lottie animationData={loader} loop className='w-8 h-8' />
@@ -101,7 +111,7 @@ export function SignUpForm() {
 							Already have an account?{' '}
 							<Link
 								href={PAGES.LOGIN}
-								className='text-red-400 hover:text-red-300 font-medium'
+								className='text-primary hover:text-primary/80 font-medium'
 							>
 								Log in
 							</Link>
