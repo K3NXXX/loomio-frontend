@@ -30,11 +30,11 @@ export function SignUpFormFields() {
 			<div className='flex gap-3 max-[540px]:flex-col'>
 				<div className='flex flex-col flex-1 '>
 					<label htmlFor='signup-name' className='text-white mb-2'>
-						Name
+						Full name
 					</label>
 					<Input
 						id='signup-name'
-						placeholder='John'
+						placeholder='John Doe'
 						className='w-full text-white py-6'
 						{...register('name')}
 					/>

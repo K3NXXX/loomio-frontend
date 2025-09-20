@@ -4,7 +4,7 @@ export enum FORGOT_PASSWORD_STEPS {
 }
 
 export interface ISignupRequest {
-	name: string
+	fullName: string
 	username: string
 	email: string
 	password: string

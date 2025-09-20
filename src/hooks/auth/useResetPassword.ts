@@ -14,7 +14,7 @@ export const useResetPassword = () => {
 		mutationFn: (data: IResetPasswordRequest) =>
 			authService.resetPassword(data),
 		onSuccess: () => {
-			router.push(PAGES.LOGIN)
+			router.replace(PAGES.LOGIN)
 			toast.success('Password successfully changed')
 		},
 		onError: (error: any) => {

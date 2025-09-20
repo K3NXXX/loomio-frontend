@@ -22,9 +22,9 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const isDarkMode = false
+	const isDarkMode = true
 	const cookiesList = await cookies()
-	const theme = cookiesList.get('theme')?.value || 'ORANGE'
+	const theme = cookiesList.get('theme')?.value || 'RED'
 	return (
 		<html
 			lang='en'

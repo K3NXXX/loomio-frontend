@@ -42,7 +42,7 @@ export function SignUpForm() {
 			email: data.email,
 			password: data.password,
 			confirmPassword: data.passwordConfirm,
-			name: data.name,
+			fullName: data.name,
 			username: data.username,
 		})
 		setEmail(data.email)
@@ -101,7 +101,7 @@ export function SignUpForm() {
 						'
 						>
 							{isLoading ? (
-								<Lottie animationData={loader} loop className='w-8 h-8' />
+								<Lottie animationData={loader} loop className='w-10 h-10' />
 							) : (
 								'Sign Up'
 							)}

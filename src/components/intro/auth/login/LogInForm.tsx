@@ -111,7 +111,7 @@ export function LogInForm() {
 
 					<Link
 						href={PAGES.FORGOT_PASSWORD}
-						className='text-xs text-primary hover:text-primary/80 self-end'
+						className='text-xs font-bold text-primary hover:text-primary/80 self-end'
 					>
 						Forgot password?
 					</Link>

@@ -17,7 +17,7 @@ export const useLogIn = () => {
 		mutationFn: (data: ILogInRequest) => authService.login(data),
 		onSuccess: (data: IEmailVerificationResponse) => {
 			localStorage.setItem('user', JSON.stringify(data.user))
-			router.push(PAGES.DASHBOARD)
+			router.replace(PAGES.HOME)
 		},
 		onError: (error: any) => {
 			toast(error?.response?.data?.message)

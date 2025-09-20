@@ -78,7 +78,7 @@ export function EmailVerificationForm({
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 							setCode(e.target.value)
 						}
-						placeholder='Your verification code here'
+						placeholder='Your verification code hereeee'
 						className='uppercase placeholder:normal-case'
 					/>
 					<div className='flex gap-3 justify-between items-center'>

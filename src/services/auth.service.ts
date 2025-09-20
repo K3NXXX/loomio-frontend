@@ -22,14 +22,14 @@ class AuthService {
 	private BASE_URL = `${process.env.NEXT_PUBLIC_API_URL!}/auth`
 
 	async signup(signUpData: ISignupRequest): Promise<ISignUpResponse> {
-		const { data } = await axios.post<ISignUpResponse>(
+		const { data } = await axiosInstance.post<ISignUpResponse>(
 			`${this.BASE_URL}/register`,
 			signUpData,
 		)
 		return data
 	}
 	async login(logInData: ILogInRequest): Promise<IEmailVerificationResponse> {
-		const { data } = await axios.post<IEmailVerificationResponse>(
+		const { data } = await axiosInstance.post<IEmailVerificationResponse>(
 			`${this.BASE_URL}/login`,
 			logInData,
 		)

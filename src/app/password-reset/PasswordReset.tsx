@@ -59,10 +59,10 @@ export default function PasswordReset() {
 
 	useEffect(() => {
 		if (errors.confirmPassword?.message) {
-			toast(errors.confirmPassword.message)
+			toast.error(errors.confirmPassword.message)
 		}
 		if (errors.password?.message) {
-			toast(errors.password.message)
+			toast.error(errors.password.message)
 		}
 	}, [errors.password, errors.confirmPassword])
 

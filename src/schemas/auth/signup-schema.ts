@@ -4,13 +4,16 @@ export const signupSchema = z
 	.object({
 		name: z
 			.string()
-			.nonempty({ message: 'Name is required' })
-			.min(2, { message: 'Name must be at least 2 letters' })
-			.max(100, { message: 'Name must be less than 100 characters' })
-			.regex(/^[A-Za-z]+$/, {
-				message:
-					'Name must contain only latin letters with no spaces or symbols',
-			}),
+			.nonempty({ message: 'Full name is required' })
+			.regex(
+				/^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ'’-]{2,}( [a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ'’-]{2,})+$/,
+				{
+					message:
+						'Full name must contain at least two words with only letters, spaces, apostrophes, or dashes',
+				},
+			)
+			.max(100, { message: 'Full name must be less than 100 characters' }),
+
 		username: z
 			.string()
 			.nonempty({ message: 'Username is required' })
