@@ -13,11 +13,13 @@ import {
 } from '@/schemas/videos/upload-video.schema'
 
 import { Button } from '@/components/ui/button'
+import { useVideoStore } from '@/zustand/store/videoStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
 import { useEffect, useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { FaUpload } from 'react-icons/fa6'
+import { toast } from 'sonner'
 import { UploadVideoFile } from './UploadVideoFile'
 import { UploadVideoPreview } from './UploadVideoPreview'
 import { UploadVideoStepThird } from './UploadVideoStedThird'
@@ -39,15 +41,28 @@ export function UploadVideoModal({
 		handleSubmit,
 		setValue,
 		reset,
+		trigger,
+		watch,
+		getFieldState,
 		formState: { errors },
 	} = useForm<TUploadVideoSchema>({
 		resolver: zodResolver(uploadVideoSchema),
+		reValidateMode: 'onSubmit',
+		defaultValues: {
+			thumbnail: [],
+			audience: 'no',
+			visibility: 'public',
+			publishType: 'now',
+			tags: '',
+		},
 	})
 
 	const [isLoading, setIsLoading] = useState(false)
 	const [fileName, setFileName] = useState<string>('')
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 	const [steps, setSteps] = useState(1)
+
+	const { setThumbnailFile, setThumbnailPreview } = useVideoStore()
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
@@ -73,21 +88,86 @@ export function UploadVideoModal({
 		}
 	}
 
+	const handleNextStep = async () => {
+		if (steps === 1) {
+			const isValid = await trigger(['title', 'file', 'tags'])
+
+			if (!isValid) {
+				const titleState = getFieldState('title')
+				if (titleState.error) {
+					toast.error(titleState.error.message as string)
+					return
+				}
+
+				const fileState = getFieldState('file')
+				if (fileState.error) {
+					toast.error(fileState.error.message as string)
+					return
+				}
+
+				const tagsState = getFieldState('tags')
+				if (tagsState.error?.message) {
+					toast.error(tagsState.error.message)
+					return
+				}
+
+				return
+			}
+
+			setSteps((prev) => prev + 1)
+			return
+		}
+
+		if (steps === 2) {
+			const isValid = await trigger(['thumbnail', 'visibility', 'audience'])
+			if (isValid) {
+				setSteps((prev) => prev + 1)
+			} else {
+				const thumbErr = getFieldState('thumbnail').error?.message
+				const visErr = getFieldState('visibility').error?.message
+				const audErr = getFieldState('audience').error?.message
+				toast.error(thumbErr || visErr || audErr)
+			}
+			return
+		}
+
+		if (steps === 3) {
+			const isValid = await trigger(['publishType', 'publishDate'])
+			if (!isValid) {
+				const dateErr = getFieldState('publishDate').error?.message
+				if (dateErr) toast.error(dateErr)
+				return
+			}
+			handleSubmit(onSubmit)()
+		}
+	}
 	const onSubmit: SubmitHandler<TUploadVideoSchema> = async (data) => {
 		setIsLoading(true)
 		try {
 			const formData = new FormData()
+
 			formData.append('file', data.file[0])
 			formData.append('title', data.title)
 			formData.append('description', data.description || '')
 			formData.append('tags', data.tags || '')
+			formData.append('visibility', data.visibility)
+			formData.append('audience', data.audience)
+			formData.append('publishType', data.publishType)
+			if (data.publishType === 'scheduled' && data.publishDate) {
+				formData.append('publishDate', data.publishDate)
+			}
+			if (data.thumbnail && data.thumbnail.length > 0) {
+				formData.append('thumbnail', data.thumbnail[0])
+			}
 
 			await new Promise((res) => setTimeout(res, 1500))
-			console.log('✅ Video uploaded:', Object.fromEntries(formData))
 
 			onOpenChange(false)
 			reset()
 			setFileName('')
+			setValue('thumbnail', [], { shouldValidate: true })
+			setThumbnailFile(null)
+			setThumbnailPreview(null)
 		} finally {
 			setIsLoading(false)
 		}
@@ -138,7 +218,7 @@ export function UploadVideoModal({
 						<UploadVideoFile
 							register={register}
 							handleFileChange={handleFileChange}
-							errorMessage={errors.file?.message as string | undefined}
+							errorMessage={errors.file?.message}
 						/>
 					)}
 
@@ -153,8 +233,10 @@ export function UploadVideoModal({
 											fileName={fileName}
 										/>
 									)}
-									{steps === 2 && <UploadVideoStepSecond />}
-									{steps === 3 && <UploadVideoStepThird />}
+									{steps === 2 && <UploadVideoStepSecond setValue={setValue} />}
+									{steps === 3 && (
+										<UploadVideoStepThird watch={watch} setValue={setValue} />
+									)}
 								</div>
 								<div className='flex flex-col justify-between'>
 									<UploadVideoPreview
@@ -171,7 +253,7 @@ export function UploadVideoModal({
 											Back
 										</Button>
 										<Button
-											onClick={() => setSteps((prev: number) => prev + 1)}
+											onClick={handleNextStep}
 											type='button'
 											disabled={isLoading}
 											className='bg-primary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'

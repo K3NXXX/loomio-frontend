@@ -75,7 +75,7 @@ export function UploadVideoPreview({
 				)}
 			</div>
 
-			<p className='font-medium pt-3 text-gray-400 truncate'>
+			<p className='font-medium pt-3 pr-2 text-gray-400 truncate'>
 				Filename: {fileName}
 			</p>
 		</div>

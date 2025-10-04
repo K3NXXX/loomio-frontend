@@ -20,7 +20,7 @@ export function UploadVideoStepFirst({
 						htmlFor='title'
 						className='block text-sm font-medium text-gray-300 mb-2'
 					>
-						Title
+						Title (required)
 					</label>
 					<Input
 						id='title'
@@ -29,9 +29,9 @@ export function UploadVideoStepFirst({
 						placeholder='Enter a catchy title...'
 						{...register('title')}
 						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
-													text-white placeholder-gray-500 px-4 
-													focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
-													transition-colors'
+						text-white placeholder-gray-500 px-4 
+						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
+						transition-colors'
 					/>
 				</div>
 
@@ -48,9 +48,9 @@ export function UploadVideoStepFirst({
 						placeholder='Write something about your video...'
 						{...register('description')}
 						className='min-h-[140px] text-base bg-neutral-800/80 border border-neutral-700 
-													rounded-xl text-white placeholder-gray-500 px-4 py-3 
-													focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
-													resize-none transition-colors'
+						rounded-xl text-white placeholder-gray-500 px-4 py-3 
+						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
+						resize-none transition-colors'
 					/>
 				</div>
 
@@ -64,15 +64,15 @@ export function UploadVideoStepFirst({
 					<Input
 						id='tags'
 						type='text'
-						placeholder='e.g. travel, vlog, music'
+						placeholder='e.g. #travel #vlog #music'
 						{...register('tags')}
 						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
-													text-white placeholder-gray-500 px-4 
-													focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
-													transition-colors'
+						text-white placeholder-gray-500 px-4 
+						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
+						transition-colors'
 					/>
 					<p className='text-xs text-gray-500'>
-						Separate tags with commas to help people find your video
+						Use format: <span className='text-primary'>#top #live #music</span>
 					</p>
 				</div>
 			</div>

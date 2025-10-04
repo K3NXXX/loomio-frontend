@@ -1,36 +1,34 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-} from '@/components/ui/dialog'
+import type { TUploadVideoSchema } from '@/schemas/videos/upload-video.schema'
+import { getCroppedImg } from '@/utils/getCroppedImage'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { Globe, Lock, Users } from 'lucide-react'
 import { useRef, useState } from 'react'
-import Cropper, { type Area } from 'react-easy-crop'
+import { type Area } from 'react-easy-crop'
+import type { UseFormSetValue } from 'react-hook-form'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
+import { CropVideoModal } from './CropVideoModal'
 
-interface IUploadVideoStepSecondProps {}
+interface UploadVideoStepSecondProps {
+	setValue: UseFormSetValue<TUploadVideoSchema>
+}
 
-export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
-	const { thumbnailPreview, setThumbnailFile, setThumbnailPreview } =
-		useVideoStore()
-	const fileInputRef = useRef<HTMLInputElement>(null)
-
+export function UploadVideoStepSecond({
+	setValue,
+}: UploadVideoStepSecondProps) {
 	const [crop, setCrop] = useState({ x: 0, y: 0 })
 	const [zoom, setZoom] = useState(1)
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
 	const [tempImageUrl, setTempImageUrl] = useState<string | null>(null)
 	const [isCropModalOpen, setIsCropModalOpen] = useState(false)
+	const fileInputRef = useRef<HTMLInputElement>(null)
 
-	// ✨ Стан visibility
 	const [visibility, setVisibility] = useState<'public' | 'private'>('public')
-
-	// 👶 Стан для Audience (для дітей / не для дітей)
 	const [isForKids, setIsForKids] = useState<'yes' | 'no'>('no')
+
+	const { thumbnailPreview, setThumbnailFile, setThumbnailPreview } =
+		useVideoStore()
 
 	const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
@@ -38,7 +36,6 @@ export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
 			const url = URL.createObjectURL(file)
 			setTempImageUrl(url)
 			setIsCropModalOpen(true)
-			e.target.value = ''
 		}
 	}
 
@@ -47,6 +44,7 @@ export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
 	const handleDeleteClick = () => {
 		setThumbnailFile(null)
 		setThumbnailPreview(null)
+		setValue('thumbnail', [], { shouldValidate: true })
 	}
 
 	const onCropComplete = (_: Area, croppedAreaPixels: Area) => {
@@ -56,8 +54,23 @@ export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
 	const handleCropSave = async () => {
 		if (tempImageUrl && croppedAreaPixels) {
 			const croppedImage = await getCroppedImg(tempImageUrl, croppedAreaPixels)
+
 			if (croppedImage) {
-				setThumbnailPreview(croppedImage)
+				if (typeof croppedImage === 'string') {
+					const res = await fetch(croppedImage)
+					const blob = await res.blob()
+					const file = new File([blob], 'thumbnail.png', { type: blob.type })
+
+					setValue('thumbnail', [file], { shouldValidate: true })
+					setThumbnailPreview(croppedImage)
+				} else {
+					const file = new File([croppedImage], 'thumbnail.png', {
+						type: 'image/png',
+					})
+					setValue('thumbnail', [file], { shouldValidate: true })
+					setThumbnailPreview(URL.createObjectURL(croppedImage))
+				}
+
 				setIsCropModalOpen(false)
 			}
 		}
@@ -65,10 +78,9 @@ export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
 
 	return (
 		<div className='flex flex-col h-[700px] gap-8'>
-			{/* 🖼 Thumbnail */}
 			<div className='flex flex-col'>
 				<h3 className='text-lg font-semibold mb-3 text-white'>
-					Upload Thumbnail
+					Upload Thumbnail (required)
 				</h3>
 
 				{thumbnailPreview ? (
@@ -125,21 +137,23 @@ export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
 				)}
 			</div>
 
-			{/* 🌐 Visibility */}
 			<div className='flex flex-col'>
 				<h3 className='text-lg font-semibold mb-3 text-white'>Visibility</h3>
 				<div className='flex gap-4'>
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
-							${visibility === 'public' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
-						`}
+				${visibility === 'public' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
+			`}
 					>
 						<input
 							type='radio'
 							name='visibility'
 							value='public'
 							checked={visibility === 'public'}
-							onChange={() => setVisibility('public')}
+							onChange={() => {
+								setVisibility('public')
+								setValue('visibility', 'public', { shouldValidate: true })
+							}}
 							className='hidden'
 						/>
 						<Globe className='w-5 h-5 text-primary' />
@@ -151,15 +165,18 @@ export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
 
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
-							${visibility === 'private' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
-						`}
+				${visibility === 'private' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
+			`}
 					>
 						<input
 							type='radio'
 							name='visibility'
 							value='private'
 							checked={visibility === 'private'}
-							onChange={() => setVisibility('private')}
+							onChange={() => {
+								setVisibility('private')
+								setValue('visibility', 'private', { shouldValidate: true })
+							}}
 							className='hidden'
 						/>
 						<Lock className='w-5 h-5 text-primary' />
@@ -177,17 +194,21 @@ export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
 					Is this video made for kids? (required)
 				</p>
 				<div className='flex gap-4'>
+					{/* Yes */}
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
-							${isForKids === 'yes' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
-						`}
+				${isForKids === 'yes' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
+			`}
 					>
 						<input
 							type='radio'
 							name='audience'
 							value='yes'
 							checked={isForKids === 'yes'}
-							onChange={() => setIsForKids('yes')}
+							onChange={() => {
+								setIsForKids('yes')
+								setValue('audience', 'yes', { shouldValidate: true })
+							}}
 							className='hidden'
 						/>
 						<Users className='w-5 h-5 text-primary' />
@@ -197,17 +218,21 @@ export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
 						</div>
 					</label>
 
+					{/* No */}
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
-							${isForKids === 'no' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
-						`}
+				${isForKids === 'no' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
+			`}
 					>
 						<input
 							type='radio'
 							name='audience'
 							value='no'
 							checked={isForKids === 'no'}
-							onChange={() => setIsForKids('no')}
+							onChange={() => {
+								setIsForKids('no')
+								setValue('audience', 'no', { shouldValidate: true })
+							}}
 							className='hidden'
 						/>
 						<Lock className='w-5 h-5 text-primary' />
@@ -219,92 +244,17 @@ export function UploadVideoStepSecond({}: IUploadVideoStepSecondProps) {
 				</div>
 			</div>
 
-			{/* ✂️ Crop Modal */}
-			<Dialog open={isCropModalOpen} onOpenChange={setIsCropModalOpen}>
-				<DialogContent className='max-w-[700px] bg-neutral-900 text-white'>
-					<DialogHeader>
-						<DialogTitle>Adjust Thumbnail</DialogTitle>
-					</DialogHeader>
-
-					<div className='relative w-full h-[400px] bg-black rounded-lg overflow-hidden'>
-						{tempImageUrl && (
-							<Cropper
-								image={tempImageUrl}
-								crop={crop}
-								zoom={zoom}
-								aspect={16 / 9}
-								onCropChange={setCrop}
-								onZoomChange={setZoom}
-								onCropComplete={onCropComplete}
-								cropShape='rect'
-								showGrid={false}
-								objectFit='cover'
-							/>
-						)}
-					</div>
-
-					<div className='mt-4'>
-						<input
-							type='range'
-							min={1}
-							max={3}
-							step={0.01}
-							value={zoom}
-							onChange={(e) => setZoom(Number(e.target.value))}
-							className='w-full accent-primary cursor-pointer'
-						/>
-					</div>
-
-					<div className='flex justify-end gap-3 mt-4'>
-						<Button
-							type='button'
-							variant='secondary'
-							onClick={() => setIsCropModalOpen(false)}
-						>
-							Cancel
-						</Button>
-						<Button type='button' onClick={handleCropSave}>
-							Save
-						</Button>
-					</div>
-				</DialogContent>
-			</Dialog>
+			<CropVideoModal
+				isOpen={isCropModalOpen}
+				onOpenChange={setIsCropModalOpen}
+				imageUrl={tempImageUrl}
+				crop={crop}
+				zoom={zoom}
+				onCropChange={setCrop}
+				onZoomChange={setZoom}
+				onCropComplete={onCropComplete}
+				onSave={handleCropSave}
+			/>
 		</div>
 	)
-}
-
-/**
- * ✂️ Реальна функція crop з canvas
- */
-async function getCroppedImg(
-	imageSrc: string,
-	pixelCrop: Area,
-): Promise<string | null> {
-	const image = await new Promise<HTMLImageElement>((resolve, reject) => {
-		const img = new Image()
-		img.src = imageSrc
-		img.onload = () => resolve(img)
-		img.onerror = (err) => reject(err)
-	})
-
-	const canvas = document.createElement('canvas')
-	const ctx = canvas.getContext('2d')
-	if (!ctx) return null
-
-	canvas.width = pixelCrop.width
-	canvas.height = pixelCrop.height
-
-	ctx.drawImage(
-		image,
-		pixelCrop.x,
-		pixelCrop.y,
-		pixelCrop.width,
-		pixelCrop.height,
-		0,
-		0,
-		pixelCrop.width,
-		pixelCrop.height,
-	)
-
-	return canvas.toDataURL('image/jpeg')
 }
