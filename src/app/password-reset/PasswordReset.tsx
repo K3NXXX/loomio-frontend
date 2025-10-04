@@ -145,7 +145,7 @@ export default function PasswordReset() {
 								</div>
 							</div>
 							<div className='flex gap-3 pt-2'>
-								<Button className='mt-1 font-bold text-[14px] py-3 w-[90px]'>
+								<Button className='mt-1 font-bold text-[14px] py-3 w-[90px] bg-primary '>
 									Confirm
 								</Button>
 								<Link href={PAGES.FORGOT_PASSWORD}>

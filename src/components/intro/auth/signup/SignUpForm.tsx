@@ -42,7 +42,7 @@ export function SignUpForm() {
 			email: data.email,
 			password: data.password,
 			confirmPassword: data.passwordConfirm,
-			fullName: data.name,
+			name: data.name,
 			username: data.username,
 		})
 		setEmail(data.email)

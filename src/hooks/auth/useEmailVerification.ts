@@ -21,7 +21,7 @@ export const useEmailVerification = () => {
 				localStorage.setItem('user', JSON.stringify(data.user))
 			}
 			toast('Registration completed!')
-			router.push(PAGES.DASHBOARD)
+			router.push(PAGES.HOME)
 		},
 		onError: () => {
 			toast('Invalid code. Try again')

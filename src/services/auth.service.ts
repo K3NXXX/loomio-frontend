@@ -92,13 +92,6 @@ class AuthService {
 		)
 		return data
 	}
-
-	async getMe() {
-		const { data } = await axiosInstance.get<IGetUserData>(
-			`${this.BASE_URL}/me`,
-		)
-		return data
-	}
 }
 
 export const authService = new AuthService()

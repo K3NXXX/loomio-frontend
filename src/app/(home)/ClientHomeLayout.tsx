@@ -24,7 +24,7 @@ export function ClientHomeLayout({ children }: { children: ReactNode }) {
 
 				<div className='flex flex-col flex-1 h-full'>
 					<HomeHeader />
-					<div className='flex-1 overflow-y-auto px-1 pt-15'>{children}</div>
+					<div className='flex-1 overflow-y-auto pt-15 px-10'>{children}</div>
 				</div>
 			</div>
 

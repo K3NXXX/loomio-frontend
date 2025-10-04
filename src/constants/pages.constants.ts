@@ -1,9 +1,9 @@
 export const PAGES = {
+	HOME: '/',
 	SIGNUP: '/signup',
 	LOGIN: '/login',
 	FORGOT_PASSWORD: 'forgot-password',
 	PASSWORD_RESET: 'password-reset',
-
-	HOME: '/',
 	ACCOUNT: '/account',
+	UPLOAD_VIDEO: '/account/videos/upload',
 }

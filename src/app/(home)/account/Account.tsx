@@ -1,14 +1,10 @@
 'use client'
 
+import { UploadVideoModal } from '@/components/account/videos/upload/UploadVideoModal'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
+import { useGetMe } from '@/hooks/auth/useGetMe'
+import { getInitials } from '@/utils/get-initials'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -20,6 +16,8 @@ type Video = {
 }
 
 export default function Account() {
+	const { userData } = useGetMe()
+	const [openUploadingVideo, setOpenUploadingVideo] = useState(false)
 	const [videos, setVideos] = useState<Video[]>([
 		{
 			title: 'My first video',
@@ -33,21 +31,6 @@ export default function Account() {
 		},
 	])
 
-	const [title, setTitle] = useState('')
-	const [thumbnail, setThumbnail] = useState('')
-
-	const addVideo = () => {
-		if (!title || !thumbnail) return
-		const newVideo: Video = {
-			title,
-			thumbnail,
-			createdAt: new Date().toISOString().split('T')[0],
-		}
-		setVideos([newVideo, ...videos])
-		setTitle('')
-		setThumbnail('')
-	}
-
 	return (
 		<div className='min-h-screen px-4 py-10'>
 			<motion.div
@@ -56,21 +39,26 @@ export default function Account() {
 				transition={{ duration: 0.4 }}
 				className='max-w-6xl mx-auto'
 			>
-				{/* Profile header */}
 				<div className='flex flex-col md:flex-row md:items-center gap-6 mb-10'>
 					<div className='relative w-28 h-28 rounded-full overflow-hidden ring-4 ring-primary/30 shadow-lg'>
-						<Image
-							src='https://i.pravatar.cc/200?img=12'
-							alt='User avatar'
-							fill
-							className='object-cover'
-							unoptimized
-						/>
+						<Avatar className='w-full h-full'>
+							<AvatarImage src={userData?.avatarUrl} />
+							<AvatarFallback className='text-[25px]'>
+								{getInitials(userData?.name)}
+							</AvatarFallback>
+						</Avatar>
 					</div>
 					<div>
 						<h1 className='text-3xl font-bold tracking-tight'>My Account</h1>
-						<p className='text-muted-foreground'>user@example.com</p>
+						<p className='text-muted-foreground'>{userData?.email}</p>
 						<div className='flex gap-3 mt-3'>
+							<Button
+								onClick={() => setOpenUploadingVideo(true)}
+								className='rounded-full px-5'
+							>
+								Add video
+							</Button>
+
 							<Button variant='outline' className='rounded-full px-5'>
 								Edit profile
 							</Button>
@@ -78,49 +66,6 @@ export default function Account() {
 					</div>
 				</div>
 
-				{/* Add new video */}
-				<Dialog>
-					<DialogTrigger asChild>
-						<Button className='rounded-full px-6 mb-6 shadow-md hover:shadow-lg transition-all'>
-							+ Upload Video
-						</Button>
-					</DialogTrigger>
-					<DialogContent className='sm:max-w-md rounded-2xl'>
-						<DialogHeader>
-							<DialogTitle className='text-lg font-semibold'>
-								Upload new video
-							</DialogTitle>
-						</DialogHeader>
-						<div className='flex flex-col gap-4 mt-4'>
-							<Input
-								placeholder='Video title'
-								value={title}
-								onChange={(e) => setTitle(e.target.value)}
-							/>
-							<Input
-								placeholder='Thumbnail URL'
-								value={thumbnail}
-								onChange={(e) => setThumbnail(e.target.value)}
-							/>
-							{thumbnail && (
-								<div className='relative w-full h-40 rounded-lg overflow-hidden border'>
-									<Image
-										src={thumbnail}
-										alt='Preview'
-										fill
-										className='object-cover transition-transform duration-300 hover:scale-105'
-										unoptimized
-									/>
-								</div>
-							)}
-							<Button onClick={addVideo} className='rounded-full'>
-								Save
-							</Button>
-						</div>
-					</DialogContent>
-				</Dialog>
-
-				{/* My videos */}
 				<h2 className='text-xl font-semibold mt-6 mb-4'>My videos</h2>
 				{videos.length === 0 ? (
 					<p className='text-muted-foreground'>
@@ -177,6 +122,12 @@ export default function Account() {
 					</div>
 				)}
 			</motion.div>
+			{openUploadingVideo && (
+				<UploadVideoModal
+					open={openUploadingVideo}
+					onOpenChange={setOpenUploadingVideo}
+				/>
+			)}
 		</div>
 	)
 }
