@@ -1,6 +1,5 @@
 import axiosInstance from '@/lib/axios'
 
-import type { IGetUserData } from '@/types/auth.types'
 import type { ChangeThemeResponse, THEME_COLORS } from '@/types/colors.types'
 import type { ISearchProjectMembersResponse } from '@/types/project.types'
 
@@ -14,11 +13,6 @@ class UserService {
 				theme: color,
 			},
 		)
-		return data
-	}
-
-	async getMe() {
-		const { data } = await axiosInstance.get<IGetUserData>(`${this.BASE_URL}`)
 		return data
 	}
 

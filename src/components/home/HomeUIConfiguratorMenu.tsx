@@ -19,7 +19,7 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 
 import type { THEME_COLORS } from '@/types/colors.types'
 
-export function DashboardUIConfiguratorMenu() {
+export function HomeUIConfiguratorMenu() {
 	const [activeColor, setActiveColor] = useState<THEME_COLORS>(
 		UIConfiguratorColors[0].color,
 	)

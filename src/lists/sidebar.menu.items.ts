@@ -1,7 +1,7 @@
-import { FaRegChartBar } from 'react-icons/fa'
-import { FaTasks } from 'react-icons/fa'
-import { GrProjects } from 'react-icons/gr'
-import { IoFolderOpen } from 'react-icons/io5'
+import { FaUserFriends } from 'react-icons/fa'
+import { IoHome } from 'react-icons/io5'
+import { MdFeaturedPlayList } from 'react-icons/md'
+import { SiYoutubeshorts } from 'react-icons/si'
 
 import { PAGES } from '@/constants/pages.constants'
 
@@ -17,27 +17,27 @@ interface ISidebarMenu {
 export const sidebarMenu: ISidebarMenu[] = [
 	{
 		id: 1,
-		label: 'Dashboard',
+		label: 'Home',
 		url: PAGES.DASHBOARD,
-		icon: FaRegChartBar,
+		icon: IoHome,
 	},
 	{
 		id: 2,
-		label: 'Projects',
+		label: 'Shorts',
 		url: PAGES.PROJECTS,
-		icon: GrProjects,
+		icon: SiYoutubeshorts,
 	},
 
 	{
 		id: 3,
-		label: 'Tasks',
+		label: 'Playlists',
 		url: PAGES.TASKS,
-		icon: FaTasks,
+		icon: MdFeaturedPlayList,
 	},
 	{
 		id: 4,
-		label: 'Editor',
+		label: 'Followings',
 		url: PAGES.EDITOR,
-		icon: IoFolderOpen,
+		icon: FaUserFriends,
 	},
 ]

@@ -90,7 +90,7 @@ export interface IUser {
 export interface IGetUserData {
 	avatarUrl: string
 	email: string
-	name: string
+	fullName: string
 	id: string
 	isActive: boolean
 	username: string
