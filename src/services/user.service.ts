@@ -2,7 +2,7 @@ import axiosInstance from '@/lib/axios'
 import type { IGetUserData } from '@/types/auth.types'
 
 import type { ChangeThemeResponse, THEME_COLORS } from '@/types/colors.types'
-import type { ISearchProjectMembersResponse } from '@/types/project.types'
+import type { IUpdateAccountRequest } from '@/types/user.types'
 
 class UserService {
 	private BASE_URL = `${process.env.NEXT_PUBLIC_API_URL!}/user`
@@ -17,15 +17,27 @@ class UserService {
 		return data
 	}
 
-	async searchProjectMembers(searchingData: string) {
-		const { data } = await axiosInstance.get<ISearchProjectMembersResponse[]>(
-			`${this.BASE_URL}/search?${searchingData}`,
-		)
+	async getMe() {
+		const { data } = await axiosInstance.get<IGetUserData>(`${this.BASE_URL}`)
 		return data
 	}
 
-	async getMe() {
-		const { data } = await axiosInstance.get<IGetUserData>(`${this.BASE_URL}`)
+	async updateAvatar(file: File) {
+		const formData = new FormData()
+		formData.append('file', file)
+
+		await axiosInstance.patch(`${this.BASE_URL}/update/avatar`, formData)
+	}
+
+	async deleteAvatar() {
+		await axiosInstance.delete(`${this.BASE_URL}/delete/avatar`)
+	}
+
+	async updateAccount(userData: IUpdateAccountRequest) {
+		const { data } = await axiosInstance.patch<IGetUserData>(
+			`${this.BASE_URL}/update`,
+			userData,
+		)
 		return data
 	}
 }

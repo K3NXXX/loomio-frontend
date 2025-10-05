@@ -94,6 +94,7 @@ export interface IGetUserData {
 	id: string
 	isActive: boolean
 	username: string
+	bio: string
 }
 
 interface AxiosErrorResponse {

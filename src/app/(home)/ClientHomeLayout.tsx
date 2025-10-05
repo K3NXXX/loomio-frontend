@@ -1,9 +1,9 @@
 'use client'
 import type { ReactNode } from 'react'
 
+import { HomeHeader } from '@/components/home/home-header/HomeHeader'
 import { HomeSidebarCollapsed } from '@/components/home/home-sidebar/HomeSidebarCollapsed'
 import { HomeSidebarMenu } from '@/components/home/home-sidebar/HomeSidebarMenu'
-import { HomeHeader } from '@/components/home/HomeHeader'
 import { HomeUIConfiguratorMenu } from '@/components/home/HomeUIConfiguratorMenu'
 import { Button } from '@/components/ui/button'
 import { useGlobalStore } from '@/zustand/store/globalStore'

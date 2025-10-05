@@ -3,10 +3,12 @@
 import { UploadVideoModal } from '@/components/account/videos/upload/UploadVideoModal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { PAGES } from '@/constants/pages.constants'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { getInitials } from '@/utils/get-initials'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 
 type Video = {
@@ -58,10 +60,11 @@ export default function Account() {
 							>
 								Add video
 							</Button>
-
-							<Button variant='outline' className='rounded-full px-5'>
-								Edit profile
-							</Button>
+							<Link href={PAGES.EDIT_ACCOUNT}>
+								<Button variant='outline' className='rounded-full px-5'>
+									Edit profile
+								</Button>
+							</Link>
 						</div>
 					</div>
 				</div>
