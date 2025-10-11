@@ -10,7 +10,10 @@ export function HomeSidebarMenu() {
 
 	return (
 		<>
-			<aside className='hidden lg:flex flex-col min-w-[240px] max-w-[240px] bg-background/80 backdrop-blur-xl border-r border-border shadow-md overflow-hidden'>
+			<aside
+				className='hidden lg:flex flex-col min-w-[240px] max-w-[240px]
+				sticky top-[76px] h-[calc(100vh-76px)]'
+			>
 				<div className='flex-1 pr-5 py-6 overflow-y-auto custom-scrollbar'>
 					<ul className='space-y-1 px-2'>
 						{sidebarMenu.map((item) => {
@@ -48,12 +51,12 @@ export function HomeSidebarMenu() {
 					</ul>
 				</div>
 
-				<div className='pr-4 py-5 border-t bg-background/70 backdrop-blur-md'>
+				<div className='pr-4 py-5 bg-background/70 backdrop-blur-md'>
 					<HomeUserMenu />
 				</div>
 			</aside>
 
-			<aside className='flex lg:hidden flex-col items-center min-w-[90px] max-w-[90px] bg-background border-r border-border shadow-md py-4'>
+			<aside className='flex lg:hidden flex-col items-center min-w-[90px] max-w-[90px] bg-background  shadow-md py-4'>
 				<ul className='flex flex-col items-center gap-3 w-full'>
 					{sidebarMenu.map((item) => {
 						const isActive = pathname === item.url
@@ -88,8 +91,7 @@ export function HomeSidebarMenu() {
 					})}
 				</ul>
 
-				{/* User menu (якщо треба показувати на мобільному) */}
-				<div className='mt-auto pt-3 border-t w-full flex justify-center'>
+				<div className='mt-auto pt-3  w-full flex justify-center'>
 					<HomeUserMenu />
 				</div>
 			</aside>

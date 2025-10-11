@@ -9,7 +9,7 @@ export function HomeSidebarCollapsed() {
 	const pathname = usePathname()
 
 	return (
-		<aside className='flex flex-col items-center w-[80px] bg-background/80 backdrop-blur-xl border-r border-border shadow-md py-4'>
+		<aside className=' sticky top-[76px] h-[calc(100vh-76px)] flex flex-col items-center w-[80px] bg-background/80 backdrop-blur-xl shadow-md py-4'>
 			<ul className='flex flex-col items-center gap-3 w-full'>
 				{sidebarMenu.map((item) => {
 					const isActive = pathname === item.url
@@ -53,7 +53,7 @@ export function HomeSidebarCollapsed() {
 				})}
 			</ul>
 
-			<div className='mt-auto pt-3 border-t w-full flex justify-center'>
+			<div className='mt-auto pt-3 w-full flex justify-center'>
 				<HomeUserMenu />
 			</div>
 		</aside>

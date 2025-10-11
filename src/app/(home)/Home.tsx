@@ -1,3 +1,9 @@
+import VideosList from '@/components/home/videos-list/VideosList'
+
 export function Home() {
-	return <div>Home</div>
+	return (
+		<div>
+			<VideosList />
+		</div>
+	)
 }

@@ -24,7 +24,7 @@ import { FaUpload } from 'react-icons/fa6'
 import { toast } from 'sonner'
 import { UploadVideoFile } from './UploadVideoFile'
 import { UploadVideoPreview } from './UploadVideoPreview'
-import { UploadVideoStepThird } from './UploadVideoStedThird'
+import { UploadVideoStepThird } from './UploadVideoStepThird'
 import { UploadVideoStepFirst } from './UploadVideoStepFirst'
 import { UploadVideoSteps } from './UploadVideoSteps'
 import { UploadVideoStepSecond } from './UploadVideoStepSecond'
@@ -174,15 +174,20 @@ export function UploadVideoModal({
 				formData.append('publishDate', payload.publishDate)
 			if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail)
 
-			addVideo(formData)
-
-			onOpenChange(false)
-			reset()
-			setFileName('')
-			setValue('thumbnail', [], { shouldValidate: true })
-			setThumbnailFile(null)
-			setThumbnailPreview(null)
-		} finally {
+			addVideo(formData, {
+				onSuccess: () => {
+					onOpenChange(false)
+					reset()
+					setFileName('')
+					setValue('thumbnail', [], { shouldValidate: true })
+					setThumbnailFile(null)
+					setThumbnailPreview(null)
+				},
+				onSettled: () => {
+					setIsLoading(false)
+				},
+			})
+		} catch {
 			setIsLoading(false)
 		}
 	}

@@ -14,18 +14,14 @@ export function ClientHomeLayout({ children }: { children: ReactNode }) {
 
 	return (
 		<div
-			style={{
-				background: 'linear-gradient(250deg, #202020 0%, transparent 50%)',
-			}}
-			className='w-full h-screen flex flex-col'
+			style={{ background: '#111111' }}
+			className='w-full min-h-screen flex flex-col'
 		>
-			<div className='flex flex-1 h-full min-h-screen'>
+			<HomeHeader />
+			<div className='flex flex-1'>
 				{isSidebarCollapsed ? <HomeSidebarCollapsed /> : <HomeSidebarMenu />}
 
-				<div className='flex flex-col flex-1 h-full'>
-					<HomeHeader />
-					<div className='flex-1 overflow-y-auto pt-15 px-10'>{children}</div>
-				</div>
+				<main className='flex-1 overflow-y-auto px-10 py-10'>{children}</main>
 			</div>
 
 			<Button

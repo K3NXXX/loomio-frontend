@@ -47,7 +47,7 @@ export function UploadVideoStepFirst({
 						rows={6}
 						placeholder='Write something about your video...'
 						{...register('description')}
-						className='min-h-[140px] text-base bg-neutral-800/80 border border-neutral-700 
+						className='h-[140px] overflow-y-auto text-base bg-neutral-800/80 border border-neutral-700 
 						rounded-xl text-white placeholder-gray-500 px-4 py-3 
 						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
 						resize-none transition-colors'

@@ -7,20 +7,26 @@ import { useState } from 'react'
 import { IoClose, IoMenu, IoSearch } from 'react-icons/io5'
 
 import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { cn } from '@/lib/utils'
 import { Input } from '../../ui/input'
 import { Logo } from '../../ui/Logo'
 import { Separator } from '../../ui/separator'
-import { HeaderBreadcrumbs } from './HeaderBreadcrumbs'
 
 export function HomeHeader() {
 	const { toggleSidebarCollapsed } = useGlobalStore()
 	const [search, setSearch] = useState('')
 
 	return (
-		<header>
+		<header
+			className={cn(
+				'sticky top-0 left-0 right-0 z-50',
+				'bg-[oklch(0.19_0_0/0.7)] backdrop-blur-lg',
+				'shadow-[0_4px_15px_rgba(0,0,0,0.3)]',
+			)}
+		>
 			<div className='flex flex-col pb-5'>
-				<div className='pt-5 flex justify-between items-center max-w-[99%] w-full'>
-					<Breadcrumb className='flex h-5 items-center space-x-4 text-sm px-3'>
+				<div className='pt-5 pl-6 flex justify-between items-center max-w-[99%] w-full px-3'>
+					<Breadcrumb className='flex h-5 items-center space-x-4 text-sm'>
 						<IoMenu
 							onClick={() => toggleSidebarCollapsed()}
 							size={30}
@@ -38,8 +44,8 @@ export function HomeHeader() {
 							onChange={(e) => setSearch(e.target.value)}
 							placeholder='Search...'
 							className='w-full pl-12 pr-12 py-3 text-base rounded-xl bg-muted 
-                     focus:ring-2 focus:ring-primary 
-                     transition-all duration-300 ease-in-out'
+						focus:ring-2 focus:ring-primary 
+						transition-all duration-300 ease-in-out'
 						/>
 						{search && (
 							<IoClose
@@ -55,7 +61,6 @@ export function HomeHeader() {
 						</Link>
 					</div>
 				</div>
-				<HeaderBreadcrumbs />
 			</div>
 		</header>
 	)

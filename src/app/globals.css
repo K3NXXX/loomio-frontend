@@ -380,4 +380,10 @@
 	border-radius: 4px;
 }
 
+.vds-theme {
+	--media-brand: #ff0000; /* червоний як на YouTube */
+	--media-range-fill: #ff0000;
+	--media-control-hover: #ff0000;
+  }
+
 
