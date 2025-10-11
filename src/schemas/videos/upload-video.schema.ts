@@ -1,8 +1,15 @@
 import { z } from 'zod'
 
 export const uploadVideoSchema = z.object({
-	title: z.string().min(3, 'Title must be at least 3 characters'),
-	description: z.string().optional(),
+	title: z
+		.string()
+		.min(3, 'Title must be at least 3 characters')
+		.max(200, { message: 'Title must be less than 200 characters' }),
+	description: z
+		.string()
+		.trim()
+		.max(1000, { message: 'Description must be less than 1000 characters' })
+		.optional(),
 	tags: z
 		.string()
 		.optional()

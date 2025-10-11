@@ -13,6 +13,8 @@ import {
 } from '@/schemas/videos/upload-video.schema'
 
 import { Button } from '@/components/ui/button'
+import { useAddVideo } from '@/hooks/videos/useAddVideo'
+import type { IAddVideoRequest } from '@/types/video.types'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
@@ -61,6 +63,7 @@ export function UploadVideoModal({
 	const [fileName, setFileName] = useState<string>('')
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 	const [steps, setSteps] = useState(1)
+	const { addVideo } = useAddVideo()
 
 	const { setThumbnailFile, setThumbnailPreview } = useVideoStore()
 
@@ -141,26 +144,37 @@ export function UploadVideoModal({
 			handleSubmit(onSubmit)()
 		}
 	}
-	const onSubmit: SubmitHandler<TUploadVideoSchema> = async (data) => {
+	const onSubmit: SubmitHandler<TUploadVideoSchema> = (data) => {
 		setIsLoading(true)
 		try {
 			const formData = new FormData()
 
-			formData.append('file', data.file[0])
-			formData.append('title', data.title)
-			formData.append('description', data.description || '')
-			formData.append('tags', data.tags || '')
-			formData.append('visibility', data.visibility)
-			formData.append('audience', data.audience)
-			formData.append('publishType', data.publishType)
-			if (data.publishType === 'scheduled' && data.publishDate) {
-				formData.append('publishDate', data.publishDate)
-			}
-			if (data.thumbnail && data.thumbnail.length > 0) {
-				formData.append('thumbnail', data.thumbnail[0])
+			const payload: IAddVideoRequest = {
+				file: data.file[0],
+				title: data.title,
+				description: data.description || '',
+				tags: data.tags || '',
+				visibility: data.visibility,
+				audience: data.audience,
+				publishType: data.publishType,
+				publishDate:
+					data.publishType === 'scheduled' ? data.publishDate : undefined,
+				thumbnail: data.thumbnail?.[0],
 			}
 
-			await new Promise((res) => setTimeout(res, 1500))
+			formData.append('file', payload.file)
+			formData.append('title', payload.title)
+			if (payload.description)
+				formData.append('description', payload.description)
+			if (payload.tags) formData.append('tags', payload.tags)
+			formData.append('visibility', payload.visibility)
+			formData.append('audience', payload.audience)
+			formData.append('publishType', payload.publishType)
+			if (payload.publishDate)
+				formData.append('publishDate', payload.publishDate)
+			if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail)
+
+			addVideo(formData)
 
 			onOpenChange(false)
 			reset()
@@ -178,7 +192,7 @@ export function UploadVideoModal({
 			reset()
 			setFileName('')
 		}
-	}, [open])
+	}, [open, reset])
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
