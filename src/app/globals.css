@@ -380,10 +380,24 @@
 	border-radius: 4px;
 }
 
-.vds-theme {
-	--media-brand: #ff0000; /* червоний як на YouTube */
-	--media-range-fill: #ff0000;
-	--media-control-hover: #ff0000;
-  }
+:root {
+  --plyr-color-main: var(--primary);
+  --plyr-video-control-background-hover: rgba(255, 255, 255, 0.1);
+  --plyr-video-control-color: #ffffff;
+  
+}
+
+.plyr__menu__container .plyr__control[role="menuitemradio"]:hover,
+.plyr__menu__container .plyr__control[role="menuitemradio"][aria-checked="true"] {
+  color: var(--primary) !important; 
+}
+
+.plyr__menu__container .plyr__control[role="menuitem"]:hover {
+  color: var(--primary) !important;
+}
+
+
+
+
 
 

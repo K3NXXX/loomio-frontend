@@ -12,7 +12,7 @@ export function HomeSidebarMenu() {
 		<>
 			<aside
 				className='hidden lg:flex flex-col min-w-[240px] max-w-[240px]
-				sticky top-[76px] h-[calc(100vh-76px)]'
+				sticky top-[76px] h-[calc(100vh-76px)] bg-[oklch(0.19_0_0/0.7)] backdrop-blur-lg'
 			>
 				<div className='flex-1 pr-5 py-6 overflow-y-auto custom-scrollbar'>
 					<ul className='space-y-1 px-2'>
