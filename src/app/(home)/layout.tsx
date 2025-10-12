@@ -12,10 +12,7 @@ export default async function HomeLayout({
 	const cookieStore = await cookies()
 	const token = cookieStore.get('accessToken')?.value
 
-	if (!token) {
-		redirect(PAGES.LOGIN)
-	}
-
+	if (!token) redirect(PAGES.LOGIN)
 	return (
 		<SidebarProvider>
 			<ClientHomeLayout>{children}</ClientHomeLayout>

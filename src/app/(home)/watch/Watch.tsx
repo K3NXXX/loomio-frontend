@@ -13,8 +13,6 @@ export default function Watch() {
 	const videoId = searchParams.get('v')
 	const { video, isLoading, isError } = useGetOnePublicVideo(videoId ?? '')
 
-	console.log('video', video)
-
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
 	if (isLoading) {

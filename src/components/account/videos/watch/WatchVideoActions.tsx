@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { useGetMe } from '@/hooks/auth/useGetMe'
 import type { IVideo } from '@/types/video.types'
 import { getInitials } from '@/utils/get-initials'
 import { MoreHorizontal, Share, ThumbsDown, ThumbsUp } from 'lucide-react'
@@ -9,6 +10,10 @@ interface IWatchVideoActionsProps {
 }
 
 export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
+	const { userData } = useGetMe()
+
+	const isThatMe = userData?.id === video.user.id
+
 	return (
 		<div className='mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
 			<div className='flex items-center gap-4'>
@@ -23,13 +28,21 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 						{video.user._count.followers.toLocaleString()} subscribers
 					</p>
 				</div>
-
-				<Button
-					variant='default'
-					className='ml-2 font-semibold rounded-full px-6'
-				>
-					Subscribe
-				</Button>
+				{isThatMe ? (
+					<Button
+						variant='default'
+						className='ml-2 font-semibold rounded-full px-6'
+					>
+						Edit video
+					</Button>
+				) : (
+					<Button
+						variant='default'
+						className='ml-2 font-semibold rounded-full px-6'
+					>
+						Subscribe
+					</Button>
+				)}
 			</div>
 
 			<div className='flex flex-wrap items-center gap-3 mt-4'>

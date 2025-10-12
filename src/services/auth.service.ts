@@ -7,7 +7,6 @@ import type {
 	IEmailVerificationResponse,
 	IForgotPasswordRequest,
 	IForgotPasswordResponse,
-	IGetUserData,
 	ILogInRequest,
 	ILogoutResponse,
 	IRefreshTokenResponse,
@@ -92,6 +91,7 @@ class AuthService {
 		)
 		return data
 	}
+
 }
 
 export const authService = new AuthService()

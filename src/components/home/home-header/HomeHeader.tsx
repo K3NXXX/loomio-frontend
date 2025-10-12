@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { IoClose, IoMenu, IoSearch } from 'react-icons/io5'
 
 import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { useGetMe } from '@/hooks/auth/useGetMe'
 import { cn } from '@/lib/utils'
 import { Input } from '../../ui/input'
 import { Logo } from '../../ui/Logo'
@@ -15,6 +16,7 @@ import { Separator } from '../../ui/separator'
 export function HomeHeader() {
 	const { toggleSidebarCollapsed } = useGlobalStore()
 	const [search, setSearch] = useState('')
+	const { userData } = useGetMe()
 
 	return (
 		<header
@@ -57,7 +59,7 @@ export function HomeHeader() {
 
 					<div className='px-3'>
 						<Link href={PAGES.ACCOUNT}>
-							<p className='font-bold'>Welcome, Volodymyr!</p>
+							<p className='font-bold'>Welcome, {userData?.name}!</p>
 						</Link>
 					</div>
 				</div>

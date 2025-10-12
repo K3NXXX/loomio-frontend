@@ -15,7 +15,7 @@ export default async function AuthLayout({
 	const cookieStore = await cookies()
 	const token = cookieStore.get('accessToken')?.value
 
-	if (token) redirect(PAGES.DASHBOARD)
+	if (token) redirect(PAGES.HOME)
 
 	return <ClientAuthLayout>{children}</ClientAuthLayout>
 }
