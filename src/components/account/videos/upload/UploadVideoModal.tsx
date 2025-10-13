@@ -281,7 +281,7 @@ export function UploadVideoModal({
 												<Lottie
 													animationData={loader}
 													loop
-													className='w-8 h-8'
+													className='w-15 h-15'
 												/>
 											) : steps === 3 ? (
 												'Confirm'

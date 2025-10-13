@@ -53,7 +53,7 @@ export function HomeSidebarCollapsed() {
 				})}
 			</ul>
 
-			<div className='mt-auto pt-3 w-full flex justify-center'>
+			<div className='mt-auto pt-3 pb-5 w-full flex justify-center'>
 				<HomeUserMenu />
 			</div>
 		</aside>

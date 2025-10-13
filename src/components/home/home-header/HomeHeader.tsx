@@ -1,14 +1,14 @@
 'use client'
 
-import { PAGES } from '@/constants/pages.constants'
 import { useGlobalStore } from '@/zustand/store/globalStore'
-import Link from 'next/link'
 import { useState } from 'react'
 import { IoClose, IoMenu, IoSearch } from 'react-icons/io5'
 
 import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { Button } from '@/components/ui/button'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { cn } from '@/lib/utils'
+import { FaPlus } from 'react-icons/fa'
 import { Input } from '../../ui/input'
 import { Logo } from '../../ui/Logo'
 import { Separator } from '../../ui/separator'
@@ -57,11 +57,18 @@ export function HomeHeader() {
 						)}
 					</div>
 
-					<div className='px-3'>
-						<Link href={PAGES.ACCOUNT}>
-							<p className='font-bold'>Welcome, {userData?.name}!</p>
-						</Link>
-					</div>
+					<Button
+						className='
+						flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
+						bg-[var(--primary)] text-white shadow-md
+						hover:bg-[var(--primary)]/90 hover:shadow-lg
+						active:scale-95 active:brightness-90
+						transition-all duration-300
+					'
+					>
+						<FaPlus />
+						Create
+					</Button>
 				</div>
 			</div>
 		</header>
