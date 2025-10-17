@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { getInitials } from '@/utils/get-initials'
+import { useVideoStore } from '@/zustand/store/videoStore'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,7 +20,7 @@ type Video = {
 
 export default function Account() {
 	const { userData } = useGetMe()
-	const [openUploadingVideo, setOpenUploadingVideo] = useState(false)
+	const { openUploadingVideo, setOpenUploadingVideo } = useVideoStore()
 	const [videos, setVideos] = useState<Video[]>([
 		{
 			title: 'My first video',

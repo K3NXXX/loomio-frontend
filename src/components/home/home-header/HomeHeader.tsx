@@ -4,10 +4,11 @@ import { useGlobalStore } from '@/zustand/store/globalStore'
 import { useState } from 'react'
 import { IoClose, IoMenu, IoSearch } from 'react-icons/io5'
 
+import { UploadVideoModal } from '@/components/account/videos/upload/UploadVideoModal'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
-import { useGetMe } from '@/hooks/auth/useGetMe'
 import { cn } from '@/lib/utils'
+import { useVideoStore } from '@/zustand/store/videoStore'
 import { FaPlus } from 'react-icons/fa'
 import { Input } from '../../ui/input'
 import { Logo } from '../../ui/Logo'
@@ -16,7 +17,7 @@ import { Separator } from '../../ui/separator'
 export function HomeHeader() {
 	const { toggleSidebarCollapsed } = useGlobalStore()
 	const [search, setSearch] = useState('')
-	const { userData } = useGetMe()
+	const { openUploadingVideo, setOpenUploadingVideo } = useVideoStore()
 
 	return (
 		<header
@@ -58,6 +59,7 @@ export function HomeHeader() {
 					</div>
 
 					<Button
+						onClick={() => setOpenUploadingVideo(true)}
 						className='
 						flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
 						bg-[var(--primary)] text-white shadow-md
@@ -71,6 +73,13 @@ export function HomeHeader() {
 					</Button>
 				</div>
 			</div>
+
+			{openUploadingVideo && (
+				<UploadVideoModal
+					open={openUploadingVideo}
+					onOpenChange={setOpenUploadingVideo}
+				/>
+			)}
 		</header>
 	)
 }

@@ -1,6 +1,7 @@
 import { FaUserFriends } from 'react-icons/fa'
 import { IoHome } from 'react-icons/io5'
 import { MdFeaturedPlayList } from 'react-icons/md'
+import { RiAccountPinCircleFill } from 'react-icons/ri'
 import { SiYoutubeshorts } from 'react-icons/si'
 
 import { PAGES } from '@/constants/pages.constants'
@@ -18,7 +19,7 @@ export const sidebarMenu: ISidebarMenu[] = [
 	{
 		id: 1,
 		label: 'Home',
-		url: PAGES.DASHBOARD,
+		url: PAGES.HOME,
 		icon: IoHome,
 	},
 	{
@@ -39,5 +40,11 @@ export const sidebarMenu: ISidebarMenu[] = [
 		label: 'Followings',
 		url: PAGES.EDITOR,
 		icon: FaUserFriends,
+	},
+	{
+		id: 5,
+		label: 'Account',
+		url: PAGES.ACCOUNT,
+		icon: RiAccountPinCircleFill,
 	},
 ]

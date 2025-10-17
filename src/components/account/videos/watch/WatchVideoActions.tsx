@@ -23,7 +23,6 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const { toggleVideoDislike } = useToggleVideoDislike()
 	const { isLiked } = useHasVideoLiked(video.id)
 	const { isDisliked } = useHasVideoDisliked(video.id)
-	console.log('is', isDisliked)
 
 	const isThatMe = userData?.id === video.user.id
 

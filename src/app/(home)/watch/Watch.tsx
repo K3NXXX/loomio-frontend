@@ -1,5 +1,6 @@
 'use client'
 
+import { WatchCommentsList } from '@/components/account/videos/watch/watch-comments/WatchCommentsList'
 import { WatchVideo } from '@/components/account/videos/watch/WatchVideo'
 import WatchVideoActions from '@/components/account/videos/watch/WatchVideoActions'
 import { useGetOnePublicVideo } from '@/hooks/videos/useGetOnePublicVideo'
@@ -12,8 +13,6 @@ export default function Watch() {
 	const searchParams = useSearchParams()
 	const videoId = searchParams.get('v')
 	const { video, isLoading, isError } = useGetOnePublicVideo(videoId ?? '')
-
-	console.log('video', video)
 
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
@@ -61,6 +60,7 @@ export default function Watch() {
 						</button>
 					)}
 				</div>
+				<WatchCommentsList video={video} />
 			</div>
 
 			<WatchRecommendedVideos />
