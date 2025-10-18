@@ -8,13 +8,18 @@ interface IState {
 interface IActions {
 	toggleThemeMenuOpened: () => void
 	toggleSidebarCollapsed: () => void
+	closeSidebar: () => void
 }
 
 export const useGlobalStore = create<IState & IActions>((set) => ({
 	isThemesMenuOpened: false,
-	isSidebarCollapsed: false,
+	isSidebarCollapsed: true,
+
 	toggleThemeMenuOpened: () =>
 		set((state) => ({ isThemesMenuOpened: !state.isThemesMenuOpened })),
+
 	toggleSidebarCollapsed: () =>
 		set((state) => ({ isSidebarCollapsed: !state.isSidebarCollapsed })),
+
+	closeSidebar: () => set({ isSidebarCollapsed: true }),
 }))

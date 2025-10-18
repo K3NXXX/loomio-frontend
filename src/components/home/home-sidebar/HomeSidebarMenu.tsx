@@ -1,18 +1,30 @@
 'use client'
 
 import { sidebarMenu } from '@/lists/sidebar.menu.items'
+import { useGlobalStore } from '@/zustand/store/globalStore'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
+import { useRef } from 'react'
+import { useOnClickOutside } from 'usehooks-ts'
 import { HomeUserMenu } from './HomeUserMenu'
 
 export function HomeSidebarMenu() {
 	const pathname = usePathname()
+	const ref = useRef(null)
+	const { closeSidebar } = useGlobalStore()
+
+	const handleClickOutside = () => {
+		closeSidebar()
+	}
+
+	useOnClickOutside(ref, handleClickOutside)
 
 	return (
 		<>
 			<aside
+				ref={ref}
 				className='hidden lg:flex flex-col min-w-[240px] max-w-[240px]
-				sticky top-[76px] h-[calc(100vh-76px)] bg-[oklch(0.19_0_0/0.7)] backdrop-blur-lg'
+				fixed z-20 top-[76px] h-[calc(100vh-76px)] bg-[oklch(0.19_0_0/0.7)] backdrop-blur-lg'
 			>
 				<div className='flex-1 pr-5 py-6 overflow-y-auto custom-scrollbar'>
 					<ul className='space-y-1 px-2'>

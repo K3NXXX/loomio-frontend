@@ -31,7 +31,7 @@ export default function Watch() {
 	return (
 		<div className='flex flex-col lg:flex-row gap-6 pb-30'>
 			<div className='flex-1 max-w-[73%]'>
-				<WatchVideo videoSrc={video.videoFile} />
+				<WatchVideo videoId={video.id} videoSrc={video.videoFile} />
 				<h1 className='mt-4 text-2xl font-bold'>{video.title}</h1>
 
 				<WatchVideoActions video={video} />

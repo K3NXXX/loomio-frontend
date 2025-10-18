@@ -19,7 +19,9 @@ export function ClientHomeLayout({ children }: { children: ReactNode }) {
 		>
 			<HomeHeader />
 			<div className='flex flex-1'>
-				{isSidebarCollapsed ? <HomeSidebarCollapsed /> : <HomeSidebarMenu />}
+				<div className='w-[80px]'>
+					{isSidebarCollapsed ? <HomeSidebarCollapsed /> : <HomeSidebarMenu />}
+				</div>
 
 				<main className='flex-1 overflow-y-auto px-10 py-10'>{children}</main>
 			</div>

@@ -1,21 +1,32 @@
 'use client'
 
+import { useAddView } from '@/hooks/view/useAddView'
 import 'plyr/dist/plyr.css'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-export function WatchVideo({ videoSrc }: { videoSrc: string }) {
+interface WatchVideoProps {
+	videoSrc: string
+	videoId: string
+}
+
+export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [aspectRatio, setAspectRatio] = useState<number | null>(null)
 	const [isReady, setIsReady] = useState(false)
 	const playerRef = useRef<any>(null)
+	const hasSentView = useRef(false)
+	const viewTimer = useRef<NodeJS.Timeout | null>(null)
 
+	const { addView } = useAddView()
+
+	// 📏 Визначаємо пропорції відео
 	useLayoutEffect(() => {
 		const video = videoRef.current
 		if (!video) return
 
 		function handleMetadata() {
-			setAspectRatio(video!.videoWidth / video!.videoHeight)
+			setAspectRatio(video.videoWidth / video.videoHeight)
 			setIsReady(true)
 		}
 
@@ -26,6 +37,7 @@ export function WatchVideo({ videoSrc }: { videoSrc: string }) {
 		}
 	}, [videoSrc])
 
+	// 🎞 Ініціалізація Plyr після готовності відео
 	useEffect(() => {
 		if (!isReady || !videoRef.current) return
 
@@ -64,6 +76,41 @@ export function WatchVideo({ videoSrc }: { videoSrc: string }) {
 		}
 	}, [isReady])
 
+	// ⏳ Реєструємо перегляд після 5 секунд відтворення
+	useEffect(() => {
+		const video = videoRef.current
+		if (!video) return
+
+		function handlePlay() {
+			if (hasSentView.current) return // не повторюємо запит
+
+			// Запускаємо таймер на 5 секунд
+			viewTimer.current = setTimeout(() => {
+				addView(videoId)
+				hasSentView.current = true
+			}, 5000)
+		}
+
+		function handlePause() {
+			if (viewTimer.current) {
+				clearTimeout(viewTimer.current)
+				viewTimer.current = null
+			}
+		}
+
+		video.addEventListener('play', handlePlay)
+		video.addEventListener('pause', handlePause)
+		video.addEventListener('ended', handlePause)
+
+		return () => {
+			video.removeEventListener('play', handlePlay)
+			video.removeEventListener('pause', handlePause)
+			video.removeEventListener('ended', handlePause)
+			if (viewTimer.current) clearTimeout(viewTimer.current)
+		}
+	}, [videoId, addView])
+
+	// ⌨️ Обробка клавіш (f, m)
 	useEffect(() => {
 		function handleKeyDown(e: KeyboardEvent) {
 			const player = playerRef.current
