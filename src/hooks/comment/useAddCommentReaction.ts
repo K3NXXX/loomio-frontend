@@ -1,13 +1,14 @@
 import { commentService } from '@/services/comment.service'
-import type { IEditCommentRequest } from '@/types/comment.types'
+import type { IAddCommentReactionRequest } from '@/types/comment.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-export const useEditComment = () => {
+export const useAddCommentReaction = () => {
 	const queryClient = useQueryClient()
-	const { mutate: editComment } = useMutation({
-		mutationKey: ['editComment'],
-		mutationFn: (data: IEditCommentRequest) => commentService.editComment(data),
+	const { mutate: addReaction } = useMutation({
+		mutationKey: ['addReaction'],
+		mutationFn: (data: IAddCommentReactionRequest) =>
+			commentService.addCommentReaction(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['getAllComments'] })
 		},
@@ -16,5 +17,5 @@ export const useEditComment = () => {
 		},
 	})
 
-	return { editComment }
+	return { addReaction }
 }

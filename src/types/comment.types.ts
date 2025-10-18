@@ -1,6 +1,7 @@
 export interface ICreateCommentRequest {
 	videoId: string
 	content: string
+	parentId?: string
 }
 
 interface CommentUser {
@@ -17,11 +18,20 @@ export interface IVideoComment {
 	createdAt: string
 	updatedAt: string
 	user: CommentUser
+	parent: ParentComment | null
+	likes: number
+	dislikes: number
+	userReaction: ReactionType | null
 	_count: {
-		likes: number
 		replies: number
 	}
-	liked: boolean
+}
+
+export interface ParentComment {
+	id: string
+	user: {
+		username: string
+	}
 }
 
 export interface IVideoCommentsResponse {
@@ -32,8 +42,17 @@ export interface IVideoCommentsResponse {
 	totalPages: number
 }
 
-export interface IEditCommentResponse {
+export interface IEditCommentRequest {
 	commentId: string
 	content: string
-	// videoId: string
+}
+
+export interface IAddCommentReactionRequest {
+	commentId: string
+	type: ReactionType
+}
+
+export enum ReactionType {
+	LIKE = 'LIKE',
+	DISLIKE = 'DISLIKE',
 }

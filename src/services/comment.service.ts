@@ -1,7 +1,8 @@
 import axiosInstance from '@/lib/axios'
 import type {
+	IAddCommentReactionRequest,
 	ICreateCommentRequest,
-	IEditCommentResponse,
+	IEditCommentRequest,
 	IVideoCommentsResponse,
 } from '@/types/comment.types'
 
@@ -26,7 +27,7 @@ class CommentService {
 	}
 
 	async editComment(
-		commentData: IEditCommentResponse,
+		commentData: IEditCommentRequest,
 	): Promise<{ message: string }> {
 		const { commentId, ...body } = commentData
 		const { data } = await axiosInstance.patch<{ message: string }>(
@@ -39,6 +40,17 @@ class CommentService {
 	async deleteComment(commentId: string): Promise<{ message: string }> {
 		const { data } = await axiosInstance.delete<{ message: string }>(
 			`${this.BASE_URL}/${commentId}`,
+		)
+		return data
+	}
+
+	async addCommentReaction(
+		commentData: IAddCommentReactionRequest,
+	): Promise<{ message: string }> {
+		const { commentId, ...body } = commentData
+		const { data } = await axiosInstance.post<{ message: string }>(
+			`${this.BASE_URL}/reaction/${commentId}`,
+			body,
 		)
 		return data
 	}
