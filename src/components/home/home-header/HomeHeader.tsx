@@ -69,7 +69,7 @@ export function HomeHeader() {
 					'
 					>
 						<FaPlus />
-						Create
+						Upload
 					</Button>
 				</div>
 			</div>

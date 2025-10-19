@@ -18,11 +18,8 @@ export interface IVideo {
 	videoFile: string
 	createdAt: string
 	tags?: string | null
-
 	_count: {
-		likes: number
 		views: number
-		comments: number
 	}
 
 	user: {

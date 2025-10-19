@@ -67,7 +67,7 @@ export function AvatarUploader({ userData }: IAvatarUploaderProps) {
 
 	return (
 		<>
-			<div className='flex flex-col items-center mb-12 text-center'>
+			<div className='flex flex-col items-center mb-3 text-center'>
 				<div className='relative flex items-center justify-center'>
 					<label
 						htmlFor='avatar-upload'
@@ -121,10 +121,7 @@ export function AvatarUploader({ userData }: IAvatarUploaderProps) {
 					onChange={handleAvatarChange}
 				/>
 
-				<h1 className='mt-6 text-3xl font-bold tracking-tight'>Edit Account</h1>
-				<p className='text-muted-foreground mt-1'>
-					Update your profile information below
-				</p>
+			
 			</div>
 
 			<CropAvatarModal

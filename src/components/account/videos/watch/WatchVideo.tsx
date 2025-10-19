@@ -20,7 +20,6 @@ export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
 
 	const { addView } = useAddView()
 
-	// 📏 Визначаємо пропорції відео
 	useLayoutEffect(() => {
 		const video = videoRef.current
 		if (!video) return
@@ -37,7 +36,6 @@ export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
 		}
 	}, [videoSrc])
 
-	// 🎞 Ініціалізація Plyr після готовності відео
 	useEffect(() => {
 		if (!isReady || !videoRef.current) return
 
@@ -76,13 +74,12 @@ export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
 		}
 	}, [isReady])
 
-	// ⏳ Реєструємо перегляд після 5 секунд відтворення
 	useEffect(() => {
 		const video = videoRef.current
 		if (!video) return
 
 		function handlePlay() {
-			if (hasSentView.current) return // не повторюємо запит
+			if (hasSentView.current) return
 
 			// Запускаємо таймер на 5 секунд
 			viewTimer.current = setTimeout(() => {
@@ -110,16 +107,31 @@ export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
 		}
 	}, [videoId, addView])
 
-	// ⌨️ Обробка клавіш (f, m)
 	useEffect(() => {
+		function isTypingInEditable(e: KeyboardEvent) {
+			const t = e.target as HTMLElement | null
+			if (!t) return false
+			const tag = t.tagName
+			return (
+				tag === 'INPUT' ||
+				tag === 'TEXTAREA' ||
+				tag === 'SELECT' ||
+				(t as HTMLElement).isContentEditable ||
+				t.getAttribute('role') === 'textbox'
+			)
+		}
+
 		function handleKeyDown(e: KeyboardEvent) {
+			if (isTypingInEditable(e)) return
+
 			const player = playerRef.current
 			if (!player) return
+
+			if (e.ctrlKey || e.metaKey || e.altKey) return
 
 			if (e.key.toLowerCase() === 'f') {
 				const elem = containerRef.current
 				if (!elem) return
-
 				if (
 					document.fullscreenElement === elem ||
 					document.fullscreenElement === videoRef.current
@@ -127,8 +139,7 @@ export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
 					document.exitFullscreen()
 				} else {
 					if (elem.requestFullscreen) elem.requestFullscreen()
-					else if (videoRef.current?.requestFullscreen)
-						videoRef.current.requestFullscreen()
+					else videoRef.current?.requestFullscreen?.()
 				}
 			}
 
@@ -138,9 +149,7 @@ export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
 		}
 
 		document.addEventListener('keydown', handleKeyDown)
-		return () => {
-			document.removeEventListener('keydown', handleKeyDown)
-		}
+		return () => document.removeEventListener('keydown', handleKeyDown)
 	}, [])
 
 	return (

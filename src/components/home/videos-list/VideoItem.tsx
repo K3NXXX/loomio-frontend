@@ -59,6 +59,10 @@ export default function VideoItem({ video }: IVideoItemProps) {
 							<p className='text-neutral-500 dark:text-neutral-400'>
 								{formatDate(video.createdAt)}
 							</p>
+							<span className='text-neutral-400'>•</span>
+							<p className='text-neutral-500 dark:text-neutral-400'>
+								{video._count.views} views
+							</p>
 						</div>
 					</div>
 				</div>

@@ -1,2 +1,2 @@
-export const SITE_NAME = 'NextGen'
+export const SITE_NAME = 'Loomio'
 export const NO_INDEX_PAGE = { robots: { index: false, follow: false } }

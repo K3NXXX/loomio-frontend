@@ -5,6 +5,6 @@ export const PAGES = {
 	FORGOT_PASSWORD: 'forgot-password',
 	PASSWORD_RESET: 'password-reset',
 	ACCOUNT: '/account',
-	UPLOAD_VIDEO: '/account/videos/upload',
+	CHANNELS: '/account/channels',
 	EDIT_ACCOUNT: 'account/edit-account',
 }

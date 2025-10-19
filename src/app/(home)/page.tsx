@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 import { Home } from './Home'
 
 export const metadata: Metadata = {
-	title: 'Home',
+	title: 'Loomio',
 	description: `${SITE_NAME} home page`,
 }
 

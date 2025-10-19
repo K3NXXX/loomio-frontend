@@ -55,6 +55,12 @@ export default function EditAccount() {
 				className='max-w-4xl mx-auto'
 			>
 				<AvatarUploader userData={userData} />
+				<h1 className='text-3xl font-bold tracking-tight text-center'>
+					Edit Account
+				</h1>
+				<p className='text-muted-foreground mt-1 text-center pb-5'>
+					Update your profile information below
+				</p>
 				<form onSubmit={handleSubmit(onSubmit)} noValidate>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
