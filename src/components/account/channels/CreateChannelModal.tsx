@@ -11,13 +11,13 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useCreateChannelFormErrors } from '@/hooks/account/useCreateChannelsFormErrors'
 import { useGetMe } from '@/hooks/auth/useGetMe'
+import { useCreateChannel } from '@/hooks/channel/useCreateChannel'
 import {
 	CreateChannelSchema,
 	createChannelSchema,
 } from '@/schemas/account/create-channel.schema'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
 import { useEffect, useMemo, useState } from 'react'
@@ -49,6 +49,7 @@ export default function CreateChannelModal({
 	useCreateChannelFormErrors(errors)
 
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+	const [avatarFile, setAvatarFile] = useState<File | null>(null)
 
 	useEffect(() => {
 		if (open) {
@@ -70,19 +71,62 @@ export default function CreateChannelModal({
 		[usernameValue],
 	)
 
-	const handleAvatarChange = (url?: string) => {
-		if (!url) return
-		setAvatarPreview(url)
+	const { createChannel } = useCreateChannel()
+
+	// очікуємо, що AvatarUploader віддає File; якщо він повертає url/base64 — див. утиліту нижче
+	const handleAvatarChange = (value?: File | string | null) => {
+		console.log(
+			'AvatarUploader value ->',
+			value,
+			'isFile:',
+			value instanceof File,
+			'type:',
+			typeof value,
+		)
+
+		if (value instanceof File) {
+			setAvatarFile(value)
+			setAvatarPreview(URL.createObjectURL(value))
+		} else if (typeof value === 'string') {
+			setAvatarFile(null)
+			setAvatarPreview(value)
+		} else {
+			setAvatarFile(null)
+			setAvatarPreview(null)
+		}
 	}
 
-	const onSubmit = (data: CreateChannelSchema) => {
-		console.log('Create channel values:', {
-			...data,
-			avatar: avatarPreview,
+	async function dataUrlToFile(dataUrl: string, filename = 'avatar') {
+		const res = await fetch(dataUrl)
+		const blob = await res.blob()
+		const ext = blob.type.split('/')[1] ?? 'png'
+		return new File([blob], `${filename}.${ext}`, { type: blob.type })
+	}
+
+	const onSubmit = async (data: CreateChannelSchema) => {
+		const fd = new FormData()
+		fd.append('name', data.name)
+		fd.append('username', data.username.toLowerCase().trim())
+
+		if (avatarFile) {
+			fd.append('avatar', avatarFile)
+		} else if (typeof avatarPreview === 'string') {
+			if (avatarPreview.startsWith('data:')) {
+				const fileFromDataUrl = await dataUrlToFile(avatarPreview, 'avatar')
+				fd.append('avatar', fileFromDataUrl)
+			} else if (/^https?:\/\//.test(avatarPreview)) {
+				fd.append('avatarUrl', avatarPreview)
+			}
+		}
+
+		createChannel(fd, {
+			onSuccess: () => {
+				onOpenChange(false)
+				reset()
+				setAvatarFile(null)
+				setAvatarPreview(null)
+			},
 		})
-		onOpenChange(false)
-		reset()
-		setAvatarPreview(null)
 	}
 
 	return (
@@ -98,18 +142,7 @@ export default function CreateChannelModal({
 		>
 			<DialogContent
 				onInteractOutside={(e) => e.preventDefault()}
-				className='
-          fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-          min-w-[960px] min-h-[600px]
-          max-h-[90vh] overflow-y-auto
-          rounded-2xl
-          border border-neutral-800
-          bg-gradient-to-br from-neutral-900 via-neutral-950 to-black
-          text-white
-          shadow-2xl
-          backdrop-blur-xl
-          p-0
-        '
+				className='fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[960px] min-h-[600px] max-h-[90vh] overflow-y-auto rounded-2xl border border-neutral-800 bg-gradient-to-br from-neutral-900 via-neutral-950 to-black text-white shadow-2xl backdrop-blur-xl p-0'
 			>
 				<DialogHeader className='px-6 pt-6 pb-4 border-b border-neutral-800'>
 					<DialogTitle className='text-lg font-semibold flex items-center justify-between'>
@@ -131,6 +164,7 @@ export default function CreateChannelModal({
 							</Label>
 							<AvatarUploader
 								userData={userData}
+								page='channel'
 								onChange={handleAvatarChange}
 							/>
 						</div>
@@ -180,7 +214,7 @@ export default function CreateChannelModal({
 							<div className='p-6 flex items-center gap-4'>
 								<div className='w-16 h-16 rounded-full overflow-hidden ring-2 ring-primary/30 flex items-center justify-center bg-neutral-800'>
 									<Avatar className='w-full h-full'>
-										<AvatarImage src={userData?.avatarUrl} />
+										<AvatarImage src={avatarPreview || undefined} />
 										<AvatarFallback className='flex items-center justify-center w-full h-full text-lg font-medium'>
 											{getInitials(userData?.name)}
 										</AvatarFallback>
@@ -191,7 +225,6 @@ export default function CreateChannelModal({
 										{truncateName(previewName, 25)}
 									</p>
 									<p className='text-sm text-neutral-400'>
-										{' '}
 										{truncateName(previewUsername, 25)}
 									</p>
 								</div>

@@ -6,7 +6,7 @@ export const createChannelSchema = z.object({
 		.nonempty({ message: 'Channel name is required' })
 		.min(2, { message: 'Channel name must be at least 2 characters' })
 		.max(50, { message: 'Channel name must be less than 50 characters' })
-		.regex(/^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ0-9\\s'’`-]+$/, {
+		.regex(/^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ0-9\s'’`-]+$/, {
 			message:
 				'Name can contain only letters, numbers, spaces, apostrophes, or dashes',
 		}),

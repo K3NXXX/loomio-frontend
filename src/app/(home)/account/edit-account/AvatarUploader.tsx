@@ -13,19 +13,25 @@ import { FiTrash2 } from 'react-icons/fi'
 
 interface IAvatarUploaderProps {
 	userData?: IGetUserData
+	page: string
+	onChange?: (url: string | null) => void
 }
 
-export function AvatarUploader({ userData }: IAvatarUploaderProps) {
+export function AvatarUploader({
+	userData,
+	page,
+	onChange,
+}: IAvatarUploaderProps) {
 	const [tempImageUrl, setTempImageUrl] = useState<string | null>(null)
 	const [isCropModalOpen, setIsCropModalOpen] = useState(false)
 	const [crop, setCrop] = useState({ x: 0, y: 0 })
 	const [zoom, setZoom] = useState(1)
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
 	const [localAvatarUrl, setLocalAvatarUrl] = useState<string | null>(null)
+	const [removed, setRemoved] = useState(false)
 
 	const { updateAvatar, isUploadAvatarLoading } = useUpdateAvatar()
 	const { deleteAvatar } = useDeleteAvatar()
-
 	const fileInputRef = useRef<HTMLInputElement | null>(null)
 
 	const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,11 +40,9 @@ export function AvatarUploader({ userData }: IAvatarUploaderProps) {
 			const url = URL.createObjectURL(file)
 			setTempImageUrl(url)
 			setIsCropModalOpen(true)
+			setRemoved(false)
 		}
-
-		if (fileInputRef.current) {
-			fileInputRef.current.value = ''
-		}
+		if (fileInputRef.current) fileInputRef.current.value = ''
 	}
 
 	const onCropComplete = (_: Area, croppedPixels: Area) => {
@@ -53,17 +57,33 @@ export function AvatarUploader({ userData }: IAvatarUploaderProps) {
 				const res = await fetch(croppedImage)
 				const blob = await res.blob()
 				const file = new File([blob], 'avatar.png', { type: blob.type })
-				updateAvatar(file)
+
+				if (page === 'channel') {
+				} else {
+					updateAvatar(file)
+				}
+
+				onChange?.(croppedImage)
+				setRemoved(false)
 				setIsCropModalOpen(false)
 			}
 		}
 	}
 
 	const handleRemoveAvatar = () => {
-		deleteAvatar()
+		if (page === 'channel') {
+		} else {
+			deleteAvatar()
+		}
 		setLocalAvatarUrl(null)
 		setTempImageUrl(null)
+		setRemoved(true)
+		onChange?.(null)
 	}
+
+	const src = removed
+		? undefined
+		: localAvatarUrl || userData?.avatarUrl || undefined
 
 	return (
 		<>
@@ -72,8 +92,8 @@ export function AvatarUploader({ userData }: IAvatarUploaderProps) {
 					<label
 						htmlFor='avatar-upload'
 						className='relative w-32 h-32 rounded-full overflow-hidden 
-							ring-4 ring-primary/50 shadow-lg cursor-pointer group 
-							hover:scale-105 transition-transform'
+              ring-4 ring-primary/50 shadow-lg cursor-pointer group 
+              hover:scale-105 transition-transform'
 					>
 						<Avatar className='w-full h-full'>
 							{isUploadAvatarLoading ? (
@@ -81,30 +101,25 @@ export function AvatarUploader({ userData }: IAvatarUploaderProps) {
 									<Lottie animationData={loader} loop className='w-20 h-20' />
 								</div>
 							) : (
-								<AvatarImage
-									src={localAvatarUrl || userData?.avatarUrl || undefined}
-								/>
+								<AvatarImage src={src} key={src || 'fallback'} />
 							)}
-
-							{!isUploadAvatarLoading &&
-								!localAvatarUrl &&
-								!userData?.avatarUrl && (
-									<AvatarFallback className='text-[25px]'>
-										{getInitials(userData?.name)}
-									</AvatarFallback>
-								)}
+							{!isUploadAvatarLoading && (
+								<AvatarFallback className='text-[25px]'>
+									{getInitials(userData?.name)}
+								</AvatarFallback>
+							)}
 						</Avatar>
 						<div className='absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity'>
 							<span className='text-white text-sm font-medium'>Change</span>
 						</div>
 					</label>
 
-					{userData?.avatarUrl && (
+					{(!!userData?.avatarUrl || !!localAvatarUrl) && !removed && (
 						<button
 							type='button'
 							onClick={handleRemoveAvatar}
 							className='cursor-pointer absolute right-2 -bottom-5 -translate-y-1/2 
-							bg-primary hover:bg-primary/80 text-white p-2 rounded-full shadow-md transition'
+                bg-primary hover:bg-primary/80 text-white p-2 rounded-full shadow-md transition'
 							title='Remove avatar'
 						>
 							<FiTrash2 className='w-4 h-4' />
@@ -120,8 +135,6 @@ export function AvatarUploader({ userData }: IAvatarUploaderProps) {
 					className='hidden'
 					onChange={handleAvatarChange}
 				/>
-
-			
 			</div>
 
 			<CropAvatarModal

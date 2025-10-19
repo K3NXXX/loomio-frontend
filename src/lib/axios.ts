@@ -8,39 +8,39 @@ const axiosInstance = axios.create({
 	withCredentials: true,
 })
 
-axiosInstance.interceptors.response.use(
-	(response) => response,
-	async (error) => {
-		const originalRequest = error?.config
+// axiosInstance.interceptors.response.use(
+// 	(response) => response,
+// 	async (error) => {
+// 		const originalRequest = error?.config
 
-		if (!error || !error.config || !error.response) {
-			return Promise.reject(error)
-		}
+// 		if (!error || !error.config || !error.response) {
+// 			return Promise.reject(error)
+// 		}
 
-		const isAuthRefreshRequest = originalRequest.url?.includes('/auth/refresh')
+// 		const isAuthRefreshRequest = originalRequest.url?.includes('/auth/refresh')
 
-		if (
-			error.response.status === 401 &&
-			!originalRequest._retry &&
-			!isAuthRefreshRequest
-		) {
-			originalRequest._retry = true
-			try {
-				const { accessToken } = await authService.refreshToken()
+// 		if (
+// 			error.response.status === 401 &&
+// 			!originalRequest._retry &&
+// 			!isAuthRefreshRequest
+// 		) {
+// 			originalRequest._retry = true
+// 			try {
+// 				const { accessToken } = await authService.refreshToken()
 
-				axiosInstance.defaults.headers.common['Authorization'] =
-					`Bearer ${accessToken}`
-				originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
+// 				axiosInstance.defaults.headers.common['Authorization'] =
+// 					`Bearer ${accessToken}`
+// 				originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
 
-				return axiosInstance(originalRequest)
-			} catch (refreshError) {
-				window.location.href = PAGES.LOGIN
-				return Promise.reject(refreshError)
-			}
-		}
+// 				return axiosInstance(originalRequest)
+// 			} catch (refreshError) {
+// 				window.location.href = PAGES.LOGIN
+// 				return Promise.reject(refreshError)
+// 			}
+// 		}
 
-		return Promise.reject(error)
-	},
-)
+// 		return Promise.reject(error)
+// 	},
+// )
 
 export default axiosInstance
