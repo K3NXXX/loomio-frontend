@@ -16,6 +16,13 @@ class ChannelService {
 		const { data } = await axiosInstance.get<IChannel[]>(`${this.BASE_URL}/me`)
 		return data
 	}
+
+	async getChannel(channelId: string): Promise<IChannel> {
+		const { data } = await axiosInstance.get<IChannel>(
+			`${this.BASE_URL}/${channelId}`,
+		)
+		return data
+	}
 }
 
 export const channelService = new ChannelService()

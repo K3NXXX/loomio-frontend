@@ -1,6 +1,7 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { PAGES } from '@/constants/pages.constants'
 import type { IVideo } from '@/types/video.types'
 import { formatDate } from '@/utils/formatDate'
 import { getInitials } from '@/utils/get-initials'
@@ -14,11 +15,11 @@ interface IVideoItemProps {
 export default function VideoItem({ video }: IVideoItemProps) {
 	return (
 		<li className='group [transform-style:preserve-3d] rounded-xl bg-white shadow-md transition-all duration-500 hover:-translate-y-2 hover:rotate-x-3 hover:rotate-y-1 hover:shadow-2xl dark:bg-neutral-900'>
-			<Link href={`/watch?v=${video.id}`} className='block'>
+			<Link href={PAGES.WATCH(video.id)} className='block'>
 				<div className='relative aspect-video w-full overflow-hidden rounded-t-xl'>
 					<Image
-						src={video.thumbnailFile}
-						alt={video.title}
+						src={video?.thumbnailFile}
+						alt={video?.title}
 						fill
 						unoptimized
 						className='object-cover transition-transform duration-500 group-hover:scale-110 group-hover:brightness-110'
@@ -39,10 +40,12 @@ export default function VideoItem({ video }: IVideoItemProps) {
 
 				<div className='flex gap-3 rounded-b-xl p-3 transition-colors duration-300 group-hover:bg-neutral-50 dark:group-hover:bg-neutral-800'>
 					<Avatar className='h-10 w-10 transition-transform duration-300 group-hover:scale-110'>
-						{video.user.avatarUrl ? (
-							<AvatarImage src={video.user.avatarUrl} alt='user avatar' />
+						{video?.channel?.avatarUrl ? (
+							<AvatarImage src={video?.channel?.avatarUrl} alt='user avatar' />
 						) : (
-							<AvatarFallback>{getInitials(video.user.name)}</AvatarFallback>
+							<AvatarFallback>
+								{getInitials(video?.channel?.name)}
+							</AvatarFallback>
 						)}
 					</Avatar>
 
@@ -53,15 +56,15 @@ export default function VideoItem({ video }: IVideoItemProps) {
 
 						<div className='mt-1 flex flex-wrap items-center gap-2 text-sm'>
 							<p className='font-medium text-neutral-800 dark:text-neutral-300'>
-								{video.user.name}
+								{video?.channel.name}
 							</p>
 							<span className='text-neutral-400'>•</span>
 							<p className='text-neutral-500 dark:text-neutral-400'>
-								{formatDate(video.createdAt)}
+								{formatDate(video?.createdAt)}
 							</p>
 							<span className='text-neutral-400'>•</span>
 							<p className='text-neutral-500 dark:text-neutral-400'>
-								{video._count.views} views
+								{video?._count.views} views
 							</p>
 						</div>
 					</div>

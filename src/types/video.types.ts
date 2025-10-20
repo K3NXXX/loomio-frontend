@@ -8,6 +8,7 @@ export interface IAddVideoRequest {
 	publishType: 'now' | 'scheduled'
 	publishDate?: string
 	thumbnail?: File
+	channelId: string | null
 }
 
 export interface IVideo {
@@ -22,11 +23,12 @@ export interface IVideo {
 		views: number
 	}
 
-	user: {
+	channel: {
 		id: string
 		username: string
 		name: string
 		avatarUrl: string | null
+		userId: string
 		_count: {
 			followers: number
 		}

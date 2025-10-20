@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { PAGES } from '@/constants/pages.constants'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useToggleFollowUser } from '@/hooks/follows/useFollowUser'
 import { useIsFollowing } from '@/hooks/follows/useIsFollowing'
@@ -10,6 +11,7 @@ import { useToggleVideoLike } from '@/hooks/like/useToggleVideoLike'
 import type { IVideo } from '@/types/video.types'
 import { getInitials } from '@/utils/get-initials'
 import { MoreHorizontal, Share, ThumbsDown, ThumbsUp } from 'lucide-react'
+import Link from 'next/link'
 
 interface IWatchVideoActionsProps {
 	video: IVideo
@@ -18,26 +20,33 @@ interface IWatchVideoActionsProps {
 export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const { userData } = useGetMe()
 	const { toggleFollowUser } = useToggleFollowUser()
-	const { isFollowing } = useIsFollowing(video.user.id)
+	const { isFollowing } = useIsFollowing(video.channel.id)
 	const { toggleVideoLike } = useToggleVideoLike()
 	const { toggleVideoDislike } = useToggleVideoDislike()
 	const { isLiked } = useHasVideoLiked(video.id)
 	const { isDisliked } = useHasVideoDisliked(video.id)
 
-	const isThatMe = userData?.id === video.user.id
+	const isThatMe = userData?.id === video.channel.userId
 
 	return (
 		<div className='mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
 			<div className='flex items-center gap-4'>
-				<Avatar className='w-12 h-12'>
-					<AvatarImage src={video.user.avatarUrl ?? ''} alt={video.user.name} />
-					<AvatarFallback>{getInitials(video.user.name)}</AvatarFallback>
-				</Avatar>
+				<Link href={PAGES.CHANNEL(video.channel.username)}>
+					<Avatar className='w-12 h-12'>
+						<AvatarImage
+							src={video.channel.avatarUrl ?? ''}
+							alt={video.channel.name}
+						/>
+						<AvatarFallback>{getInitials(video.channel.name)}</AvatarFallback>
+					</Avatar>
+				</Link>
 
 				<div className='flex flex-col'>
-					<p className='font-semibold'>{video.user.name}</p>
+					<Link href={PAGES.CHANNEL(video.channel.username)}>
+						<p className='font-semibold'>{video.channel.name}</p>
+					</Link>
 					<p className='text-sm text-muted-foreground'>
-						{video.user._count.followers.toLocaleString()} subscribers
+						{video.channel._count.followers.toLocaleString()} subscribers
 					</p>
 				</div>
 				{isThatMe ? (
@@ -49,7 +58,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					</Button>
 				) : (
 					<Button
-						onClick={() => toggleFollowUser(video.user.id)}
+						onClick={() => toggleFollowUser(video.channel.id)}
 						variant={isFollowing ? 'outline' : 'default'}
 						className='ml-2 font-semibold rounded-full px-6'
 					>

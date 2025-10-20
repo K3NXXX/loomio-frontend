@@ -7,6 +7,7 @@ import { IoClose, IoMenu, IoSearch } from 'react-icons/io5'
 import { UploadVideoModal } from '@/components/account/videos/upload/UploadVideoModal'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
+import { useGetUserChannels } from '@/hooks/channel/useGetUserChannels'
 import { cn } from '@/lib/utils'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { FaPlus } from 'react-icons/fa'
@@ -14,10 +15,30 @@ import { Input } from '../../ui/input'
 import { Logo } from '../../ui/Logo'
 import { Separator } from '../../ui/separator'
 
+// 👇 додай ці імпорти з shadcn/ui
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { getInitials } from '@/utils/get-initials'
+
 export function HomeHeader() {
 	const { toggleSidebarCollapsed } = useGlobalStore()
 	const [search, setSearch] = useState('')
-	const { openUploadingVideo, setOpenUploadingVideo } = useVideoStore()
+	const { openUploadingVideo, setOpenUploadingVideo, setUploadChannelId } =
+		useVideoStore()
+	const { userChannels, isLoading } = useGetUserChannels()
+
+	const handlePickChannel = (channelId: string) => {
+		setUploadChannelId(channelId)
+		setOpenUploadingVideo(true)
+	}
 
 	return (
 		<header
@@ -47,8 +68,8 @@ export function HomeHeader() {
 							onChange={(e) => setSearch(e.target.value)}
 							placeholder='Search...'
 							className='w-full pl-12 pr-12 py-3 text-base rounded-xl bg-muted 
-						focus:ring-2 focus:ring-primary 
-						transition-all duration-300 ease-in-out'
+                focus:ring-2 focus:ring-primary 
+                transition-all duration-300 ease-in-out'
 						/>
 						{search && (
 							<IoClose
@@ -58,26 +79,68 @@ export function HomeHeader() {
 						)}
 					</div>
 
-					<Button
-						onClick={() => setOpenUploadingVideo(true)}
-						className='
-						flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
-						bg-[var(--primary)] text-white shadow-md
-						hover:bg-[var(--primary)]/90 hover:shadow-lg
-						active:scale-95 active:brightness-90
-						transition-all duration-300
-					'
-					>
-						<FaPlus />
-						Upload
-					</Button>
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button
+								className='
+                  flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
+                  bg-[var(--primary)] text-white shadow-md
+                  hover:bg-[var(--primary)]/90 hover:shadow-lg
+                  active:scale-95 active:brightness-90
+                  transition-all duration-300
+                '
+							>
+								<FaPlus />
+								Upload
+							</Button>
+						</DropdownMenuTrigger>
+
+						<DropdownMenuContent align='end' className='w-72'>
+							<DropdownMenuLabel>Select a channel</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+
+							{isLoading ? (
+								<div className='px-3 py-2 text-sm text-muted-foreground'>
+									Loading…
+								</div>
+							) : !userChannels?.length ? (
+								<div className='px-3 py-2 text-sm text-muted-foreground'>
+									You have no channels yet
+								</div>
+							) : (
+								<ScrollArea className='max-h-72'>
+									{userChannels.map((ch) => (
+										<DropdownMenuItem
+											key={ch.id}
+											onClick={() => handlePickChannel(ch.id)}
+											className='cursor-pointer gap-3 py-2'
+										>
+											<Avatar className='h-10 w-10'>
+												<AvatarImage src={ch.avatarUrl ?? undefined} />
+												<AvatarFallback>{getInitials(ch.name)}</AvatarFallback>
+											</Avatar>
+											<div className='flex flex-col leading-tight'>
+												<span className='text-sm font-medium'>{ch.name}</span>
+												<span className='text-xs text-muted-foreground'>
+													@{ch.username}
+												</span>
+											</div>
+										</DropdownMenuItem>
+									))}
+								</ScrollArea>
+							)}
+						</DropdownMenuContent>
+					</DropdownMenu>
 				</div>
 			</div>
 
 			{openUploadingVideo && (
 				<UploadVideoModal
 					open={openUploadingVideo}
-					onOpenChange={setOpenUploadingVideo}
+					onOpenChange={(open) => {
+						if (!open) setUploadChannelId(null)
+						setOpenUploadingVideo(open)
+					}}
 				/>
 			)}
 		</header>

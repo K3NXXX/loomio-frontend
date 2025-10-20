@@ -24,10 +24,10 @@ import { FaUpload } from 'react-icons/fa6'
 import { toast } from 'sonner'
 import { UploadVideoFile } from './UploadVideoFile'
 import { UploadVideoPreview } from './UploadVideoPreview'
-import { UploadVideoStepThird } from './UploadVideoStepThird'
 import { UploadVideoStepFirst } from './UploadVideoStepFirst'
 import { UploadVideoSteps } from './UploadVideoSteps'
 import { UploadVideoStepSecond } from './UploadVideoStepSecond'
+import { UploadVideoStepThird } from './UploadVideoStepThird'
 
 interface UploadVideoModalProps {
 	open: boolean
@@ -65,7 +65,8 @@ export function UploadVideoModal({
 	const [steps, setSteps] = useState(1)
 	const { addVideo } = useAddVideo()
 
-	const { setThumbnailFile, setThumbnailPreview } = useVideoStore()
+	const { setThumbnailFile, setThumbnailPreview, uploadChannelId } =
+		useVideoStore()
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
@@ -146,6 +147,12 @@ export function UploadVideoModal({
 	}
 	const onSubmit: SubmitHandler<TUploadVideoSchema> = (data) => {
 		setIsLoading(true)
+		console.log('hello')
+
+		if (!uploadChannelId) {
+			toast.error('Channel is not selected')
+			return
+		}
 		try {
 			const formData = new FormData()
 
@@ -160,6 +167,7 @@ export function UploadVideoModal({
 				publishDate:
 					data.publishType === 'scheduled' ? data.publishDate : undefined,
 				thumbnail: data.thumbnail?.[0],
+				channelId: uploadChannelId,
 			}
 
 			formData.append('file', payload.file)
@@ -170,6 +178,7 @@ export function UploadVideoModal({
 			formData.append('visibility', payload.visibility)
 			formData.append('audience', payload.audience)
 			formData.append('publishType', payload.publishType)
+			formData.append('channelId', payload.channelId)
 			if (payload.publishDate)
 				formData.append('publishDate', payload.publishDate)
 			if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail)

@@ -14,13 +14,14 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { PAGES } from '@/constants/pages.constants'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useLogout } from '@/hooks/auth/useLogout'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 import Link from 'next/link'
-import { PAGES } from '@/constants/pages.constants'
+import { MdOutlineVideoLibrary } from 'react-icons/md'
 
 export function HomeUserMenu() {
 	const { userData } = useGetMe()
@@ -74,10 +75,22 @@ export function HomeUserMenu() {
 					Upgrade to premium
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem className='cursor-pointer'>
-					<Link className='flex gap-[10px]' href={PAGES.ACCOUNT}>
+				<DropdownMenuItem>
+					<Link
+						href={PAGES.ACCOUNT}
+						className='flex items-center gap-2 w-full cursor-pointer'
+					>
 						<FaRegCircleUser />
-						Account
+						<span>Account</span>
+					</Link>
+				</DropdownMenuItem>
+				<DropdownMenuItem>
+					<Link
+						href={PAGES.CHANNELS}
+						className='flex items-center gap-2 w-full cursor-pointer'
+					>
+						<MdOutlineVideoLibrary />
+						<span>Channels</span>
 					</Link>
 				</DropdownMenuItem>
 				<DropdownMenuItem className='cursor-pointer'>

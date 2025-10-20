@@ -14,6 +14,9 @@ export const useToggleFollowUser = () => {
 			queryClient.invalidateQueries({
 				queryKey: ['getOnePublicVideo'],
 			})
+			queryClient.invalidateQueries({
+				queryKey: ['getChannel'],
+			})
 		},
 		onError: () => {
 			toast.error('Something went wrong. Try later')
