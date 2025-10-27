@@ -23,6 +23,14 @@ class ChannelService {
 		)
 		return data
 	}
+
+	async editChannel(channelId: string, fd: FormData) {
+		const { data } = await axiosInstance.patch(
+			`${this.BASE_URL}/${channelId}`,
+			fd,
+		)
+		return data
+	}
 }
 
 export const channelService = new ChannelService()

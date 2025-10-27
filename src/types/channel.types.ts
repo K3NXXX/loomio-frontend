@@ -10,7 +10,9 @@ export interface IChannel {
 	id: string
 	userId: string
 	name: string
+	description: string
 	username: string
+	bannerUrl: string | null
 	avatarUrl: string | null
 	createdAt: Date
 	updatedAt: Date

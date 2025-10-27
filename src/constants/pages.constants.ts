@@ -9,4 +9,5 @@ export const PAGES = {
 	EDIT_ACCOUNT: 'account/edit-account',
 	WATCH: (id: string) => `/watch?v=${id}`,
 	CHANNEL: (username: string) => `/@${username}`,
+	WORKPLACE: (username: string) => `/workplace/channel/@${username}/dashboard`,
 }

@@ -14,6 +14,8 @@ export interface IAddVideoRequest {
 export interface IVideo {
 	id: string
 	title: string
+	audience: string
+	visibility: string
 	description: string | null
 	thumbnailFile: string
 	videoFile: string
@@ -21,6 +23,7 @@ export interface IVideo {
 	tags?: string | null
 	_count: {
 		views: number
+		comments: number
 	}
 
 	channel: {
