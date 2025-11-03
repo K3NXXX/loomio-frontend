@@ -18,7 +18,6 @@ export function WorkplaceBrandingBanner({
 	onSelectBanner,
 	channel,
 }: IWorkplaceBrandingBanner) {
-	console.log('c', channel)
 	const [previewUrl, setPreviewUrl] = useState<string | undefined>(
 		channel?.bannerUrl ?? undefined,
 	)
@@ -43,8 +42,15 @@ export function WorkplaceBrandingBanner({
 	}, [channel?.bannerUrl, bannerFile])
 
 	const handleRemove = () => {
-		setValue('bannerFile', undefined)
+		setValue('bannerFile', undefined, {
+			shouldDirty: true,
+			shouldValidate: true,
+		})
+		setValue('bannerUrl', undefined as any, { shouldDirty: true })
+		setValue('removeBanner', true, { shouldDirty: true })
+
 		setPreviewUrl(undefined)
+
 		const fakeEvent = {
 			target: { files: [] },
 		} as unknown as React.ChangeEvent<HTMLInputElement>

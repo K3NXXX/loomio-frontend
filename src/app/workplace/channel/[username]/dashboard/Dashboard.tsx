@@ -55,7 +55,7 @@ export function Dashboard() {
 								src={channel.avatarUrl || undefined}
 								alt={channel.name}
 							/>
-							<AvatarFallback>{getInitials(channel.name)}</AvatarFallback>
+							<AvatarFallback>{getInitials(channel.username)}</AvatarFallback>
 						</Avatar>
 						<div>
 							<h2 className='text-lg font-semibold leading-tight'>

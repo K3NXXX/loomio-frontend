@@ -40,7 +40,7 @@ export function WorkplaceSidebar({
 				<Avatar className='size-30'>
 					<AvatarImage src={channel?.avatarUrl || undefined} alt='avatar' />
 					<AvatarFallback className='text-lg font-semibold'>
-						{getInitials(channel?.name || '')}
+						{getInitials(channel?.username || '')}
 					</AvatarFallback>
 				</Avatar>
 

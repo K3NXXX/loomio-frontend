@@ -13,12 +13,15 @@ import {
 import { useChannelStore } from '@/zustand/store/channelStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export function Branding() {
 	const { channel } = useChannelStore()
 	const { editChannel } = useEditChannel()
+
+	const [avatarTouched, setAvatarTouched] = useState(false)
+	const [bannerTouched, setBannerTouched] = useState(false)
 
 	const defaultValues = useMemo<TEditingChannelSchema>(
 		() => ({
@@ -27,6 +30,8 @@ export function Branding() {
 			description: channel?.description ?? '',
 			avatarFile: undefined,
 			bannerFile: undefined,
+			removeAvatar: false,
+			removeBanner: false,
 		}),
 		[channel],
 	)
@@ -37,49 +42,104 @@ export function Branding() {
 		reset,
 		watch,
 		setValue,
-		formState: { errors, isDirty, isValid, isSubmitting },
+		getValues,
+		trigger,
+		formState: { errors, isDirty, isSubmitting, isValid },
 	} = useForm<TEditingChannelSchema>({
 		resolver: zodResolver(editingChannelSchema),
 		mode: 'onChange',
 		defaultValues,
 	})
 
+	// 🚀 must register file inputs for RHF
+	useEffect(() => {
+		register('avatarFile')
+		register('bannerFile')
+		register('removeAvatar')
+		register('removeBanner')
+	}, [register])
+
 	const watchedUsername = watch('username')
 
-	const onSelectAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const f = e.target.files?.[0]
-		setValue('avatarFile', f, { shouldDirty: true, shouldValidate: true })
+	const onSelectAvatar = async (file: File | null) => {
+		console.log('🖼️ onSelectAvatar called with:', file)
+		setAvatarTouched(true)
+
+		setValue('avatarFile', file ?? undefined, {
+			shouldDirty: true,
+			shouldValidate: true,
+		})
+		setValue('removeAvatar', !file, { shouldDirty: true })
+
+		// ✅ форсуємо перевірку
+		await trigger()
+		console.log('✅ after trigger, current values:', getValues())
 	}
 
-	const onSelectBanner = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onSelectBanner = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const f = e.target.files?.[0]
+		console.log('🖼️ onSelectBanner called with:', f)
+		setBannerTouched(true)
+
 		if (f) {
 			const preview = URL.createObjectURL(f)
 			setValue('bannerFile', f, { shouldDirty: true, shouldValidate: true })
 			setValue('bannerUrl', preview, { shouldDirty: true })
+			setValue('removeBanner', false, { shouldDirty: true })
 		} else {
-			setValue('bannerFile', undefined)
-			setValue('bannerUrl', undefined)
+			setValue('bannerFile', undefined, { shouldDirty: true })
+			setValue('bannerUrl', undefined, { shouldDirty: true })
+			setValue('removeBanner', true, { shouldDirty: true })
 		}
+
+		await trigger()
 	}
 
-	const onCancel = () => reset(defaultValues, { keepDirty: false })
+	const onCancel = () => {
+		reset(defaultValues, { keepDirty: false })
+		setAvatarTouched(false)
+		setBannerTouched(false)
+	}
 
 	const onSubmit = (data: TEditingChannelSchema) => {
+		console.log('🚀 onSubmit data:', data)
+
 		const fd = new FormData()
 		fd.append('name', data.name)
 		fd.append('username', data.username.trim().toLowerCase())
 		fd.append('description', data.description ?? '')
-		if (data.avatarFile) fd.append('avatar', data.avatarFile)
-		if (data.bannerFile) fd.append('banner', data.bannerFile)
 
-		if (!channel?.id) return
+		if (data.avatarFile) {
+			console.log('📤 appending avatar:', data.avatarFile)
+			fd.append('avatar', data.avatarFile)
+		}
+
+		if (data.bannerFile) {
+			console.log('📤 appending banner:', data.bannerFile)
+			fd.append('banner', data.bannerFile)
+		}
+
+		fd.append('removeAvatar', String(data.removeAvatar ?? false))
+		fd.append('removeBanner', String(data.removeBanner ?? false))
+
+		if (!channel?.id) {
+			console.error('❌ No channel id — aborting submit')
+			return
+		}
+
 		editChannel({ channelId: channel.id, fd })
+		setAvatarTouched(false)
+		setBannerTouched(false)
 	}
 
 	useEffect(() => {
 		reset(defaultValues)
+		setAvatarTouched(false)
+		setBannerTouched(false)
 	}, [defaultValues, reset])
+
+	const hasAnyChanges = isDirty || avatarTouched || bannerTouched
+	const isPublishDisabled = isSubmitting || !hasAnyChanges
 
 	return (
 		<form
@@ -100,7 +160,6 @@ export function Branding() {
 							<Link href={PAGES.CHANNEL(channel?.username)}>Go to channel</Link>
 						</Button>
 						<Button
-							disabled={isSubmitting || !isValid || !isDirty}
 							type='button'
 							variant='outline'
 							className='rounded-full px-5 text-sm font-medium'
@@ -110,7 +169,7 @@ export function Branding() {
 						</Button>
 						<Button
 							type='submit'
-							disabled={isSubmitting || !isValid || !isDirty}
+							disabled={isPublishDisabled}
 							className='rounded-full px-6 text-sm font-medium'
 						>
 							Publish
@@ -130,7 +189,6 @@ export function Branding() {
 				onSelectAvatar={onSelectAvatar}
 				watch={watch}
 				channel={channel}
-				setValue={setValue}
 			/>
 
 			<WorkplaceBrandingFields

@@ -51,13 +51,15 @@ export function Channel() {
 				transition={{ duration: 0.4 }}
 				className='max-w-[1284px] mx-auto'
 			>
-				<div className='w-full h-[200px] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3'>
-					<img
-						src={channel.bannerUrl}
-						alt='channel banner'
-						className='w-full h-full object-cover object-[center_85%]'
-					/>
-				</div>
+				{channel.bannerUrl && (
+					<div className='w-full h-[200px] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3'>
+						<img
+							src={channel.bannerUrl}
+							alt='channel banner'
+							className='w-full h-full object-cover object-[center_85%]'
+						/>
+					</div>
+				)}
 
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
@@ -73,7 +75,7 @@ export function Channel() {
 							<Avatar className='w-[160px] h-[160px] ring-2 ring-primary/30 shadow-sm shrink-0'>
 								<AvatarImage src={channel.avatarUrl || undefined} />
 								<AvatarFallback className='text-2xl font-semibold'>
-									{getInitials(channel.name)}
+									{getInitials(channel.username)}
 								</AvatarFallback>
 							</Avatar>
 

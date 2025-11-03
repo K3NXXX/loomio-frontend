@@ -17,43 +17,31 @@ const fileMaxMB = (mb: number) =>
 		message: `File size must be ≤ ${mb} MB`,
 	})
 
-const avatarFileSchema = fileMaxMB(4).refine(
-	(f) => ['image/png', 'image/gif'].includes(f.type),
-	{ message: 'Avatar must be PNG or GIF' },
-)
-
 const bannerFileSchema = fileMaxMB(6)
 
 export const editingChannelSchema = z.object({
 	name: z
 		.string()
 		.nonempty({ message: 'Channel name is required' })
-		.min(2, { message: 'Channel name must be at least 2 characters' })
-		.max(50, { message: 'Channel name must be less than 50 characters' })
-		.regex(/^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ0-9\s'’`-]+$/, {
-			message:
-				'Name can contain only letters, numbers, spaces, apostrophes, or dashes',
-		}),
+		.min(2, { message: 'Channel name must be at least 2 characters' }),
 
 	username: z
 		.string()
-		.nonempty({ message: 'Username is required' })
-		.min(3, { message: 'Username must be at least 3 characters' })
-		.max(20, { message: 'Username must be at most 20 characters' })
-		.regex(/^[a-z0-9_]+$/, {
-			message:
-				'Username must contain only lowercase letters, numbers, and underscores',
-		}),
+		.nonempty({ message: 'Channel username is required' })
+		.min(3, { message: 'Username must be at least 3 characters' }),
 
 	description: z
 		.string()
-		.trim()
 		.max(1000, { message: 'Description must be at most 1000 characters' })
-		.optional()
-		.or(z.literal('')),
+		.optional(),
 
-	avatarFile: z.union([avatarFileSchema, z.undefined()]).optional(),
-	bannerFile: z.union([bannerFileSchema, z.undefined()]).optional(),
+	avatarFile: z.instanceof(File).optional(),
+	bannerFile: bannerFileSchema.optional(),
+
+	bannerUrl: z.string().optional(),
+
+	removeAvatar: z.boolean().optional().default(false),
+	removeBanner: z.boolean().optional().default(false),
 })
 
 export type TEditingChannelSchema = z.infer<typeof editingChannelSchema>
