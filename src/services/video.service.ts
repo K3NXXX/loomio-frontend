@@ -22,6 +22,21 @@ class VideoService {
 		)
 		return data
 	}
+
+	async deleteVideo(videoId: string): Promise<IVideo> {
+		const { data } = await axiosInstance.delete<IVideo>(
+			`${this.BASE_URL}/${videoId}`,
+		)
+		return data
+	}
+
+	async editVideo(videoId: string, videoData: FormData) {
+		const { data } = await axiosInstance.patch(
+			`${this.BASE_URL}/${videoId}`,
+			videoData,
+		)
+		return data
+	}
 }
 
 export const videoService = new VideoService()

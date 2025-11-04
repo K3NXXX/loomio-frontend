@@ -3,10 +3,13 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { IVideo } from '@/types/video.types'
+import type { IVideo } from '@/types/video.types'
 import { truncateName } from '@/utils/truncateName'
+import { useVideoStore } from '@/zustand/store/videoStore'
 import Image from 'next/image'
-import { FaEllipsisV, FaPen } from 'react-icons/fa'
+import { FaPen } from 'react-icons/fa'
+import { EditVideoModal } from '../account/videos/edit/EditVideoModal'
+import { VideoItemActions } from './content/VideoItemActions'
 
 interface IWorkplaceChannelVideosListProps {
 	videos: IVideo[]
@@ -14,6 +17,9 @@ interface IWorkplaceChannelVideosListProps {
 export function WorkplaceChannelVideosList({
 	videos,
 }: IWorkplaceChannelVideosListProps) {
+	const { setIsEditingFormOpened, isEditingFormOpened, setEditingVideo } =
+		useVideoStore()
+
 	if (!videos.length) {
 		return (
 			<div className='text-muted-foreground text-center py-10'>
@@ -22,7 +28,10 @@ export function WorkplaceChannelVideosList({
 		)
 	}
 
-	console.log('vide', videos)
+	const handleEditVideo = (video: IVideo) => {
+		setIsEditingFormOpened(true)
+		setEditingVideo(video)
+	}
 
 	const gridCols =
 		'[grid-template-columns:20px_minmax(340px,1fr)_110px_150px_110px_80px_100px_120px]'
@@ -38,17 +47,16 @@ export function WorkplaceChannelVideosList({
 					gridCols,
 				)}
 			>
-				<div /> {/* checkbox slot (опційно) */}
+				<div />
 				<div>Video</div>
 				<div className='text-center'>Visibility</div>
 				<div className='text-center'>Restrictions</div>
 				<div className='text-center'>Date</div>
 				<div className='text-center'>Views</div>
 				<div className='text-center'>Comments</div>
-				<div /> {/* Actions */}
+				<div />
 			</div>
 
-			{/* List */}
 			<div className='space-y-3 pt-3'>
 				{videos.map((v) => (
 					<div
@@ -84,7 +92,6 @@ export function WorkplaceChannelVideosList({
 								</div>
 							</div>
 						</div>
-						{/* visibility */}
 						<div className='text-center'>
 							<Badge
 								variant='outline'
@@ -116,19 +123,24 @@ export function WorkplaceChannelVideosList({
 						{/* actions */}
 						<div className='justify-self-end w-[120px] flex items-center gap-2'>
 							<Button
+								onClick={() => handleEditVideo(v)}
 								size='sm'
 								variant='outline'
 								className='rounded-full px-3 py-1 text-xs whitespace-nowrap'
 							>
 								<FaPen className='mr-2 h-3.5 w-3.5' /> Edit
 							</Button>
-							<Button size='icon' variant='ghost' className='rounded-full'>
-								<FaEllipsisV className='h-4 w-4 opacity-70' />
-							</Button>
+							<VideoItemActions videoId={v.id} />
 						</div>
 					</div>
 				))}
 			</div>
+			{isEditingFormOpened && (
+				<EditVideoModal
+					open={isEditingFormOpened}
+					onOpenChange={setIsEditingFormOpened}
+				/>
+			)}
 		</div>
 	)
 }
