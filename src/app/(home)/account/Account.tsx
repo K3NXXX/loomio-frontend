@@ -21,7 +21,7 @@ export default function Account() {
 	const { openUploadingVideo, setOpenUploadingVideo } = useVideoStore()
 
 	return (
-		<div className='min-h-screen px-4 py-10'>
+		<div className='px-4 py-10'>
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -51,6 +51,11 @@ export default function Account() {
 								<Link href={PAGES.EDIT_ACCOUNT}>
 									<Button variant='outline' className='rounded-full px-5'>
 										Edit profile
+									</Button>
+								</Link>
+								<Link href={PAGES.PLAYLISTS}>
+									<Button variant='outline' className='rounded-full px-5'>
+										Playlists
 									</Button>
 								</Link>
 							</div>

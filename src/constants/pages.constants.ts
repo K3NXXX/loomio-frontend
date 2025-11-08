@@ -11,4 +11,5 @@ export const PAGES = {
 	CHANNEL: (username: string) => `/@${username}`,
 	WORKPLACE: (username: string) => `/workplace/channel/@${username}/dashboard`,
 	SEARCH: (query: string) => `/search?query=${query}`,
+	PLAYLISTS: '/playlists',
 }

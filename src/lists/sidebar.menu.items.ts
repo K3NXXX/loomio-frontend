@@ -32,7 +32,7 @@ export const sidebarMenu: ISidebarMenu[] = [
 	{
 		id: 3,
 		label: 'Playlists',
-		url: PAGES.TASKS,
+		url: PAGES.PLAYLISTS,
 		icon: MdFeaturedPlayList,
 	},
 	{
