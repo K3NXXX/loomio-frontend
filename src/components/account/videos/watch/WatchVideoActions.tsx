@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { ShareVideoModal } from '@/components/ui/custom/ShareVideoModal'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useToggleFollowUser } from '@/hooks/follows/useFollowUser'
@@ -12,6 +13,7 @@ import type { IVideo } from '@/types/video.types'
 import { getInitials } from '@/utils/get-initials'
 import { MoreHorizontal, Share, ThumbsDown, ThumbsUp } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 
 interface IWatchVideoActionsProps {
 	video: IVideo
@@ -25,6 +27,8 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const { toggleVideoDislike } = useToggleVideoDislike()
 	const { isLiked } = useHasVideoLiked(video.id)
 	const { isDisliked } = useHasVideoDisliked(video.id)
+
+	const [isShareOpen, setIsShareOpen] = useState(false)
 
 	const isThatMe = userData?.id === video.channel.userId
 
@@ -100,6 +104,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 				</Button>
 
 				<Button
+					onClick={() => setIsShareOpen(true)}
 					variant='secondary'
 					size='sm'
 					className='group rounded-full h-10 px-5 flex items-center gap-2 font-semibold 
@@ -122,6 +127,13 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					<MoreHorizontal className='size-4 group-hover:scale-110 transition-transform' />
 				</Button>
 			</div>
+			{isShareOpen && (
+				<ShareVideoModal
+					video={video}
+					open={isShareOpen}
+					onClose={() => setIsShareOpen(false)}
+				/>
+			)}
 		</div>
 	)
 }

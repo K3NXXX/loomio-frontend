@@ -52,11 +52,11 @@ export function Channel() {
 				className='max-w-[1284px] mx-auto'
 			>
 				{channel.bannerUrl && (
-					<div className='w-full h-[200px] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3'>
+					<div className='w-full h-[230px] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3'>
 						<img
 							src={channel.bannerUrl}
 							alt='channel banner'
-							className='w-full h-full object-cover object-[center_85%]'
+							className='w-full h-full object-cover object-[center_5%]'
 						/>
 					</div>
 				)}
@@ -96,12 +96,14 @@ export function Channel() {
 									<p className='text-muted-foreground text-sm max-w-lg'>
 										{truncateName(channel?.description, 40)}
 									</p>
-									<span
-										onClick={() => setIsInfoOpen(true)}
-										className='font-bold text-primary cursor-pointer'
-									>
-										more
-									</span>
+									{channel.description && (
+										<span
+											onClick={() => setIsInfoOpen(true)}
+											className='font-bold text-primary cursor-pointer'
+										>
+											more
+										</span>
+									)}
 								</div>
 								{isThisMe ? (
 									<div className='flex flex-wrap gap-3 mt-5'>
@@ -128,7 +130,7 @@ export function Channel() {
 									<Button
 										onClick={() => toggleFollowUser(channel.id)}
 										variant={isFollowing ? 'outline' : 'default'}
-										className='ml-2 font-semibold rounded-full px-6 mt-5'
+										className={`${isThisMe && 'ml-2'} font-semibold rounded-full px-6 mt-5`}
 									>
 										{isFollowing ? 'Subscribed' : 'Subscribe'}
 									</Button>

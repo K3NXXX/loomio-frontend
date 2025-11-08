@@ -110,11 +110,6 @@ export function BannerUploader({
 		setTempImageUrl(null)
 	}
 
-	const handleRemove = () => {
-		setLocalUrl(null)
-		onChange?.(null, null)
-		setError(null)
-	}
 
 	return (
 		<div className='flex flex-col gap-3'>

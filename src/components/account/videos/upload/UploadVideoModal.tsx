@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useAddVideo } from '@/hooks/videos/useAddVideo'
 import type { IAddVideoRequest } from '@/types/video.types'
+import { truncateName } from '@/utils/truncateName'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
@@ -228,7 +229,7 @@ export function UploadVideoModal({
 				<DialogHeader className='px-6 pt-6 pb-4 border-b border-neutral-800'>
 					<DialogTitle className='flex items-center gap-2 text-lg font-semibold'>
 						{fileName ? (
-							fileName
+							truncateName(fileName, 70)
 						) : (
 							<>
 								<FaUpload className='text-primary' />

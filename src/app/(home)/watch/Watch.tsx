@@ -63,7 +63,7 @@ export default function Watch() {
 				<WatchCommentsList video={video} />
 			</div>
 
-			<WatchRecommendedVideos />
+			<WatchRecommendedVideos videoId={video.id} />
 		</div>
 	)
 }

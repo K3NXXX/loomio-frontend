@@ -16,6 +16,13 @@ class VideoService {
 		return data
 	}
 
+	async getRecommendedVideos(videoId: string): Promise<IVideo[]> {
+		const { data } = await axiosInstance.get<IVideo[]>(
+			`${this.BASE_URL}/public/${videoId}/recommended`,
+		)
+		return data
+	}
+
 	async getOneVideo(videoId: string): Promise<IVideo> {
 		const { data } = await axiosInstance.get<IVideo>(
 			`${this.BASE_URL}/public/${videoId}`,

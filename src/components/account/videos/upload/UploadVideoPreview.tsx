@@ -1,5 +1,6 @@
 'use client'
 
+import { truncateName } from '@/utils/truncateName'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
@@ -51,7 +52,6 @@ export function UploadVideoPreview({
 							fill
 							className='object-cover transition-transform duration-300 group-hover:scale-105'
 						/>
-						{/* ▶️ Play Button */}
 						<div className='absolute inset-0 flex items-center justify-center bg-black/30'>
 							<div className='w-16 h-16 bg-white/80 rounded-full flex items-center justify-center'>
 								<svg
@@ -76,7 +76,7 @@ export function UploadVideoPreview({
 			</div>
 
 			<p className='font-medium pt-3 pr-2 text-gray-400 truncate'>
-				Filename: {fileName}
+				Filename: {truncateName(fileName, 30)}
 			</p>
 		</div>
 	)

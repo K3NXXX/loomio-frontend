@@ -1,8 +1,7 @@
 'use client'
 
 import { useGlobalStore } from '@/zustand/store/globalStore'
-import { useState } from 'react'
-import { IoClose, IoMenu, IoSearch } from 'react-icons/io5'
+import { IoMenu } from 'react-icons/io5'
 
 import { UploadVideoModal } from '@/components/account/videos/upload/UploadVideoModal'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
@@ -11,11 +10,9 @@ import { useGetUserChannels } from '@/hooks/channel/useGetUserChannels'
 import { cn } from '@/lib/utils'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { FaPlus } from 'react-icons/fa'
-import { Input } from '../../ui/input'
 import { Logo } from '../../ui/Logo'
 import { Separator } from '../../ui/separator'
 
-// 👇 додай ці імпорти з shadcn/ui
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
 	DropdownMenu,
@@ -27,13 +24,17 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { getInitials } from '@/utils/get-initials'
+import { useState } from 'react'
+import { HeaderSearch } from './HeaderSearch'
+import CreateChannelModal from '@/components/account/channels/CreateChannelModal'
 
 export function HomeHeader() {
 	const { toggleSidebarCollapsed } = useGlobalStore()
-	const [search, setSearch] = useState('')
 	const { openUploadingVideo, setOpenUploadingVideo, setUploadChannelId } =
 		useVideoStore()
 	const { userChannels, isLoading } = useGetUserChannels()
+
+	const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
 
 	const handlePickChannel = (channelId: string) => {
 		setUploadChannelId(channelId)
@@ -60,35 +61,18 @@ export function HomeHeader() {
 						<Logo />
 					</Breadcrumb>
 
-					<div className='flex-1 max-w-md mx-4 relative'>
-						<IoSearch className='absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground size-5' />
-						<Input
-							type='text'
-							value={search}
-							onChange={(e) => setSearch(e.target.value)}
-							placeholder='Search...'
-							className='w-full pl-12 pr-12 py-3 text-base rounded-xl bg-muted 
-                focus:ring-2 focus:ring-primary 
-                transition-all duration-300 ease-in-out'
-						/>
-						{search && (
-							<IoClose
-								className='absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground size-5 cursor-pointer hover:text-foreground transition-colors'
-								onClick={() => setSearch('')}
-							/>
-						)}
-					</div>
+					<HeaderSearch />
 
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button
 								className='
-                  flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
-                  bg-[var(--primary)] text-white shadow-md
-                  hover:bg-[var(--primary)]/90 hover:shadow-lg
-                  active:scale-95 active:brightness-90
-                  transition-all duration-300
-                '
+								flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
+								bg-[var(--primary)] text-white shadow-md
+								hover:bg-[var(--primary)]/90 hover:shadow-lg
+								active:scale-95 active:brightness-90
+								transition-all duration-300
+								'
 							>
 								<FaPlus />
 								Upload
@@ -105,7 +89,13 @@ export function HomeHeader() {
 								</div>
 							) : !userChannels?.length ? (
 								<div className='px-3 py-2 text-sm text-muted-foreground'>
-									You have no channels yet
+									You have no channels yet.{' '}
+									<span
+										onClick={() => setIsCreateFormOpen(true)}
+										className='text-primary font-bold cursor-pointer pl-1'
+									>
+										Create new
+									</span>
 								</div>
 							) : (
 								<ScrollArea className='max-h-72'>
@@ -143,6 +133,11 @@ export function HomeHeader() {
 					}}
 				/>
 			)}
+
+			<CreateChannelModal
+				open={isCreateFormOpen}
+				onOpenChange={setIsCreateFormOpen}
+			/>
 		</header>
 	)
 }

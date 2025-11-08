@@ -91,7 +91,6 @@ export function ChannelVideoList({
 								<Play className='h-5 w-5 text-white' />
 							</div>
 						</div>
-						{/* бейдж видимості */}
 						{v.visibility === 'private' && (
 							<Badge className='absolute bottom-2 left-2 bg-neutral-800/80 backdrop-blur text-white'>
 								Private

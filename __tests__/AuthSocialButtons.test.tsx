@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { AuthSocialButtons } from '@/components/ui/AuthSocialButtons'
+import { AuthSocialButtons } from '@/components/ui/custom/AuthSocialButtons'
 import { providers } from '@/lists/auth.providers.list'
 
 it('renders all OAuth providers', () => {
