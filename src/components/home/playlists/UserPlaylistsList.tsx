@@ -6,16 +6,12 @@ import { formatDate } from '@/utils/formatDate'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { PlaylistActionsDropdown } from './PlaylistActionsDropdown'
+import { UserPlaylistsListSkeleton } from '@/components/skeletons/playlists/UserPlaylistsListSkeleton'
 
 export function UserPlaylistsList() {
 	const { allMyPlaylists, isLoading } = useGetMyPlaylists()
 
-	if (isLoading)
-		return (
-			<p className='text-center text-muted-foreground mt-10'>
-				Loading playlists...
-			</p>
-		)
+	if (isLoading) return <UserPlaylistsListSkeleton />
 
 	if (!allMyPlaylists?.length)
 		return (

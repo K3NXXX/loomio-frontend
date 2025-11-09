@@ -10,6 +10,7 @@ export const useCreatePlaylist = () => {
 		mutationFn: (data: ICreatePlaylistRequest) =>
 			playlistService.createPlaylist(data),
 		onSuccess: () => {
+			toast.success('Playlist created successfully')
 			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
 		},
 		onError: () => {

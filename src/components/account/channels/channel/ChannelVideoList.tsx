@@ -3,53 +3,16 @@
 import { Badge } from '@/components/ui/badge'
 import { PAGES } from '@/constants/pages.constants'
 import { cn } from '@/lib/utils'
+import type { IVideo } from '@/types/video.types'
+import { formatDate } from '@/utils/formatDate'
 import { Play } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-type ChannelVideo = {
-	id: string
-	title: string
-	description?: string | null
-	thumbnailFile: string
-	videoFile: string
-	visibility: 'public' | 'private'
-	audience: 'yes' | 'no'
-	publishType: 'now' | 'scheduled'
-	publishDate?: string | null
-	createdAt: string | Date
-	_count?: { views?: number; likes?: number; comments?: number }
-}
-
 interface ChannelVideoListProps {
-	videos: ChannelVideo[]
+	videos: IVideo[]
 	className?: string
-	// Якщо у тебе є свій роут перегляду — заміни генератор нижче
 	makeWatchHref?: (id: string) => string
-}
-
-function formatNumber(n = 0) {
-	if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace('.0', '') + 'M'
-	if (n >= 1_000) return (n / 1_000).toFixed(1).replace('.0', '') + 'K'
-	return String(n)
-}
-
-function timeAgo(date: string | Date) {
-	const d = typeof date === 'string' ? new Date(date) : date
-	const diff = (Date.now() - d.getTime()) / 1000
-	const minutes = Math.floor(diff / 60)
-	if (minutes < 1) return 'just now'
-	const hours = Math.floor(minutes / 60)
-	if (hours < 1) return `${minutes}m ago`
-	const days = Math.floor(hours / 24)
-	if (days < 1) return `${hours}h ago`
-	const weeks = Math.floor(days / 7)
-	if (weeks < 1) return `${days}d ago`
-	const months = Math.floor(days / 30)
-	if (months < 1) return `${weeks}w ago`
-	const years = Math.floor(days / 365)
-	if (years < 1) return `${months}mo ago`
-	return `${years}y ago`
 }
 
 export function ChannelVideoList({
@@ -96,11 +59,6 @@ export function ChannelVideoList({
 								Private
 							</Badge>
 						)}
-						{v.publishType === 'scheduled' && (
-							<Badge variant='secondary' className='absolute bottom-2 right-2'>
-								Scheduled
-							</Badge>
-						)}
 					</div>
 
 					<div className='p-3'>
@@ -109,15 +67,9 @@ export function ChannelVideoList({
 						</h3>
 
 						<div className='mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground'>
-							<span>{formatNumber(v._count?.views ?? 0)} views</span>
+							<span>{v._count?.views ?? 0} views</span>
 							<span>•</span>
-							<span>{timeAgo(v.createdAt)}</span>
-							{v.audience === 'yes' && (
-								<>
-									<span>•</span>
-									<span>Made for kids</span>
-								</>
-							)}
+							<span>{formatDate(v.createdAt)}</span>
 						</div>
 					</div>
 				</Link>

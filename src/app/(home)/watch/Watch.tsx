@@ -3,6 +3,9 @@
 import { WatchCommentsList } from '@/components/account/videos/watch/watch-comments/WatchCommentsList'
 import { WatchVideo } from '@/components/account/videos/watch/WatchVideo'
 import WatchVideoActions from '@/components/account/videos/watch/WatchVideoActions'
+import { WatchRecommendedVideosSkeleton } from '@/components/skeletons/videos/WatchRecommendedVideosSkeleton'
+import { WatchVideoActionsSkeleton } from '@/components/skeletons/videos/WatchVideoActionsSkeleton'
+import { WatchVideoSkeleton } from '@/components/skeletons/videos/WatchVideoSkeleton'
 import { useGetOnePublicVideo } from '@/hooks/videos/useGetOnePublicVideo'
 import { formatDate } from '@/utils/formatDate'
 import { useSearchParams } from 'next/navigation'
@@ -17,7 +20,15 @@ export default function Watch() {
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
 	if (isLoading) {
-		return <div className='p-4 text-center'>Loading...</div>
+		return (
+			<div className='flex gap-5'>
+				<div>
+					<WatchVideoSkeleton />
+					<WatchVideoActionsSkeleton />
+				</div>
+				<WatchRecommendedVideosSkeleton />
+			</div>
+		)
 	}
 
 	if (isError || !video) {

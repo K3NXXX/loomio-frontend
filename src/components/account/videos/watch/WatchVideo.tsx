@@ -81,7 +81,6 @@ export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
 		function handlePlay() {
 			if (hasSentView.current) return
 
-			// Запускаємо таймер на 5 секунд
 			viewTimer.current = setTimeout(() => {
 				addView(videoId)
 				hasSentView.current = true

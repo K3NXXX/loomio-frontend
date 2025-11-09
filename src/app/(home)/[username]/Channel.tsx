@@ -2,6 +2,7 @@
 
 import { ChannelMoreInfoModal } from '@/components/account/channels/channel/ChannelMoreInfoModal'
 import { ChannelVideoList } from '@/components/account/channels/channel/ChannelVideoList'
+import { ChannelSkeleton } from '@/components/skeletons/channels/ChannelSkeleton'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { PAGES } from '@/constants/pages.constants'
@@ -36,12 +37,7 @@ export function Channel() {
 		setUploadChannelId(channel.id)
 	}
 
-	if (isLoading || !channel)
-		return (
-			<div className='min-h-[60vh] flex items-center justify-center text-muted-foreground'>
-				Loading channel...
-			</div>
-		)
+	if (isLoading || !channel) return <ChannelSkeleton />
 
 	return (
 		<div className='px-4 py-10'>

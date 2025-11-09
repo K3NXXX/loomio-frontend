@@ -29,8 +29,6 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const { isLiked } = useHasVideoLiked(video.id)
 	const { isDisliked } = useHasVideoDisliked(video.id)
 
-	const [isOpenMoreVideoActions, setIsOpenMoreVideoActions] = useState(false)
-
 	const [isShareOpen, setIsShareOpen] = useState(false)
 
 	const isThatMe = userData?.id === video.channel.userId
@@ -103,10 +101,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 							: 'bg-neutral-100/60 dark:bg-neutral-800/60 hover:bg-neutral-200 dark:hover:bg-neutral-700'
 					}`}
 				>
-					<ThumbsDown
-						onClick={() => setIsOpenMoreVideoActions(true)}
-						className='size-4 group-hover:scale-110 transition-transform'
-					/>
+					<ThumbsDown className='size-4 group-hover:scale-110 transition-transform' />
 				</Button>
 
 				<Button

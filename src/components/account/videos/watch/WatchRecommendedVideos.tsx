@@ -9,6 +9,7 @@ export function WatchRecommendedVideos({
 	videoId,
 }: IWatchRecommendedVideosProps) {
 	const { recommendedVideos } = useGetRecommendedVideos(videoId)
+
 	return (
 		<div className='w-[25%] flex-shrink-0'>
 			<div className='flex flex-col gap-4'>
