@@ -10,6 +10,7 @@ export const useDeletePlaylist = () => {
 			playlistService.deletePlaylist(playlistId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
+			toast.success('Playlist deleted successfully')
 		},
 		onError: () => {
 			toast.error('Something went wrong. Try later')

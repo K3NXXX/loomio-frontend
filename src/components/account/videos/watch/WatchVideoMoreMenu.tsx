@@ -1,0 +1,59 @@
+'use client'
+
+import { AddToPlaylistModal } from '@/components/home/playlists/AddToPlaylistModal'
+import { Button } from '@/components/ui/button'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { MoreHorizontal, PlusCircle } from 'lucide-react'
+import { useState } from 'react'
+
+interface IWatchVideoMoreMenuProps {
+	videoId: string
+}
+
+export function WatchVideoMoreMenu({ videoId }: IWatchVideoMoreMenuProps) {
+	const [isAddToPlaylistOpen, setIsAddToPlaylistOpen] = useState(false)
+	return (
+		<DropdownMenu>
+			<div onClickCapture={(e) => e.stopPropagation()}>
+				<DropdownMenuTrigger asChild>
+					<Button
+						variant='secondary'
+						size='sm'
+						className='group rounded-full h-10 w-10 flex items-center justify-center 
+					bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur 
+					hover:bg-neutral-200 dark:hover:bg-neutral-700 
+					hover:shadow-md active:scale-95 transition-all'
+					>
+						<MoreHorizontal className='size-4 group-hover:scale-110 transition-transform' />
+					</Button>
+				</DropdownMenuTrigger>
+			</div>
+
+			<DropdownMenuContent align='start' className='w-48'>
+				<DropdownMenuItem
+					onClick={(e) => {
+						e.stopPropagation()
+						setIsAddToPlaylistOpen(true)
+					}}
+					className='flex items-center gap-2 cursor-pointer'
+				>
+					<PlusCircle className='size-4 text-muted-foreground' />
+					Add to playlist
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+
+			{isAddToPlaylistOpen && (
+				<AddToPlaylistModal
+					videoId={videoId}
+					open={isAddToPlaylistOpen}
+					onClose={() => setIsAddToPlaylistOpen(false)}
+				/>
+			)}
+		</DropdownMenu>
+	)
+}

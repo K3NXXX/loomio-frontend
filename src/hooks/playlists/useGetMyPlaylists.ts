@@ -3,10 +3,14 @@ import type { IPlaylist } from '@/types/playlist.types'
 import { useQuery } from '@tanstack/react-query'
 
 export const useGetMyPlaylists = () => {
-	const { data: allMyPlaylists, isLoading } = useQuery<IPlaylist[]>({
+	const {
+		data: allMyPlaylists,
+		isLoading,
+		refetch,
+	} = useQuery<IPlaylist[]>({
 		queryKey: ['getMyPlaylists'],
 		queryFn: () => playlistService.getMyPlaylists(),
 	})
 
-	return { allMyPlaylists, isLoading }
+	return { allMyPlaylists, isLoading, refetch }
 }

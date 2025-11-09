@@ -44,6 +44,20 @@ class VideoService {
 		)
 		return data
 	}
+
+	async addVideoToUserPlaylist(videoId: string, playlistId: string) {
+		const { data } = await axiosInstance.patch(
+			`${this.BASE_URL}/${videoId}/playlist/${playlistId}`,
+		)
+		return data
+	}
+
+	async removeVideoFromUserPlaylist(videoId: string, playlistId: string) {
+		const { data } = await axiosInstance.delete(
+			`${this.BASE_URL}/${videoId}/playlist/${playlistId}`,
+		)
+		return data
+	}
 }
 
 export const videoService = new VideoService()

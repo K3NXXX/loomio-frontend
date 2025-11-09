@@ -103,7 +103,6 @@ export function ChannelVideoList({
 						)}
 					</div>
 
-					{/* контент картки */}
 					<div className='p-3'>
 						<h3 className='line-clamp-2 font-semibold leading-tight'>
 							{v.title}

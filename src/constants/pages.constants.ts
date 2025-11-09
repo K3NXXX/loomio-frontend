@@ -12,4 +12,5 @@ export const PAGES = {
 	WORKPLACE: (username: string) => `/workplace/channel/@${username}/dashboard`,
 	SEARCH: (query: string) => `/search?query=${query}`,
 	PLAYLISTS: '/playlists',
+	ONE_USER_PLAYLIST: (id: string) => `/playlists/${id}`,
 }

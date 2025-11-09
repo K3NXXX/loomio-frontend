@@ -76,7 +76,7 @@ export function EditPlaylistModal({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
-				onInteractOutside={(e) => e.preventDefault()}
+				onClick={(e) => e.stopPropagation()}
 				className='w-full max-w-md rounded-2xl border border-neutral-800 bg-neutral-950/95 text-white shadow-2xl backdrop-blur-xl p-0'
 			>
 				<DialogHeader className='px-5 pt-5 pb-3 border-b border-neutral-800'>

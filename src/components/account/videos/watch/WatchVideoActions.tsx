@@ -11,9 +11,10 @@ import { useToggleVideoDislike } from '@/hooks/like/useToggleVideoDislike'
 import { useToggleVideoLike } from '@/hooks/like/useToggleVideoLike'
 import type { IVideo } from '@/types/video.types'
 import { getInitials } from '@/utils/get-initials'
-import { MoreHorizontal, Share, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { Share, ThumbsDown, ThumbsUp } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { WatchVideoMoreMenu } from './WatchVideoMoreMenu'
 
 interface IWatchVideoActionsProps {
 	video: IVideo
@@ -27,6 +28,8 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const { toggleVideoDislike } = useToggleVideoDislike()
 	const { isLiked } = useHasVideoLiked(video.id)
 	const { isDisliked } = useHasVideoDisliked(video.id)
+
+	const [isOpenMoreVideoActions, setIsOpenMoreVideoActions] = useState(false)
 
 	const [isShareOpen, setIsShareOpen] = useState(false)
 
@@ -100,7 +103,10 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 							: 'bg-neutral-100/60 dark:bg-neutral-800/60 hover:bg-neutral-200 dark:hover:bg-neutral-700'
 					}`}
 				>
-					<ThumbsDown className='size-4 group-hover:scale-110 transition-transform' />
+					<ThumbsDown
+						onClick={() => setIsOpenMoreVideoActions(true)}
+						className='size-4 group-hover:scale-110 transition-transform'
+					/>
 				</Button>
 
 				<Button
@@ -116,16 +122,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					Share
 				</Button>
 
-				<Button
-					variant='secondary'
-					size='sm'
-					className='group rounded-full h-10 w-10 flex items-center justify-center 
-							bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur 
-							hover:bg-neutral-200 dark:hover:bg-neutral-700 
-							hover:shadow-md active:scale-95 transition-all'
-				>
-					<MoreHorizontal className='size-4 group-hover:scale-110 transition-transform' />
-				</Button>
+				<WatchVideoMoreMenu videoId={video.id} />
 			</div>
 			{isShareOpen && (
 				<ShareVideoModal

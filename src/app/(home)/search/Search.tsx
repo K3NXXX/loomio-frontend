@@ -1,5 +1,6 @@
 'use client'
 
+import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideoMoreMenu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetSearchData } from '@/hooks/search/useGetSearchData'
@@ -7,7 +8,6 @@ import { formatDate } from '@/utils/formatDate'
 import { getInitials } from '@/utils/get-initials'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BsThreeDotsVertical } from 'react-icons/bs'
 
 interface SearchProps {
 	query: string
@@ -135,13 +135,7 @@ export function Search({ query }: SearchProps) {
 											</div>
 										</div>
 
-										<button
-											type='button'
-											className='text-muted-foreground hover:text-foreground transition-colors p-1 pt-2'
-											onClick={(e) => e.preventDefault()}
-										>
-											<BsThreeDotsVertical size={20} />
-										</button>
+										<WatchVideoMoreMenu videoId={v.id} />
 									</div>
 								</Link>
 							))}

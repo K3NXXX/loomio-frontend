@@ -1,8 +1,10 @@
 'use client'
 
+import { PAGES } from '@/constants/pages.constants'
 import { useGetMyPlaylists } from '@/hooks/playlists/useGetMyPlaylists'
 import { formatDate } from '@/utils/formatDate'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { PlaylistActionsDropdown } from './PlaylistActionsDropdown'
 
 export function UserPlaylistsList() {
@@ -36,28 +38,30 @@ export function UserPlaylistsList() {
 						cursor-pointer
 					'
 				>
-					<div className='flex flex-col justify-between h-full'>
-						<div>
-							<div className='flex items-center justify-between mb-2'>
-								<h3 className='text-lg font-semibold text-white group-hover:text-primary transition-colors'>
-									{playlist.name}
-								</h3>
-								<PlaylistActionsDropdown
-									playlistId={playlist.id}
-									initialData={playlist}
-								/>
+					<Link href={PAGES.ONE_USER_PLAYLIST(playlist.id)}>
+						<div className='flex flex-col justify-between h-full'>
+							<div>
+								<div className='flex items-center justify-between mb-2'>
+									<h3 className='text-lg font-semibold text-white group-hover:text-primary transition-colors'>
+										{playlist.name}
+									</h3>
+									<PlaylistActionsDropdown
+										playlistId={playlist.id}
+										initialData={playlist}
+									/>
+								</div>
+
+								<p className='text-sm text-neutral-400 line-clamp-2'>
+									{playlist.description || 'No description provided.'}
+								</p>
 							</div>
 
-							<p className='text-sm text-neutral-400 line-clamp-2'>
-								{playlist.description || 'No description provided.'}
-							</p>
+							<div className='flex items-center justify-between mt-4 text-sm text-neutral-500'>
+								<span>{playlist._count.videos} videos</span>
+								<span>{formatDate(playlist.createdAt)}</span>
+							</div>
 						</div>
-
-						<div className='flex items-center justify-between mt-4 text-sm text-neutral-500'>
-							<span>{playlist._count.videos} videos</span>
-							<span>{formatDate(playlist.createdAt)}</span>
-						</div>
-					</div>
+					</Link>
 				</motion.div>
 			))}
 		</div>

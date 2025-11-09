@@ -23,6 +23,13 @@ class PlaylistService {
 		return data
 	}
 
+	async getOneUserPlaylist(playlistId: string): Promise<IPlaylist> {
+		const { data } = await axiosInstance.get<IPlaylist>(
+			`${this.BASE_URL}/${playlistId}`,
+		)
+		return data
+	}
+
 	async deletePlaylist(playlistId: string) {
 		const { data } = await axiosInstance.delete(
 			`${this.BASE_URL}/${playlistId}`,
