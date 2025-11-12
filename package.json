@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
+		"build:fast": "cross-env NEXT_DISABLE_TYPECHECK=1 next build --no-lint --no-typecheck",
 		"start": "next start",
 		"lint": "next lint",
 		"lint:fix": "next lint --fix",
@@ -73,6 +74,7 @@
 		"@typescript-eslint/eslint-plugin": "^8.38.0",
 		"@typescript-eslint/parser": "^8.38.0",
 		"babel-jest": "^30.0.5",
+		"cross-env": "^10.1.0",
 		"eslint": "^9.32.0",
 		"eslint-config-next": "15.3.5",
 		"eslint-config-prettier": "^10.1.8",

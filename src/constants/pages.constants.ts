@@ -9,8 +9,14 @@ export const PAGES = {
 	EDIT_ACCOUNT: 'account/edit-account',
 	WATCH: (id: string) => `/watch?v=${id}`,
 	CHANNEL: (username: string) => `/@${username}`,
-	WORKPLACE: (username: string) => `/workplace/channel/@${username}/dashboard`,
+	WORKPLACE_DASHBOARD: (username: string) =>
+		`/workplace/channel/@${username}/dashboard`,
+	WORKPLACE_CONTENT: (username: string) =>
+		`/workplace/channel/@${username}/content`,
+	WORKPLACE_BRANDING: (username: string) =>
+		`/workplace/channel/@${username}/branding`,
 	SEARCH: (query: string) => `/search?query=${query}`,
 	PLAYLISTS: '/playlists',
 	ONE_USER_PLAYLIST: (id: string) => `/playlists/${id}`,
+	FOLLOWINGS: '/followings',
 }

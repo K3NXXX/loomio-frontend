@@ -2,16 +2,17 @@ import { SITE_NAME } from '@/constants/seo.constants'
 import type { Metadata } from 'next'
 import { Channel } from './Channel'
 
-export function generateMetadata({
+export async function generateMetadata({
 	params,
 }: {
-	params: { username: string }
-}): Metadata {
-	const username = decodeURIComponent(params.username)
+	params: Promise<{ username: string }>
+}): Promise<Metadata> {
+	const { username } = await params
+	const decodedUsername = decodeURIComponent(username)
 
 	return {
-		title: `${SITE_NAME} | @${username.replace(/^@/, '')}`,
-		description: `Channel page for ${username} on ${SITE_NAME}`,
+		title: `${SITE_NAME} | @${decodedUsername.replace(/^@/, '')}`,
+		description: `Channel page for ${decodedUsername} on ${SITE_NAME}`,
 	}
 }
 

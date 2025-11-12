@@ -10,7 +10,7 @@ export const useAddVideo = () => {
 		onSuccess: () => {
 			toast.success('Video added successfully')
 			queryClient.invalidateQueries({ queryKey: ['getPublicVideos'] })
-			queryClient.invalidateQueries({ queryKey: ['getChannel'] })
+			queryClient.invalidateQueries({ queryKey: ['channelStudioVideos'] })
 		},
 	})
 

@@ -8,6 +8,18 @@ export interface IAddVideoRequest {
 	channelId: string | null
 }
 
+export interface IEditVideoRequest {
+	title: string
+	description?: string
+	tags?: string
+	visibility: 'public' | 'private'
+	audience: 'yes' | 'no'
+	thumbnail?: File
+	channelId: string | null
+	publishType: string
+	publishDate?: string | Date | null
+}
+
 export interface IVideo {
 	id: string
 	title: string
@@ -15,6 +27,8 @@ export interface IVideo {
 	visibility: string
 	description: string | null
 	thumbnailFile: string
+	publishType: string
+	publishDate: Date
 	videoFile: string
 	createdAt: string
 	tags?: string | null

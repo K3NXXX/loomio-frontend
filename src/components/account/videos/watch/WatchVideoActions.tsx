@@ -55,12 +55,14 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					</p>
 				</div>
 				{isThatMe ? (
-					<Button
-						variant='default'
-						className='ml-2 font-semibold rounded-full px-6'
-					>
-						Edit video
-					</Button>
+					<Link href={PAGES.WORKPLACE_CONTENT(video.channel.username)}>
+						<Button
+							variant='default'
+							className='ml-2 font-semibold rounded-full px-6'
+						>
+							Edit video
+						</Button>
+					</Link>
 				) : (
 					<Button
 						onClick={() => toggleFollowUser(video.channel.id)}

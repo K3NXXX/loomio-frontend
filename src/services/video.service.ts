@@ -58,6 +58,13 @@ class VideoService {
 		)
 		return data
 	}
+
+	async getChannelStudioVideos(channelId: string): Promise<IVideo[]> {
+		const { data } = await axiosInstance.get<IVideo[]>(
+			`${this.BASE_URL}/studio/${channelId}`,
+		)
+		return data
+	}
 }
 
 export const videoService = new VideoService()

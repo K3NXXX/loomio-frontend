@@ -51,7 +51,7 @@ export function HomeUIConfiguratorMenu() {
 			<SheetContent className='w-[320px] sm:w-[400px] flex flex-col gap-6 overflow-y-auto'>
 				<SheetHeader className='flex flex-col border-b'>
 					<SheetTitle className='text-xl'>Loomio Configurator</SheetTitle>
-					<p className='font-medium'>See our dashboard options</p>
+					<p className='font-medium'>See our platform options</p>
 				</SheetHeader>
 				<div className='px-5 flex flex-col gap-5'>
 					<div>

@@ -1,13 +1,21 @@
 interface IEditVideoStepsProps {
 	currentStep: number
+	publishType: string
 }
 
-const steps = [
-	{ number: 1, label: 'General' },
-	{ number: 2, label: 'Additional' },
-]
+export function EditVideoSteps({
+	currentStep,
+	publishType,
+}: IEditVideoStepsProps) {
+	const steps = [
+		{ number: 1, label: 'General' },
+		{ number: 2, label: 'Additional' },
+	]
 
-export function EditVideoSteps({ currentStep }: IEditVideoStepsProps) {
+	if (publishType === 'scheduled') {
+		steps.push({ number: 3, label: 'Schedule' })
+	}
+
 	return (
 		<div className='flex items-center justify-center gap-10'>
 			{steps.map((step, index) => (

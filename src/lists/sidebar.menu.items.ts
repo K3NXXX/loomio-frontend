@@ -38,7 +38,7 @@ export const sidebarMenu: ISidebarMenu[] = [
 	{
 		id: 4,
 		label: 'Followings',
-		url: PAGES.EDITOR,
+		url: PAGES.FOLLOWINGS,
 		icon: FaUserFriends,
 	},
 	{

@@ -14,6 +14,7 @@ import { VideoItemActions } from './content/VideoItemActions'
 interface IWorkplaceChannelVideosListProps {
 	videos: IVideo[]
 }
+
 export function WorkplaceChannelVideosList({
 	videos,
 }: IWorkplaceChannelVideosListProps) {
@@ -33,108 +34,158 @@ export function WorkplaceChannelVideosList({
 		setEditingVideo(video)
 	}
 
-	const gridCols =
+	// 🔹 Дві сітки для двох типів таблиць
+	const gridColsPublished =
 		'[grid-template-columns:20px_minmax(340px,1fr)_110px_150px_110px_80px_100px_120px]'
+	const gridColsScheduled =
+		'[grid-template-columns:20px_minmax(340px,1fr)_110px_150px_140px_120px]'
 
-	return (
-		<div className='relative w-full'>
-			<div
-				className={cn(
-					'sticky top-0 z-10 bg-background/85 backdrop-blur-md',
-					'border-b border-border/40 rounded-t-xl',
-					'px-3 py-2',
-					'grid items-center gap-4 text-[11px] font-medium uppercase text-muted-foreground',
-					gridCols,
-				)}
-			>
-				<div />
-				<div>Video</div>
-				<div className='text-center'>Visibility</div>
-				<div className='text-center'>Restrictions</div>
-				<div className='text-center'>Date</div>
-				<div className='text-center'>Views</div>
-				<div className='text-center'>Comments</div>
-				<div />
+	const publishedVideos = videos.filter((v) => v.publishType === 'now')
+	const scheduledVideos = videos.filter((v) => v.publishType === 'scheduled')
+
+	const renderHeader = (isScheduled = false) => (
+		<div
+			className={cn(
+				'sticky top-0 z-10 bg-background/85 backdrop-blur-md',
+				'border-b border-border/40 rounded-t-xl',
+				'px-3 py-2',
+				'grid items-center gap-4 text-[11px] font-medium uppercase text-muted-foreground',
+				isScheduled ? gridColsScheduled : gridColsPublished,
+			)}
+		>
+			<div />
+			<div>Video</div>
+			<div className='text-center'>Visibility</div>
+			<div className='text-center'>Restrictions</div>
+			<div className='text-center'>
+				{isScheduled ? 'Scheduled for' : 'Date'}
 			</div>
+			{!isScheduled && (
+				<>
+					<div className='text-center'>Views</div>
+					<div className='text-center'>Comments</div>
+				</>
+			)}
+			<div />
+		</div>
+	)
 
-			<div className='space-y-3 pt-3'>
-				{videos.map((v) => (
-					<div
-						key={v.id}
-						className={cn(
-							'grid items-center gap-4',
-							'rounded-xl border border-border/40 bg-background/60',
-							'px-3 py-3 hover:bg-muted/10 transition-colors',
-							gridCols,
-						)}
-					>
-						<div />
-						<div className='flex items-center gap-4 min-w-0'>
-							<div className='relative w-[120px] h-[68px] overflow-hidden rounded-lg border border-border/30 bg-muted/20 shrink-0'>
-								{v.thumbnailFile ? (
-									<Image
-										src={v.thumbnailFile}
-										alt={v.title}
-										fill
-										sizes='120px'
-										className='object-cover'
-									/>
-								) : (
-									<div className='grid place-items-center h-full w-full text-xs text-muted-foreground'>
-										No thumbnail
-									</div>
-								)}
-							</div>
-							<div className='min-w-0'>
-								<div className='font-medium truncate'>{v.title}</div>
-								<div className='text-xs text-muted-foreground truncate'>
-									{truncateName(v.description, 40) || 'Add a description'}
-								</div>
-							</div>
+	const renderVideoRow = (v: IVideo, isScheduled = false) => (
+		<div
+			key={v.id}
+			className={cn(
+				'grid items-center gap-4',
+				'rounded-xl border border-border/40 bg-background/60',
+				'px-3 py-3 hover:bg-muted/10 transition-colors',
+				isScheduled && 'opacity-75',
+				isScheduled ? gridColsScheduled : gridColsPublished,
+			)}
+		>
+			<div />
+			<div className='flex items-center gap-4 min-w-0'>
+				<div className='relative w-[120px] h-[68px] overflow-hidden rounded-lg border border-border/30 bg-muted/20 shrink-0'>
+					{v.thumbnailFile ? (
+						<Image
+							src={v.thumbnailFile}
+							alt={v.title}
+							fill
+							sizes='120px'
+							className='object-cover'
+						/>
+					) : (
+						<div className='grid place-items-center h-full w-full text-xs text-muted-foreground'>
+							No thumbnail
 						</div>
-						<div className='text-center'>
+					)}
+				</div>
+				<div className='min-w-0'>
+					<div className='flex items-center gap-2'>
+						<div className='font-medium truncate'>{v.title}</div>
+						{isScheduled && (
 							<Badge
 								variant='outline'
-								className={cn(
-									'rounded-full px-2.5 py-0.5 text-[11px]',
-									v.visibility === 'public' &&
-										'border-emerald-400/50 text-emerald-400',
-									v.visibility === 'unlisted' &&
-										'border-amber-400/50 text-amber-400',
-									v.visibility === 'private' &&
-										'border-slate-400/50 text-slate-300',
-								)}
+								className='border-amber-400/50 text-amber-400 text-[10px] rounded-full px-2 py-0.5'
 							>
-								{v.visibility}
+								Scheduled
 							</Badge>
-						</div>
-						{/* restrictions placeholder */}
-						<div className='text-center text-muted-foreground'>
-							{v.audience === 'yes' ? 'For children' : 'Age restrictions'}
-						</div>
-						{/* date */}
-						<div className='text-center'>
-							{new Date(v.createdAt).toLocaleDateString()}
-						</div>
-						{/* views */}
-						<div className='text-center'>{v._count?.views ?? 0}</div>
-						{/* comments */}
-						<div className='text-center'>{v._count?.comments ?? 0}</div>
-						{/* actions */}
-						<div className='justify-self-end w-[120px] flex items-center gap-2'>
-							<Button
-								onClick={() => handleEditVideo(v)}
-								size='sm'
-								variant='outline'
-								className='rounded-full px-3 py-1 text-xs whitespace-nowrap'
-							>
-								<FaPen className='mr-2 h-3.5 w-3.5' /> Edit
-							</Button>
-							<VideoItemActions videoId={v.id} />
-						</div>
+						)}
 					</div>
-				))}
+					<div className='text-xs text-muted-foreground truncate'>
+						{truncateName(v.description, 40) || 'Add a description'}
+					</div>
+				</div>
 			</div>
+
+			<div className='text-center'>
+				<Badge
+					variant='outline'
+					className={cn(
+						'rounded-full px-2.5 py-0.5 text-[11px]',
+						v.visibility === 'public' &&
+							'border-emerald-400/50 text-emerald-400',
+						v.visibility === 'unlisted' && 'border-amber-400/50 text-amber-400',
+						v.visibility === 'private' && 'border-slate-400/50 text-slate-300',
+					)}
+				>
+					{v.visibility}
+				</Badge>
+			</div>
+
+			<div className='text-center text-muted-foreground'>
+				{v.audience === 'yes' ? 'For children' : 'Age restrictions'}
+			</div>
+
+			<div className='text-center'>
+				{isScheduled
+					? new Date(v.publishDate ?? v.createdAt).toLocaleString()
+					: new Date(v.createdAt).toLocaleDateString()}
+			</div>
+
+			{/* only for published */}
+			{!isScheduled && (
+				<>
+					<div className='text-center'>{v._count?.views ?? 0}</div>
+					<div className='text-center'>{v._count?.comments ?? 0}</div>
+				</>
+			)}
+
+			<div className='justify-self-end w-[120px] flex items-center gap-2'>
+				<Button
+					onClick={() => handleEditVideo(v)}
+					size='sm'
+					variant='outline'
+					className='rounded-full px-3 py-1 text-xs whitespace-nowrap'
+				>
+					<FaPen className='mr-2 h-3.5 w-3.5' /> Edit
+				</Button>
+				<VideoItemActions videoId={v.id} />
+			</div>
+		</div>
+	)
+
+	return (
+		<div className='relative w-full space-y-10'>
+			{/* 🔹 Published videos */}
+			<div>
+				{renderHeader(false)}
+				<div className='space-y-3 pt-3'>
+					{publishedVideos.map((v) => renderVideoRow(v, false))}
+				</div>
+			</div>
+
+			{/* 🔸 Scheduled videos */}
+			{scheduledVideos.length > 0 && (
+				<div>
+					<h3 className='text-sm font-semibold text-muted-foreground mb-2'>
+						Scheduled videos
+					</h3>
+					{renderHeader(true)}
+					<div className='space-y-3 pt-3'>
+						{scheduledVideos.map((v) => renderVideoRow(v, true))}
+					</div>
+				</div>
+			)}
+
 			{isEditingFormOpened && (
 				<EditVideoModal
 					open={isEditingFormOpened}

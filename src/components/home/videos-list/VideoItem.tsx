@@ -7,6 +7,7 @@ import { formatDate } from '@/utils/formatDate'
 import { getInitials } from '@/utils/get-initials'
 import Image from 'next/image'
 import Link from 'next/link'
+import { IoMdPlay } from "react-icons/io";
 
 interface IVideoItemProps {
 	video: IVideo
@@ -26,14 +27,7 @@ export default function VideoItem({ video }: IVideoItemProps) {
 					/>
 					<div className='absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/30'>
 						<div className='scale-75 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100'>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								viewBox='0 0 24 24'
-								fill='white'
-								className='h-12 w-12 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]'
-							>
-								<path d='M8 5v14l11-7z' />
-							</svg>
+							<IoMdPlay className='h-12 w-12 text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]' />
 						</div>
 					</div>
 				</div>

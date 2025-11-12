@@ -1,6 +1,7 @@
 'use client'
 
 import type { TUploadVideoSchema } from '@/schemas/videos/upload-video.schema'
+import { formatDateTimeLocal } from '@/utils/formatDateTimeLocal'
 import { Calendar, Clock } from 'lucide-react'
 import type { UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
@@ -86,6 +87,7 @@ export function UploadVideoStepThird({
 							type='datetime-local'
 							id='publish-date'
 							value={publishDate ?? ''}
+							min={formatDateTimeLocal(new Date())}
 							onChange={(e) =>
 								setValue('publishDate', e.target.value, {
 									shouldValidate: true,

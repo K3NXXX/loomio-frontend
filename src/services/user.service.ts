@@ -40,6 +40,11 @@ class UserService {
 		)
 		return data
 	}
+
+	async getFollowedChannels() {
+		const { data } = await axiosInstance.get(`${this.BASE_URL}/following`)
+		return data
+	}
 }
 
 export const userService = new UserService()

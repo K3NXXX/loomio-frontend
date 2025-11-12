@@ -110,7 +110,7 @@ export function Channel() {
 											Upload video
 										</Button>
 										<a
-											href={PAGES.WORKPLACE(channel.username)}
+											href={PAGES.WORKPLACE_DASHBOARD(channel.username)}
 											target='_blank'
 											rel='noopener noreferrer'
 										>

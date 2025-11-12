@@ -5,9 +5,10 @@ import Watch from './Watch'
 export async function generateMetadata({
 	searchParams,
 }: {
-	searchParams: { v?: string }
+	searchParams: Promise<{ v?: string }>
 }): Promise<Metadata> {
-	const videoId = searchParams.v
+	const { v } = await searchParams
+	const videoId = v
 
 	if (!videoId) {
 		return {

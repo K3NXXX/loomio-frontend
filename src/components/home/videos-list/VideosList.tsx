@@ -7,7 +7,6 @@ import VideoItem from './VideoItem'
 export default function VideosList() {
 	const { videos, isError, isLoading } = useGetPublicVideos()
 
-	console.log('videos', videos)
 
 	if (isLoading) {
 		return (

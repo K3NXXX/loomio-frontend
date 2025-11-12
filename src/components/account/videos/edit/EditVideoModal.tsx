@@ -15,7 +15,7 @@ import {
 	editVideoSchema,
 	type TEditVideoSchema,
 } from '@/schemas/videos/edit-video.schema'
-import type { IAddVideoRequest } from '@/types/video.types'
+import type { IAddVideoRequest, IEditVideoRequest } from '@/types/video.types'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
@@ -24,8 +24,9 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
 import { EditVideoPreview } from './EditVideoPreview'
 import { EditVideoStepFirst } from './EditVideoStepFirst'
-import { EditVideoStepSecond } from './EditVideoStepSecond'
 import { EditVideoSteps } from './EditVideoSteps'
+import { EditVideoStepSecond } from './EditVideoStepSecond'
+import { EditVideoStepThird } from './EditVideoStepThird'
 
 interface IEditVideoModalProps {
 	open: boolean
@@ -33,11 +34,18 @@ interface IEditVideoModalProps {
 }
 
 export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
-	const { register, handleSubmit, setValue, reset, trigger, getFieldState } =
-		useForm<TEditVideoSchema>({
-			resolver: zodResolver(editVideoSchema),
-			reValidateMode: 'onSubmit',
-		})
+	const {
+		register,
+		handleSubmit,
+		setValue,
+		reset,
+		trigger,
+		getFieldState,
+		watch,
+	} = useForm<TEditVideoSchema>({
+		resolver: zodResolver(editVideoSchema),
+		reValidateMode: 'onSubmit',
+	})
 
 	const [isLoading, setIsLoading] = useState(false)
 	const [fileName, setFileName] = useState<string>('')
@@ -63,7 +71,7 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 	}
 
 	const handleNextStep = async (e?: React.MouseEvent<HTMLButtonElement>) => {
-		e?.preventDefault() // 🚫 блокує сабміт форми, навіть якщо type випадково 'submit'
+		e?.preventDefault()
 
 		if (steps === 1) {
 			const isValid = await trigger(['title', 'tags'])
@@ -87,22 +95,27 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 				toast.error(thumbErr || visErr || audErr)
 				return
 			}
+
+			if (editingVideo?.publishType === 'scheduled') {
+				setSteps(3)
+				return
+			}
 		}
 	}
 
 	const onSubmit: SubmitHandler<TEditVideoSchema> = (data) => {
 		setIsLoading(true)
 
-
 		if (!editingVideo) {
 			toast.error('No video selected for editing')
 			setIsLoading(false)
 			return
 		}
+
 		try {
 			const formData = new FormData()
 
-			const payload: IAddVideoRequest = {
+			const payload: IEditVideoRequest = {
 				title: data.title,
 				description: data.description || '',
 				tags: data.tags || '',
@@ -110,6 +123,8 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 				audience: data.audience,
 				thumbnail: data.thumbnail?.[0],
 				channelId: uploadChannelId,
+				publishType: data.publishType ?? editingVideo.publishType,
+				publishDate: data.publishDate ?? editingVideo.publishDate,
 			}
 
 			formData.append('title', payload.title)
@@ -118,6 +133,10 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 			if (payload.tags) formData.append('tags', payload.tags)
 			formData.append('visibility', payload.visibility)
 			formData.append('audience', payload.audience)
+			formData.append('publishType', payload.publishType)
+			if (payload.publishDate)
+				formData.append('publishDate', payload.publishDate.toString())
+
 			if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail)
 
 			editVideo(
@@ -134,9 +153,7 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 						setThumbnailFile(null)
 						setThumbnailPreview(null)
 					},
-					onSettled: () => {
-						setIsLoading(false)
-					},
+					onSettled: () => setIsLoading(false),
 				},
 			)
 		} catch {
@@ -186,7 +203,10 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 					className='flex flex-col gap-5 px-6 py-8'
 				>
 					<>
-						<EditVideoSteps currentStep={steps} />
+						<EditVideoSteps
+							publishType={editingVideo.publishType}
+							currentStep={steps}
+						/>
 						<div className='grid grid-cols-2 gap-8 px-5'>
 							<div className='h-[500px] flex flex-col justify-between'>
 								{steps === 1 && (
@@ -201,6 +221,13 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 										setValue={setValue}
 										video={editingVideo}
 										register={register}
+									/>
+								)}
+								{steps === 3 && (
+									<EditVideoStepThird
+										setValue={setValue}
+										video={editingVideo}
+										watch={watch}
 									/>
 								)}
 							</div>
@@ -220,10 +247,20 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 										Back
 									</Button>
 									<Button
-										onClick={(e) =>
-											steps === 2 ? undefined : handleNextStep(e)
+										onClick={(e) => {
+											if (
+												steps ===
+												(editingVideo.publishType === 'scheduled' ? 3 : 2)
+											)
+												return
+											handleNextStep(e)
+										}}
+										type={
+											steps ===
+											(editingVideo.publishType === 'scheduled' ? 3 : 2)
+												? 'submit'
+												: 'button'
 										}
-										type={steps === 2 ? 'submit' : 'button'}
 										disabled={isLoading}
 										className='bg-primary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 									>
@@ -233,7 +270,8 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 												loop
 												className='w-15 h-15'
 											/>
-										) : steps === 2 ? (
+										) : steps ===
+										  (editingVideo.publishType === 'scheduled' ? 3 : 2) ? (
 											'Confirm'
 										) : (
 											'Next'

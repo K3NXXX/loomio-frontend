@@ -11,7 +11,7 @@ export const useEditVideo = () => {
 		onSuccess: () => {
 			toast.success('Video edited successfully')
 			queryClient.invalidateQueries({ queryKey: ['getPublicVideos'] })
-			queryClient.invalidateQueries({ queryKey: ['getChannel'] })
+			queryClient.invalidateQueries({ queryKey: ['channelStudioVideos'] })
 		},
 	})
 

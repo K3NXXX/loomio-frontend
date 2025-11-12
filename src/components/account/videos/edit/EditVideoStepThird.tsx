@@ -2,6 +2,8 @@
 
 import type { TEditVideoSchema } from '@/schemas/videos/edit-video.schema'
 import type { IVideo } from '@/types/video.types'
+import { formatDateTimeLocal } from '@/utils/formatDateTimeLocal'
+
 import { Calendar, Clock } from 'lucide-react'
 import type { UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
@@ -16,8 +18,8 @@ export function EditVideoStepThird({
 	watch,
 	video,
 }: EditVideoStepThirdProps) {
-	const publishType = watch('publishType')
-	const publishDate = watch('publishDate')
+	const publishType = watch('publishType') || video.publishType
+	const publishDate = watch('publishDate') || video.publishDate
 
 	return (
 		<div className='flex flex-col gap-6 h-[476px]'>
@@ -30,7 +32,11 @@ export function EditVideoStepThird({
 				<div className='flex gap-4'>
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[220px]
-							${publishType === 'now' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
+							${
+								publishType === 'now'
+									? 'border-primary bg-primary/10'
+									: 'border-neutral-700 hover:border-primary/50'
+							}
 						`}
 					>
 						<input
@@ -54,13 +60,17 @@ export function EditVideoStepThird({
 
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[220px]
-							${publishType === 'scheduled' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
+							${
+								publishType === 'scheduled'
+									? 'border-primary bg-primary/10'
+									: 'border-neutral-700 hover:border-primary/50'
+							}
 						`}
 					>
 						<input
 							type='radio'
 							name='publishType'
-							value={video.publi}
+							value='scheduled'
 							checked={publishType === 'scheduled'}
 							onChange={() =>
 								setValue('publishType', 'scheduled', { shouldValidate: true })
@@ -88,7 +98,8 @@ export function EditVideoStepThird({
 						<input
 							type='datetime-local'
 							id='publish-date'
-							value={publishDate ?? ''}
+							value={formatDateTimeLocal(publishDate)}
+							min={formatDateTimeLocal(new Date())}
 							onChange={(e) =>
 								setValue('publishDate', e.target.value, {
 									shouldValidate: true,

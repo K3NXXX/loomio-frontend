@@ -17,9 +17,9 @@ class ChannelService {
 		return data
 	}
 
-	async getChannel(channelId: string): Promise<IChannel> {
+	async getChannel(username: string): Promise<IChannel> {
 		const { data } = await axiosInstance.get<IChannel>(
-			`${this.BASE_URL}/${channelId}`,
+			`${this.BASE_URL}/${username}`,
 		)
 		return data
 	}

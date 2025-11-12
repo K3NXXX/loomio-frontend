@@ -1,6 +1,7 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { PAGES } from '@/constants/pages.constants'
 import { cn } from '@/lib/utils'
 import type { IChannel } from '@/types/channel.types'
 import { getInitials } from '@/utils/get-initials'
@@ -13,16 +14,25 @@ interface WorkplaceSidebarProps {
 	baseHref?: string
 }
 
-export function WorkplaceSidebar({
-	channel,
-	baseHref = `/workplace/channel/@${channel.username}`,
-}: WorkplaceSidebarProps) {
+export function WorkplaceSidebar({ channel }: WorkplaceSidebarProps) {
 	const pathname = usePathname()
 
 	const items = [
-		{ label: 'Dashboard', icon: FaThLarge, href: `${baseHref}/dashboard` },
-		{ label: 'Content', icon: FaVideo, href: `${baseHref}/content` },
-		{ label: 'Branding', icon: FaPalette, href: `${baseHref}/branding` },
+		{
+			label: 'Dashboard',
+			icon: FaThLarge,
+			href: PAGES.WORKPLACE_DASHBOARD(channel.username),
+		},
+		{
+			label: 'Content',
+			icon: FaVideo,
+			href: PAGES.WORKPLACE_CONTENT(channel.username),
+		},
+		{
+			label: 'Branding',
+			icon: FaPalette,
+			href: PAGES.WORKPLACE_BRANDING(channel.username),
+		},
 	]
 
 	return (
