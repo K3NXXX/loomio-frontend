@@ -19,6 +19,8 @@ export default function Watch() {
 
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
+	console.log(video)
+
 	if (isLoading) {
 		return (
 			<div className='flex gap-5'>
@@ -42,7 +44,11 @@ export default function Watch() {
 	return (
 		<div className='flex flex-col lg:flex-row gap-6 pb-30'>
 			<div className='flex-1 max-w-[73%]'>
-				<WatchVideo videoId={video.id} videoSrc={video.videoFile} />
+				<WatchVideo
+					videoId={video.id}
+					videoSrc={video.videoFile}
+					publicId={video.videoPublicId}
+				/>
 				<h1 className='mt-4 text-2xl font-bold'>{video.title}</h1>
 
 				<WatchVideoActions video={video} />

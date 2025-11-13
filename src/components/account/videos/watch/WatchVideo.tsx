@@ -7,6 +7,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 interface WatchVideoProps {
 	videoSrc: string
 	videoId: string
+	publicId: string
 }
 
 export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {

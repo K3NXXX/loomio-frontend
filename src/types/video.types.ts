@@ -31,6 +31,7 @@ export interface IVideo {
 	publishDate: Date
 	videoFile: string
 	createdAt: string
+	videoPublicId: string
 	tags?: string | null
 	_count: {
 		views: number
