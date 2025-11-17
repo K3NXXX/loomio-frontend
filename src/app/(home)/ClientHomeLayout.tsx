@@ -6,11 +6,15 @@ import { HomeSidebarCollapsed } from '@/components/home/home-sidebar/HomeSidebar
 import { HomeSidebarMenu } from '@/components/home/home-sidebar/HomeSidebarMenu'
 import { HomeUIConfiguratorMenu } from '@/components/home/HomeUIConfiguratorMenu'
 import { Button } from '@/components/ui/button'
+import { useGetMe } from '@/hooks/auth/useGetMe'
+import { useNotificationSocket } from '@/hooks/notification/useNotificationSocket'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 import { IoMdSettings } from 'react-icons/io'
 
 export function ClientHomeLayout({ children }: { children: ReactNode }) {
 	const { toggleThemeMenuOpened, isSidebarCollapsed } = useGlobalStore()
+	const { userData } = useGetMe()
+	useNotificationSocket(userData?.id)
 
 	return (
 		<div

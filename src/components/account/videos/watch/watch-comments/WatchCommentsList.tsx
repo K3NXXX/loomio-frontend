@@ -13,7 +13,6 @@ interface IWatchCommentsProps {
 export function WatchCommentsList({ video }: IWatchCommentsProps) {
 	const { allComments } = useGetAllComments(video.id)
 
-	console.log("all", allComments)
 
 	const [expandedReplies, setExpandedReplies] = useState<
 		Record<string, boolean>
@@ -56,7 +55,7 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 					<div key={comment.id} className='flex flex-col gap-2'>
 						<WatchCommentItem
 							comment={comment}
-							videoId={video.id}
+							video={video}
 							toggleReplies={toggleReplies}
 							isExpanded={!!expandedReplies[comment.id]}
 						/>
@@ -67,7 +66,7 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 									<WatchCommentItem
 										key={reply.id}
 										comment={reply}
-										videoId={video.id}
+										video={video}
 										toggleReplies={toggleReplies}
 										isExpanded={!!expandedReplies[reply.id]}
 									/>

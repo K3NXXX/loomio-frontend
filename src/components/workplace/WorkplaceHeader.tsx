@@ -13,7 +13,7 @@ import type { IChannel } from '@/types/channel.types'
 import { getInitials } from '@/utils/get-initials'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import Link from 'next/link'
-import { FaBell, FaPlus, FaRecordVinyl } from 'react-icons/fa'
+import { FaPlus, FaRecordVinyl } from 'react-icons/fa'
 import { IoHome } from 'react-icons/io5'
 import { MdLogout, MdOutlineVideoLibrary } from 'react-icons/md'
 import { UploadVideoModal } from '../account/videos/upload/UploadVideoModal'
@@ -44,16 +44,13 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 					</span>
 				</div>
 
-				<div className='flex min-w-[280px] items-center justify-end gap-2'>
+				<div className='flex min-w-[280px] items-center justify-end gap-5'>
 					<Button
 						onClick={() => handleUploadVideo()}
 						variant='outline'
 						className='hidden rounded-full px-4 sm:inline-flex'
 					>
 						<FaPlus className='mr-2 size-4' /> Upload
-					</Button>
-					<Button variant='ghost' size='icon' className='rounded-full'>
-						<FaBell className='size-5' />
 					</Button>
 
 					<DropdownMenu>

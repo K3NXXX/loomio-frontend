@@ -4,7 +4,9 @@ import { ShareVideoModal } from '@/components/ui/custom/ShareVideoModal'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useToggleFollowUser } from '@/hooks/follows/useFollowUser'
+import { useIsChannelNotificationsEnabled } from '@/hooks/follows/useIsChannelNotificationsEnabled'
 import { useIsFollowing } from '@/hooks/follows/useIsFollowing'
+import { useToggleChannelNotifications } from '@/hooks/follows/useToggleChannelNotifications'
 import { useHasVideoDisliked } from '@/hooks/like/useHasVideoDisliked'
 import { useHasVideoLiked } from '@/hooks/like/useHasVideoLiked'
 import { useToggleVideoDislike } from '@/hooks/like/useToggleVideoDislike'
@@ -14,6 +16,7 @@ import { getInitials } from '@/utils/get-initials'
 import { Share, ThumbsDown, ThumbsUp } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { FaBell } from 'react-icons/fa'
 import { WatchVideoMoreMenu } from './WatchVideoMoreMenu'
 
 interface IWatchVideoActionsProps {
@@ -28,6 +31,11 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const { toggleVideoDislike } = useToggleVideoDislike()
 	const { isLiked } = useHasVideoLiked(video.id)
 	const { isDisliked } = useHasVideoDisliked(video.id)
+	const { toggleChannelNotifications } = useToggleChannelNotifications()
+	const { isNotificationsEnabled } = useIsChannelNotificationsEnabled(
+		video.channel.id,
+	)
+
 
 	const [isShareOpen, setIsShareOpen] = useState(false)
 
@@ -64,13 +72,34 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 						</Button>
 					</Link>
 				) : (
-					<Button
-						onClick={() => toggleFollowUser(video.channel.id)}
-						variant={isFollowing ? 'outline' : 'default'}
-						className='ml-2 font-semibold rounded-full px-6'
-					>
-						{isFollowing ? 'Subscribed' : 'Subscribe'}
-					</Button>
+					<div className='flex items-center gap-2'>
+						<Button
+							onClick={() => toggleFollowUser(video.channel.id)}
+							variant={isFollowing ? 'outline' : 'default'}
+							className='font-semibold rounded-full px-6'
+						>
+							{isFollowing ? 'Subscribed' : 'Subscribe'}
+						</Button>
+
+						{isFollowing && (
+							<button
+								onClick={() => toggleChannelNotifications(video.channel.id)}
+								title='Notifications'
+								className='flex items-center justify-center w-10 h-10 rounded-full
+				 bg-neutral-200 dark:bg-neutral-800 
+				 hover:bg-neutral-300 dark:hover:bg-neutral-700 
+				 transition cursor-pointer'
+							>
+								<FaBell
+									className={`w-5 h-5 ${
+										isNotificationsEnabled
+											? 'text-[var(--primary)]'
+											: 'text-neutral-700 dark:text-neutral-300'
+									}`}
+								/>
+							</button>
+						)}
+					</div>
 				)}
 			</div>
 

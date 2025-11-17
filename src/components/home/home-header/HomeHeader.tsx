@@ -13,6 +13,7 @@ import { FaPlus } from 'react-icons/fa'
 import { Logo } from '../../ui/Logo'
 import { Separator } from '../../ui/separator'
 
+import CreateChannelModal from '@/components/account/channels/CreateChannelModal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
 	DropdownMenu,
@@ -25,8 +26,8 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { getInitials } from '@/utils/get-initials'
 import { useState } from 'react'
+import { NotificationDropdown } from '../notifications/NotificationDropdown'
 import { HeaderSearch } from './HeaderSearch'
-import CreateChannelModal from '@/components/account/channels/CreateChannelModal'
 
 export function HomeHeader() {
 	const { toggleSidebarCollapsed } = useGlobalStore()
@@ -62,65 +63,69 @@ export function HomeHeader() {
 					</Breadcrumb>
 
 					<HeaderSearch />
-
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button
-								className='
+					<div className='flex items-center gap-5'>
+						<NotificationDropdown />
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button
+									className='
 								flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
 								bg-[var(--primary)] text-white shadow-md
 								hover:bg-[var(--primary)]/90 hover:shadow-lg
 								active:scale-95 active:brightness-90
 								transition-all duration-300
 								'
-							>
-								<FaPlus />
-								Upload
-							</Button>
-						</DropdownMenuTrigger>
+								>
+									<FaPlus />
+									Upload
+								</Button>
+							</DropdownMenuTrigger>
 
-						<DropdownMenuContent align='end' className='w-72'>
-							<DropdownMenuLabel>Select a channel</DropdownMenuLabel>
-							<DropdownMenuSeparator />
+							<DropdownMenuContent align='end' className='w-72'>
+								<DropdownMenuLabel>Select a channel</DropdownMenuLabel>
+								<DropdownMenuSeparator />
 
-							{isLoading ? (
-								<div className='px-3 py-2 text-sm text-muted-foreground'>
-									Loading…
-								</div>
-							) : !userChannels?.length ? (
-								<div className='px-3 py-2 text-sm text-muted-foreground'>
-									You have no channels yet.{' '}
-									<span
-										onClick={() => setIsCreateFormOpen(true)}
-										className='text-primary font-bold cursor-pointer pl-1'
-									>
-										Create new
-									</span>
-								</div>
-							) : (
-								<ScrollArea className='max-h-72'>
-									{userChannels.map((ch) => (
-										<DropdownMenuItem
-											key={ch.id}
-											onClick={() => handlePickChannel(ch.id)}
-											className='cursor-pointer gap-3 py-2'
+								{isLoading ? (
+									<div className='px-3 py-2 text-sm text-muted-foreground'>
+										Loading…
+									</div>
+								) : !userChannels?.length ? (
+									<div className='px-3 py-2 text-sm text-muted-foreground'>
+										You have no channels yet.{' '}
+										<span
+											onClick={() => setIsCreateFormOpen(true)}
+											className='text-primary font-bold cursor-pointer pl-1'
 										>
-											<Avatar className='h-10 w-10'>
-												<AvatarImage src={ch.avatarUrl ?? undefined} />
-												<AvatarFallback>{getInitials(ch.name)}</AvatarFallback>
-											</Avatar>
-											<div className='flex flex-col leading-tight'>
-												<span className='text-sm font-medium'>{ch.name}</span>
-												<span className='text-xs text-muted-foreground'>
-													@{ch.username}
-												</span>
-											</div>
-										</DropdownMenuItem>
-									))}
-								</ScrollArea>
-							)}
-						</DropdownMenuContent>
-					</DropdownMenu>
+											Create new
+										</span>
+									</div>
+								) : (
+									<ScrollArea className='max-h-72'>
+										{userChannels.map((ch) => (
+											<DropdownMenuItem
+												key={ch.id}
+												onClick={() => handlePickChannel(ch.id)}
+												className='cursor-pointer gap-3 py-2'
+											>
+												<Avatar className='h-10 w-10'>
+													<AvatarImage src={ch.avatarUrl ?? undefined} />
+													<AvatarFallback>
+														{getInitials(ch.name)}
+													</AvatarFallback>
+												</Avatar>
+												<div className='flex flex-col leading-tight'>
+													<span className='text-sm font-medium'>{ch.name}</span>
+													<span className='text-xs text-muted-foreground'>
+														@{ch.username}
+													</span>
+												</div>
+											</DropdownMenuItem>
+										))}
+									</ScrollArea>
+								)}
+							</DropdownMenuContent>
+						</DropdownMenu>
+					</div>
 				</div>
 			</div>
 

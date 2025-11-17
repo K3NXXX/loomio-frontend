@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { Button } from '@/components/ui/button'
 import { useEditComment } from '@/hooks/comment/useEditComment'
+import type { IVideo } from '@/types/video.types'
 import { getInitials } from '@/utils/get-initials'
 import { useState } from 'react'
 import { FaChevronDown, FaChevronRight, FaReply } from 'react-icons/fa'
@@ -13,18 +14,35 @@ import { WatchCommentReplyInput } from './WatchCommentReplyInput'
 
 interface IWatchCommentItemProps {
 	comment: IVideoComment
-	videoId: string
+	video: IVideo
 	toggleReplies: (id: string) => void
 	isExpanded: boolean
 }
 
 export function WatchCommentItem({
 	comment,
-	videoId,
+	video,
 	toggleReplies,
 	isExpanded,
 }: IWatchCommentItemProps) {
 	const [replyInput, setReplyInput] = useState<string | null>(null)
+	const channel = video?.channel
+
+	const isAuthorChannelOwner = channel
+		? comment.user.id === channel.userId
+		: false
+
+	const displayName = isAuthorChannelOwner
+		? video.channel.username
+		: comment.user.username
+
+	const displayAvatar = isAuthorChannelOwner
+		? video.channel.avatarUrl
+		: comment.user.avatarUrl
+
+	const displayInitials = isAuthorChannelOwner
+		? getInitials(video.channel.name)
+		: getInitials(comment.user.username)
 
 	const [isCommentEditing, setIsCommentEditing] = useState(false)
 	const [editingText, setEditingText] = useState(comment.content)
@@ -50,13 +68,8 @@ export function WatchCommentItem({
 				<div className='flex gap-3 justify-between items-center'>
 					<div className='flex gap-3 items-start'>
 						<Avatar className='w-11 h-11 ring-1 ring-neutral-900'>
-							<AvatarImage
-								src={comment.user.avatarUrl || undefined}
-								alt={comment.user.username}
-							/>
-							<AvatarFallback>
-								{getInitials(comment.user.username)}
-							</AvatarFallback>
+							<AvatarImage src={displayAvatar || undefined} alt={displayName} />
+							<AvatarFallback>{displayInitials}</AvatarFallback>
 						</Avatar>
 						{isCommentEditing ? (
 							<div className='flex flex-col gap-2 w-[1000px] pt-4'>
@@ -91,8 +104,14 @@ export function WatchCommentItem({
 						) : (
 							<div className='flex-1'>
 								<div className='flex items-center gap-2'>
-									<p className='font-semibold text-sm text-neutral-100'>
-										@{comment.user.username}
+									<p
+										className={`font-semibold text-sm text-neutral-100 ${
+											isAuthorChannelOwner
+												? 'bg-primary rounded-md px-2 py-1'
+												: ''
+										}`}
+									>
+										@{displayName}
 									</p>
 									<p className='text-xs text-neutral-400'>
 										{new Date(comment.createdAt).toLocaleDateString()}
@@ -124,7 +143,7 @@ export function WatchCommentItem({
 									comment={comment}
 									replyInput={replyInput}
 									setReplyInput={setReplyInput}
-									videoId={videoId}
+									videoId={video.id}
 								/>
 								{!comment.parentId && comment._count.replies > 0 && (
 									<div className='flex flex-col gap-2 pt-2'>
