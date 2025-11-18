@@ -12,7 +12,10 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useGetUserChannels } from '@/hooks/channel/useGetUserChannels'
 import { useDeleteChannelNotifications } from '@/hooks/notification/useDeleteChannelNotifications'
+import { useDeletePersonalNotifications } from '@/hooks/notification/useDeletePersonalNotifications'
 import { useGetNotifications } from '@/hooks/notification/useGetNotification'
+import { useMarkAllChannelRead } from '@/hooks/notification/useMarkAllChannelRead'
+import { useMarkAllPersonalRead } from '@/hooks/notification/useMarkAllPersonalRead'
 import { NotificationType } from '@/types/notification.types'
 import { getInitials } from '@/utils/get-initials'
 import { useState } from 'react'
@@ -26,6 +29,11 @@ export function NotificationDropdown() {
 	const { notifications = [], unreadCount } = useGetNotifications()
 	const unreadText = unreadCount > 9 ? '9+' : unreadCount
 	const { deleteChannelNotifications } = useDeleteChannelNotifications()
+	const { deletePersonalNotifications } = useDeletePersonalNotifications()
+	const { markAllChannelRead } = useMarkAllChannelRead()
+	const { markAllPersonalRead } = useMarkAllPersonalRead()
+
+	console.log(notifications)
 
 	const [selectedChannel, setSelectedChannel] = useState<string | null>(null)
 	const [personalOpen, setPersonalOpen] = useState<boolean>(false)
@@ -65,7 +73,7 @@ export function NotificationDropdown() {
 
 			<DropdownMenuContent
 				align='end'
-				className='w-96 max-h-[431px] p-0 overflow-hidden'
+				className='w-102 max-h-[431px] p-0 overflow-hidden'
 			>
 				{!selectedChannel && !personalOpen && (
 					<>
@@ -98,7 +106,10 @@ export function NotificationDropdown() {
 
 							{userChannels.map((ch) => {
 								const count = notifications.filter(
-									(n) => !n.isRead && n.channel?.id === ch.id,
+									(n) =>
+										!n.isRead &&
+										n.channel?.id === ch.id &&
+										n.type !== NotificationType.COMMENT_REPLY,
 								).length
 
 								return (
@@ -140,7 +151,10 @@ export function NotificationDropdown() {
 							<div className='flex items-center gap-4'>
 								<button
 									title='Mark all as read'
-									onClick={(e) => e.preventDefault()}
+									onClick={(e) => {
+										e.preventDefault()
+										markAllChannelRead(selectedChannel)
+									}}
 									className='text-muted-foreground hover:text-primary transition cursor-pointer'
 								>
 									<BiCheckDouble className='w-5 h-5' />
@@ -185,7 +199,6 @@ export function NotificationDropdown() {
 					</>
 				)}
 
-				{/* PERSONAL NOTIFICATIONS */}
 				{personalOpen && (
 					<>
 						<DropdownMenuLabel className='px-4 py-2 text-base font-semibold flex items-center justify-between'>
@@ -194,7 +207,10 @@ export function NotificationDropdown() {
 							<div className='flex items-center gap-4'>
 								<button
 									title='Mark all as read'
-									onClick={(e) => e.preventDefault()}
+									onClick={(e) => {
+										e.preventDefault()
+										markAllPersonalRead()
+									}}
 									className='text-muted-foreground hover:text-primary transition cursor-pointer'
 								>
 									<BiCheckDouble className='w-5 h-5' />
@@ -202,7 +218,10 @@ export function NotificationDropdown() {
 
 								<button
 									title='Delete all notifications'
-									onClick={(e) => e.preventDefault()}
+									onClick={(e) => {
+										deletePersonalNotifications()
+										e.preventDefault()
+									}}
 									className='text-muted-foreground hover:text-primary transition cursor-pointer'
 								>
 									<TiDelete className='w-5 h-5' />

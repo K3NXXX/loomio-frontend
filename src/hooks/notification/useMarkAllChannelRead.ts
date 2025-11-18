@@ -2,13 +2,13 @@ import { notificationService } from '@/services/notification.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-export const useDeleteChannelNotifications = (onDone?: () => void) => {
+export const useMarkAllChannelRead = (onDone?: () => void) => {
 	const queryClient = useQueryClient()
 
-	const { mutate: deleteChannelNotifications } = useMutation({
-		mutationKey: ['deleteChannelNotifications'],
+	const { mutate: markAllChannelRead } = useMutation({
+		mutationKey: ['markAllChannelRead'],
 		mutationFn: (channelId: string) =>
-			notificationService.deleteAllForChannel(channelId),
+			notificationService.markAllChannelRead(channelId),
 
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['getNotifications'] })
@@ -20,5 +20,5 @@ export const useDeleteChannelNotifications = (onDone?: () => void) => {
 		},
 	})
 
-	return { deleteChannelNotifications }
+	return { markAllChannelRead }
 }

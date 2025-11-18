@@ -13,7 +13,7 @@ export function renderNotificationText(n: Notification, displayName: string) {
 		case NotificationType.VIDEO_PUBLISHED:
 			return `New video from ${displayName}`
 		case NotificationType.CHANNEL_NEW_FOLLOWER:
-			return `@${n.author?.username} followed your channel`
+			return `@${n.author?.username} followed your channel "${n.channel?.name}"`
 		default:
 			return n.message
 	}

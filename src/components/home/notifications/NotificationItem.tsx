@@ -17,7 +17,6 @@ interface INotificationItemProps {
 export function NotificationItem({ n }: INotificationItemProps) {
 	const isFromChannelOwner = n.author?.id === n.channel?.userId
 
-	console.log(n)
 
 	const displayName = isFromChannelOwner ? n.channel?.name : n.author?.username
 
@@ -34,27 +33,32 @@ export function NotificationItem({ n }: INotificationItemProps) {
 			asChild
 			className={cn('flex items-start gap-3 px-4 py-3 cursor-pointer')}
 		>
-			<Link href={getNotificationUrl(n)} className='flex gap-3 w-full'>
+			<Link href={getNotificationUrl(n)} className=''>
 				<Avatar className='w-10 h-10'>
 					<AvatarImage src={displayAvatar || undefined} />
 					<AvatarFallback>{displayInitials}</AvatarFallback>
 				</Avatar>
-
-				<div className='flex flex-col text-sm leading-tight'>
-					<span>
-						{truncateName(renderNotificationText(n, displayName), 40)}
-					</span>
-					<span className='text-[11px] text-muted-foreground mt-1'>
-						{formatDate(n.createdAt)}
-					</span>
+				<div className='flex gap-3 w-full items-center'>
+					<div className='flex flex-col text-sm leading-tight'>
+						<span>
+							{truncateName(renderNotificationText(n, displayName), 200)}
+						</span>
+						<span className='text-[11px] text-muted-foreground mt-1'>
+							{formatDate(n.createdAt)}
+						</span>
+					</div>
+					<div className='flex items-center gap-3 pl-5'>
+						{n.video?.thumbnailFile && (
+							<img
+								src={n.video.thumbnailFile}
+								className='ml-auto h-10 w-16 rounded object-cover'
+							/>
+						)}
+						{n.isRead === false && (
+							<div className='w-[8px] h-[8px] bg-primary rounded'></div>
+						)}
+					</div>
 				</div>
-
-				{n.video?.thumbnailFile && (
-					<img
-						src={n.video.thumbnailFile}
-						className='ml-auto h-10 w-16 rounded object-cover'
-					/>
-				)}
 			</Link>
 		</DropdownMenuItem>
 	)

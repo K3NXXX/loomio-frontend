@@ -13,7 +13,7 @@ export default async function AuthLayout({
 	children: ReactNode
 }) {
 	const cookieStore = await cookies()
-	const token = cookieStore.get('accessToken')?.value
+	const token = cookieStore.get('refreshToken')?.value
 
 	if (token) redirect(PAGES.HOME)
 
