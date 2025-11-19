@@ -3,14 +3,16 @@ import type { ICreateCommentRequest } from '@/types/comment.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-export const useCreateComment = () => {
+export const useCreateComment = (videoId: string) => {
 	const queryClient = useQueryClient()
 	const { mutate: createComment } = useMutation({
 		mutationKey: ['createComment'],
 		mutationFn: (data: ICreateCommentRequest) =>
 			commentService.createComment(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['getAllComments'] })
+			queryClient.invalidateQueries({
+				queryKey: ['getAllComments', videoId],
+			})
 		},
 		onError: () => {
 			toast.error('Something went wrong. Try later')

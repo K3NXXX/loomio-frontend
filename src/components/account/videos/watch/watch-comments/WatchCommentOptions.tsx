@@ -12,6 +12,7 @@ import { MdDelete, MdEdit } from 'react-icons/md'
 import { TbDotsVertical, TbMessageReportFilled } from 'react-icons/tb'
 
 interface IWatchCommentOptions {
+	videoId: string
 	comment: IVideoComment
 	setIsCommentEditing: Dispatch<SetStateAction<boolean>>
 }
@@ -19,9 +20,10 @@ interface IWatchCommentOptions {
 export function WatchCommentOptions({
 	comment,
 	setIsCommentEditing,
+	videoId,
 }: IWatchCommentOptions) {
 	const { userData } = useGetMe()
-	const { deleteComment } = useDeleteComment()
+	const { deleteComment } = useDeleteComment(videoId)
 
 	return (
 		<DropdownMenu>

@@ -36,9 +36,4 @@ export const UIConfiguratorColors: IUIConfiguratorColors[] = [
 		color: THEME_COLORS.VIOLET,
 		colorCss: '#8e51ff',
 	},
-	{
-		id: 7,
-		color: THEME_COLORS.WHITE,
-		colorCss: '#fafafa',
-	},
 ]

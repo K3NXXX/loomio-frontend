@@ -3,12 +3,15 @@
 import { UploadVideoModal } from '@/components/account/videos/upload/UploadVideoModal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { useGetChannelViews } from '@/hooks/channel/useGetChannelViews'
 import { getInitials } from '@/utils/get-initials'
 import { useChannelStore } from '@/zustand/store/channelStore'
 import { useVideoStore } from '@/zustand/store/videoStore'
 
 export function Dashboard() {
 	const { channel } = useChannelStore()
+
+	const { totalViews } = useGetChannelViews(channel?.username)
 
 	const { openUploadingVideo, setOpenUploadingVideo, setUploadChannelId } =
 		useVideoStore()
@@ -82,6 +85,14 @@ export function Dashboard() {
 							</p>
 							<p className='text-xl font-semibold text-foreground'>
 								{channel._count?.followers ?? 0}
+							</p>
+						</div>
+						<div className='flex items-center justify-between px-5 py-3 rounded-lg border border-border/40 bg-muted/10'>
+							<p className='text-sm text-muted-foreground tracking-wide'>
+								Total views
+							</p>
+							<p className='text-xl font-semibold text-foreground'>
+								{totalViews}
 							</p>
 						</div>
 					</div>

@@ -17,7 +17,7 @@ export function WatchCommentReplyInput({
 	videoId,
 }: IWatchCommentRepliesProps) {
 	const [replyContent, setReplyContent] = useState('')
-	const { createComment } = useCreateComment()
+	const { createComment } = useCreateComment(videoId)
 
 	const handleAddReply = () => {
 		createComment({ content: replyContent, parentId: comment.id, videoId })

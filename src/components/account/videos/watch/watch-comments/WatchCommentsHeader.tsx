@@ -14,7 +14,7 @@ export function WatchCommentsHeader({
 	video,
 }: IWatchCommentsHeader) {
 	const [newCommentContent, setNewCommentContent] = useState('')
-	const { createComment } = useCreateComment()
+	const { createComment } = useCreateComment(video.id)
 
 	const addNewComment = () => {
 		const newComment = {

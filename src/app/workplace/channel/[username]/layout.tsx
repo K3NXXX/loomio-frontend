@@ -1,5 +1,6 @@
 'use client'
 
+import { WorkplaceSkeleton } from '@/components/skeletons/workplace/WorkplaceSkeleton'
 import WorkplaceHeader from '@/components/workplace/WorkplaceHeader'
 import { WorkplaceSidebar } from '@/components/workplace/WorkplaceSidebar'
 import { useGetChannel } from '@/hooks/channel/useGetChannel'
@@ -23,11 +24,7 @@ export default function WorkplaceLayout({
 	}, [channel, isLoading, setChannel, setLoading])
 
 	if (isLoading || !channel) {
-		return (
-			<div className='min-h-[60vh] flex items-center justify-center text-muted-foreground'>
-				Loading channel...
-			</div>
-		)
+		return <WorkplaceSkeleton />
 	}
 
 	return (

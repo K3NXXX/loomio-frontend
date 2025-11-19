@@ -31,6 +31,13 @@ class ChannelService {
 		)
 		return data
 	}
+
+	async getChannelViews(username: string): Promise<{ totalViews: number }> {
+		const { data } = await axiosInstance.get<{ totalViews: number }>(
+			`${this.BASE_URL}/${username}/views`,
+		)
+		return data
+	}
 }
 
 export const channelService = new ChannelService()

@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { useEditComment } from '@/hooks/comment/useEditComment'
 import type { IVideo } from '@/types/video.types'
+import { formatDate } from '@/utils/formatDate'
 import { getInitials } from '@/utils/get-initials'
 import { useState } from 'react'
 import { FaChevronDown, FaChevronRight, FaReply } from 'react-icons/fa'
@@ -46,7 +47,7 @@ export function WatchCommentItem({
 
 	const [isCommentEditing, setIsCommentEditing] = useState(false)
 	const [editingText, setEditingText] = useState(comment.content)
-	const { editComment } = useEditComment()
+	const { editComment } = useEditComment(video.id)
 
 	const handleEditComment = () => {
 		const commentData = {
@@ -114,12 +115,16 @@ export function WatchCommentItem({
 										@{displayName}
 									</p>
 									<p className='text-xs text-neutral-400'>
-										{new Date(comment.createdAt).toLocaleDateString()}
+										{formatDate(comment.createdAt)}
 									</p>
 									{comment.parent && comment.parent.user && (
-										<p className='text-xs text-primary text-[14px] flex  gap-1 items-center font-bold cursor-pointer'>
+										<p
+											className={`text-xs text-primary text-[14px] flex  gap-1 items-center font-bold cursor-pointer ${
+												isAuthorChannelOwner ? 'rounded-md px-2 py-1' : ''
+											}`}
+										>
 											<FaReply className='rotate-180 inline-block' />@
-											{comment.parent.user.username}
+											{displayName}
 										</p>
 									)}
 								</div>
@@ -153,7 +158,7 @@ export function WatchCommentItem({
 										>
 											{isExpanded ? <FaChevronDown /> : <FaChevronRight />}
 											<span>
-												{comment._count.replies}{' '}
+												{comment.replies.length}{' '}
 												{comment._count.replies === 1 ? 'reply' : 'replies'}
 											</span>
 										</button>
@@ -163,6 +168,7 @@ export function WatchCommentItem({
 						)}
 					</div>
 					<WatchCommentOptions
+						videoId={video.id}
 						comment={comment}
 						setIsCommentEditing={setIsCommentEditing}
 					/>

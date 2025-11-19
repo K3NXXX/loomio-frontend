@@ -62,7 +62,6 @@ export function Branding() {
 	const watchedUsername = watch('username')
 
 	const onSelectAvatar = async (file: File | null) => {
-		console.log('🖼️ onSelectAvatar called with:', file)
 		setAvatarTouched(true)
 
 		setValue('avatarFile', file ?? undefined, {
@@ -71,14 +70,11 @@ export function Branding() {
 		})
 		setValue('removeAvatar', !file, { shouldDirty: true })
 
-		// ✅ форсуємо перевірку
 		await trigger()
-		console.log('✅ after trigger, current values:', getValues())
 	}
 
 	const onSelectBanner = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const f = e.target.files?.[0]
-		console.log('🖼️ onSelectBanner called with:', f)
 		setBannerTouched(true)
 
 		if (f) {
@@ -102,20 +98,16 @@ export function Branding() {
 	}
 
 	const onSubmit = (data: TEditingChannelSchema) => {
-		console.log('🚀 onSubmit data:', data)
-
 		const fd = new FormData()
 		fd.append('name', data.name)
 		fd.append('username', data.username.trim().toLowerCase())
 		fd.append('description', data.description ?? '')
 
 		if (data.avatarFile) {
-			console.log('📤 appending avatar:', data.avatarFile)
 			fd.append('avatar', data.avatarFile)
 		}
 
 		if (data.bannerFile) {
-			console.log('📤 appending banner:', data.bannerFile)
 			fd.append('banner', data.bannerFile)
 		}
 

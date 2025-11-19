@@ -39,7 +39,7 @@ export function CropAvatarModal({
 					<DialogTitle>Adjust Avatar</DialogTitle>
 				</DialogHeader>
 
-				<div className='relative w-full h-[400px] bg-black rounded-lg overflow-hidden'>
+				<div className='relative w-full aspect-square bg-black rounded-lg overflow-hidden'>
 					{imageUrl && (
 						<Cropper
 							image={imageUrl}
@@ -50,7 +50,7 @@ export function CropAvatarModal({
 							onCropComplete={onCropComplete}
 							cropShape='round'
 							showGrid={false}
-							objectFit='cover'
+							objectFit='contain'
 							aspect={1}
 						/>
 					)}

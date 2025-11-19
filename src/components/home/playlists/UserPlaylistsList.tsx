@@ -48,7 +48,7 @@ export function UserPlaylistsList() {
 								</div>
 
 								<p className='text-sm text-neutral-400 line-clamp-2'>
-									{playlist.description || 'No description provided.'}
+									{playlist.description || 'No description provided'}
 								</p>
 							</div>
 

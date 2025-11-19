@@ -23,7 +23,6 @@ export function WorkplaceBrandingAvatar({
 
 	const avatarFile = watch('avatarFile')
 
-	// якщо файл прийшов у форму — можемо з нього зробити прев’ю (опціонально)
 	useEffect(() => {
 		if (avatarFile instanceof File) {
 			const objectUrl = URL.createObjectURL(avatarFile)

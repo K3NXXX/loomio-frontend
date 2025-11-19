@@ -12,7 +12,8 @@ export function HomeSidebarCollapsed() {
 		<aside className=' sticky top-[76px] h-[calc(100vh-76px)] flex flex-col items-center w-[80px] bg-background/80 backdrop-blur-xl shadow-md py-4'>
 			<ul className='flex flex-col items-center gap-3 w-full'>
 				{sidebarMenu.map((item) => {
-					const isActive = pathname === item.url
+					const isActive =
+						item.url === '/' ? pathname === '/' : pathname.startsWith(item.url)
 
 					return (
 						<li

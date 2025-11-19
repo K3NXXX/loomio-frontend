@@ -5,20 +5,22 @@ import { toast } from 'sonner'
 
 export const useCreateChannel = () => {
 	const queryClient = useQueryClient()
-	const { mutate: createChannel } = useMutation({
-		mutationKey: ['createChannel'],
-		mutationFn: (data: ICreateChannelRequest) =>
-			channelService.createChannel(data),
+	const { mutate: createChannel, isPending: channelCreatingLoading } =
+		useMutation({
+			mutationKey: ['createChannel'],
+			mutationFn: (data: ICreateChannelRequest) =>
+				channelService.createChannel(data),
 
-		onSuccess: () => {
-			toast.success('Channel created!')
-			queryClient.invalidateQueries({ queryKey: ['getUserChannels'] })
-		},
+			onSuccess: () => {
+				toast.success('Channel created!')
+				queryClient.invalidateQueries({ queryKey: ['getUserChannels'] })
+				queryClient.refetchQueries({ queryKey: ['getUserChannels'] })
+			},
 
-		onError: () => {
-			toast.error('Something went wrong. Try later')
-		},
-	})
+			onError: () => {
+				toast.error('Something went wrong. Try later')
+			},
+		})
 
-	return { createChannel }
+	return { createChannel, channelCreatingLoading }
 }

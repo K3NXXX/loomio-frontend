@@ -1,6 +1,7 @@
 'use client'
 
 import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideoMoreMenu'
+import { SearchVideoSkeletonList } from '@/components/skeletons/search/SearchVideoSkeletonList'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetSearchData } from '@/hooks/search/useGetSearchData'
@@ -23,8 +24,7 @@ export function Search({ query }: SearchProps) {
 			</p>
 		)
 
-	if (isLoading)
-		return <p className='text-center mt-10 text-muted-foreground'>Loading...</p>
+	if (isLoading) return <SearchVideoSkeletonList />
 
 	if (isError)
 		return (

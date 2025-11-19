@@ -13,7 +13,6 @@ interface IWatchCommentsProps {
 export function WatchCommentsList({ video }: IWatchCommentsProps) {
 	const { allComments } = useGetAllComments(video.id)
 
-
 	const [expandedReplies, setExpandedReplies] = useState<
 		Record<string, boolean>
 	>({})
@@ -24,27 +23,39 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 	const commentTree = useMemo(() => {
 		if (!allComments?.data) return []
 
-		const map: Record<string, any> = {}
-		const roots: any[] = []
+		const sorted = [...allComments.data].sort(
+			(a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+		)
 
-		allComments.data.forEach((c) => (map[c.id] = { ...c, replies: [] }))
+		// map for quick access
+		const map = {}
+		sorted.forEach((c) => (map[c.id] = { ...c, replies: [] }))
 
-		allComments.data.forEach((c) => {
+		// find all roots
+		const roots = sorted.filter((c) => !c.parentId).map((c) => map[c.id])
+
+		// helper to find real root
+		const findRoot = (item) => {
+			while (item.parentId) {
+				item = map[item.parentId]
+			}
+			return item
+		}
+
+		// flatten all replies to root
+		sorted.forEach((c) => {
 			if (c.parentId) {
-				let rootId = c.parentId
-
-				while (map[rootId]?.parentId) {
-					rootId = map[rootId].parentId
+				const realRoot = findRoot(c)
+				if (realRoot.id !== c.id) {
+					realRoot.replies.push(map[c.id])
 				}
-
-				map[rootId]?.replies.push(map[c.id])
-			} else {
-				roots.push(map[c.id])
 			}
 		})
 
 		return roots
-	}, [allComments])
+	}, [allComments?.data])
+
+	console.log('comments', allComments)
 
 	return (
 		<div className='mt-8'>

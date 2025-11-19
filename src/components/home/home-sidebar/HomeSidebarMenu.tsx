@@ -19,6 +19,8 @@ export function HomeSidebarMenu() {
 
 	useOnClickOutside(ref, handleClickOutside)
 
+	console.log('PATHNAME:', pathname)
+
 	return (
 		<>
 			<aside
@@ -29,7 +31,10 @@ export function HomeSidebarMenu() {
 				<div className='flex-1 pr-5 py-6 overflow-y-auto custom-scrollbar'>
 					<ul className='space-y-1 px-2'>
 						{sidebarMenu.map((item) => {
-							const isActive = pathname === item.url
+							const isActive =
+								item.url === '/'
+									? pathname === '/'
+									: pathname.startsWith(item.url)
 
 							return (
 								<li className='cursor-pointer' key={item.id}>
@@ -71,7 +76,10 @@ export function HomeSidebarMenu() {
 			<aside className='flex lg:hidden flex-col items-center min-w-[90px] max-w-[90px] bg-background  shadow-md py-4'>
 				<ul className='flex flex-col items-center gap-3 w-full'>
 					{sidebarMenu.map((item) => {
-						const isActive = pathname === item.url
+						const isActive =
+							item.url === '/'
+								? pathname === '/'
+								: pathname.startsWith(item.url)
 
 						return (
 							<li key={item.id} className='w-full'>

@@ -1,6 +1,7 @@
 'use client'
 
 import { PlaylistActionsDropdown } from '@/components/home/playlists/PlaylistActionsDropdown'
+import { PlaylistPageSkeleton } from '@/components/skeletons/playlists/PlaylistPageSkeleton'
 import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
@@ -14,7 +15,7 @@ import { useRemoveVideoFromPlaylist } from '@/hooks/videos/useRemoveVideoFromPla
 import { formatDate } from '@/utils/formatDate'
 import { truncateName } from '@/utils/truncateName'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Trash2 } from 'lucide-react'
+import { ArrowLeft, Play, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { TbDotsVertical } from 'react-icons/tb'
@@ -28,17 +29,12 @@ export default function Playlist() {
 		removeVideoFromPlaylist({ videoId, playlistId })
 	}
 
-	if (isLoading)
-		return (
-			<div className='min-h-[60vh] flex items-center justify-center text-muted-foreground'>
-				Loading playlist...
-			</div>
-		)
+	if (isLoading) return <PlaylistPageSkeleton />
 
 	if (isError || !playlist)
 		return (
 			<div className='min-h-[60vh] flex items-center justify-center text-destructive'>
-				Failed to load playlist 😢
+				Failed to load playlist
 			</div>
 		)
 
@@ -94,21 +90,29 @@ export default function Playlist() {
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
 								transition={{ duration: 0.3, delay: index * 0.05 }}
-								className='group rounded-2xl border border-border/40 bg-background/60 shadow-sm hover:shadow-md transition-all overflow-hidden'
+								className='rounded-2xl border border-border/40 bg-background/60 shadow-sm hover:shadow-md transition-all overflow-hidden'
 							>
-								<Link href={PAGES.WATCH(video.id)}>
-									<div className='relative w-full aspect-video overflow-hidden'>
+								<Link href={PAGES.WATCH(video.id)} className='block'>
+									<div className='group relative w-full aspect-video overflow-hidden'>
 										<img
 											src={video.thumbnailFile}
 											alt={video.title}
 											className='w-full h-full object-cover object-center'
 										/>
+
+										<div className='pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors' />
+
+										<div className='pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity'>
+											<div className='rounded-full bg-black/60 p-3 backdrop-blur'>
+												<Play className='h-5 w-5 text-white' />
+											</div>
+										</div>
 									</div>
 								</Link>
 
 								<div className='p-4 flex flex-col gap-1'>
 									<div className='flex items-start justify-between'>
-										<h3 className='font-semibold line-clamp-2 group-hover:text-primary transition-colors flex-1 pr-2'>
+										<h3 className='font-semibold line-clamp-2 transition-colors flex-1 pr-2'>
 											{truncateName(video.title, 40)}
 										</h3>
 
@@ -130,7 +134,7 @@ export default function Playlist() {
 											>
 												<DropdownMenuItem
 													onClick={() => handleRemove(video.id, playlist.id)}
-													className='flex items-center gap-2 text-destructive hover:text-destructive'
+													className='flex items-center gap-2 text-destructive hover:text-destructive cursor-pointer'
 												>
 													<Trash2 className='w-4 h-4' />
 													Remove from playlist
@@ -140,7 +144,7 @@ export default function Playlist() {
 									</div>
 
 									<div className='flex items-center gap-1 text-gray-400 text-sm'>
-										<span>{video._count?.views ?? 0} views</span>
+										<span>{video._count?.views} views</span>
 										<span>•</span>
 										<span>{formatDate(video.createdAt)}</span>
 									</div>

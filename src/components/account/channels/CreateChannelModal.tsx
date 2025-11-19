@@ -1,5 +1,6 @@
 'use client'
 import { AvatarUploader } from '@/app/(home)/account/edit-account/AvatarUploader'
+import loader from '@/assets/animations/loader.json'
 import { Button } from '@/components/ui/button'
 import {
 	Dialog,
@@ -13,13 +14,14 @@ import { useCreateChannelFormErrors } from '@/hooks/account/useCreateChannelsFor
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useCreateChannel } from '@/hooks/channel/useCreateChannel'
 import {
-	CreateChannelSchema,
+	type CreateChannelSchema,
 	createChannelSchema,
 } from '@/schemas/account/create-channel.schema'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import Lottie from 'lottie-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -71,19 +73,9 @@ export default function CreateChannelModal({
 		[usernameValue],
 	)
 
-	const { createChannel } = useCreateChannel()
+	const { createChannel, channelCreatingLoading } = useCreateChannel()
 
-	// очікуємо, що AvatarUploader віддає File; якщо він повертає url/base64 — див. утиліту нижче
 	const handleAvatarChange = (value?: File | string | null) => {
-		console.log(
-			'AvatarUploader value ->',
-			value,
-			'isFile:',
-			value instanceof File,
-			'type:',
-			typeof value,
-		)
-
 		if (value instanceof File) {
 			setAvatarFile(value)
 			setAvatarPreview(URL.createObjectURL(value))
@@ -251,10 +243,18 @@ export default function CreateChannelModal({
 							</Button>
 							<Button
 								type='submit'
-								disabled={!isValid || isSubmitting}
-								className='bg-primary text-primary-foreground font-semibold rounded-xl px-6 py-2.5 hover:bg-primary/90 disabled:opacity-50 disabled:pointer-events-none'
+								disabled={!isValid || channelCreatingLoading}
+								className='bg-primary text-primary-foreground font-semibold rounded-xl px-6 py-2.5 hover:bg-primary/90 disabled:opacity-50 disabled:pointer-events-none w-[142px]'
 							>
-								{isSubmitting ? 'Creating...' : 'Create channel'}
+								{channelCreatingLoading ? (
+									<Lottie
+										animationData={loader}
+										loop={true}
+										className='absolute w-20 h-20'
+									/>
+								) : (
+									'Create channel'
+								)}
 							</Button>
 						</div>
 					</div>
