@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 
 export const useToggleFollowUser = () => {
 	const queryClient = useQueryClient()
-	const { mutate: toggleFollowUser } = useMutation({
+	const { mutateAsync: toggleFollowUser } = useMutation({
 		mutationKey: ['followUser'],
 		mutationFn: (followerId: string) => followService.followUser(followerId),
 		onSuccess: () => {

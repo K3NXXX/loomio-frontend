@@ -351,6 +351,10 @@
 }
 
 @layer utilities {
+	.highlight-comment {
+		@apply bg-primary/20 transition-colors duration-500 rounded-2xl;
+	}
+
 	@keyframes fade-in {
 		from {
 			opacity: 0;
@@ -381,23 +385,17 @@
 }
 
 :root {
-  --plyr-color-main: var(--primary);
-  --plyr-video-control-background-hover: rgba(255, 255, 255, 0.1);
-  --plyr-video-control-color: #ffffff;
-  
+	--plyr-color-main: var(--primary);
+	--plyr-video-control-background-hover: rgba(255, 255, 255, 0.1);
+	--plyr-video-control-color: #ffffff;
 }
 
-.plyr__menu__container .plyr__control[role="menuitemradio"]:hover,
-.plyr__menu__container .plyr__control[role="menuitemradio"][aria-checked="true"] {
-  color: var(--primary) !important; 
+.plyr__menu__container .plyr__control[role='menuitemradio']:hover,
+.plyr__menu__container
+	.plyr__control[role='menuitemradio'][aria-checked='true'] {
+	color: var(--primary) !important;
 }
 
-.plyr__menu__container .plyr__control[role="menuitem"]:hover {
-  color: var(--primary) !important;
+.plyr__menu__container .plyr__control[role='menuitem']:hover {
+	color: var(--primary) !important;
 }
-
-
-
-
-
-

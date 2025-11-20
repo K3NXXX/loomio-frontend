@@ -8,6 +8,7 @@ import { getInitials } from '@/utils/get-initials'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FaPalette, FaThLarge, FaVideo } from 'react-icons/fa'
+import { MdDangerous } from "react-icons/md";
 
 interface WorkplaceSidebarProps {
 	channel: IChannel
@@ -32,6 +33,11 @@ export function WorkplaceSidebar({ channel }: WorkplaceSidebarProps) {
 			label: 'Branding',
 			icon: FaPalette,
 			href: PAGES.WORKPLACE_BRANDING(channel.username),
+		},
+		{
+			label: 'Danger Zone',
+			icon: MdDangerous,
+			href: PAGES.WORKPLACE_DANGER_ZONE(channel.username),
 		},
 	]
 

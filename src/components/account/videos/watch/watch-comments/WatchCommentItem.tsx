@@ -62,8 +62,12 @@ export function WatchCommentItem({
 		setReplyInput((prev) => (prev === id ? null : id))
 
 	return (
-		<div key={comment.id}>
-			<div className='relative flex flex-col gap-2 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all bg-neutral-900'>
+		<div
+			id={`comment-${comment.id}`}
+			key={comment.id}
+			className='comment-wrapper'
+		>
+			<div className='comment-inner relative flex flex-col gap-2 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all bg-neutral-900'>
 				<div className='absolute top-0 right-0 w-5 h-5 border-t-3 border-r-3 border-primary rounded-tr-xl'></div>
 
 				<div className='flex gap-3 justify-between items-center'>
@@ -124,7 +128,7 @@ export function WatchCommentItem({
 											}`}
 										>
 											<FaReply className='rotate-180 inline-block' />@
-											{displayName}
+											{comment.parent.user.username}
 										</p>
 									)}
 								</div>

@@ -42,7 +42,7 @@ export function HomeUserMenu() {
 						{!isSidebarCollapsed && (
 							<div className='flex flex-col overflow-hidden'>
 								<p className='font-semibold text-sm truncate'>
-									{userData?.username}
+									@{userData?.username}
 								</p>
 								<p className='text-xs text-muted-foreground truncate'>
 									{truncateName(userData?.email || '', 21)}
@@ -63,7 +63,7 @@ export function HomeUserMenu() {
 						<AvatarFallback>{getInitials(userData?.name)}</AvatarFallback>
 					</Avatar>
 					<div className='flex flex-col'>
-						<span className='font-semibold'>{userData?.username}</span>
+						<span className='font-semibold'>@{userData?.username}</span>
 						<span className='text-xs text-muted-foreground'>
 							{truncateName(userData?.email || '', 23)}
 						</span>

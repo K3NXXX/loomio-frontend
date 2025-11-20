@@ -9,17 +9,50 @@ import { WatchVideoSkeleton } from '@/components/skeletons/videos/WatchVideoSkel
 import { useGetOnePublicVideo } from '@/hooks/videos/useGetOnePublicVideo'
 import { formatDate } from '@/utils/formatDate'
 import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { WatchRecommendedVideos } from '../../../components/account/videos/watch/WatchRecommendedVideos'
 
 export default function Watch() {
 	const searchParams = useSearchParams()
 	const videoId = searchParams.get('v')
 	const { video, isLoading, isError } = useGetOnePublicVideo(videoId ?? '')
+	const commentId = searchParams.get('commentId')
 
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
-	console.log(video)
+	const toggleDescription = () => {
+		setIsDescriptionExpanded((prev) => !prev)
+	}
+
+	useEffect(() => {
+		if (!commentId) return
+	}, [commentId])
+
+	useEffect(() => {
+		if (!commentId) return
+
+		const tryScroll = () => {
+			const wrapper = document.getElementById(`comment-${commentId}`)
+			if (!wrapper) return false
+
+			const inner = wrapper.querySelector('.comment-inner') || wrapper
+
+			inner.scrollIntoView({ behavior: 'smooth', block: 'center' })
+			inner.classList.add('highlight-comment')
+
+			return true
+		}
+
+		let attempts = 0
+		const interval = setInterval(() => {
+			attempts++
+			if (tryScroll() || attempts > 30) {
+				clearInterval(interval)
+			}
+		}, 150)
+
+		return () => clearInterval(interval)
+	}, [commentId, video])
 
 	if (isLoading) {
 		return (
@@ -35,10 +68,6 @@ export default function Watch() {
 
 	if (isError || !video) {
 		return <div className='p-4 text-center text-red-500'>Video not found</div>
-	}
-
-	const toggleDescription = () => {
-		setIsDescriptionExpanded((prev) => !prev)
 	}
 
 	return (

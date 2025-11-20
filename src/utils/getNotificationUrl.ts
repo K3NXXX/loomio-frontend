@@ -7,6 +7,10 @@ export function getNotificationUrl(n: Notification) {
 		case NotificationType.DISLIKE_VIDEO:
 		case NotificationType.COMMENT_NEW:
 		case NotificationType.COMMENT_REPLY:
+			if (n.comment?.id) {
+				return PAGES.WATCH_WITH_COMMENT(n.video?.id ?? '', n.comment.id)
+			}
+			return PAGES.WATCH(n.video?.id ?? '')
 		case NotificationType.VIDEO_PUBLISHED:
 			return PAGES.WATCH(n.video?.id ?? '')
 

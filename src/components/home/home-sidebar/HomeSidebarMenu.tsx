@@ -13,13 +13,13 @@ export function HomeSidebarMenu() {
 	const ref = useRef(null)
 	const { closeSidebar } = useGlobalStore()
 
-	const handleClickOutside = () => {
+	const handleClickOutside = (e: MouseEvent) => {
+		const target = e.target as HTMLElement
+		if (target.closest('.burger-toggle')) return
 		closeSidebar()
 	}
 
 	useOnClickOutside(ref, handleClickOutside)
-
-	console.log('PATHNAME:', pathname)
 
 	return (
 		<>

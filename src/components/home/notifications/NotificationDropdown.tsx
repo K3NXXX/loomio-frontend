@@ -33,8 +33,6 @@ export function NotificationDropdown() {
 	const { markAllChannelRead } = useMarkAllChannelRead()
 	const { markAllPersonalRead } = useMarkAllPersonalRead()
 
-	console.log(notifications)
-
 	const [selectedChannel, setSelectedChannel] = useState<string | null>(null)
 	const [personalOpen, setPersonalOpen] = useState<boolean>(false)
 
@@ -57,7 +55,7 @@ export function NotificationDropdown() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<button className='relative p-2 rounded-full hover:bg-muted cursor-pointer'>
+				<button className='relative p-2 rounded-full hover:bg-muted cursor-pointer focus:outline-none'>
 					<FaBell className='size-5' />
 
 					{unreadCount > 0 && (
@@ -73,7 +71,7 @@ export function NotificationDropdown() {
 
 			<DropdownMenuContent
 				align='end'
-				className='w-102 max-h-[431px] p-0 overflow-hidden'
+				className='w-106 max-h-[500px] p-0 overflow-hidden'
 			>
 				{!selectedChannel && !personalOpen && (
 					<>
@@ -82,7 +80,7 @@ export function NotificationDropdown() {
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 
-						<ScrollArea className='h-[431px]'>
+						<ScrollArea className='h-[500px]'>
 							<DropdownMenuItem
 								onSelect={(e) => e.preventDefault()}
 								onClick={() => setPersonalOpen(true)}

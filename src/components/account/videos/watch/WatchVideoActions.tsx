@@ -36,10 +36,21 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 		video.channel.id,
 	)
 
-
 	const [isShareOpen, setIsShareOpen] = useState(false)
 
 	const isThatMe = userData?.id === video.channel.userId
+
+	const handleFollow = async () => {
+		const res = await toggleFollowUser(video.channel.id)
+
+		if (res?.following === true) {
+			toggleChannelNotifications(video.channel.id)
+		} else {
+			if (isNotificationsEnabled) {
+				toggleChannelNotifications(video.channel.id)
+			}
+		}
+	}
 
 	return (
 		<div className='mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
@@ -74,7 +85,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 				) : (
 					<div className='flex items-center gap-2'>
 						<Button
-							onClick={() => toggleFollowUser(video.channel.id)}
+							onClick={() => handleFollow()}
 							variant={isFollowing ? 'outline' : 'default'}
 							className='font-semibold rounded-full px-6'
 						>
@@ -86,9 +97,9 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 								onClick={() => toggleChannelNotifications(video.channel.id)}
 								title='Notifications'
 								className='flex items-center justify-center w-10 h-10 rounded-full
-				 bg-neutral-200 dark:bg-neutral-800 
-				 hover:bg-neutral-300 dark:hover:bg-neutral-700 
-				 transition cursor-pointer'
+								bg-neutral-200 dark:bg-neutral-800 
+								hover:bg-neutral-300 dark:hover:bg-neutral-700 
+								transition cursor-pointer'
 							>
 								<FaBell
 									className={`w-5 h-5 ${

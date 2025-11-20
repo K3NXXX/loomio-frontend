@@ -2,7 +2,8 @@
 
 import { useGetAllComments } from '@/hooks/comment/useGetAllComments'
 import type { IVideo } from '@/types/video.types'
-import { useMemo, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
 import { WatchCommentItem } from './WatchCommentItem'
 import { WatchCommentsHeader } from './WatchCommentsHeader'
 
@@ -12,6 +13,9 @@ interface IWatchCommentsProps {
 
 export function WatchCommentsList({ video }: IWatchCommentsProps) {
 	const { allComments } = useGetAllComments(video.id)
+
+	const searchParams = useSearchParams()
+	const commentId = searchParams.get('commentId')
 
 	const [expandedReplies, setExpandedReplies] = useState<
 		Record<string, boolean>
@@ -27,22 +31,18 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 			(a, b) => new Date(a.createdAt) - new Date(b.createdAt),
 		)
 
-		// map for quick access
-		const map = {}
+		const map: Record<string, any> = {}
 		sorted.forEach((c) => (map[c.id] = { ...c, replies: [] }))
 
-		// find all roots
 		const roots = sorted.filter((c) => !c.parentId).map((c) => map[c.id])
 
-		// helper to find real root
-		const findRoot = (item) => {
+		const findRoot = (item: any) => {
 			while (item.parentId) {
 				item = map[item.parentId]
 			}
 			return item
 		}
 
-		// flatten all replies to root
 		sorted.forEach((c) => {
 			if (c.parentId) {
 				const realRoot = findRoot(c)
@@ -55,7 +55,57 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 		return roots
 	}, [allComments?.data])
 
-	console.log('comments', allComments)
+	const getRootId = (id: string | null) => {
+		if (!id || !allComments?.data) return null
+
+		const raw = allComments.data
+		let current = raw.find((c) => c.id === id)
+		if (!current) return null
+
+		while (current.parentId) {
+			current = raw.find((c) => c.id === current.parentId)!
+			if (!current) return null
+		}
+
+		return current.id
+	}
+
+	useEffect(() => {
+		if (!commentId) return
+
+		const rootId = getRootId(commentId)
+		if (!rootId) return
+
+		setExpandedReplies((prev) => ({
+			...prev,
+			[rootId]: true,
+		}))
+	}, [commentId, allComments?.data])
+
+	useEffect(() => {
+		if (!commentId) return
+
+		let attempts = 0
+
+		const interval = setInterval(() => {
+			attempts++
+
+			const wrapper = document.getElementById(`comment-${commentId}`)
+			if (!wrapper) {
+				if (attempts > 40) clearInterval(interval)
+				return
+			}
+
+			const inner = wrapper.querySelector('.comment-inner') || wrapper
+
+			inner.scrollIntoView({ behavior: 'smooth', block: 'center' })
+			inner.classList.add('highlight-comment')
+
+			clearInterval(interval)
+		}, 150)
+
+		return () => clearInterval(interval)
+	}, [commentId, expandedReplies])
 
 	return (
 		<div className='mt-8'>

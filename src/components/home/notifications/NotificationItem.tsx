@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { useMarkNotificationRead } from '@/hooks/notification/useMarkNotificationRead'
 import { cn } from '@/lib/utils'
 import type { Notification } from '@/types/notification.types'
 import { formatDate } from '@/utils/formatDate'
@@ -15,8 +16,9 @@ interface INotificationItemProps {
 }
 
 export function NotificationItem({ n }: INotificationItemProps) {
-	const isFromChannelOwner = n.author?.id === n.channel?.userId
+	const { markRead } = useMarkNotificationRead()
 
+	const isFromChannelOwner = n.author?.id === n.channel?.userId
 
 	const displayName = isFromChannelOwner ? n.channel?.name : n.author?.username
 
@@ -32,6 +34,7 @@ export function NotificationItem({ n }: INotificationItemProps) {
 		<DropdownMenuItem
 			asChild
 			className={cn('flex items-start gap-3 px-4 py-3 cursor-pointer')}
+			onClick={() => markRead(n.id)}
 		>
 			<Link href={getNotificationUrl(n)} className=''>
 				<Avatar className='w-10 h-10'>
@@ -40,24 +43,22 @@ export function NotificationItem({ n }: INotificationItemProps) {
 				</Avatar>
 				<div className='flex gap-3 w-full items-center'>
 					<div className='flex flex-col text-sm leading-tight'>
-						<span>
+						<span className=''>
 							{truncateName(renderNotificationText(n, displayName), 200)}
 						</span>
-						<span className='text-[11px] text-muted-foreground mt-1'>
+						<span className='text-[11px] text-muted-foreground mt-1 '>
 							{formatDate(n.createdAt)}
 						</span>
 					</div>
-					<div className='flex items-center gap-3 pl-5'>
-						{n.video?.thumbnailFile && (
-							<img
-								src={n.video.thumbnailFile}
-								className='ml-auto h-10 w-16 rounded object-cover'
-							/>
-						)}
-						{n.isRead === false && (
-							<div className='w-[8px] h-[8px] bg-primary rounded'></div>
-						)}
-					</div>
+					{n.video?.thumbnailFile && (
+						<img
+							src={n.video.thumbnailFile}
+							className='ml-auto mr-4 h-10 w-16 rounded object-cover'
+						/>
+					)}
+					{n.isRead === false && (
+						<div className='w-[8px] h-[8px] bg-primary rounded absolute top-1/2 -translate-y-1/2 right-3'></div>
+					)}
 				</div>
 			</Link>
 		</DropdownMenuItem>

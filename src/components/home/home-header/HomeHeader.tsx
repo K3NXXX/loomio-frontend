@@ -56,7 +56,7 @@ export function HomeHeader() {
 						<IoMenu
 							onClick={() => toggleSidebarCollapsed()}
 							size={30}
-							className='cursor-pointer'
+							className='cursor-pointer burger-toggle'
 						/>
 						<Separator orientation='vertical' />
 						<Logo />

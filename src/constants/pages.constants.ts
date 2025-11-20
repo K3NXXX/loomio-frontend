@@ -8,6 +8,8 @@ export const PAGES = {
 	CHANNELS: '/account/channels',
 	EDIT_ACCOUNT: 'account/edit-account',
 	WATCH: (id: string) => `/watch?v=${id}`,
+	WATCH_WITH_COMMENT: (videoId: string, commentId: string) =>
+		`/watch?v=${videoId}&commentId=${commentId}`,
 	CHANNEL: (username: string) => `/@${username}`,
 	WORKPLACE_DASHBOARD: (username: string) =>
 		`/workplace/channel/@${username}/dashboard`,
@@ -15,6 +17,8 @@ export const PAGES = {
 		`/workplace/channel/@${username}/content`,
 	WORKPLACE_BRANDING: (username: string) =>
 		`/workplace/channel/@${username}/branding`,
+	WORKPLACE_DANGER_ZONE: (username: string) =>
+		`/workplace/channel/@${username}/danger-zone`,
 	SEARCH: (query: string) => `/search?query=${query}`,
 	PLAYLISTS: '/playlists',
 	ONE_USER_PLAYLIST: (id: string) => `/playlists/${id}`,

@@ -32,6 +32,13 @@ class NotificationService {
 		const { data } = await axiosInstance.post(`${this.BASE_URL}/read/personal`)
 		return data
 	}
+
+	async markOneRead(notificationId: string): Promise<{ success: boolean }> {
+		const { data } = await axiosInstance.post(
+			`${this.BASE_URL}/${notificationId}/read`,
+		)
+		return data
+	}
 }
 
 export const notificationService = new NotificationService()

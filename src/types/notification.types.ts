@@ -16,6 +16,7 @@ interface NotificationChannel {
 	name: string
 	username: string
 	avatarUrl: string | null
+	userId: string
 }
 
 interface NotificationComment {
