@@ -58,7 +58,7 @@ export function WorkplaceBrandingBanner({
 	}
 
 	return (
-		<section className='relative w-[700px] rounded-2xl border border-border/40 bg-background/60 p-6 shadow-sm hover:shadow-md transition-all'>
+		<section className='relative w-[1282px] rounded-2xl border border-border/40 bg-background/60 p-6 shadow-sm hover:shadow-md transition-all'>
 			<h2 className='text-xl font-semibold mb-2'>Banner</h2>
 			<p className='text-sm text-muted-foreground mb-5'>
 				This image is displayed at the top of your channel page.

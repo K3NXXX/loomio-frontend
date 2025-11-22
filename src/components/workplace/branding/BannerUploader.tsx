@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { getCroppedImg } from '@/utils/getCroppedImage'
 import { useEffect, useRef, useState } from 'react'
@@ -11,38 +13,6 @@ export interface BannerUploaderProps {
 	minWidth?: number
 	minHeight?: number
 	valueUrl?: string | null
-}
-
-function bytesToMB(n: number) {
-	return n / (1024 * 1024)
-}
-
-async function validateImage(
-	file: File,
-	minW: number,
-	minH: number,
-	maxMB: number,
-) {
-	if (bytesToMB(file.size) > maxMB) {
-		return { ok: false, error: `File is too large. Max ${maxMB} MB.` }
-	}
-	const url = URL.createObjectURL(file)
-	try {
-		const img = new Image()
-		const dims: { w: number; h: number } = await new Promise(
-			(resolve, reject) => {
-				img.onload = () => resolve({ w: img.width, h: img.height })
-				img.onerror = reject
-				img.src = url
-			},
-		)
-		if (dims.w < minW || dims.h < minH) {
-			return { ok: false, error: `Image too small. Minimum ${minW}×${minH}px.` }
-		}
-	} finally {
-		URL.revokeObjectURL(url)
-	}
-	return { ok: true as const }
 }
 
 export function BannerUploader({
@@ -62,7 +32,6 @@ export function BannerUploader({
 	const [localUrl, setLocalUrl] = useState<string | null>(initialUrl || null)
 	const [error, setError] = useState<string | null>(null)
 
-	// 🧠 Синхронізуємо localUrl з valueUrl (контроль зверху)
 	useEffect(() => {
 		setLocalUrl(valueUrl ?? initialUrl ?? null)
 	}, [valueUrl, initialUrl])
@@ -71,21 +40,17 @@ export function BannerUploader({
 
 	const openFileDialog = () => fileInputRef.current?.click()
 
+	// ⛔ NO VALIDATION ANYMORE
 	const handleSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (!file) return
 
-		const v = await validateImage(file, minWidth, minHeight, maxSizeMB)
-		if (!v.ok) {
-			setError(v.error || 'Invalid image')
-			if (fileInputRef.current) fileInputRef.current.value = ''
-			return
-		}
-
 		const url = URL.createObjectURL(file)
+
 		setTempImageUrl(url)
 		setIsCropModalOpen(true)
 		setError(null)
+
 		if (fileInputRef.current) fileInputRef.current.value = ''
 	}
 
@@ -110,22 +75,20 @@ export function BannerUploader({
 		setTempImageUrl(null)
 	}
 
-
 	return (
 		<div className='flex flex-col gap-3'>
-			<div className='relative w-full aspect-[20/6] rounded-xl border border-dashed border-border/50 bg-muted/10 overflow-hidden flex items-center justify-center group'>
+			<div className='w-full h-[230px] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3 flex items-center justify-center bg-muted/10'>
 				{currentUrl ? (
-					// eslint-disable-next-line @next/next/no-img-element
 					<img
 						src={currentUrl}
 						alt='Channel banner'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='w-full h-full object-cover object-[center_5%]'
 					/>
 				) : (
 					<span className='text-sm text-muted-foreground'>
 						Recommended size:{' '}
 						<b>
-							{minWidth}×{minHeight} px
+							{minWidth}×{minHeight}px
 						</b>
 					</span>
 				)}
@@ -141,6 +104,7 @@ export function BannerUploader({
 					</b>
 					. Max file size <b>{maxSizeMB} MB</b>.
 				</p>
+
 				<input
 					ref={fileInputRef}
 					id='banner-upload'
@@ -149,6 +113,7 @@ export function BannerUploader({
 					className='hidden'
 					onChange={handleSelect}
 				/>
+
 				<Button
 					type='button'
 					className='rounded-full px-5'

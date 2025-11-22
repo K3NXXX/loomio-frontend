@@ -51,7 +51,7 @@ export function CropVideoModal({
 							onCropComplete={onCropComplete}
 							cropShape='rect'
 							showGrid={false}
-							objectFit='cover'
+							objectFit='contain'
 						/>
 					)}
 				</div>

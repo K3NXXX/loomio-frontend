@@ -191,7 +191,7 @@ export function AvatarUploader({
 									aspect={1}
 									cropShape='round'
 									showGrid={false}
-									objectFit='cover'
+									objectFit='contain'
 								/>
 							)}
 						</div>

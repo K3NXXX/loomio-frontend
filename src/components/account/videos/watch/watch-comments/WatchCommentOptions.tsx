@@ -105,7 +105,7 @@ export function WatchCommentOptions({
 
 						<AlertDialogAction
 							onClick={() => handleDelete()}
-							className='bg-red-600 hover:bg-red-700 text-white'
+							className='bg-primary text-white'
 						>
 							Delete
 						</AlertDialogAction>

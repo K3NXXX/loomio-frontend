@@ -17,8 +17,8 @@ export const useCreateChannel = () => {
 				queryClient.refetchQueries({ queryKey: ['getUserChannels'] })
 			},
 
-			onError: () => {
-				toast.error('Something went wrong. Try later')
+			onError: (error: any) => {
+				toast.error(error.response.data.message)
 			},
 		})
 

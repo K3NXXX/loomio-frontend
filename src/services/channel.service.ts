@@ -38,6 +38,13 @@ class ChannelService {
 		)
 		return data
 	}
+
+	async deleteChannel(channelId: string): Promise<{ success: boolean }> {
+		const { data } = await axiosInstance.delete<{ success: boolean }>(
+			`${this.BASE_URL}/${channelId}`,
+		)
+		return data
+	}
 }
 
 export const channelService = new ChannelService()

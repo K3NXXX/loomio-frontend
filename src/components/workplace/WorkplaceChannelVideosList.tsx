@@ -34,7 +34,6 @@ export function WorkplaceChannelVideosList({
 		setEditingVideo(video)
 	}
 
-	// 🔹 Дві сітки для двох типів таблиць
 	const gridColsPublished =
 		'[grid-template-columns:20px_minmax(340px,1fr)_110px_150px_110px_80px_100px_120px]'
 	const gridColsScheduled =
@@ -156,7 +155,7 @@ export function WorkplaceChannelVideosList({
 					variant='outline'
 					className='rounded-full px-3 py-1 text-xs whitespace-nowrap'
 				>
-					<FaPen className='mr-2 h-3.5 w-3.5' /> Edit
+					<FaPen size={20} className='mr-2' /> Edit
 				</Button>
 				<VideoItemActions videoId={v.id} />
 			</div>
@@ -165,7 +164,6 @@ export function WorkplaceChannelVideosList({
 
 	return (
 		<div className='relative w-full space-y-10'>
-			{/* 🔹 Published videos */}
 			<div>
 				{renderHeader(false)}
 				<div className='space-y-3 pt-3'>
@@ -173,7 +171,6 @@ export function WorkplaceChannelVideosList({
 				</div>
 			</div>
 
-			{/* 🔸 Scheduled videos */}
 			{scheduledVideos.length > 0 && (
 				<div>
 					<h3 className='text-sm font-semibold text-muted-foreground mb-2'>
