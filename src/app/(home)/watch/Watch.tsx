@@ -6,9 +6,12 @@ import WatchVideoActions from '@/components/account/videos/watch/WatchVideoActio
 import { WatchRecommendedVideosSkeleton } from '@/components/skeletons/videos/WatchRecommendedVideosSkeleton'
 import { WatchVideoActionsSkeleton } from '@/components/skeletons/videos/WatchVideoActionsSkeleton'
 import { WatchVideoSkeleton } from '@/components/skeletons/videos/WatchVideoSkeleton'
+import { PAGES } from '@/constants/pages.constants'
+import { useGetChannel } from '@/hooks/channel/useGetChannel'
 import { useGetOnePublicVideo } from '@/hooks/videos/useGetOnePublicVideo'
+import { useGetPublicVideos } from '@/hooks/videos/useGetPublicVideos'
 import { formatDate } from '@/utils/formatDate'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { WatchRecommendedVideos } from '../../../components/account/videos/watch/WatchRecommendedVideos'
 
@@ -17,6 +20,25 @@ export default function Watch() {
 	const videoId = searchParams.get('v')
 	const { video, isLoading, isError } = useGetOnePublicVideo(videoId ?? '')
 	const commentId = searchParams.get('commentId')
+	const { videos: allVideos } = useGetPublicVideos()
+	const { channel } = useGetChannel(video?.channel.username)
+	const channelVideos = channel?.videos || []
+	const publicVideos = allVideos || []
+
+
+	const channelIndex = channelVideos.findIndex((v) => v.id === video?.id)
+
+	const publicIndex = publicVideos.findIndex((v) => v.id === video?.id)
+
+	let nextVideo = null
+
+	if (channelIndex >= 0 && channelIndex + 1 < channelVideos.length) {
+		nextVideo = channelVideos[channelIndex + 1]
+	} else if (publicIndex >= 0 && publicIndex + 1 < publicVideos.length) {
+		nextVideo = publicVideos[publicIndex + 1]
+	}
+
+	const router = useRouter()
 
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
@@ -77,6 +99,10 @@ export default function Watch() {
 					videoId={video.id}
 					videoSrc={video.videoFile}
 					publicId={video.videoPublicId}
+					onNext={() => {
+						if (!nextVideo) return
+						router.push(PAGES.WATCH(nextVideo.id))
+					}}
 				/>
 				<h1 className='mt-4 text-2xl font-bold'>{video.title}</h1>
 

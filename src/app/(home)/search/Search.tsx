@@ -87,25 +87,24 @@ export function Search({ query }: SearchProps) {
 					<section>
 						<div className='space-y-5'>
 							{videos.map((v) => (
-								<Link
+								<div
 									key={v.id}
-									href={PAGES.WATCH(v.id)}
 									className='flex gap-5 rounded-xl p-3 items-start hover:bg-muted/20 transition-colors'
 								>
-									<div className='relative flex-shrink-0'>
-										<Image
-											src={v.thumbnailFile}
-											alt={v.title}
-											unoptimized
-											width={480}
-											height={270}
-											className='object-cover rounded-xl border border-border/40 w-[480px] h-[270px]'
-										/>
-									</div>
+									<Link href={PAGES.WATCH(v.id)} className='flex gap-5 flex-1'>
+										<div className='relative flex-shrink-0'>
+											<Image
+												src={v.thumbnailFile}
+												alt={v.title}
+												unoptimized
+												width={480}
+												height={270}
+												className='object-cover rounded-xl border border-border/40 w-[480px] h-[270px]'
+											/>
+										</div>
 
-									<div className='flex flex-1 justify-between gap-3 items-start'>
-										<div className='flex flex-col justify-between'>
-											<div>
+										<div className='flex flex-1 justify-between gap-3 items-start'>
+											<div className='flex flex-col justify-between'>
 												<h3 className='font-semibold text-lg line-clamp-2'>
 													{v.title}
 												</h3>
@@ -113,7 +112,7 @@ export function Search({ query }: SearchProps) {
 												<div className='flex items-center gap-2 mt-2'>
 													<Image
 														src={v.channel?.avatarUrl || '/default-avatar.png'}
-														alt={v.channel?.name || 'channel avatar'}
+														alt={v.channel?.name}
 														width={28}
 														height={28}
 														className='rounded-full object-cover border border-border/30'
@@ -122,22 +121,25 @@ export function Search({ query }: SearchProps) {
 														{v.channel?.name}
 													</p>
 												</div>
-											</div>
 
-											<div className='text-sm text-muted-foreground mt-3 flex items-center gap-2'>
-												<span>
-													{v._count?.views
-														? `${v._count.views.toLocaleString()} views`
-														: '0 views'}
-												</span>
-												<span>•</span>
-												<span>{formatDate(v.createdAt)}</span>
+												<div className='text-sm text-muted-foreground mt-3 flex items-center gap-2'>
+													<span>
+														{v._count?.views
+															? `${v._count.views.toLocaleString()} views`
+															: '0 views'}
+													</span>
+													<span>•</span>
+													<span>{formatDate(v.createdAt)}</span>
+												</div>
 											</div>
 										</div>
+									</Link>
 
+									{/* ⛔ Дуже важливо: меню поза Link */}
+									<div onClick={(e) => e.stopPropagation()}>
 										<WatchVideoMoreMenu videoId={v.id} />
 									</div>
-								</Link>
+								</div>
 							))}
 						</div>
 					</section>

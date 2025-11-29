@@ -1,7 +1,6 @@
 'use client'
 import { ChevronsUpDown } from 'lucide-react'
 import { FaRegCircleUser } from 'react-icons/fa6'
-import { FiBell } from 'react-icons/fi'
 import { LuCrown } from 'react-icons/lu'
 import { MdLogout } from 'react-icons/md'
 
@@ -42,7 +41,7 @@ export function HomeUserMenu() {
 						{!isSidebarCollapsed && (
 							<div className='flex flex-col overflow-hidden'>
 								<p className='font-semibold text-sm truncate'>
-									@{userData?.username}
+									@{truncateName(userData?.username || '', 17)}
 								</p>
 								<p className='text-xs text-muted-foreground truncate'>
 									{truncateName(userData?.email || '', 21)}
@@ -63,7 +62,9 @@ export function HomeUserMenu() {
 						<AvatarFallback>{getInitials(userData?.name)}</AvatarFallback>
 					</Avatar>
 					<div className='flex flex-col'>
-						<span className='font-semibold'>@{userData?.username}</span>
+						<span className='font-semibold'>
+							@{truncateName(userData?.username || '', 17)}
+						</span>
 						<span className='text-xs text-muted-foreground'>
 							{truncateName(userData?.email || '', 23)}
 						</span>
@@ -92,10 +93,6 @@ export function HomeUserMenu() {
 						<MdOutlineVideoLibrary />
 						<span>Channels</span>
 					</Link>
-				</DropdownMenuItem>
-				<DropdownMenuItem className='cursor-pointer'>
-					<FiBell />
-					Notifications
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem className='cursor-pointer' onClick={() => logout()}>

@@ -8,8 +8,9 @@ export const useGetOnePublicVideo = (videoId: string) => {
 		isLoading,
 		isError,
 	} = useQuery<IVideo>({
-		queryKey: ['getOnePublicVideo'],
+		queryKey: ['getOnePublicVideo', videoId],
 		queryFn: () => videoService.getOneVideo(videoId),
+		enabled: !!videoId,
 	})
 
 	return { video, isLoading, isError }

@@ -28,59 +28,73 @@ export function PlaylistActionsDropdown({
 }: IPlaylistActionsDropdownProps) {
 	const [isEditPlaylistFormOpened, setIsEditPlaylistFormOpened] =
 		useState(false)
-
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const { deletePlaylist } = useDeletePlaylist()
 	const router = useRouter()
 
 	const handleDeletePlaylist = () => {
+		setIsDropdownOpen(false)
 		deletePlaylist(playlistId)
-		if (isPlaylistPage) {
-			router.replace(PAGES.PLAYLISTS)
-		}
+		if (isPlaylistPage) router.replace(PAGES.PLAYLISTS)
+	}
+
+	const handleOpenEditModal = () => {
+		setIsDropdownOpen(false)
+		setIsEditPlaylistFormOpened(true)
 	}
 
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<div
-					onClickCapture={(e) => e.stopPropagation()}
-					className='p-1 rounded-md cursor-pointer transition-colors hover:text-primary'
-				>
-					<TbDotsVertical className='w-5 h-5' />
-				</div>
-			</DropdownMenuTrigger>
+		<>
+			<DropdownMenu
+				modal={false}
+				open={isDropdownOpen}
+				onOpenChange={setIsDropdownOpen}
+			>
+				<DropdownMenuTrigger asChild>
+					<div
+						onClickCapture={(e) => e.stopPropagation()}
+						className='p-1 rounded-md cursor-pointer transition-colors hover:text-primary'
+					>
+						<TbDotsVertical className='w-5 h-5' />
+					</div>
+				</DropdownMenuTrigger>
 
-			<DropdownMenuContent side='right' className='min-w-[120px]'>
-				<DropdownMenuItem
-					onClick={(e) => {
-						e.stopPropagation()
-						setIsEditPlaylistFormOpened(true)
-					}}
-					className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
-				>
-					<MdEdit className='w-4 h-4' />
-					Edit
-				</DropdownMenuItem>
+				<DropdownMenuContent side='right' className='min-w-[120px]'>
+					<DropdownMenuItem
+						onClick={(e) => {
+							e.stopPropagation()
+							handleOpenEditModal()
+						}}
+						onSelect={(e) => {
+							e.preventDefault()
+						}}
+						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
+					>
+						<MdEdit className='w-4 h-4' />
+						Edit
+					</DropdownMenuItem>
 
-				<DropdownMenuItem
-					onClick={(e) => {
-						e.stopPropagation()
-						handleDeletePlaylist()
-					}}
-					className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
-				>
-					<MdDelete className='w-4 h-4' />
-					Delete
-				</DropdownMenuItem>
-			</DropdownMenuContent>
+					<DropdownMenuItem
+						onClick={(e) => {
+							e.stopPropagation()
+							handleDeletePlaylist()
+						}}
+						onSelect={(e) => {
+							e.preventDefault()
+						}}
+						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
+					>
+						<MdDelete className='w-4 h-4' />
+						Delete
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 
-			{isEditPlaylistFormOpened && (
-				<EditPlaylistModal
-					open={isEditPlaylistFormOpened}
-					onOpenChange={setIsEditPlaylistFormOpened}
-					initialData={initialData}
-				/>
-			)}
-		</DropdownMenu>
+			<EditPlaylistModal
+				open={isEditPlaylistFormOpened}
+				onOpenChange={setIsEditPlaylistFormOpened}
+				initialData={initialData}
+			/>
+		</>
 	)
 }

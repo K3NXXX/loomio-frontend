@@ -4,13 +4,14 @@ import { useAddView } from '@/hooks/view/useAddView'
 import 'plyr/dist/plyr.css'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-interface WatchVideoProps {
+interface IWatchVideoProps {
 	videoSrc: string
 	videoId: string
 	publicId: string
+	onNext?: () => void
 }
 
-export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
+export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [aspectRatio, setAspectRatio] = useState<number | null>(null)
@@ -151,6 +152,18 @@ export function WatchVideo({ videoSrc, videoId }: WatchVideoProps) {
 		document.addEventListener('keydown', handleKeyDown)
 		return () => document.removeEventListener('keydown', handleKeyDown)
 	}, [])
+
+	useEffect(() => {
+		const video = videoRef.current
+		if (!video) return
+
+		function handleEnded() {
+			if (onNext) onNext()
+		}
+
+		video.addEventListener('ended', handleEnded)
+		return () => video.removeEventListener('ended', handleEnded)
+	}, [onNext])
 
 	return (
 		<div

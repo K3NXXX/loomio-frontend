@@ -17,43 +17,46 @@ interface IWatchVideoMoreMenuProps {
 
 export function WatchVideoMoreMenu({ videoId }: IWatchVideoMoreMenuProps) {
 	const [isAddToPlaylistOpen, setIsAddToPlaylistOpen] = useState(false)
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+	const handleOpenPlaylistModal = () => {
+		setIsDropdownOpen(false) 
+		setIsAddToPlaylistOpen(true)
+	}
+
 	return (
-		<DropdownMenu>
-			<div onClickCapture={(e) => e.stopPropagation()}>
-				<DropdownMenuTrigger asChild>
-					<Button
-						variant='secondary'
-						size='sm'
-						className='group rounded-full h-10 w-10 flex items-center justify-center 
-					bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur 
-					hover:bg-neutral-200 dark:hover:bg-neutral-700 
-					hover:shadow-md active:scale-95 transition-all'
+		<>
+			<DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+				<div onClickCapture={(e) => e.stopPropagation()}>
+					<DropdownMenuTrigger asChild>
+						<Button
+							variant='secondary'
+							size='sm'
+							className='group rounded-full h-10 w-10 flex items-center justify-center bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:shadow-md active:scale-95 transition-all'
+						>
+							<MoreHorizontal className='size-4 group-hover:scale-110 transition-transform' />
+						</Button>
+					</DropdownMenuTrigger>
+				</div>
+				<DropdownMenuContent align='start' className='w-48'>
+					<DropdownMenuItem
+						onClick={(e) => {
+							e.stopPropagation()
+							handleOpenPlaylistModal()
+						}}
+						className='flex items-center gap-2 cursor-pointer'
 					>
-						<MoreHorizontal className='size-4 group-hover:scale-110 transition-transform' />
-					</Button>
-				</DropdownMenuTrigger>
-			</div>
+						<PlusCircle className='size-4 text-muted-foreground' />
+						Add to playlist
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 
-			<DropdownMenuContent align='start' className='w-48'>
-				<DropdownMenuItem
-					onClick={(e) => {
-						e.stopPropagation()
-						setIsAddToPlaylistOpen(true)
-					}}
-					className='flex items-center gap-2 cursor-pointer'
-				>
-					<PlusCircle className='size-4 text-muted-foreground' />
-					Add to playlist
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-
-			{isAddToPlaylistOpen && (
-				<AddToPlaylistModal
-					videoId={videoId}
-					open={isAddToPlaylistOpen}
-					onClose={() => setIsAddToPlaylistOpen(false)}
-				/>
-			)}
-		</DropdownMenu>
+			<AddToPlaylistModal
+				videoId={videoId}
+				open={isAddToPlaylistOpen}
+				onClose={() => setIsAddToPlaylistOpen(false)}
+			/>
+		</>
 	)
 }

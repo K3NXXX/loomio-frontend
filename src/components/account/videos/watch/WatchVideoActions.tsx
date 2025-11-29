@@ -128,7 +128,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					}`}
 				>
 					<ThumbsUp className='size-4 group-hover:scale-110 transition-transform' />
-					{video._count.likes}
+					{video.likesCount}
 				</Button>
 
 				<Button
@@ -144,6 +144,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					}`}
 				>
 					<ThumbsDown className='size-4 group-hover:scale-110 transition-transform' />
+					{video.dislikesCount}
 				</Button>
 
 				<Button

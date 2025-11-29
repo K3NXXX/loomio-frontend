@@ -14,6 +14,7 @@ import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
@@ -37,7 +38,21 @@ export function Channel() {
 		setUploadChannelId(channel.id)
 	}
 
-	if (isLoading || !channel) return <ChannelSkeleton />
+	if (isLoading) return <ChannelSkeleton />
+
+	if (!channel)
+		return (
+			<div className='w-full flex flex-col items-center justify-center py-20 text-center'>
+				<h2 className='text-2xl font-bold mb-2'>Channel not found</h2>
+				<p className='text-muted-foreground mb-6 max-w-sm'>
+					The channel you are looking for doesn’t exist or has been removed.
+				</p>
+
+				<Link href={PAGES.HOME}>
+					<Button className='px-6 rounded-full'>Go back home</Button>
+				</Link>
+			</div>
+		)
 
 	return (
 		<div className='px-4 py-10'>
