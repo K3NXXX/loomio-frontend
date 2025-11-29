@@ -21,6 +21,7 @@ import type { IVideoComment } from '@/types/comment.types'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { TbDotsVertical, TbMessageReportFilled } from 'react-icons/tb'
+import { WatchReportCommentModal } from './WatchReportCommentModal'
 
 interface IWatchCommentOptions {
 	videoId: string
@@ -37,6 +38,7 @@ export function WatchCommentOptions({
 	const { deleteComment } = useDeleteComment(videoId)
 
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+	const [isReportOpen, setIsReportOpen] = useState(false)
 
 	const handleDelete = () => {
 		setIsConfirmOpen(false)
@@ -60,7 +62,7 @@ export function WatchCommentOptions({
 						<>
 							<DropdownMenuItem
 								onClick={() => setIsCommentEditing(true)}
-								className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
+								className='flex items-center gap-2 cursor-pointer'
 							>
 								<MdEdit className='w-4 h-4' />
 								Edit
@@ -68,18 +70,22 @@ export function WatchCommentOptions({
 
 							<DropdownMenuItem
 								onClick={() => setIsConfirmOpen(true)}
-								className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
+								className='flex items-center gap-2 cursor-pointer'
 							>
 								<MdDelete className='w-4 h-4' />
 								Delete
 							</DropdownMenuItem>
 						</>
 					)}
-
-					<DropdownMenuItem className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'>
-						<TbMessageReportFilled className='w-4 h-4' />
-						Report
-					</DropdownMenuItem>
+					{userData?.id !== comment.user.id && (
+						<DropdownMenuItem
+							onClick={() => setIsReportOpen(true)}
+							className='flex items-center gap-2 cursor-pointer'
+						>
+							<TbMessageReportFilled className='w-4 h-4' />
+							Report
+						</DropdownMenuItem>
+					)}
 				</DropdownMenuContent>
 			</DropdownMenu>
 
@@ -112,6 +118,12 @@ export function WatchCommentOptions({
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+
+			<WatchReportCommentModal
+				open={isReportOpen}
+				onOpenChange={setIsReportOpen}
+				commentId={comment.id}
+			/>
 		</>
 	)
 }

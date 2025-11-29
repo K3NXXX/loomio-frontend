@@ -8,19 +8,29 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useGetMe } from '@/hooks/auth/useGetMe'
 import { MoreHorizontal, PlusCircle } from 'lucide-react'
 import { useState } from 'react'
+import { TbMessageReportFilled } from 'react-icons/tb'
+import { WatchReportVideoModal } from './WatchReportVideoModal'
 
 interface IWatchVideoMoreMenuProps {
 	videoId: string
+	videoAuthorId: string
 }
 
-export function WatchVideoMoreMenu({ videoId }: IWatchVideoMoreMenuProps) {
+export function WatchVideoMoreMenu({
+	videoId,
+	videoAuthorId,
+}: IWatchVideoMoreMenuProps) {
 	const [isAddToPlaylistOpen, setIsAddToPlaylistOpen] = useState(false)
+	const [isReportOpen, setIsReportOpen] = useState(false)
+
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+	const { userData } = useGetMe()
 
 	const handleOpenPlaylistModal = () => {
-		setIsDropdownOpen(false) 
+		setIsDropdownOpen(false)
 		setIsAddToPlaylistOpen(true)
 	}
 
@@ -49,6 +59,19 @@ export function WatchVideoMoreMenu({ videoId }: IWatchVideoMoreMenuProps) {
 						<PlusCircle className='size-4 text-muted-foreground' />
 						Add to playlist
 					</DropdownMenuItem>
+					{userData?.id !== videoAuthorId && (
+						<DropdownMenuItem
+							onClick={(e) => {
+								e.stopPropagation()
+								setIsDropdownOpen(false)
+								setIsReportOpen(true)
+							}}
+							className='flex items-center gap-2 cursor-pointer'
+						>
+							<TbMessageReportFilled className='w-4 h-4' />
+							Report
+						</DropdownMenuItem>
+					)}
 				</DropdownMenuContent>
 			</DropdownMenu>
 
@@ -56,6 +79,12 @@ export function WatchVideoMoreMenu({ videoId }: IWatchVideoMoreMenuProps) {
 				videoId={videoId}
 				open={isAddToPlaylistOpen}
 				onClose={() => setIsAddToPlaylistOpen(false)}
+			/>
+
+			<WatchReportVideoModal
+				open={isReportOpen}
+				onOpenChange={setIsReportOpen}
+				videoId={videoId}
 			/>
 		</>
 	)

@@ -160,15 +160,17 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					Share
 				</Button>
 
-				<WatchVideoMoreMenu videoId={video.id} />
-			</div>
-			{isShareOpen && (
-				<ShareVideoModal
-					video={video}
-					open={isShareOpen}
-					onClose={() => setIsShareOpen(false)}
+				<WatchVideoMoreMenu
+					videoId={video.id}
+					videoAuthorId={video.channel.userId}
 				/>
-			)}
+			</div>
+
+			<ShareVideoModal
+				video={video}
+				open={isShareOpen}
+				onClose={() => setIsShareOpen(false)}
+			/>
 		</div>
 	)
 }
