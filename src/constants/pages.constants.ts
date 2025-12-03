@@ -23,4 +23,9 @@ export const PAGES = {
 	PLAYLISTS: '/playlists',
 	ONE_USER_PLAYLIST: (id: string) => `/playlists/${id}`,
 	FOLLOWINGS: '/followings',
+	MODERATION_DASHBOARD: '/moderation/dashboard',
+	MODERATION_COMMENT_REPORTS: '/moderation/comment-reports',
+	MODERATION_VIDEO_REPORTS: '/moderation/video-reports',
+	MODERATION_COMMENT_HISTORY: '/moderation/comment-history',
+	MODERATION_VIDEO_HISTORY: '/moderation/video-history',
 }

@@ -36,3 +36,46 @@ export interface ICreateReportResponse {
 	commentId?: string
 	createdAt: string
 }
+
+export interface IReportItem {
+	id: string
+	reason: string
+	message: string | null
+	createdAt: string
+
+	status: 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'REJECTED'
+	assignedToId: string | null
+
+	assignedTo?: {
+		id: string
+		username: string
+		avatarUrl: string | null
+	} | null
+
+	author: {
+		id: string
+		username: string
+		avatarUrl: string | null
+	}
+
+	video?: {
+		id: string
+		title: string
+		thumbnailFile?: string
+		channel?: {
+			id: string
+			username: string
+			avatarUrl: string | null
+		}
+	} | null
+
+	comment?: {
+		id: string
+		content: string
+		user?: {
+			id: string
+			username: string
+			avatarUrl: string | null
+		}
+	} | null
+}

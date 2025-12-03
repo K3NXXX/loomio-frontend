@@ -4,10 +4,10 @@ import { userService } from '@/services/user.service'
 import type { IGetUserData } from '@/types/auth.types'
 
 export const useGetMe = () => {
-	const { data: userData } = useQuery<IGetUserData>({
+	const { data: userData, isLoading } = useQuery<IGetUserData>({
 		queryKey: ['getMe'],
 		queryFn: () => userService.getMe(),
 	})
 
-	return { userData }
+	return { userData, isLoading }
 }

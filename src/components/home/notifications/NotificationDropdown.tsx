@@ -47,7 +47,8 @@ export function NotificationDropdown() {
 	const personalNotifications = notifications.filter(
 		(n) =>
 			n.type === NotificationType.COMMENT_REPLY ||
-			n.type === NotificationType.VIDEO_PUBLISHED,
+			n.type === NotificationType.VIDEO_PUBLISHED ||
+			n.type === NotificationType.COMMENT_REMOVED,
 	)
 
 	const personalUnread = personalNotifications.filter((n) => !n.isRead).length
