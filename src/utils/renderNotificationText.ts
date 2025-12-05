@@ -14,6 +14,9 @@ export function renderNotificationText(n: Notification, displayName: string) {
 			return `New video from ${displayName}`
 		case NotificationType.CHANNEL_NEW_FOLLOWER:
 			return `@${n.author?.username} followed your channel "${n.channel?.name}"`
+		case NotificationType.VIDEO_RESTRICTED:
+			return `Your video "${n.video?.title}" was restricted for ${n.message?.toLowerCase()}.`
+
 		default:
 			return n.message
 	}

@@ -1,6 +1,6 @@
 'use client'
 
-import { ReportCommentDetailsModal, ReportDetailsModal } from '@/components/admin/report-comment-modal-details/ReportCommentDetailsModal'
+import { ReportVideoDetailsModal } from '@/components/admin/report-video-modal-details/ReportVideoDetailsModal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { useGetVideoHistory } from '@/hooks/report/useGetVideoHistory'
@@ -8,19 +8,17 @@ import { cn } from '@/lib/utils'
 import { truncateName } from '@/utils/truncateName'
 import { useState } from 'react'
 
-const formatReason = (reason: string) => {
-	return reason
+const formatReason = (reason: string) =>
+	reason
 		.toLowerCase()
 		.replace(/_/g, ' ')
 		.replace(/^\w/, (c) => c.toUpperCase())
-}
 
-const formatStatus = (status: string) => {
-	return status
+const formatStatus = (status: string) =>
+	status
 		.toLowerCase()
 		.replace(/_/g, ' ')
 		.replace(/^\w/, (c) => c.toUpperCase())
-}
 
 export function VideoReportsHistory() {
 	const { videoHistory, isLoading } = useGetVideoHistory()
@@ -36,7 +34,7 @@ export function VideoReportsHistory() {
 	if (isLoading) {
 		return (
 			<div className='p-10 text-muted-foreground text-center'>
-				Loading comment reports...
+				Loading history...
 			</div>
 		)
 	}
@@ -44,7 +42,7 @@ export function VideoReportsHistory() {
 	if (!videoHistory?.length) {
 		return (
 			<div className='p-10 text-muted-foreground text-center'>
-				No reports for comments.
+				No resolved video reports.
 			</div>
 		)
 	}
@@ -67,18 +65,6 @@ export function VideoReportsHistory() {
 		</div>
 	)
 
-	const renderDeletedUser = () => (
-		<div className='flex flex-col items-center gap-1 opacity-60'>
-			<Avatar className='w-9 h-9 shadow-sm'>
-				<AvatarFallback className='text-xs bg-muted/40'>X</AvatarFallback>
-			</Avatar>
-
-			<div className='text-xs text-muted-foreground/70 font-medium truncate max-w-[140px]'>
-				deleted
-			</div>
-		</div>
-	)
-
 	const renderHeader = () => (
 		<div
 			className={cn(
@@ -90,8 +76,8 @@ export function VideoReportsHistory() {
 			)}
 		>
 			<div />
-			<div>Comment</div>
-			<div className='text-center'>Comment author</div>
+			<div>Video</div>
+			<div className='text-center'>Video author</div>
 			<div className='text-center'>Reporter</div>
 			<div className='text-center'>Resolved by</div>
 			<div className='text-center'>Reason</div>
@@ -115,32 +101,16 @@ export function VideoReportsHistory() {
 		>
 			<div />
 
-			{/* COMMENT */}
-			<div className='flex items-start min-w-0'>
-				<div className='min-w-0 space-y-1'>
-					<div className='font-medium text-[15px] leading-[1.45] text-foreground/90'>
-						{r.comment ? (
-							truncateName(r.comment.content, 40)
-						) : (
-							<span className='text-red-500'>Deleted comment</span>
-						)}
-					</div>
-
-					{r.message && (
-						<div className='text-[12px] leading-[1.4] text-muted-foreground/90 pl-[2px] border-l border-border/30 ml-[2px]'>
-							<span className='font-medium text-foreground/70'>Note:</span>{' '}
-							{truncateName(r.message, 75)}
-						</div>
-					)}
+			<div className='flex items-start min-w-0 gap-3'>
+				<div className='font-medium text-[15px] leading-[1.45] text-foreground/90'>
+					{truncateName(r.video?.title, 50)}
 				</div>
 			</div>
 
-			{/* COMMENT AUTHOR */}
-			<div className='text-center'>
-				{r.comment ? renderUser(r.comment.user) : renderDeletedUser()}
-			</div>
+			{/* VIDEO AUTHOR */}
+			<div className='text-center'>{renderUser(r.video?.channel)}</div>
 
-			{/* REPORTER */}
+			{/* REPORT AUTHOR */}
 			<div className='text-center'>{renderUser(r.author)}</div>
 
 			{/* RESOLVED BY */}
@@ -158,7 +128,7 @@ export function VideoReportsHistory() {
 			<div className='text-center'>
 				<Badge
 					variant='outline'
-					className='rounded-full px-3 py-0.5 text-[11px] tracking-wide font-medium border-[1.5px]'
+					className='rounded-full px-3 py-0.5 text-[11px] font-medium'
 				>
 					{formatReason(r.reason)}
 				</Badge>
@@ -169,9 +139,8 @@ export function VideoReportsHistory() {
 				<span
 					className={cn(
 						'px-2 py-0.5 rounded-md',
-						r.status === 'PENDING' && 'text-yellow-400',
-						r.status === 'IN_PROGRESS' && 'text-blue-400',
 						r.status === 'RESOLVED' && 'text-emerald-400',
+						r.status === 'PENDING' && 'text-yellow-400',
 						r.status === 'REJECTED' && 'text-red-400',
 					)}
 				>
@@ -189,19 +158,17 @@ export function VideoReportsHistory() {
 	return (
 		<div className='p-10 flex flex-col items-start w-full'>
 			<h1 className='text-[26px] font-bold mb-8 tracking-tight w-full'>
-				Comment Reports History
+				Video Reports — History
 			</h1>
 
 			<div className='relative w-full space-y-4'>
 				{renderHeader()}
 				<div className='space-y-3 pt-3'>
-					{videoHistory
-						.filter((r) => r.status === 'RESOLVED')
-						.map((r) => renderRow(r))}
+					{videoHistory.filter((r) => r.status === 'RESOLVED').map(renderRow)}
 				</div>
 			</div>
 
-			<ReportCommentDetailsModal
+			<ReportVideoDetailsModal
 				id={selectedId}
 				open={isModalOpen}
 				onOpenChange={setIsModalOpen}

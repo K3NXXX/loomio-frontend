@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/alert-dialog'
 
 import { useApproveReport } from '@/hooks/report/useApproveReport'
-import { useDeleteCommentReport } from '@/hooks/report/useDeleteCommentReport'
+import { useRestrictVideo } from '@/hooks/report/useRestrictVideo'
 
 import type { IGetUserData } from '@/types/auth.types'
 import type { IReportItem } from '@/types/report.types'
@@ -32,33 +32,28 @@ export function ReportFooter({
 	onOpenChange,
 }: IReportFooterProps) {
 	const { approveReport, isPending: approving } = useApproveReport(report.id)
-	const { deleteCommentReport, isPending: deleting } = useDeleteCommentReport(
-		report.id,
-	)
+	const { restrictVideo, isPending: restricting } = useRestrictVideo(report.id)
 
-	const [approveDialogOpen, setApproveDialogOpen] = useState(false)
-	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+	const [approveDialog, setApproveDialog] = useState(false)
+	const [restrictDialog, setRestrictDialog] = useState(false)
 
 	const canModerate =
 		report.assignedToId !== null && report.assignedToId === userData?.id
 
-	const confirmApprove = () => {
-		if (!report.video) return
-
+	/* === ACTIONS === */
+	const handleApprove = () => {
 		approveReport(undefined, {
 			onSuccess: () => {
-				setApproveDialogOpen(false)
+				setApproveDialog(false)
 				onOpenChange()
 			},
 		})
 	}
 
-	const confirmDelete = () => {
-		if (!report.video) return
-
-		deleteCommentReport(undefined, {
+	const handleRestrict = () => {
+		restrictVideo(undefined, {
 			onSuccess: () => {
-				setDeleteDialogOpen(false)
+				setRestrictDialog(false)
 				onOpenChange()
 			},
 		})
@@ -66,61 +61,61 @@ export function ReportFooter({
 
 	return (
 		<>
+			{/* FOOTER BAR */}
 			<div className='px-8 py-5 border-t border-border/20 bg-muted/10 flex items-center justify-end gap-3'>
 				{report.status !== 'RESOLVED' && (
 					<>
 						<Button
 							variant='outline'
-							disabled={!canModerate || approving || !report.video}
-							onClick={() => setApproveDialogOpen(true)}
+							disabled={!canModerate || approving}
+							onClick={() => setApproveDialog(true)}
 						>
 							Approve
 						</Button>
 
 						<Button
 							variant='destructive'
-							disabled={!canModerate || deleting || !report.video}
-							onClick={() => setDeleteDialogOpen(true)}
+							disabled={!canModerate || restricting}
+							onClick={() => setRestrictDialog(true)}
 						>
-							Delete Comment
+							Restrict Video
 						</Button>
 					</>
 				)}
 			</div>
 
-			<AlertDialog open={approveDialogOpen} onOpenChange={setApproveDialogOpen}>
+			<AlertDialog open={approveDialog} onOpenChange={setApproveDialog}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>Approve Report?</AlertDialogTitle>
 						<AlertDialogDescription>
-							Are you sure you want to approve this report? This will mark the
-							report as resolved.
+							This will mark the report as resolved without affecting the video.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={confirmApprove}>
-							Yes, Approve
+						<AlertDialogAction onClick={handleApprove}>
+							Confirm
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
 
-			<AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+			<AlertDialog open={restrictDialog} onOpenChange={setRestrictDialog}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete Comment?</AlertDialogTitle>
+						<AlertDialogTitle>Restrict Video?</AlertDialogTitle>
 						<AlertDialogDescription>
-							This action is permanent. The comment will be removed and the
-							report will be marked as resolved.
+							The video will become RESTRICTED and the report will be marked as
+							resolved.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={confirmDelete}>
-							Yes, Delete
+						<AlertDialogAction onClick={handleRestrict}>
+							Restrict Video
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

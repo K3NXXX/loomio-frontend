@@ -79,3 +79,42 @@ export interface IReportItem {
 		}
 	} | null
 }
+
+export interface IReportStats {
+	total: number
+	pending: number
+	inProgress: number
+	resolved: number
+	rejected: number
+
+	videoReports: number
+	commentReports: number
+
+	moderatorsWorking: {
+		count: number
+		user: {
+			id: string
+			username: string
+			avatarUrl: string | null
+		}
+	}[]
+
+	activeAssignments: {
+		id: string
+		reason: string
+		videoId: string | null
+		commentId: string | null
+		assignedTo: {
+			id: string
+			username: string
+			avatarUrl: string | null
+		} | null
+	}[]
+
+	topReporters: {
+		authorId: string
+		_count: {
+			id: number
+		}
+	}[]
+}

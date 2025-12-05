@@ -33,6 +33,8 @@ export function NotificationDropdown() {
 	const { markAllChannelRead } = useMarkAllChannelRead()
 	const { markAllPersonalRead } = useMarkAllPersonalRead()
 
+	console.log(notifications)
+
 	const [selectedChannel, setSelectedChannel] = useState<string | null>(null)
 	const [personalOpen, setPersonalOpen] = useState<boolean>(false)
 

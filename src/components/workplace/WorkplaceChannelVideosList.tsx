@@ -9,6 +9,12 @@ import { useVideoStore } from '@/zustand/store/videoStore'
 import Image from 'next/image'
 import { FaPen } from 'react-icons/fa'
 import { EditVideoModal } from '../account/videos/edit/EditVideoModal'
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from '../ui/tooltip'
 import { VideoItemActions } from './content/VideoItemActions'
 
 interface IWorkplaceChannelVideosListProps {
@@ -116,18 +122,42 @@ export function WorkplaceChannelVideosList({
 			</div>
 
 			<div className='text-center'>
-				<Badge
-					variant='outline'
-					className={cn(
-						'rounded-full px-2.5 py-0.5 text-[11px]',
-						v.visibility === 'public' &&
-							'border-emerald-400/50 text-emerald-400',
-						v.visibility === 'unlisted' && 'border-amber-400/50 text-amber-400',
-						v.visibility === 'private' && 'border-slate-400/50 text-slate-300',
-					)}
-				>
-					{v.visibility}
-				</Badge>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Badge
+								variant='outline'
+								className={cn(
+									'rounded-full px-2.5 py-0.5 text-[11px] cursor-help font-semibold',
+									v.visibility === 'public' &&
+										'border-emerald-400/50 text-emerald-400',
+									v.visibility === 'restricted' &&
+										'border-red-500 text-red-500 bg-red-500/15 shadow-sm',
+									v.visibility === 'private' &&
+										'border-slate-400/50 text-slate-300',
+								)}
+							>
+								{v.visibility}
+							</Badge>
+						</TooltipTrigger>
+
+						{v.visibility === 'restricted' && (
+							<TooltipContent
+								side='top'
+								className='
+						max-w-[240px] text-xs leading-tight px-3 py-2 rounded-md 
+						bg-[#1a1a1d] text-red-400 border border-red-600 shadow-xl
+						!opacity-100
+					'
+							>
+								⚠ This video was restricted for violating content rules.
+								<br />
+								You must edit the video and request review before publishing
+								again.
+							</TooltipContent>
+						)}
+					</Tooltip>
+				</TooltipProvider>
 			</div>
 
 			<div className='text-center text-muted-foreground'>

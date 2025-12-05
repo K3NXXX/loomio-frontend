@@ -1,6 +1,6 @@
 'use client'
 
-import { ReportDetailsModal } from '@/components/admin/report-comment-modal-details/ReportCommentDetailsModal'
+import { ReportCommentDetailsModal } from '@/components/admin/report-comment-modal-details/ReportCommentDetailsModal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { useGetCommentHistory } from '@/hooks/report/useGetCommentHistory'
@@ -32,6 +32,8 @@ export function CommentReportsHistory() {
 		setSelectedId(id)
 		setIsModalOpen(true)
 	}
+
+	console.log('c', commentHistory)
 
 	if (isLoading) {
 		return (
@@ -201,7 +203,7 @@ export function CommentReportsHistory() {
 				</div>
 			</div>
 
-			<ReportDetailsModal
+			<ReportCommentDetailsModal
 				id={selectedId}
 				open={isModalOpen}
 				onOpenChange={setIsModalOpen}

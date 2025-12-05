@@ -4,6 +4,7 @@ import type {
 	ICreateReportResponse,
 	IReportCommentRequest,
 	IReportItem,
+	IReportStats,
 	IReportVideoRequest,
 } from '@/types/report.types'
 
@@ -94,6 +95,20 @@ class ReportService {
 	async getVideoHistory(): Promise<IReportItem[]> {
 		const { data } = await axiosInstance.get<IReportItem[]>(
 			`${this.BASE_URL}/videos/history`,
+		)
+		return data
+	}
+
+	async restrictVideo(reportId: string) {
+		const { data } = await axiosInstance.post(
+			`${this.BASE_URL}/report-video/${reportId}`,
+		)
+		return data
+	}
+
+	async getStats(): Promise<IReportStats> {
+		const { data } = await axiosInstance.get<IReportStats>(
+			`${this.BASE_URL}/stats`,
 		)
 		return data
 	}

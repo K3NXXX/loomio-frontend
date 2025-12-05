@@ -1,6 +1,6 @@
 import { NO_INDEX_PAGE } from '@/constants/seo.constants'
 import type { Metadata } from 'next'
-import { VideoReportsHistory } from './CommentReportsHistory'
+import { VideoReportsHistory } from './VideoReportsHistory'
 
 export const metadata: Metadata = {
 	title: 'Loomio | Moderation panel',
