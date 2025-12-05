@@ -9,18 +9,27 @@ interface VideoStore {
 	isEditingFormOpened: boolean
 	editingVideo: IVideo | null
 
+	videoPreview: string | null
+	videoFile: File | null
+
 	thumbnailFile: File | null
 	setOpenUploadingVideo: (value: boolean) => void
 	setThumbnailFile: (file: File | null) => void
 	setUploadChannelId: (id: string | null) => void
 	setIsEditingFormOpened: (value: boolean) => void
 	setEditingVideo: (video: IVideo | null) => void
+
+	setVideoPreview: (url: string | null) => void
+	setVideoFile: (file: File | null) => void
 }
 
 export const useVideoStore = create<VideoStore>((set) => ({
 	uploadChannelId: null,
 	thumbnailPreview: null,
 	setThumbnailPreview: (url) => set({ thumbnailPreview: url }),
+
+	videoPreview: null,
+	videoFile: null,
 
 	setUploadChannelId: (id: string | null) => set({ uploadChannelId: id }),
 
@@ -35,4 +44,7 @@ export const useVideoStore = create<VideoStore>((set) => ({
 
 	editingVideo: null,
 	setEditingVideo: (video) => set({ editingVideo: video }),
+
+	setVideoPreview: (url) => set({ videoPreview: url }),
+	setVideoFile: (file) => set({ videoFile: file }),
 }))

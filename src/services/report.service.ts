@@ -112,6 +112,12 @@ class ReportService {
 		)
 		return data
 	}
+
+	async requestReview(videoId: string, data: FormData) {
+		return axiosInstance.post(`${this.BASE_URL}/review/${videoId}`, data, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		})
+	}
 }
 
 export const reportService = new ReportService()

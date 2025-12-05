@@ -10,7 +10,12 @@ import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 
 import { FaFlag } from 'react-icons/fa'
-import { MdDashboard, MdHistory, MdOutlineVideoLibrary } from 'react-icons/md'
+import {
+	MdDashboard,
+	MdHistory,
+	MdOutlineRateReview,
+	MdOutlineVideoLibrary,
+} from 'react-icons/md'
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
@@ -35,6 +40,11 @@ export function ModerationSidebar({ user }: { user: IGetUserData }) {
 			label: 'Reports: Comments',
 			icon: FaFlag,
 			href: PAGES.MODERATION_COMMENT_REPORTS,
+		},
+		{
+			label: 'Reports: Reviews',
+			icon: MdOutlineRateReview,
+			href: PAGES.MODERATION_VIDEO_REVIEWS,
 		},
 	]
 

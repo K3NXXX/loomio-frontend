@@ -7,8 +7,10 @@ import type { IVideo } from '@/types/video.types'
 import { truncateName } from '@/utils/truncateName'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import Image from 'next/image'
+import { useState } from 'react'
 import { FaPen } from 'react-icons/fa'
 import { EditVideoModal } from '../account/videos/edit/EditVideoModal'
+import { RestrictVideoModal } from '../account/videos/restrict/RestrictVideoModal'
 import {
 	Tooltip,
 	TooltipContent,
@@ -27,6 +29,8 @@ export function WorkplaceChannelVideosList({
 	const { setIsEditingFormOpened, isEditingFormOpened, setEditingVideo } =
 		useVideoStore()
 
+	const [isRestrictedModalOpen, setIsRestrictedModalOpen] = useState(false)
+
 	if (!videos.length) {
 		return (
 			<div className='text-muted-foreground text-center py-10'>
@@ -36,8 +40,13 @@ export function WorkplaceChannelVideosList({
 	}
 
 	const handleEditVideo = (video: IVideo) => {
-		setIsEditingFormOpened(true)
 		setEditingVideo(video)
+
+		if (video.visibility === 'restricted') {
+			setIsRestrictedModalOpen(true)
+		} else {
+			setIsEditingFormOpened(true)
+		}
 	}
 
 	const gridColsPublished =
@@ -217,6 +226,13 @@ export function WorkplaceChannelVideosList({
 				<EditVideoModal
 					open={isEditingFormOpened}
 					onOpenChange={setIsEditingFormOpened}
+				/>
+			)}
+
+			{isRestrictedModalOpen && (
+				<RestrictVideoModal
+					open={isRestrictedModalOpen}
+					onOpenChange={setIsRestrictedModalOpen}
 				/>
 			)}
 		</div>

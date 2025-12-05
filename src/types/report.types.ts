@@ -43,7 +43,7 @@ export interface IReportItem {
 	message: string | null
 	createdAt: string
 
-	status: 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'REJECTED'
+	status: 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'REJECTED' | 'IN_REVIEW'
 	assignedToId: string | null
 
 	assignedTo?: {

@@ -28,4 +28,5 @@ export const PAGES = {
 	MODERATION_VIDEO_REPORTS: '/moderation/video-reports',
 	MODERATION_COMMENT_HISTORY: '/moderation/comment-history',
 	MODERATION_VIDEO_HISTORY: '/moderation/video-history',
+	MODERATION_VIDEO_REVIEWS: '/moderation/video-reviews',
 }
