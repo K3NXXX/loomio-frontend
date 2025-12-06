@@ -23,7 +23,7 @@ export function ReportVideoReviewsModal({ id, open, onOpenChange }: Props) {
 				className='
 					!max-w-[1000px]
 					w-[90vw]
-					max-h-[85vh]
+					min-h-[85vh]
 					p-0 rounded-xl overflow-hidden
 					bg-background border border-border/40 shadow-2xl
 				'
@@ -36,7 +36,7 @@ export function ReportVideoReviewsModal({ id, open, onOpenChange }: Props) {
 						<ReportFooter
 							report={report}
 							userData={userData}
-							onOpenChange={onOpenChange}
+							onOpenChange={() => onOpenChange(false)}
 						/>
 					</>
 				)}

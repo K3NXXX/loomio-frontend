@@ -118,6 +118,13 @@ class ReportService {
 			headers: { 'Content-Type': 'multipart/form-data' },
 		})
 	}
+
+	async confirmVideoReview(reportId: string) {
+		const { data } = await axiosInstance.post(
+			`${this.BASE_URL}/confirm-video/${reportId}`,
+		)
+		return data
+	}
 }
 
 export const reportService = new ReportService()

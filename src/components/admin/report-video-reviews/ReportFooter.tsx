@@ -14,9 +14,9 @@ import {
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 
-import { useApproveReport } from '@/hooks/report/useApproveReport'
 import { useRestrictVideo } from '@/hooks/report/useRestrictVideo'
 
+import { useConfirmReviewVideo } from '@/hooks/report/useConfirmReviewVideo'
 import type { IGetUserData } from '@/types/auth.types'
 import type { IReportItem } from '@/types/report.types'
 
@@ -31,8 +31,8 @@ export function ReportFooter({
 	userData,
 	onOpenChange,
 }: IReportFooterProps) {
-	const { approveReport, isPending: approving } = useApproveReport(report.id)
 	const { restrictVideo, isPending: restricting } = useRestrictVideo(report.id)
+	const { confirmReview } = useConfirmReviewVideo()
 
 	const [approveDialog, setApproveDialog] = useState(false)
 	const [restrictDialog, setRestrictDialog] = useState(false)
@@ -40,9 +40,8 @@ export function ReportFooter({
 	const canModerate =
 		report.assignedToId !== null && report.assignedToId === userData?.id
 
-	/* === ACTIONS === */
 	const handleApprove = () => {
-		approveReport(undefined, {
+		confirmReview(report.id, {
 			onSuccess: () => {
 				setApproveDialog(false)
 				onOpenChange()
@@ -61,13 +60,12 @@ export function ReportFooter({
 
 	return (
 		<>
-			{/* FOOTER BAR */}
 			<div className='px-8 py-5 border-t border-border/20 bg-muted/10 flex items-center justify-end gap-3'>
 				{report.status !== 'RESOLVED' && (
 					<>
 						<Button
 							variant='outline'
-							disabled={!canModerate || approving}
+							disabled={!canModerate}
 							onClick={() => setApproveDialog(true)}
 						>
 							Approve
@@ -89,7 +87,8 @@ export function ReportFooter({
 					<AlertDialogHeader>
 						<AlertDialogTitle>Approve Report?</AlertDialogTitle>
 						<AlertDialogDescription>
-							This will mark the report as resolved without affecting the video.
+							By confirming this action, the report will be marked as resolved.
+							The video will keep its current visibility, files and status.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
