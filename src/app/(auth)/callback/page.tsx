@@ -5,6 +5,7 @@ import { Callback } from './Callback'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
+	title: 'OAuth registration',
 	...NO_INDEX_PAGE,
 }
 export default function AuthCallbackPage() {

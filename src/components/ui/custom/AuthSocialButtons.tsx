@@ -20,9 +20,9 @@ export function AuthSocialButtons() {
 					key={provider.name}
 					aria-label={`Login with ${provider.name}`}
 					onClick={() => handleOAuthLogin(provider.url, provider.name)}
-					className='w-full cursor-pointer'
+					className='w-full cursor-pointer flex justify-center items-center'
 				>
-					<Card className='bg-neutral-900 py-5 px-5 flex justify-center items-center w-full'>
+					<Card className='bg-neutral-900 py-5 px-5 flex justify-center items-center w-50'>
 						<provider.icon color={provider.color} />
 					</Card>
 				</button>

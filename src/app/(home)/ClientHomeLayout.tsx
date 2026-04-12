@@ -11,7 +11,6 @@ import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useNotificationSocket } from '@/hooks/notification/useNotificationSocket'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 import Lottie from 'lottie-react'
-import { usePathname, useRouter } from 'next/navigation'
 import { IoMdSettings } from 'react-icons/io'
 
 export function ClientHomeLayout({ children }: { children: ReactNode }) {
@@ -28,10 +27,7 @@ export function ClientHomeLayout({ children }: { children: ReactNode }) {
 	}
 
 	return (
-		<div
-			style={{ background: '#111111' }}
-			className='w-full min-h-screen flex flex-col'
-		>
+		<div className='relative w-full min-h-screen flex flex-col bg-gradient-to-br from-black via-neutral-800 to-black'>
 			<HomeHeader />
 			<div className='flex flex-1'>
 				<div className='w-[80px]'>

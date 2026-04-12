@@ -7,6 +7,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog'
+import { ZoomIn } from 'lucide-react'
 import Cropper, { type Area } from 'react-easy-crop'
 
 interface CropAvatarModalProps {
@@ -34,12 +35,16 @@ export function CropAvatarModal({
 }: CropAvatarModalProps) {
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='max-w-[500px] bg-neutral-900 text-white'>
-				<DialogHeader>
-					<DialogTitle>Adjust Avatar</DialogTitle>
-				</DialogHeader>
+			<DialogContent className='max-w-[380px] p-0 overflow-hidden border-white/10 bg-neutral-950 text-white rounded-2xl'>
+				<div className='px-5 pt-5 pb-3 bg-gradient-to-b from-white/5 to-transparent'>
+					<DialogHeader>
+						<DialogTitle className='text-sm font-semibold tracking-wide uppercase text-white/50'>
+							Adjust Avatar
+						</DialogTitle>
+					</DialogHeader>
+				</div>
 
-				<div className='relative w-full aspect-square bg-black rounded-lg overflow-hidden'>
+				<div className='relative mx-5 aspect-square rounded-xl overflow-hidden ring-1 ring-white/10'>
 					{imageUrl && (
 						<Cropper
 							image={imageUrl}
@@ -56,8 +61,8 @@ export function CropAvatarModal({
 					)}
 				</div>
 
-				{/* Зум */}
-				<div className='mt-4'>
+				<div className='flex items-center gap-3 px-5 py-3'>
+					<ZoomIn className='size-4 text-white/30 shrink-0' />
 					<input
 						type='range'
 						min={1}
@@ -67,17 +72,27 @@ export function CropAvatarModal({
 						onChange={(e) => onZoomChange(Number(e.target.value))}
 						className='w-full accent-primary cursor-pointer'
 					/>
+					<span className='text-xs text-white/30 tabular-nums w-6 text-right'>
+						{zoom.toFixed(1)}x
+					</span>
 				</div>
 
-				<div className='flex justify-end gap-3 mt-4'>
+				<div className='flex items-center justify-end gap-2 px-5 py-4 border-t border-white/5'>
 					<Button
 						type='button'
-						variant='secondary'
+						variant='ghost'
+						size='sm'
+						className='text-white/50 hover:text-white hover:bg-white/8 rounded-lg'
 						onClick={() => onOpenChange(false)}
 					>
 						Cancel
 					</Button>
-					<Button type='button' onClick={onSave}>
+					<Button
+						type='button'
+						size='sm'
+						className='bg-primary hover:bg-primary/90 text-white rounded-lg px-6 shadow-md shadow-primary/20'
+						onClick={onSave}
+					>
 						Save
 					</Button>
 				</div>

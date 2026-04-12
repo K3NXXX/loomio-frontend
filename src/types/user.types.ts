@@ -1,7 +1,8 @@
 export interface IUpdateAccountRequest {
 	name?: string
-	bio?: string
 	email?: string
+	username?: string
+	bio?: string
 	newPassword?: string
 	currentPassword?: string
 }

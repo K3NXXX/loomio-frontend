@@ -1,7 +1,15 @@
 'use client'
 
 import type { TUploadVideoSchema } from '@/schemas/videos/upload-video.schema'
-import { formatDateTimeLocal } from '@/utils/formatDateTimeLocal'
+import { Calendar as CalendarPicker } from '@/components/ui/calendar'
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
+import { format } from 'date-fns'
+import { enUS } from 'date-fns/locale'
 import { Calendar, Clock } from 'lucide-react'
 import type { UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
@@ -16,6 +24,8 @@ export function UploadVideoStepThird({
 }: UploadVideoStepThirdProps) {
 	const publishType = watch('publishType')
 	const publishDate = watch('publishDate')
+
+	const selectedDate = publishDate ? new Date(publishDate) : undefined
 
 	return (
 		<div className='flex flex-col gap-6 h-[476px]'>
@@ -61,7 +71,9 @@ export function UploadVideoStepThird({
 							value='scheduled'
 							checked={publishType === 'scheduled'}
 							onChange={() =>
-								setValue('publishType', 'scheduled', { shouldValidate: true })
+								setValue('publishType', 'scheduled', {
+									shouldValidate: true,
+								})
 							}
 							className='hidden'
 						/>
@@ -76,25 +88,67 @@ export function UploadVideoStepThird({
 				</div>
 
 				{publishType === 'scheduled' && (
-					<div className='mt-4 max-w-[300px]'>
-						<label
-							htmlFor='publish-date'
-							className='block text-sm text-gray-300 mb-1'
-						>
+					<div className='mt-4 max-w-[300px] flex flex-col gap-2'>
+						<label className='text-sm text-gray-300'>
 							Publish Date & Time
 						</label>
-						<input
-							type='datetime-local'
-							id='publish-date'
-							value={publishDate ?? ''}
-							min={formatDateTimeLocal(new Date())}
-							onChange={(e) =>
-								setValue('publishDate', e.target.value, {
-									shouldValidate: true,
-								})
-							}
-							className='w-full rounded-md border border-neutral-700 bg-neutral-800 text-white px-3 py-2 text-sm outline-none focus:border-primary transition'
-						/>
+
+						<Popover>
+							<PopoverTrigger asChild>
+								<Button
+									variant='outline'
+									className='justify-start text-left font-normal bg-neutral-800 border-neutral-700 hover:bg-neutral-700'
+								>
+									<Calendar className='mr-2 h-4 w-4 text-white/50' />
+									{selectedDate
+										? format(selectedDate, 'PPP HH:mm', { locale: enUS  })
+										: 'Pick a date'}
+								</Button>
+							</PopoverTrigger>
+
+							<PopoverContent className='w-auto p-0 bg-neutral-900 border-neutral-700'>
+								<div className='p-3'>
+									<CalendarPicker
+										mode='single'
+										selected={selectedDate}
+										onSelect={(date) => {
+											if (!date) return
+											const current = selectedDate ?? new Date()
+											date.setHours(current.getHours())
+											date.setMinutes(current.getMinutes())
+
+											setValue('publishDate', date.toISOString(), {
+												shouldValidate: true,
+											})
+										}}
+										disabled={(date) => date < new Date()}
+										initialFocus
+									/>
+
+									<div className='mt-3'>
+										<input
+											type='time'
+											className='w-full bg-neutral-800 border border-neutral-700 rounded-md px-2 py-1 text-sm text-white'
+											value={
+												selectedDate
+													? `${String(selectedDate.getHours()).padStart(2, '0')}:${String(selectedDate.getMinutes()).padStart(2, '0')}`
+													: ''
+											}
+											onChange={(e) => {
+												const [h, m] = e.target.value.split(':').map(Number)
+												const date = selectedDate ?? new Date()
+												date.setHours(h)
+												date.setMinutes(m)
+
+												setValue('publishDate', date.toISOString(), {
+													shouldValidate: true,
+												})
+											}}
+										/>
+									</div>
+								</div>
+							</PopoverContent>
+						</Popover>
 					</div>
 				)}
 			</div>

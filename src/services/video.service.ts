@@ -16,6 +16,7 @@ class VideoService {
 		return data
 	}
 
+
 	async getRecommendedVideos(videoId: string): Promise<IVideo[]> {
 		const { data } = await axiosInstance.get<IVideo[]>(
 			`${this.BASE_URL}/public/${videoId}/recommended`,
@@ -33,6 +34,13 @@ class VideoService {
 	async deleteVideo(videoId: string): Promise<IVideo> {
 		const { data } = await axiosInstance.delete<IVideo>(
 			`${this.BASE_URL}/${videoId}`,
+		)
+		return data
+	}
+
+	async deleteTempVideo(videoId: string): Promise<{ success: boolean }> {
+		const { data } = await axiosInstance.delete(
+			`${this.BASE_URL}/temp/${videoId}`,
 		)
 		return data
 	}
@@ -62,6 +70,18 @@ class VideoService {
 	async getChannelStudioVideos(channelId: string): Promise<IVideo[]> {
 		const { data } = await axiosInstance.get<IVideo[]>(
 			`${this.BASE_URL}/studio/${channelId}`,
+		)
+		return data
+	}
+
+	async getUploadUrl(): Promise<{ uploadURL: string; videoId: string }> {
+		const { data } = await axiosInstance.post(`${this.BASE_URL}/upload-url`)
+		return data
+	}
+
+	async getVideoStatus(videoId: string) {
+		const { data } = await axiosInstance.get(
+			`${this.BASE_URL}/status/${videoId}`,
 		)
 		return data
 	}

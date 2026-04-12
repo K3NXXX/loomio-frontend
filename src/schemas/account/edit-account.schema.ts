@@ -8,20 +8,20 @@ export const editAccountSchema = z
 			.regex(/^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ'’-]+ [A-Za-zА-Яа-яЁёІіЇїЄєҐґ'’-]+$/, {
 				message: 'Name must contain exactly two words with only letters',
 			})
-			.refine(
-				(value) => {
-					const parts = value.split(' ').filter(Boolean)
-					return parts.length === 2
-				},
-				{ message: 'Name must contain exactly two words' },
-			)
 			.max(100, { message: 'Name must be less than 100 characters' })
 			.optional()
 			.or(z.literal('')),
+
 		email: z
 			.string()
 			.email({ message: 'Incorrect email' })
 			.max(100, { message: 'Email requires max 100 characters' })
+			.optional()
+			.or(z.literal('')),
+
+		username: z
+			.string()
+			.min(3, { message: 'Username must be at least 3 characters' })
 			.optional()
 			.or(z.literal('')),
 
@@ -44,6 +44,8 @@ export const editAccountSchema = z
 			.optional()
 			.or(z.literal('')),
 
+		confirmPassword: z.string().optional().or(z.literal('')),
+
 		currentPassword: z
 			.string()
 			.min(1, { message: 'Current password is required' })
@@ -51,14 +53,24 @@ export const editAccountSchema = z
 			.or(z.literal('')),
 	})
 	.superRefine((data, ctx) => {
-		const requiresPassword =
-			data.email?.trim() !== '' || data.newPassword?.trim() !== ''
+		const isPasswordChange = data.newPassword?.trim()
 
-		if (requiresPassword && !data.currentPassword?.trim()) {
+		if (isPasswordChange && !data.currentPassword?.trim()) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				path: ['currentPassword'],
 				message: 'Current password is required',
+			})
+		}
+
+		if (
+			isPasswordChange &&
+			data.newPassword !== data.confirmPassword
+		) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				path: ['confirmPassword'],
+				message: 'Passwords do not match',
 			})
 		}
 

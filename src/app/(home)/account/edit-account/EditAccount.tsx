@@ -15,17 +15,17 @@ import {
 	editAccountSchema,
 	type TEditAccountSchema,
 } from '@/schemas/account/edit-account.schema'
-import { AvatarUploader } from './AvatarUploader'
+import { EditableField } from './EditableField'
 
 export default function EditAccount() {
 	const { userData } = useGetMe()
-	const { updateAccount } = useUpdateAccount()
+	const { updateAccount, isSuccess } = useUpdateAccount()
 
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors, isSubmitting },
-		reset,
 	} = useForm<TEditAccountSchema>({
 		resolver: zodResolver(editAccountSchema),
 		reValidateMode: 'onChange',
@@ -34,16 +34,18 @@ export default function EditAccount() {
 	useEditAccountFormErrors(errors)
 
 	const onSubmit = (data: TEditAccountSchema) => {
-		const cleaned: Record<string, unknown> = {}
+		const payload: any = {}
 
-		for (const key in data) {
-			const value = data[key as keyof TEditAccountSchema]
-			if (value !== '' && value !== null && value !== undefined) {
-				cleaned[key] = value
-			}
+		if (data.name) payload.name = data.name
+		if (data.email) payload.email = data.email
+		if (data.username) payload.username = data.username
+
+		if (data.newPassword) {
+			payload.newPassword = data.newPassword
+			payload.currentPassword = data.currentPassword
 		}
 
-		updateAccount(cleaned)
+		updateAccount(payload)
 	}
 
 	return (
@@ -52,16 +54,20 @@ export default function EditAccount() {
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.4 }}
-				className='max-w-4xl mx-auto'
+				className='max-w-6xl mx-auto'
 			>
-				<AvatarUploader userData={userData} />
 				<h1 className='text-3xl font-bold tracking-tight text-center'>
 					Edit Account
 				</h1>
 				<p className='text-muted-foreground mt-1 text-center pb-5'>
 					Update your profile information below
 				</p>
-				<form onSubmit={handleSubmit(onSubmit)} noValidate>
+
+				<form
+					onSubmit={handleSubmit(onSubmit, (errors) =>
+						console.log('VALIDATION ERRORS:', errors),
+					)}
+				>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
@@ -74,41 +80,42 @@ export default function EditAccount() {
 						<div className='p-6'>
 							<div className='flex items-center gap-2 mb-6'>
 								<User className='size-5 text-primary' />
-								<h2 className='text-lg font-semibold'>Profile</h2>
+								<h2 className='text-lg font-semibold'>Your profile data</h2>
 							</div>
 
-							<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-								<div className='space-y-2'>
-									<Label htmlFor='name'>Name</Label>
-									<Input
-										id='name'
-										defaultValue={userData?.name}
-										placeholder='Your full name'
-										{...register('name')}
+							<div className='divide-y divide-white/10'>
+								<div className='py-4'>
+									<EditableField
+										label='Name'
+										value={userData?.name}
+										field='name'
+										register={register}
+										setValue={setValue}
+										isSuccess={isSuccess}
 									/>
 								</div>
-								<div className='space-y-2'>
-									<Label htmlFor='email'>Email</Label>
-									<Input
-										id='email'
-										type='email'
-										defaultValue={userData?.email}
-										placeholder='you@example.com'
-										{...register('email')}
-									/>
-								</div>
-							</div>
 
-							<div className='space-y-2 mt-6'>
-								<Label htmlFor='bio'>Bio</Label>
-								<textarea
-									id='bio'
-									defaultValue={userData?.bio}
-									placeholder='Tell something about yourself...'
-									className='w-full rounded-md border p-3 min-h-[100px] text-sm 
-									focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all'
-									{...register('bio')}
-								/>
+								<div className='py-4'>
+									<EditableField
+										label='Username'
+										value={userData?.username}
+										field='username'
+										register={register}
+										setValue={setValue}
+										isSuccess={isSuccess}
+									/>
+								</div>
+
+								<div className='py-4'>
+									<EditableField
+										label='Email'
+										value={userData?.email}
+										field='email'
+										register={register}
+										setValue={setValue}
+										isSuccess={isSuccess}
+									/>
+								</div>
 							</div>
 						</div>
 					</motion.div>
@@ -129,47 +136,41 @@ export default function EditAccount() {
 							</div>
 
 							<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-								<div className='space-y-2'>
-									<Label htmlFor='newPassword'>New Password (optional)</Label>
-									<Input
-										id='newPassword'
-										type='password'
-										placeholder='Enter new password'
-										{...register('newPassword')}
-									/>
-								</div>
-								<div className='space-y-2'>
-									<Label htmlFor='currentPassword'>
-										Current Password (required)
-									</Label>
+								<div className='space-y-2 md:col-span-2'>
+									<Label htmlFor='currentPassword'>Current Password</Label>
 									<Input
 										id='currentPassword'
 										type='password'
-										placeholder='Enter current password'
 										{...register('currentPassword')}
 									/>
 								</div>
+
+								<div className='space-y-2'>
+									<Label htmlFor='newPassword'>New Password</Label>
+									<Input
+										id='newPassword'
+										type='password'
+										{...register('newPassword')}
+									/>
+								</div>
+
+								<div className='space-y-2'>
+									<Label htmlFor='confirmPassword'>Confirm Password</Label>
+									<Input
+										id='confirmPassword'
+										type='password'
+										{...register('confirmPassword')}
+									/>
+								</div>
+							</div>
+
+							<div className='flex justify-end mt-6'>
+								<Button type='submit' disabled={isSubmitting}>
+									Save Password
+								</Button>
 							</div>
 						</div>
 					</motion.div>
-
-					<div className='flex justify-end gap-3 mt-8'>
-						<Button
-							type='button'
-							variant='outline'
-							className='rounded-full px-6'
-							onClick={() => reset()}
-						>
-							Cancel
-						</Button>
-						<Button
-							type='submit'
-							className='rounded-full px-6'
-							disabled={isSubmitting}
-						>
-							{isSubmitting ? 'Saving...' : 'Save changes'}
-						</Button>
-					</div>
 				</form>
 			</motion.div>
 		</div>

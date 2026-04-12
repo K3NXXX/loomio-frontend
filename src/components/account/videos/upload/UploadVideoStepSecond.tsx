@@ -23,6 +23,7 @@ export function UploadVideoStepSecond({
 	const [tempImageUrl, setTempImageUrl] = useState<string | null>(null)
 	const [isCropModalOpen, setIsCropModalOpen] = useState(false)
 	const fileInputRef = useRef<HTMLInputElement>(null)
+	const [isDragging, setIsDragging] = useState(false)
 
 	const [visibility, setVisibility] = useState<'public' | 'private'>('public')
 	const [isForKids, setIsForKids] = useState<'yes' | 'no'>('no')
@@ -32,19 +33,42 @@ export function UploadVideoStepSecond({
 
 	const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
-		if (file) {
-			const url = URL.createObjectURL(file)
-			setTempImageUrl(url)
-			setIsCropModalOpen(true)
-		}
+		if (file) handleFile(file)
 	}
 
 	const handleReplaceClick = () => fileInputRef.current?.click()
+
+	const handleFile = (file: File) => {
+		if (!file.type.startsWith('image/')) return
+
+		const url = URL.createObjectURL(file)
+		setTempImageUrl(url)
+		setIsCropModalOpen(true)
+	}
 
 	const handleDeleteClick = () => {
 		setThumbnailFile(null)
 		setThumbnailPreview(null)
 		setValue('thumbnail', [], { shouldValidate: true })
+	}
+
+	const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+		e.preventDefault()
+		setIsDragging(true)
+	}
+
+	const handleDragLeave = () => {
+		setIsDragging(false)
+	}
+
+	const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+		e.preventDefault()
+		setIsDragging(false)
+
+		const file = e.dataTransfer.files?.[0]
+		if (!file || !file.type.startsWith('image/')) return
+
+		handleFile(file)
 	}
 
 	const onCropComplete = (_: Area, croppedAreaPixels: Area) => {
@@ -95,7 +119,7 @@ export function UploadVideoStepSecond({
 								<button
 									type='button'
 									onClick={handleReplaceClick}
-									className='p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition'
+									className='p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition cursor-pointer'
 									title='Change thumbnail'
 								>
 									<FiEdit2 className='w-5 h-5' />
@@ -103,7 +127,7 @@ export function UploadVideoStepSecond({
 								<button
 									type='button'
 									onClick={handleDeleteClick}
-									className='p-2 rounded-full bg-white/20 hover:bg-red-600 transition text-white'
+									className='p-2 rounded-full bg-white/20 hover:bg-red-600 transition text-white cursor-pointer'
 									title='Delete thumbnail'
 								>
 									<FiTrash2 className='w-5 h-5' />
@@ -122,7 +146,17 @@ export function UploadVideoStepSecond({
 				) : (
 					<label
 						htmlFor='thumbnail'
-						className='border-2 border-dashed border-neutral-700 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition w-full max-w-[250px] aspect-video text-gray-400'
+						onDragOver={handleDragOver}
+						onDragLeave={handleDragLeave}
+						onDrop={handleDrop}
+						className={`
+						border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer transition w-full max-w-[250px] aspect-video text-gray-400
+						${
+							isDragging
+								? 'border-primary bg-neutral-800/60 scale-[1.02]'
+								: 'border-neutral-700 hover:border-primary'
+						}
+					`}
 					>
 						<span className='mb-2'>Click to upload thumbnail</span>
 						<span className='text-xs text-gray-500'>(JPG, PNG, WEBP)</span>

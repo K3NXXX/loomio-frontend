@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 import Account from './Account'
 
 export const metadata: Metadata = {
-	title: 'Account',
+	title: 'Loomio | Account',
 	description: `${SITE_NAME} account page`,
 }
 

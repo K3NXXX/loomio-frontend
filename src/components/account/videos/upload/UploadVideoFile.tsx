@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { TUploadVideoSchema } from '@/schemas/videos/upload-video.schema'
 import type { UseFormRegister } from 'react-hook-form'
 import { FaCloudUploadAlt } from 'react-icons/fa'
@@ -13,19 +14,50 @@ export function UploadVideoFile({
 	handleFileChange,
 	errorMessage,
 }: UploadVideoFileProps) {
+	const [isDragging, setIsDragging] = useState(false)
+
+	const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+		e.preventDefault()
+		setIsDragging(true)
+	}
+
+	const handleDragLeave = () => {
+		setIsDragging(false)
+	}
+
+	const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+		e.preventDefault()
+		setIsDragging(false)
+
+		const file = e.dataTransfer.files?.[0]
+		if (!file) return
+
+		const fakeEvent = {
+			target: { files: [file] },
+		} as unknown as React.ChangeEvent<HTMLInputElement>
+
+		handleFileChange(fakeEvent)
+	}
+
 	return (
 		<div className='flex flex-col items-center justify-center py-20 text-center w-full'>
 			<label
 				htmlFor='file'
-				className='
-				flex flex-col items-center justify-center w-full
-				max-w-lg border-2 border-dashed border-neutral-700
-				rounded-2xl p-10 cursor-pointer
-				transition-all duration-300 ease-in-out
-				hover:border-primary hover:bg-neutral-800/50
-			'
+				onDragOver={handleDragOver}
+				onDragLeave={handleDragLeave}
+				onDrop={handleDrop}
+				className={`
+					flex flex-col items-center justify-center w-full
+					max-w-lg border-2 border-dashed rounded-2xl p-10 cursor-pointer
+					transition-all duration-300 ease-in-out
+					${
+						isDragging
+							? 'border-primary bg-neutral-800/60 scale-[1.02]'
+							: 'border-neutral-700 hover:border-primary hover:bg-neutral-800/50'
+					}
+				`}
 			>
-				<div className='mb-5 bg-neutral-800 p-6 rounded-full group-hover:bg-neutral-700 transition-colors'>
+				<div className='mb-5 bg-neutral-800 p-6 rounded-full'>
 					<FaCloudUploadAlt className='text-primary text-7xl' />
 				</div>
 

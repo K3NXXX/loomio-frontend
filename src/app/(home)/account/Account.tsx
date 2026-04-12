@@ -1,14 +1,18 @@
 'use client'
 
 import { UploadVideoModal } from '@/components/account/videos/upload/UploadVideoModal'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetMe } from '@/hooks/auth/useGetMe'
-import { getInitials } from '@/utils/get-initials'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { AvatarUploader } from './edit-account/AvatarUploader'
+import EditAccount from './edit-account/EditAccount'
+import { useState } from 'react'
+import { UserChannelsModal } from '@/components/account/channels/channel/UserChannelsModal'
+import { useUpdateAvatar } from '@/hooks/user/useUpdateAvatar'
+import { useDeleteAvatar } from '@/hooks/user/useDeleteAvatar'
 
 type Video = {
 	title: string
@@ -19,6 +23,10 @@ type Video = {
 export default function Account() {
 	const { userData } = useGetMe()
 	const { openUploadingVideo, setOpenUploadingVideo } = useVideoStore()
+	const [isChannelsOpen, setIsChannelsOpen] = useState(false)
+
+	const { updateAvatar, isUploadAvatarLoading } = useUpdateAvatar()
+	const { deleteAvatar } = useDeleteAvatar()
 
 	return (
 		<div className='px-4 py-10'>
@@ -28,40 +36,59 @@ export default function Account() {
 				transition={{ duration: 0.4 }}
 				className='max-w-6xl mx-auto'
 			>
-				<div className='relative rounded-xl border shadow-sm hover:shadow-md transition-shadow overflow-hidden p-6'>
-					<div className='absolute left-0 top-0 h-full w-[4px] bg-gradient-to-b from-primary via-primary/60 to-transparent blur-[1px]' />
+				<div className='relative rounded-2xl overflow-hidden p-[1px] bg-gradient-to-br from-white/10 via-white/5 to-transparent'>
+					<div className='relative rounded-2xl bg-[#0e0e0e]/90 backdrop-blur-xl p-6 transition-all duration-300 hover:bg-[#121212]'>
+						<div className='absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-primary via-primary/60 to-transparent blur-[2px]' />
 
-					<div className='flex flex-col md:flex-row md:items-center gap-6 py-3'>
-						<div className='relative w-28 h-28 rounded-full overflow-hidden ring-4 ring-primary/30 shadow-lg'>
-							<Avatar className='w-full h-full'>
-								<AvatarImage src={userData?.avatarUrl} />
-								<AvatarFallback className='text-[25px]'>
-									{getInitials(userData?.name)}
-								</AvatarFallback>
-							</Avatar>
-						</div>
+						<div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(120,119,198,0.12),transparent_70%)] opacity-0 hover:opacity-100 transition-opacity duration-500' />
 
-						<div>
-							<h1 className='text-3xl font-bold tracking-tight'>My Account</h1>
-							<p className='text-muted-foreground'>{userData?.email}</p>
-							<div className='flex gap-3 mt-3'>
-								<Link href={PAGES.CHANNELS}>
-									<Button className='rounded-full px-5'>Your channels</Button>
-								</Link>
-								<Link href={PAGES.EDIT_ACCOUNT}>
-									<Button variant='outline' className='rounded-full px-5'>
-										Edit profile
+						<div className='flex flex-col md:flex-row md:items-center gap-6 py-3 relative z-10'>
+							<AvatarUploader
+								value={userData?.avatarUrl}
+								fallbackName={userData?.name}
+								isLoading={isUploadAvatarLoading}
+								onChange={(file) => {
+									if (file) updateAvatar(file)
+									else deleteAvatar()
+								}}
+							/>
+							<div className='flex flex-col md:flex-row md:items-center md:justify-between gap-6 w-full'>
+								<div>
+									<h1 className='text-3xl font-semibold tracking-tight bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent'>
+										My Account
+									</h1>
+
+									<p className='text-muted-foreground mt-1'>
+										{userData?.email}
+									</p>
+
+									<p className='text-sm mt-1 text-white/60'>
+										@{userData?.username}
+									</p>
+								</div>
+
+								<div className='flex flex-wrap gap-3'>
+									<Button
+										onClick={() => setIsChannelsOpen(true)}
+										className='rounded-full px-5 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20'
+									>
+										Your channels
 									</Button>
-								</Link>
-								<Link href={PAGES.PLAYLISTS}>
-									<Button variant='outline' className='rounded-full px-5'>
-										Playlists
-									</Button>
-								</Link>
+
+									<Link href={PAGES.PLAYLISTS}>
+										<Button
+											variant='outline'
+											className='rounded-full px-5 border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur'
+										>
+											Playlists
+										</Button>
+									</Link>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<EditAccount />
 			</motion.div>
 
 			{openUploadingVideo && (
@@ -70,6 +97,11 @@ export default function Account() {
 					onOpenChange={setOpenUploadingVideo}
 				/>
 			)}
+
+			<UserChannelsModal
+				open={isChannelsOpen}
+				onOpenChange={setIsChannelsOpen}
+			/>
 		</div>
 	)
 }

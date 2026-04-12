@@ -5,18 +5,40 @@ import { toast } from 'sonner'
 
 export const useUpdateAccount = () => {
 	const queryClient = useQueryClient()
-	const { mutate: updateAccount } = useMutation({
+
+	const { mutate: updateAccount, isSuccess } = useMutation({
 		mutationKey: ['updateAccount'],
 		mutationFn: (data: IUpdateAccountRequest) =>
 			userService.updateAccount(data),
+
+		onMutate: async (newData) => {
+			await queryClient.cancelQueries({ queryKey: ['getMe'] })
+
+			const previousUser = queryClient.getQueryData(['getMe'])
+
+			queryClient.setQueryData(['getMe'], (old: any) => ({
+				...old,
+				...newData,
+			}))
+
+			return { previousUser }
+		},
+
+		onError: (_err, _newData, context) => {
+			if (context?.previousUser) {
+				queryClient.setQueryData(['getMe'], context.previousUser)
+			}
+			toast.error('Something went wrong. Try again')
+		},
+
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['getMe'] })
 			toast.success('Account successfully updated')
 		},
-		onError: () => {
-			toast.error('Something went wrong. Try again')
+
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ['getMe'] })
 		},
 	})
 
-	return { updateAccount }
+	return { updateAccount, isSuccess }
 }

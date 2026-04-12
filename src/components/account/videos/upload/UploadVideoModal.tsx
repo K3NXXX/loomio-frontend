@@ -12,6 +12,17 @@ import {
 	type TUploadVideoSchema,
 } from '@/schemas/videos/upload-video.schema'
 
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogDescription,
+	AlertDialogFooter,
+} from '@/components/ui/alert-dialog'
+
 import { Button } from '@/components/ui/button'
 import { useAddVideo } from '@/hooks/videos/useAddVideo'
 import type { IAddVideoRequest } from '@/types/video.types'
@@ -29,6 +40,11 @@ import { UploadVideoStepFirst } from './UploadVideoStepFirst'
 import { UploadVideoSteps } from './UploadVideoSteps'
 import { UploadVideoStepSecond } from './UploadVideoStepSecond'
 import { UploadVideoStepThird } from './UploadVideoStepThird'
+import { useDeleteVideo } from '@/hooks/videos/useDeleteVideo'
+import { useDeleteTempVideo } from '@/hooks/videos/useDeleteTempVideo'
+import { useVideoProcessing } from '@/hooks/videos/useVideoProccessing'
+import { useUploadVideo } from '@/hooks/videos/useUploadVideo'
+import { videoService } from '@/services/video.service'
 
 interface UploadVideoModalProps {
 	open: boolean
@@ -47,7 +63,7 @@ export function UploadVideoModal({
 		trigger,
 		watch,
 		getFieldState,
-		formState: { errors },
+		formState: { errors, isDirty },
 	} = useForm<TUploadVideoSchema>({
 		resolver: zodResolver(uploadVideoSchema),
 		reValidateMode: 'onSubmit',
@@ -60,26 +76,78 @@ export function UploadVideoModal({
 		},
 	})
 
+	const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+	const [progress, setProgress] = useState(0)
+	const [displayProgress, setDisplayProgress] = useState(0)
+
+	const [pendingOpen, setPendingOpen] = useState<boolean | null>(null)
 	const [isLoading, setIsLoading] = useState(false)
 	const [fileName, setFileName] = useState<string>('')
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 	const [steps, setSteps] = useState(1)
+	const [videoId, setVideoId] = useState<string | null>(null)
+	const { uploadVideo } = useUploadVideo()
 	const { addVideo } = useAddVideo()
+	const { deleteTempVideo } = useDeleteTempVideo()
+	const [status, setStatus] = useState<
+		'idle' | 'uploading' | 'processing' | 'ready'
+	>('idle')
+	const isUploadFinished = status === 'ready'
+
+	const [abortController, setAbortController] =
+		useState<AbortController | null>(null)
+	useVideoProcessing(videoId, setStatus)
+
+	const hasChanges = isDirty || !!fileName
 
 	const { setThumbnailFile, setThumbnailPreview, uploadChannelId } =
 		useVideoStore()
 
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (videoId) {
+			try {
+				await deleteTempVideo(videoId)
+			} catch {}
+
+			setVideoId(null)
+			setProgress(0)
+		}
+
 		const file = e.target.files?.[0]
-		if (file) {
-			const cleanName = file.name.split('.').slice(0, -1).join('.')
-			setFileName(cleanName)
-			setValue('file', [file])
-			setPreviewUrl(URL.createObjectURL(file))
-		} else {
-			setFileName('')
-			setValue('file', [] as any)
-			setPreviewUrl(null)
+		if (!file) return
+
+		const cleanName = file.name.split('.').slice(0, -1).join('.')
+		setFileName(cleanName)
+		setValue('file', [file])
+		setPreviewUrl(URL.createObjectURL(file))
+
+		const controller = new AbortController()
+		setAbortController(controller)
+
+		try {
+			setStatus('uploading')
+
+			const { uploadURL, videoId: newVideoId } =
+				await videoService.getUploadUrl()
+
+			setVideoId(newVideoId)
+
+			const result = await uploadVideo({
+				file,
+				controller,
+				uploadURL,
+				onProgress: (p) => {
+					setProgress(p)
+					setDisplayProgress(p)
+				},
+			})
+
+			if (!result) return
+
+			setStatus('processing')
+		} catch (err: any) {
+			if (err.code === 'ERR_CANCELED') return
+			console.error(err)
 		}
 	}
 
@@ -93,6 +161,15 @@ export function UploadVideoModal({
 		}
 	}
 
+	const handleOpenChange = (nextOpen: boolean) => {
+		if (!nextOpen && hasChanges) {
+			setIsConfirmOpen(true)
+			setPendingOpen(nextOpen)
+			return
+		}
+
+		onOpenChange(nextOpen)
+	}
 	const handleNextStep = async () => {
 		if (steps === 1) {
 			const isValid = await trigger(['title', 'file', 'tags'])
@@ -143,6 +220,10 @@ export function UploadVideoModal({
 				if (dateErr) toast.error(dateErr)
 				return
 			}
+			if (!videoId) {
+				toast.error('Video is still uploading')
+				return
+			}
 			handleSubmit(onSubmit)()
 		}
 	}
@@ -158,7 +239,6 @@ export function UploadVideoModal({
 			const formData = new FormData()
 
 			const payload: IAddVideoRequest = {
-				file: data.file[0],
 				title: data.title,
 				description: data.description || '',
 				tags: data.tags || '',
@@ -169,10 +249,12 @@ export function UploadVideoModal({
 					data.publishType === 'scheduled' ? data.publishDate : undefined,
 				thumbnail: data.thumbnail?.[0],
 				channelId: uploadChannelId,
+				videoPublicId: videoId!,
 			}
 
-			formData.append('file', payload.file)
+			// formData.append('file', payload.file)
 			formData.append('title', payload.title)
+			formData.append('videoPublicId', videoId!)
 			if (payload.description)
 				formData.append('description', payload.description)
 			if (payload.tags) formData.append('tags', payload.tags)
@@ -192,6 +274,8 @@ export function UploadVideoModal({
 					setValue('thumbnail', [], { shouldValidate: true })
 					setThumbnailFile(null)
 					setThumbnailPreview(null)
+					setVideoId(null)
+					setProgress(0)
 				},
 				onSettled: () => {
 					setIsLoading(false)
@@ -209,11 +293,30 @@ export function UploadVideoModal({
 		}
 	}, [open, reset])
 
+	useEffect(() => {
+		if (status === 'uploading') {
+			setDisplayProgress(Math.round(progress * 0.8))
+			return
+		}
+
+		if (status === 'processing') {
+			setDisplayProgress((prev) => {
+				if (prev >= 99) return prev
+				return Math.min(99, Math.round(prev + 0.5))
+			})
+			return
+		}
+
+		if (status === 'ready') {
+			setDisplayProgress(100)
+		}
+	}, [progress, status])
+
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent
-				onInteractOutside={(e) => e.preventDefault()}
-				className={`
+		<>
+			<Dialog open={open} onOpenChange={handleOpenChange}>
+				<DialogContent
+					className={`
 					fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
 					min-w-[960px] min-h-[800px]
 					max-h-[90vh] overflow-y-auto
@@ -224,88 +327,153 @@ export function UploadVideoModal({
 					shadow-2xl
 					backdrop-blur-xl
 					p-0
+					[&>button]:hidden
 				`}
-			>
-				<DialogHeader className='px-6 pt-6 pb-4 border-b border-neutral-800'>
-					<DialogTitle className='flex items-center gap-2 text-lg font-semibold'>
-						{fileName ? (
-							truncateName(fileName, 70)
-						) : (
-							<>
-								<FaUpload className='text-primary' />
-								Upload Video
-							</>
+				>
+					<DialogTitle className='flex items-center justify-between gap-4 text-lg font-semibold  px-10'>
+						<div className='flex items-center gap-2'>
+							{fileName ? (
+								<span className='max-w-[320px] truncate'>
+									{truncateName(fileName, 50)}
+								</span>
+							) : (
+								<>
+									<FaUpload className='text-primary' />
+									Upload Video
+								</>
+							)}
+						</div>
+
+						{fileName && (
+							<div className='flex items-center gap-2 w-[300px]'>
+								<span className='text-xs text-muted-foreground whitespace-nowrap'>
+									{status === 'uploading' && 'Uploading'}
+									{status === 'processing' && 'Processing'}
+									{status === 'ready' && 'Ready'}
+								</span>
+
+								<div className='flex-1 h-[4px] bg-neutral-800 rounded-full overflow-hidden'>
+									<div
+										className='h-full bg-primary transition-all duration-300 ease-out'
+										style={{ width: `${displayProgress}%` }}
+									/>
+								</div>
+
+								<span className='text-xs tabular-nums text-foreground min-w-[40px] text-right'>
+									{displayProgress}%
+								</span>
+							</div>
 						)}
 					</DialogTitle>
-				</DialogHeader>
 
-				<form
-					onSubmit={handleSubmit(onSubmit)}
-					className='flex flex-col gap-5 px-6 py-8'
-				>
-					{!fileName && (
-						<UploadVideoFile
-							register={register}
-							handleFileChange={handleFileChange}
-							errorMessage={errors.file?.message}
-						/>
-					)}
+					<form
+						onSubmit={handleSubmit(onSubmit)}
+						className='flex flex-col gap-5 px-6 py-8'
+					>
+						{!fileName && (
+							<UploadVideoFile
+								register={register}
+								handleFileChange={handleFileChange}
+								errorMessage={errors.file?.message}
+							/>
+						)}
 
-					{fileName && (
-						<>
-							<UploadVideoSteps currentStep={steps} />
-							<div className='grid grid-cols-2 gap-8 px-5'>
-								<div className='h-[500px] flex flex-col justify-between'>
-									{steps === 1 && (
-										<UploadVideoStepFirst
-											register={register}
+						{fileName && (
+							<>
+								<UploadVideoSteps currentStep={steps} />
+								<div className='grid grid-cols-2 gap-8 px-5'>
+									<div className='h-[500px] flex flex-col justify-between'>
+										{steps === 1 && (
+											<UploadVideoStepFirst
+												register={register}
+												fileName={fileName}
+											/>
+										)}
+										{steps === 2 && (
+											<UploadVideoStepSecond setValue={setValue} />
+										)}
+										{steps === 3 && (
+											<UploadVideoStepThird watch={watch} setValue={setValue} />
+										)}
+									</div>
+									<div className='flex flex-col justify-between'>
+										<UploadVideoPreview
 											fileName={fileName}
+											previewUrl={previewUrl ? previewUrl : ''}
 										/>
-									)}
-									{steps === 2 && <UploadVideoStepSecond setValue={setValue} />}
-									{steps === 3 && (
-										<UploadVideoStepThird watch={watch} setValue={setValue} />
-									)}
-								</div>
-								<div className='flex flex-col justify-between'>
-									<UploadVideoPreview
-										fileName={fileName}
-										previewUrl={previewUrl ? previewUrl : ''}
-									/>
-									<div className='flex pt-2 justify-end gap-5'>
-										<Button
-											onClick={() => handleBack()}
-											type='button'
-											disabled={isLoading}
-											className='bg-secondary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
-										>
-											Back
-										</Button>
-										<Button
-											onClick={handleNextStep}
-											type='button'
-											disabled={isLoading}
-											className='bg-primary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
-										>
-											{isLoading ? (
-												<Lottie
-													animationData={loader}
-													loop
-													className='w-15 h-15'
-												/>
-											) : steps === 3 ? (
-												'Confirm'
-											) : (
-												'Next'
-											)}
-										</Button>
+										<div className='flex pt-2 justify-end gap-5'>
+											<Button
+												onClick={() => handleBack()}
+												type='button'
+												disabled={isLoading}
+												className='bg-secondary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
+											>
+												Back
+											</Button>
+											<Button
+												onClick={handleNextStep}
+												type='button'
+												disabled={
+													isLoading || (steps === 3 && !isUploadFinished)
+												}
+												className='bg-primary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
+											>
+												{isLoading ? (
+													<Lottie
+														animationData={loader}
+														loop
+														className='w-15 h-15'
+													/>
+												) : steps === 3 ? (
+													'Confirm'
+												) : (
+													'Next'
+												)}
+											</Button>
+										</div>
 									</div>
 								</div>
-							</div>
-						</>
-					)}
-				</form>
-			</DialogContent>
-		</Dialog>
+							</>
+						)}
+					</form>
+				</DialogContent>
+			</Dialog>
+			<AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Discard changes?</AlertDialogTitle>
+						<AlertDialogDescription>
+							You have unsaved changes. If you leave, they will be lost.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+
+						<AlertDialogAction
+							onClick={async () => {
+								setIsConfirmOpen(false)
+
+								if (abortController) {
+									abortController.abort()
+								}
+
+								if (videoId) {
+									await deleteTempVideo(videoId)
+									setVideoId(null)
+									setProgress(0)
+								}
+
+								if (pendingOpen !== null) {
+									onOpenChange(pendingOpen)
+								}
+							}}
+						>
+							Leave
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</>
 	)
 }

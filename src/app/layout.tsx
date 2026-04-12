@@ -27,7 +27,7 @@ export default async function RootLayout({
 }>) {
 	const isDarkMode = true
 	const cookiesList = await cookies()
-	const theme = cookiesList.get('theme')?.value || 'RED'
+	const theme = cookiesList.get('theme')?.value || 'BLUE'
 	return (
 		<html
 			lang='en'

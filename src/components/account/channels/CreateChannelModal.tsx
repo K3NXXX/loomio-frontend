@@ -40,7 +40,7 @@ export default function CreateChannelModal({
 		register,
 		handleSubmit,
 		watch,
-		formState: { errors, isSubmitting, isValid },
+		formState: { errors, isValid },
 		reset,
 	} = useForm<CreateChannelSchema>({
 		resolver: zodResolver(createChannelSchema),
@@ -51,15 +51,16 @@ export default function CreateChannelModal({
 	useCreateChannelFormErrors(errors)
 
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+	const [initialAvatar, setInitialAvatar] = useState<string | null>(null)
 	const [avatarFile, setAvatarFile] = useState<File | null>(null)
 
 	useEffect(() => {
 		if (open) {
-			const initial =
-				(userData as any)?.avatarUrl || (userData as any)?.avatar || null
-			setAvatarPreview(initial)
+			setAvatarPreview(null)
+			setInitialAvatar(null)
+			setAvatarFile(null)
 		}
-	}, [open, userData])
+	}, [open])
 
 	const nameValue = watch('name')
 	const usernameValue = watch('username')
@@ -68,6 +69,7 @@ export default function CreateChannelModal({
 		() => (nameValue?.trim() ? nameValue.trim() : 'Channel Name'),
 		[nameValue],
 	)
+
 	const previewUsername = useMemo(
 		() => (usernameValue?.trim() ? `@${usernameValue.trim()}` : '@username'),
 		[usernameValue],
@@ -84,15 +86,8 @@ export default function CreateChannelModal({
 			setAvatarPreview(value)
 		} else {
 			setAvatarFile(null)
-			setAvatarPreview(null)
+			setAvatarPreview(initialAvatar)
 		}
-	}
-
-	async function dataUrlToFile(dataUrl: string, filename = 'avatar') {
-		const res = await fetch(dataUrl)
-		const blob = await res.blob()
-		const ext = blob.type.split('/')[1] ?? 'png'
-		return new File([blob], `${filename}.${ext}`, { type: blob.type })
 	}
 
 	const onSubmit = async (data: CreateChannelSchema) => {
@@ -102,13 +97,6 @@ export default function CreateChannelModal({
 
 		if (avatarFile) {
 			fd.append('avatar', avatarFile)
-		} else if (typeof avatarPreview === 'string') {
-			if (avatarPreview.startsWith('data:')) {
-				const fileFromDataUrl = await dataUrlToFile(avatarPreview, 'avatar')
-				fd.append('avatar', fileFromDataUrl)
-			} else if (/^https?:\/\//.test(avatarPreview)) {
-				fd.append('avatarUrl', avatarPreview)
-			}
 		}
 
 		createChannel(fd, {
@@ -117,6 +105,7 @@ export default function CreateChannelModal({
 				reset()
 				setAvatarFile(null)
 				setAvatarPreview(null)
+				setInitialAvatar(null)
 			},
 		})
 	}
@@ -129,6 +118,8 @@ export default function CreateChannelModal({
 				if (!v) {
 					reset()
 					setAvatarPreview(null)
+					setAvatarFile(null)
+					setInitialAvatar(null)
 				}
 			}}
 		>
@@ -155,9 +146,12 @@ export default function CreateChannelModal({
 								Avatar
 							</Label>
 							<AvatarUploader
-								userData={userData}
-								page='channel'
-								onChange={handleAvatarChange}
+								value={avatarPreview}
+								fallbackName={previewName}
+								onChange={(file, preview) => {
+									setAvatarFile(file)
+									setAvatarPreview(preview)
+								}}
 							/>
 						</div>
 
@@ -208,7 +202,7 @@ export default function CreateChannelModal({
 									<Avatar className='w-full h-full'>
 										<AvatarImage src={avatarPreview || undefined} />
 										<AvatarFallback className='flex items-center justify-center w-full h-full text-lg font-medium'>
-											{getInitials(userData?.name)}
+											{getInitials(previewName)}
 										</AvatarFallback>
 									</Avatar>
 								</div>
@@ -237,6 +231,8 @@ export default function CreateChannelModal({
 									onOpenChange(false)
 									reset()
 									setAvatarPreview(null)
+									setAvatarFile(null)
+									setInitialAvatar(null)
 								}}
 							>
 								Cancel
@@ -249,7 +245,7 @@ export default function CreateChannelModal({
 								{channelCreatingLoading ? (
 									<Lottie
 										animationData={loader}
-										loop={true}
+										loop
 										className='absolute w-20 h-20'
 									/>
 								) : (
