@@ -79,27 +79,28 @@ export function UploadVideoModal({
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false)
 	const [progress, setProgress] = useState(0)
 	const [displayProgress, setDisplayProgress] = useState(0)
-
 	const [pendingOpen, setPendingOpen] = useState<boolean | null>(null)
 	const [isLoading, setIsLoading] = useState(false)
 	const [fileName, setFileName] = useState<string>('')
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 	const [steps, setSteps] = useState(1)
 	const [videoId, setVideoId] = useState<string | null>(null)
-	const { uploadVideo } = useUploadVideo()
-	const { addVideo } = useAddVideo()
-	const { deleteTempVideo } = useDeleteTempVideo()
-	const [status, setStatus] = useState<
-		'idle' | 'uploading' | 'processing' | 'ready'
-	>('idle')
-	const isUploadFinished = status === 'ready'
 
 	const [abortController, setAbortController] =
 		useState<AbortController | null>(null)
-	useVideoProcessing(videoId, setStatus)
 
+	const [status, setStatus] = useState<
+		'idle' | 'uploading' | 'processing' | 'ready'
+	>('idle')
+
+	const isUploadFinished = status === 'ready'
 	const hasChanges = isDirty || !!fileName
 
+	const { uploadVideo } = useUploadVideo()
+	const { addVideo } = useAddVideo()
+	const { deleteTempVideo } = useDeleteTempVideo()
+
+	useVideoProcessing(videoId, setStatus)
 	const { setThumbnailFile, setThumbnailPreview, uploadChannelId } =
 		useVideoStore()
 
@@ -252,7 +253,6 @@ export function UploadVideoModal({
 				videoPublicId: videoId!,
 			}
 
-			// formData.append('file', payload.file)
 			formData.append('title', payload.title)
 			formData.append('videoPublicId', videoId!)
 			if (payload.description)
@@ -295,15 +295,8 @@ export function UploadVideoModal({
 
 	useEffect(() => {
 		if (status === 'uploading') {
-			setDisplayProgress(Math.round(progress * 0.8))
-			return
-		}
-
-		if (status === 'processing') {
-			setDisplayProgress((prev) => {
-				if (prev >= 99) return prev
-				return Math.min(99, Math.round(prev + 0.5))
-			})
+			const value = Math.min(80, Math.round(progress * 0.8))
+			setDisplayProgress(value)
 			return
 		}
 
@@ -311,6 +304,21 @@ export function UploadVideoModal({
 			setDisplayProgress(100)
 		}
 	}, [progress, status])
+
+	useEffect(() => {
+		if (status !== 'processing') return
+
+		const interval = setInterval(() => {
+			setDisplayProgress((prev) => {
+				if (prev >= 99) return prev
+
+				const speed = prev < 90 ? 0.8 : 0.2
+				return Math.min(99, Math.round(prev + speed))
+			})
+		}, 200)
+
+		return () => clearInterval(interval)
+	}, [status])
 
 	return (
 		<>
@@ -347,8 +355,8 @@ export function UploadVideoModal({
 						{fileName && (
 							<div className='flex items-center gap-2 w-[300px]'>
 								<span className='text-xs text-muted-foreground whitespace-nowrap'>
-									{status === 'uploading' && 'Uploading'}
-									{status === 'processing' && 'Processing'}
+									{status === 'uploading' && 'Uploading video...'}
+									{status === 'processing' && 'Processing video...'}
 									{status === 'ready' && 'Ready'}
 								</span>
 
@@ -360,7 +368,7 @@ export function UploadVideoModal({
 								</div>
 
 								<span className='text-xs tabular-nums text-foreground min-w-[40px] text-right'>
-									{displayProgress}%
+									{Math.round(displayProgress)}%
 								</span>
 							</div>
 						)}
@@ -463,6 +471,10 @@ export function UploadVideoModal({
 									setVideoId(null)
 									setProgress(0)
 								}
+
+								setValue('thumbnail', [], { shouldValidate: true })
+								setThumbnailFile(null)
+								setThumbnailPreview(null)
 
 								if (pendingOpen !== null) {
 									onOpenChange(pendingOpen)
