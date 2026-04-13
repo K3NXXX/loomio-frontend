@@ -3,6 +3,7 @@
 import { useAddView } from '@/hooks/view/useAddView'
 import 'plyr/dist/plyr.css'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 
 interface IWatchVideoProps {
 	videoSrc: string
@@ -52,6 +53,7 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 	const [isReady, setIsReady] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
 	const [isPlyrReady, setIsPlyrReady] = useState(false)
+	const [isPlyrMenuOpen, setIsPlyrMenuOpen] = useState(false)
 	const playerRef = useRef<any>(null)
 	const hlsRef = useRef<any>(null)
 	const hasSentView = useRef(false)
@@ -90,7 +92,7 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 		}
 	}, [videoSrc, isHls])
 
-	// HLS setup ppppppppppppppppp
+
 	useEffect(() => {
 		if (!isHls || !videoRef.current) return
 
@@ -321,6 +323,14 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 			if (e.code === 'KeyM') {
 				player.muted = !player.muted
 			}
+
+			if (e.code === 'ArrowRight') {
+				player.currentTime = Math.min(player.currentTime + 15, player.duration)
+			}
+
+			if (e.code === 'ArrowLeft') {
+				player.currentTime = Math.max(player.currentTime - 15, 0)
+			}
 		}
 
 		document.addEventListener('keydown', handleKeyDown)
@@ -350,7 +360,6 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 					: { aspectRatio: '16/9' }
 			}
 		>
-			{/* Лоадер поки відео або Plyr не готові */}
 			{(isLoading || !isPlyrReady) && (
 				<div className='absolute inset-0 z-10 flex items-center justify-center bg-black pointer-events-none'>
 					<div className='w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin' />
@@ -359,9 +368,47 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 
 			<div
 				ref={plyrWrapperRef}
-				className='w-full h-full'
+				className='w-full h-full relative'
 				style={{ visibility: isPlyrReady ? 'visible' : 'hidden' }}
 			>
+				{/* Лівий оверлей — тільки верхні 80% */}
+				<div
+					className='absolute left-0 top-0 w-48 h-4/5 z-20 flex items-center justify-start pl-8 opacity-0 hover:opacity-100 transition-opacity cursor-pointer'
+					onClick={() => {
+						const player = playerRef.current
+						if (!player) return
+						player.currentTime = Math.max(player.currentTime - 15, 0)
+					}}
+				>
+					<div className='bg-black/40 backdrop-blur-xl rounded-2xl px-5 py-4 flex flex-col items-center gap-1 border border-white/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-black/60'>
+						<FiChevronLeft className='text-white w-7 h-7 transition-transform duration-300 group-hover:-translate-x-1' />
+
+						<span className='text-white font-semibold text-sm tracking-wide'>
+							15 sec
+						</span>
+					</div>
+				</div>
+
+				<div
+					className='absolute right-0 top-0 w-48 h-4/5 z-20 flex items-center justify-end pr-8 opacity-0 hover:opacity-100 transition-opacity cursor-pointer'
+					onClick={() => {
+						const player = playerRef.current
+						if (!player) return
+						player.currentTime = Math.min(
+							player.currentTime + 15,
+							player.duration,
+						)
+					}}
+				>
+					<div className='bg-black/40 backdrop-blur-xl rounded-2xl px-5 py-4 flex flex-col items-center gap-1 border border-white/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-black/60'>
+						<FiChevronRight className='text-white w-7 h-7 transition-transform duration-300 group-hover:translate-x-1' />
+
+						<span className='text-white font-semibold text-sm tracking-wide'>
+							15 sec
+						</span>
+					</div>
+				</div>
+
 				<video
 					ref={videoRef}
 					src={isHls ? undefined : videoSrc}

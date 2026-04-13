@@ -14,8 +14,10 @@ export const useEditAccountFormErrors = (errors: ErrorsType) => {
 			'name',
 			'email',
 			'bio',
+			'username',
 			'newPassword',
 			'currentPassword',
+			'confirmPassword',
 		]
 
 		fields.forEach((field) => {

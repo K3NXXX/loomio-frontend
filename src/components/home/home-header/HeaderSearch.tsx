@@ -6,8 +6,13 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { IoCloseOutline, IoSearch } from 'react-icons/io5'
 import { SearchSuggestions } from '../search/SearchSuggestions'
+import { cn } from '@/lib/utils'
 
-export function HeaderSearch() {
+interface IHeaderSearchProps {
+	className?: string
+}
+
+export function HeaderSearch({ className }: IHeaderSearchProps) {
 	const [search, setSearch] = useState('')
 	const router = useRouter()
 
@@ -24,7 +29,7 @@ export function HeaderSearch() {
 	}
 
 	return (
-		<div className='flex-1 max-w-[500px] mx-4 relative'>
+		<div className={cn('flex-1 max-w-[500px] mx-4 relative', className)}>
 			<form onSubmit={handleSubmit}>
 				<IoSearch
 					onClick={(e) => handleSubmit(e)}

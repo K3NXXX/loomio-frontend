@@ -30,7 +30,7 @@ export function ClientHomeLayout({ children }: { children: ReactNode }) {
 		<div className='relative w-full min-h-screen flex flex-col bg-gradient-to-br from-black via-neutral-800 to-black'>
 			<HomeHeader />
 			<div className='flex flex-1'>
-				<div className='w-[80px]'>
+				<div className='w-[80px] max-[1024px]:hidden'>
 					{isSidebarCollapsed ? <HomeSidebarCollapsed /> : <HomeSidebarMenu />}
 				</div>
 

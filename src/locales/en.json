@@ -1,0 +1,12 @@
+{
+	"header": {
+		"search": "Search...",
+		"upload": "Upload"
+	},
+	"sidebar": {
+		"home": "Home",
+		"playlists": "Playlists",
+		"followings": "Followings",
+		"account": "Account"
+	}
+}

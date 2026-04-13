@@ -1,0 +1,12 @@
+{
+    "header": {
+      "search": "Пошук...",
+      "upload": "Завантажити"
+    },
+    "sidebar": {
+      "home": "Головна",
+      "playlists": "Плейлисти",
+      "followings": "Підписки",
+      "account": "Акаунт"
+    }
+  }

@@ -22,12 +22,6 @@ export const sidebarMenu: ISidebarMenu[] = [
 		url: PAGES.HOME,
 		icon: IoHome,
 	},
-	{
-		id: 2,
-		label: 'Shorts',
-		url: PAGES.PROJECTS,
-		icon: SiYoutubeshorts,
-	},
 
 	{
 		id: 3,

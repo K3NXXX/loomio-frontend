@@ -28,8 +28,10 @@ import { getInitials } from '@/utils/get-initials'
 import { useState } from 'react'
 import { NotificationDropdown } from '../notifications/NotificationDropdown'
 import { HeaderSearch } from './HeaderSearch'
+import { MobileSidebar } from '../home-sidebar/MobileSidebar'
 
 export function HomeHeader() {
+	const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
 	const { toggleSidebarCollapsed } = useGlobalStore()
 	const { openUploadingVideo, setOpenUploadingVideo, setUploadChannelId } =
 		useVideoStore()
@@ -43,106 +45,123 @@ export function HomeHeader() {
 	}
 
 	return (
-		<header
-			className={cn(
-				'sticky top-0 left-0 right-0 z-50',
-				'bg-[oklch(0.19_0_0/0.7)] backdrop-blur-lg',
-				'shadow-[0_4px_15px_rgba(0,0,0,0.3)]',
-			)}
-		>
-			<div className='flex flex-col pb-5'>
-				<div className='pt-5 pl-6 flex justify-between items-center max-w-[99%] w-full px-3'>
-					<Breadcrumb className='flex h-5 items-center space-x-4 text-sm'>
-						<IoMenu
-							onClick={() => toggleSidebarCollapsed()}
-							size={30}
-							className='cursor-pointer burger-toggle'
-						/>
-						<Separator orientation='vertical' />
-						<Logo />
-					</Breadcrumb>
-
-					<HeaderSearch />
-					<div className='flex items-center gap-5'>
-						<NotificationDropdown />
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button
-									className='
+		<>
+			<header
+				className={cn(
+					'sticky top-0 left-0 right-0 z-50',
+					'bg-[oklch(0.19_0_0/0.7)] backdrop-blur-lg',
+					'shadow-[0_4px_15px_rgba(0,0,0,0.3)]',
+				)}
+			>
+				<div className='flex flex-col pb-5'>
+					<div className='pt-5 pl-6 flex justify-between items-center max-w-[99%] w-full px-3'>
+						<Breadcrumb className='flex h-5 items-center space-x-4 text-sm'>
+							<IoMenu
+								onClick={() => toggleSidebarCollapsed()}
+								size={30}
+								className='cursor-pointer burger-toggle max-[1024px]:hidden'
+							/>
+							<Separator
+								className='max-[1024px]:hidden'
+								orientation='vertical'
+							/>
+							<Logo />
+						</Breadcrumb>
+						<HeaderSearch className='max-[1024px]:hidden' />
+						<div className='flex items-center gap-5'>
+							<NotificationDropdown />
+							<div
+								onClick={() => setIsMobileSidebarOpen(true)}
+								className='min-[1024px]:hidden'
+							>
+								<IoMenu color='white' size={30} />
+							</div>
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button
+										className='
+									max-[1024px]:hidden
 								flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
 								bg-[var(--primary)] text-white shadow-md
 								hover:bg-[var(--primary)]/90 hover:shadow-lg
 								active:scale-95 active:brightness-90
 								transition-all duration-300
 								'
-								>
-									<FaPlus />
-									Upload
-								</Button>
-							</DropdownMenuTrigger>
+									>
+										<FaPlus />
+										Upload
+									</Button>
+								</DropdownMenuTrigger>
 
-							<DropdownMenuContent align='end' className='w-72'>
-								<DropdownMenuLabel>Select a channel</DropdownMenuLabel>
-								<DropdownMenuSeparator />
+								<DropdownMenuContent align='end' className='w-72'>
+									<DropdownMenuLabel>Select a channel</DropdownMenuLabel>
+									<DropdownMenuSeparator />
 
-								{isLoading ? (
-									<div className='px-3 py-2 text-sm text-muted-foreground'>
-										Loading…
-									</div>
-								) : !userChannels?.length ? (
-									<div className='px-3 py-2 text-sm text-muted-foreground'>
-										You have no channels yet.{' '}
-										<span
-											onClick={() => setIsCreateFormOpen(true)}
-											className='text-primary font-bold cursor-pointer pl-1'
-										>
-											Create new
-										</span>
-									</div>
-								) : (
-									<ScrollArea className='max-h-72'>
-										{userChannels.map((ch) => (
-											<DropdownMenuItem
-												key={ch.id}
-												onClick={() => handlePickChannel(ch.id)}
-												className='cursor-pointer gap-3 py-2'
+									{isLoading ? (
+										<div className='px-3 py-2 text-sm text-muted-foreground'>
+											Loading…
+										</div>
+									) : !userChannels?.length ? (
+										<div className='px-3 py-2 text-sm text-muted-foreground'>
+											You have no channels yet.{' '}
+											<span
+												onClick={() => setIsCreateFormOpen(true)}
+												className='text-primary font-bold cursor-pointer pl-1'
 											>
-												<Avatar className='h-10 w-10'>
-													<AvatarImage src={ch.avatarUrl ?? undefined} />
-													<AvatarFallback>
-														{getInitials(ch.name)}
-													</AvatarFallback>
-												</Avatar>
-												<div className='flex flex-col leading-tight'>
-													<span className='text-sm font-medium'>{ch.name}</span>
-													<span className='text-xs text-muted-foreground'>
-														@{ch.username}
-													</span>
-												</div>
-											</DropdownMenuItem>
-										))}
-									</ScrollArea>
-								)}
-							</DropdownMenuContent>
-						</DropdownMenu>
+												Create new
+											</span>
+										</div>
+									) : (
+										<ScrollArea className='max-h-72'>
+											{userChannels.map((ch) => (
+												<DropdownMenuItem
+													key={ch.id}
+													onClick={() => handlePickChannel(ch.id)}
+													className='cursor-pointer gap-3 py-2'
+												>
+													<Avatar className='h-10 w-10'>
+														<AvatarImage src={ch.avatarUrl ?? undefined} />
+														<AvatarFallback>
+															{getInitials(ch.name)}
+														</AvatarFallback>
+													</Avatar>
+													<div className='flex flex-col leading-tight'>
+														<span className='text-sm font-medium'>
+															{ch.name}
+														</span>
+														<span className='text-xs text-muted-foreground'>
+															@{ch.username}
+														</span>
+													</div>
+												</DropdownMenuItem>
+											))}
+										</ScrollArea>
+									)}
+								</DropdownMenuContent>
+							</DropdownMenu>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{openUploadingVideo && (
-				<UploadVideoModal
-					open={openUploadingVideo}
-					onOpenChange={(open) => {
-						if (!open) setUploadChannelId(null)
-						setOpenUploadingVideo(open)
-					}}
+				{openUploadingVideo && (
+					<UploadVideoModal
+						open={openUploadingVideo}
+						onOpenChange={(open) => {
+							if (!open) setUploadChannelId(null)
+							setOpenUploadingVideo(open)
+						}}
+					/>
+				)}
+
+				<CreateChannelModal
+					open={isCreateFormOpen}
+					onOpenChange={setIsCreateFormOpen}
 				/>
-			)}
-
-			<CreateChannelModal
-				open={isCreateFormOpen}
-				onOpenChange={setIsCreateFormOpen}
+			</header>
+			<MobileSidebar
+				isOpen={isMobileSidebarOpen}
+				onClose={() => setIsMobileSidebarOpen(false)}
 			/>
-		</header>
+		</>
 	)
 }
