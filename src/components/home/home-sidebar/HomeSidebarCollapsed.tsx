@@ -4,9 +4,11 @@ import { sidebarMenu } from '@/lists/sidebar.menu.items'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import { HomeUserMenu } from './HomeUserMenu'
+import { useTranslations } from 'next-intl'
 
 export function HomeSidebarCollapsed() {
 	const pathname = usePathname()
+	const t = useTranslations()
 
 	return (
 		<aside className=' sticky top-[76px] h-[calc(100vh-76px)] flex flex-col items-center w-[80px] bg-background/80 backdrop-blur-xl shadow-md py-4'>
@@ -46,7 +48,7 @@ export function HomeSidebarCollapsed() {
 										'text-white group-hover:text-primary',
 									)}
 								>
-									{item.label}
+									<span>{t(item.label)}</span>
 								</span>
 							</a>
 						</li>

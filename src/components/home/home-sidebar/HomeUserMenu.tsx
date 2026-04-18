@@ -23,12 +23,14 @@ import Link from 'next/link'
 import { MdOutlineVideoLibrary } from 'react-icons/md'
 import { useState } from 'react'
 import { UserChannelsModal } from '@/components/account/channels/channel/UserChannelsModal'
+import { useTranslations } from 'next-intl'
 
 export function HomeUserMenu() {
 	const { userData } = useGetMe()
 	const { logout } = useLogout()
 	const { isSidebarCollapsed } = useGlobalStore()
 	const [isChannelsOpen, setIsChannelsOpen] = useState(false)
+	const t = useTranslations()
 
 	return (
 		<>
@@ -77,7 +79,7 @@ export function HomeUserMenu() {
 					<DropdownMenuSeparator />
 					<DropdownMenuItem className='cursor-pointer'>
 						<LuCrown />
-						Upgrade to premium
+						{t('userMenu.upgrade')}
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem>
@@ -86,7 +88,7 @@ export function HomeUserMenu() {
 							className='flex items-center gap-2 w-full cursor-pointer'
 						>
 							<FaRegCircleUser />
-							<span>Account</span>
+							<span>{t('userMenu.account')}</span>
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem
@@ -98,12 +100,12 @@ export function HomeUserMenu() {
 						}}
 					>
 						<MdOutlineVideoLibrary />
-						<span>Channels</span>
+						<span>{t('userMenu.channels')}</span>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem className='cursor-pointer' onClick={() => logout()}>
 						<MdLogout />
-						Log out
+						{t('userMenu.logout')}
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

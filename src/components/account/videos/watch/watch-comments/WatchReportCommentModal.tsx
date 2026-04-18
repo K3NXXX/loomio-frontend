@@ -16,9 +16,10 @@ import {
 	type TReportSchema,
 } from '@/schemas/report/report.schema'
 
-import { REPORT_REASON_LABELS, ReportReason } from '@/types/report.types'
+import { ReportReason } from '@/types/report.types'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -33,6 +34,7 @@ export function WatchReportCommentModal({
 	onOpenChange,
 	commentId,
 }: IWatchReportCommentModalProps) {
+	const t = useTranslations()
 	const { reportComment, isPending } = useReportComment()
 
 	const {
@@ -51,6 +53,15 @@ export function WatchReportCommentModal({
 	})
 
 	const reason = watch('reason')
+
+	const reportReasonLabels = {
+		[ReportReason.HATE_SPEECH]: t('report.reasons.hateSpeech'),
+		[ReportReason.HARASSMENT]: t('report.reasons.harassmentOrBullying'),
+		[ReportReason.SPAM]: t('report.reasons.spamOrMisleading'),
+		[ReportReason.SEXUAL_CONTENT]: t('report.reasons.sexualContent'),
+		[ReportReason.VIOLENCE]: t('report.reasons.violenceOrDangerousContent'),
+		[ReportReason.OTHER]: t('report.reasons.other'),
+	}
 
 	const onSubmit = (data: TReportSchema) => {
 		reportComment({
@@ -76,10 +87,10 @@ export function WatchReportCommentModal({
 			>
 				<DialogHeader>
 					<DialogTitle className='text-xl font-semibold text-center'>
-						Report comment
+						{t('watchComments.reportTitle')}
 					</DialogTitle>
 					<DialogDescription className='text-center text-muted-foreground'>
-						Select the reason for reporting this comment.
+						{t('watchComments.reportDescription')}
 					</DialogDescription>
 				</DialogHeader>
 
@@ -97,7 +108,7 @@ export function WatchReportCommentModal({
 										: 'border-border text-foreground hover:bg-muted/40',
 								)}
 							>
-								{REPORT_REASON_LABELS[value]}
+								{reportReasonLabels[value]}
 							</button>
 						))}
 
@@ -109,7 +120,7 @@ export function WatchReportCommentModal({
 							<div className='flex flex-col gap-1'>
 								<textarea
 									{...register('message')}
-									placeholder='Describe your reason...'
+									placeholder={t('watchComments.reportReasonPlaceholder')}
 									className='w-full bg-neutral-900 border border-neutral-700 rounded-lg p-3 resize-none text-neutral-100 focus:border-primary focus:outline-none'
 									rows={3}
 								/>
@@ -129,7 +140,7 @@ export function WatchReportCommentModal({
 							className='bg-neutral-800 text-neutral-200 border-neutral-700 hover:bg-neutral-700'
 							onClick={() => onOpenChange(false)}
 						>
-							Cancel
+							{t('common.cancel')}
 						</Button>
 
 						<Button
@@ -137,7 +148,7 @@ export function WatchReportCommentModal({
 							disabled={isPending}
 							className='bg-primary text-white hover:brightness-90'
 						>
-							Send report
+							{t('common.sendReport')}
 						</Button>
 					</div>
 				</form>

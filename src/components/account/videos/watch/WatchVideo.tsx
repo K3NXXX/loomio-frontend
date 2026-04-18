@@ -1,6 +1,7 @@
 'use client'
 
 import { useAddView } from '@/hooks/view/useAddView'
+import { useTranslations } from 'next-intl'
 import 'plyr/dist/plyr.css'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
@@ -46,6 +47,7 @@ function getSavedVolume(): number {
 }
 
 export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
+	const t = useTranslations()
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const plyrWrapperRef = useRef<HTMLDivElement>(null)
@@ -92,7 +94,6 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 		}
 	}, [videoSrc, isHls])
 
-
 	useEffect(() => {
 		if (!isHls || !videoRef.current) return
 
@@ -134,7 +135,6 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 		}
 	}, [videoSrc, isHls])
 
-	// Plyr setup
 	useEffect(() => {
 		if (!isReady || !videoRef.current || !plyrWrapperRef.current) return
 
@@ -371,10 +371,10 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 				className='w-full h-full relative'
 				style={{ visibility: isPlyrReady ? 'visible' : 'hidden' }}
 			>
-				{/* Лівий оверлей — тільки верхні 80% */}
 				<div
-					className='absolute left-0 top-0 w-48 h-4/5 z-20 flex items-center justify-start pl-8 opacity-0 hover:opacity-100 transition-opacity cursor-pointer'
+					className={`absolute left-0 top-50 w-32 h-[30%] z-20 flex items-center justify-start pl-8 opacity-0 hover:opacity-100 transition-opacity cursor-pointer ${isPlyrMenuOpen ? 'pointer-events-none' : ''}`}
 					onClick={() => {
+						if (isPlyrMenuOpen) return
 						const player = playerRef.current
 						if (!player) return
 						player.currentTime = Math.max(player.currentTime - 15, 0)
@@ -384,14 +384,15 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 						<FiChevronLeft className='text-white w-7 h-7 transition-transform duration-300 group-hover:-translate-x-1' />
 
 						<span className='text-white font-semibold text-sm tracking-wide'>
-							15 sec
+							{t('watchVideo.skipSeconds', { count: 15 })}
 						</span>
 					</div>
 				</div>
 
 				<div
-					className='absolute right-0 top-0 w-48 h-4/5 z-20 flex items-center justify-end pr-8 opacity-0 hover:opacity-100 transition-opacity cursor-pointer'
+					className={`absolute right-0 top-50 w-32 h-[30%] z-20 flex items-center justify-end pr-8 opacity-0 hover:opacity-100 transition-opacity cursor-pointer ${isPlyrMenuOpen ? 'pointer-events-none' : ''}`}
 					onClick={() => {
+						if (isPlyrMenuOpen) return
 						const player = playerRef.current
 						if (!player) return
 						player.currentTime = Math.min(
@@ -404,7 +405,7 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 						<FiChevronRight className='text-white w-7 h-7 transition-transform duration-300 group-hover:translate-x-1' />
 
 						<span className='text-white font-semibold text-sm tracking-wide'>
-							15 sec
+							{t('watchVideo.skipSeconds', { count: 15 })}
 						</span>
 					</div>
 				</div>

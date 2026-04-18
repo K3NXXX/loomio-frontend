@@ -7,11 +7,13 @@ import { usePathname } from 'next/navigation'
 import { useRef } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import { HomeUserMenu } from './HomeUserMenu'
+import { useTranslations } from 'next-intl'
 
 export function HomeSidebarMenu() {
 	const pathname = usePathname()
 	const ref = useRef(null)
 	const { closeSidebar } = useGlobalStore()
+	const t = useTranslations()
 
 	const handleClickOutside = (e: MouseEvent) => {
 		const target = e.target as HTMLElement
@@ -60,7 +62,7 @@ export function HomeSidebarMenu() {
 													!isActive,
 											})}
 										/>
-										<span>{item.label}</span>
+										<span>{t(item.label)}</span>
 									</a>
 								</li>
 							)

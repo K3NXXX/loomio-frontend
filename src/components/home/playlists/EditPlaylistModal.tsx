@@ -16,6 +16,7 @@ import {
 } from '@/schemas/playlists/edit-playlist.schema'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 
 import loader from '@/assets/animations/loader.json'
@@ -39,6 +40,7 @@ export function EditPlaylistModal({
 	onOpenChange,
 	initialData,
 }: EditPlaylistModalProps) {
+	const t = useTranslations()
 	const {
 		register,
 		handleSubmit,
@@ -82,7 +84,7 @@ export function EditPlaylistModal({
 				>
 					<DialogHeader className='px-5 pt-5 pb-3 border-b border-neutral-800'>
 						<DialogTitle className='text-base font-semibold'>
-							Edit Playlist
+							{t('playlists.editModalTitle')}
 						</DialogTitle>
 					</DialogHeader>
 
@@ -95,11 +97,11 @@ export function EditPlaylistModal({
 								htmlFor='playlist-name'
 								className='text-sm text-neutral-300'
 							>
-								Name (required)
+								{t('playlists.nameLabel')}
 							</Label>
 							<Input
 								id='playlist-name'
-								placeholder='Enter playlist name'
+								placeholder={t('playlists.namePlaceholder')}
 								className='bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary'
 								{...register('name')}
 							/>
@@ -110,11 +112,11 @@ export function EditPlaylistModal({
 								htmlFor='playlist-description'
 								className='text-sm text-neutral-300'
 							>
-								Description (optional)
+								{t('playlists.descriptionLabel')}
 							</Label>
 							<Textarea
 								id='playlist-description'
-								placeholder='Add an optional description...'
+								placeholder={t('playlists.descriptionPlaceholder')}
 								className='bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary resize-none min-h-[80px]'
 								{...register('description')}
 							/>
@@ -130,7 +132,7 @@ export function EditPlaylistModal({
 									reset()
 								}}
 							>
-								Cancel
+								{t('common.cancel')}
 							</Button>
 
 							<Button
@@ -141,7 +143,7 @@ export function EditPlaylistModal({
 								{isSubmitting ? (
 									<Lottie animationData={loader} loop className='w-10 h-10' />
 								) : (
-									'Save changes'
+									t('playlists.saveChanges')
 								)}
 							</Button>
 						</div>

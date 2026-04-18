@@ -1,5 +1,6 @@
 import { useAddCommentReaction } from '@/hooks/comment/useAddCommentReaction'
 import { type IVideoComment, ReactionType } from '@/types/comment.types'
+import { useTranslations } from 'next-intl'
 import { FaThumbsDown, FaThumbsUp } from 'react-icons/fa'
 
 interface IWatchCommentReactions {
@@ -7,6 +8,7 @@ interface IWatchCommentReactions {
 }
 
 export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
+	const t = useTranslations()
 	const { addReaction } = useAddCommentReaction()
 
 	const handleAddCommentReaction = (type: ReactionType) => {
@@ -20,6 +22,8 @@ export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 		<div className='flex gap-5 items-center'>
 			<button
 				onClick={() => handleAddCommentReaction(ReactionType.LIKE)}
+				title={t('watchComments.like')}
+				aria-label={t('watchComments.like')}
 				className={`flex items-center gap-1 py-1 rounded-md transition-colors cursor-pointer group
 				${comment.userReaction === ReactionType.LIKE ? 'text-primary font-bold' : 'text-gray-500'}
 				`}
@@ -30,6 +34,8 @@ export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 
 			<button
 				onClick={() => handleAddCommentReaction(ReactionType.DISLIKE)}
+				title={t('watchComments.dislike')}
+				aria-label={t('watchComments.dislike')}
 				className={`flex items-center gap-1 py-1 rounded-md transition-colors cursor-pointer group relative top-[1px]
 				${comment.userReaction === ReactionType.DISLIKE ? 'text-primary font-bold' : 'text-gray-500'}
 			`}

@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { IoCloseOutline, IoSearch } from 'react-icons/io5'
 import { SearchSuggestions } from '../search/SearchSuggestions'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 interface IHeaderSearchProps {
 	className?: string
@@ -15,6 +16,7 @@ interface IHeaderSearchProps {
 export function HeaderSearch({ className }: IHeaderSearchProps) {
 	const [search, setSearch] = useState('')
 	const router = useRouter()
+	const t = useTranslations()
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
@@ -40,7 +42,7 @@ export function HeaderSearch({ className }: IHeaderSearchProps) {
 					type='text'
 					value={search}
 					onChange={(e) => setSearch(e.target.value)}
-					placeholder='Search...'
+					placeholder={t('header.search')}
 					className='w-full pl-12 pr-12 py-3 text-base rounded-xl bg-muted 
 					focus:ring-2 focus:ring-primary transition-all duration-300 ease-in-out'
 				/>

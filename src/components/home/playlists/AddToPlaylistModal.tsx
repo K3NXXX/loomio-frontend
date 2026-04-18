@@ -12,6 +12,7 @@ import { useAddVideoToPlaylist } from '@/hooks/videos/useAddVideoToPlaylist'
 import { useRemoveVideoFromPlaylist } from '@/hooks/videos/useRemoveVideoFromPlaylist'
 import { motion } from 'framer-motion'
 import { Loader2, PlusCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { FaCheckCircle } from 'react-icons/fa'
 import { CreatePlaylistModal } from './CreatePlaylistModal'
@@ -27,6 +28,7 @@ export function AddToPlaylistModal({
 	open,
 	onClose,
 }: AddToPlaylistModalProps) {
+	const t = useTranslations()
 	const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
 	const { allMyPlaylists, isLoading, refetch } = useGetMyPlaylists()
 	const { addVideoToPlaylist, isPending: isAdding } = useAddVideoToPlaylist()
@@ -63,24 +65,24 @@ export function AddToPlaylistModal({
 			>
 				<DialogHeader>
 					<DialogTitle className='text-xl font-semibold text-center'>
-						Add video to playlist
+						{t('playlists.addToPlaylistTitle')}
 					</DialogTitle>
 				</DialogHeader>
 
 				{isLoading ? (
 					<p className='text-muted-foreground text-center mt-4'>
-						Loading playlists...
+						{t('playlists.loadingPlaylists')}
 					</p>
 				) : !allMyPlaylists?.length ? (
 					<div className='text-center text-muted-foreground py-10'>
-						<p>You don’t have any playlists yet.</p>
+						<p>{t('playlists.emptyState')}</p>
 						<Button
 							onClick={() => setIsCreateFormOpen(true)}
 							variant='outline'
 							className='mt-4'
 						>
 							<PlusCircle className='mr-2 size-4' />
-							Create new playlist
+							{t('playlists.createNewPlaylist')}
 						</Button>
 					</div>
 				) : (
@@ -108,7 +110,9 @@ export function AddToPlaylistModal({
 											{playlist.name}
 										</p>
 										<p className='text-xs text-muted-foreground'>
-											{playlist._count.videos} videos
+											{t('playlists.videoCount', {
+												count: playlist._count.videos,
+											})}
 										</p>
 									</div>
 

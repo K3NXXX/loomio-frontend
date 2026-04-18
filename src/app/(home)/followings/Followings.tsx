@@ -4,9 +4,11 @@ import { FollowingsSkeleton } from '@/components/skeletons/followings/Followings
 import { PAGES } from '@/constants/pages.constants'
 import { useGetFollowedChannels } from '@/hooks/user/useGetFollowedChannels'
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 
 export function Followings() {
+	const t = useTranslations()
 	const { followedChannels, isLoading } = useGetFollowedChannels()
 
 	return (
@@ -30,10 +32,10 @@ export function Followings() {
 					<div className='p-6 flex flex-col md:flex-row md:items-center justify-between gap-6'>
 						<div>
 							<h1 className='text-3xl font-bold tracking-tight'>
-								Followed Channels
+								{t('followings.title')}
 							</h1>
 							<p className='text-muted-foreground mt-1'>
-								Explore channels you’ve subscribed to
+								{t('followings.description')}
 							</p>
 						</div>
 					</div>
@@ -43,7 +45,7 @@ export function Followings() {
 					<FollowingsSkeleton />
 				) : !followedChannels?.length ? (
 					<p className='text-center text-muted-foreground mt-10'>
-						You haven’t followed any channels yet.
+						{t('followings.emptyState')}
 					</p>
 				) : (
 					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>

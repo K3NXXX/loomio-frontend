@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { HeaderSearch } from '../home-header/HeaderSearch'
 import { sidebarMenu } from '@/lists/sidebar.menu.items'
@@ -12,6 +13,8 @@ interface Props {
 }
 
 export function MobileSidebar({ isOpen, onClose }: Props) {
+	const t = useTranslations()
+
 	return (
 		<>
 			<div
@@ -50,7 +53,7 @@ export function MobileSidebar({ isOpen, onClose }: Props) {
 									'
 								>
 									<Icon size={22} />
-									<span>{item.label}</span>
+									<span>{t(item.label)}</span>
 								</Link>
 							)
 						})}

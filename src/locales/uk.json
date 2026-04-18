@@ -1,12 +1,131 @@
 {
-    "header": {
-      "search": "Пошук...",
-      "upload": "Завантажити"
-    },
-    "sidebar": {
-      "home": "Головна",
-      "playlists": "Плейлисти",
-      "followings": "Підписки",
-      "account": "Акаунт"
-    }
-  }
+	"header": {
+		"search": "Пошук...",
+		"upload": "Завантажити"
+	},
+	"sidebar": {
+		"home": "Головна",
+		"playlists": "Плейлисти",
+		"followings": "Підписки",
+		"account": "Профіль"
+	},
+	"userMenu": {
+		"upgrade": "Оновити до преміум",
+		"account": "Профіль",
+		"channels": "Мої канали",
+		"logout": "Вийти"
+	},
+	"uiConfigurator": {
+		"title": "Налаштування Loomio",
+		"subtitle": "Оберіть параметри платформи",
+		"themeColors": "Кольори теми",
+		"language": "Мова"
+	},
+	"videoItem": {
+		"viewsCount": "{count, plural, one {# перегляд} few {# перегляди} many {# переглядів} other {# перегляду}}",
+		"userAvatarAlt": "аватар користувача"
+	},
+	"notifications": {
+		"title": "Сповіщення",
+		"personalActivity": "Особиста активність",
+		"repliesAndCreators": "Відповіді та автори, на яких ви підписані",
+		"channelNotifications": "Сповіщення каналу",
+		"personalNotifications": "Особисті сповіщення",
+		"markAllAsRead": "Позначити все як прочитане",
+		"deleteAllNotifications": "Видалити всі сповіщення",
+		"back": "Назад",
+		"noNotifications": "Немає сповіщень",
+		"noPersonalActivity": "Немає особистої активності"
+	},
+	"watch": {
+		"notFound": "Відео не знайдено",
+		"showLess": "Показати менше",
+		"showMore": "Показати більше"
+	},
+	"watchVideo": {
+		"skipSeconds": "{count} сек",
+		"reportTitle": "Поскаржитися на відео",
+		"reportDescription": "Оберіть причину, чому ви скаржитесь на це відео.",
+		"reportReasonPlaceholder": "Опишіть причину..."
+	},
+	"watchActions": {
+		"subscribersCount": "{count, plural, one {# підписник} few {# підписники} many {# підписників} other {# підписника}}",
+		"editVideo": "Редагувати відео",
+		"subscribed": "Ви підписані",
+		"subscribe": "Підписатися",
+		"notifications": "Сповіщення",
+		"share": "Поділитися"
+	},
+	"watchMoreMenu": {
+		"addToPlaylist": "Додати до плейлиста",
+		"report": "Поскаржитися"
+	},
+	"watchComments": {
+		"header": "Коментарі ({count})",
+		"addCommentPlaceholder": "Додайте коментар...",
+		"addCommentButton": "Додати коментар",
+		"reportTitle": "Поскаржитися на коментар",
+		"reportDescription": "Оберіть причину, чому ви скаржитесь на цей коментар.",
+		"reportReasonPlaceholder": "Опишіть причину...",
+		"editYourComment": "Редагуйте свій коментар...",
+		"edit": "Редагувати",
+		"delete": "Видалити",
+		"deleteCommentTitle": "Видалити коментар?",
+		"deleteCommentDescription": "Цю дію не можна скасувати. Коментар буде видалено назавжди.",
+		"cancel": "Скасувати",
+		"save": "Зберегти",
+		"reply": "Відповісти",
+		"writeReply": "Напишіть відповідь",
+		"repliesCount": "{count, plural, one {# відповідь} few {# відповіді} many {# відповідей} other {# відповіді}}",
+		"like": "Лайк",
+		"dislike": "Дизлайк"
+	},
+	"common": {
+		"loading": "Завантаження…",
+		"noChannels": "У вас ще немає каналів.",
+		"createNew": "Створити",
+		"selectChannel": "Оберіть канал",
+		"cancel": "Скасувати",
+		"sendReport": "Надіслати скаргу"
+	},
+	"report": {
+		"reasons": {
+			"hateSpeech": "Мовна ненависть",
+			"harassmentOrBullying": "Переслідування або цькування",
+			"spamOrMisleading": "Спам або оманливий зміст",
+			"sexualContent": "Сексуальний контент",
+			"violenceOrDangerousContent": "Насильство або небезпечний контент",
+			"other": "Інше"
+		}
+	},
+	"playlists": {
+		"title": "Мої плейлисти",
+		"description": "Організуйте та насолоджуйтеся своїми улюбленими колекціями відео",
+		"createButton": "Створити плейлист",
+		"emptyState": "У вас ще немає плейлистів.",
+		"noDescription": "Опис не надано",
+		"videoCount": "{count, plural, one {# відео} few {# відео} many {# відео} other {# відео}}",
+		"addToPlaylistTitle": "Додати відео до плейлиста",
+		"loadingPlaylists": "Завантаження плейлистів...",
+		"createNewPlaylist": "Створити новий плейлист",
+		"createModalTitle": "Новий плейлист",
+		"nameLabel": "Назва (обов'язково)",
+		"namePlaceholder": "Введіть назву плейлиста",
+		"descriptionLabel": "Опис (необов'язково)",
+		"descriptionPlaceholder": "Додайте необов'язковий опис...",
+		"editModalTitle": "Редагувати плейлист",
+		"saveChanges": "Зберегти зміни",
+		"edit": "Редагувати",
+		"delete": "Видалити",
+		"loadError": "Не вдалося завантажити плейлист",
+		"created": "Створено",
+		"backToPlaylists": "Назад до плейлистів",
+		"playlistEmpty": "Цей плейлист порожній.",
+		"removeFromPlaylist": "Видалити з плейлиста"
+	},
+	"followings": {
+		"title": "Канали, на які ви підписані",
+		"description": "Досліджуйте канали, на які ви підписані",
+		"emptyState": "Ви ще не підписалися на жоден канал."
+	}
+}

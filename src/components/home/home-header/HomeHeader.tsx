@@ -29,6 +29,7 @@ import { useState } from 'react'
 import { NotificationDropdown } from '../notifications/NotificationDropdown'
 import { HeaderSearch } from './HeaderSearch'
 import { MobileSidebar } from '../home-sidebar/MobileSidebar'
+import { useTranslations } from 'next-intl'
 
 export function HomeHeader() {
 	const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
@@ -38,6 +39,7 @@ export function HomeHeader() {
 	const { userChannels, isLoading } = useGetUserChannels()
 
 	const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
+	const t = useTranslations()
 
 	const handlePickChannel = (channelId: string) => {
 		setUploadChannelId(channelId)
@@ -89,26 +91,28 @@ export function HomeHeader() {
 								'
 									>
 										<FaPlus />
-										Upload
+										{t('header.upload')}
 									</Button>
 								</DropdownMenuTrigger>
 
 								<DropdownMenuContent align='end' className='w-72'>
-									<DropdownMenuLabel>Select a channel</DropdownMenuLabel>
+									<DropdownMenuLabel>
+										{t('common.selectChannel')}
+									</DropdownMenuLabel>
 									<DropdownMenuSeparator />
 
 									{isLoading ? (
 										<div className='px-3 py-2 text-sm text-muted-foreground'>
-											Loading…
+											{t('common.loading')}
 										</div>
 									) : !userChannels?.length ? (
 										<div className='px-3 py-2 text-sm text-muted-foreground'>
-											You have no channels yet.{' '}
+											{t('common.noChannels')}{' '}
 											<span
 												onClick={() => setIsCreateFormOpen(true)}
 												className='text-primary font-bold cursor-pointer pl-1'
 											>
-												Create new
+												{t('common.createNew')}
 											</span>
 										</div>
 									) : (

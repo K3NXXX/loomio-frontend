@@ -4,14 +4,16 @@ import { CreatePlaylistModal } from '@/components/home/playlists/CreatePlaylistM
 import { UserPlaylistsList } from '@/components/home/playlists/UserPlaylistsList'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 
 export function Playlists() {
+	const t = useTranslations()
 	const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
 
 	return (
-		<div className='px-4 py-10'>
+		<div className='px-1 py-10'>
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -27,22 +29,22 @@ export function Playlists() {
 				>
 					<div className='absolute left-0 top-0 h-full w-[4px] bg-gradient-to-b from-primary via-primary/60 to-transparent blur-[1px]' />
 
-					<div className='p-6 flex flex-col md:flex-row md:items-center justify-between gap-6'>
-						<div>
-							<h1 className='text-3xl font-bold tracking-tight'>
-								My Playlists
+					<div className='p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6'>
+						<div className='text-center sm:text-left'>
+							<h1 className='text-2xl sm:text-3xl font-bold tracking-tight'>
+								{t('playlists.title')}
 							</h1>
-							<p className='text-muted-foreground mt-1'>
-								Organize and enjoy your favorite video collections
+							<p className='text-muted-foreground mt-1 text-sm sm:text-base'>
+								{t('playlists.description')}
 							</p>
 						</div>
 
 						<Button
 							onClick={() => setIsCreateFormOpen(true)}
-							className='flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px] bg-[var(--primary)] text-white shadow-md hover:bg-[var(--primary)]/90 hover:shadow-lg active:scale-95 active:brightness-90 transition-all duration-300'
+							className='flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-2 sm:py-3 font-semibold rounded-full text-sm sm:text-[16px] bg-[var(--primary)] text-white shadow-md hover:bg-[var(--primary)]/90 hover:shadow-lg active:scale-95 active:brightness-90 transition-all duration-300 w-full sm:w-auto justify-center'
 						>
-							<FaPlus />
-							Create playlist
+							<FaPlus className='text-sm sm:text-base' />
+							{t('playlists.createButton')}
 						</Button>
 					</div>
 				</motion.div>

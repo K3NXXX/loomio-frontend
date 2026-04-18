@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import { Toaster } from 'sonner'
 
 import ClientProviders from '@/components/providers/ClientProviders'
-
+import { NextIntlClientProvider } from 'next-intl'
 import type { Metadata } from 'next'
 import './globals.css'
 
@@ -28,13 +28,18 @@ export default async function RootLayout({
 	const isDarkMode = true
 	const cookiesList = await cookies()
 	const theme = cookiesList.get('theme')?.value || 'BLUE'
+	const locale = (cookiesList.get('locale')?.value || 'uk') as 'uk' | 'en'
+
+	const messages = (await import(`@/locales/${locale}.json`)).default
 	return (
 		<html
 			lang='en'
 			className={`theme-${theme.toLowerCase()} ${isDarkMode ? 'dark' : ''}`}
 		>
 			<body className={`${montserratSans.variable}  antialiased`}>
-				<ClientProviders>{children}</ClientProviders>
+				<NextIntlClientProvider locale={locale} messages={messages}>
+					<ClientProviders>{children}</ClientProviders>
+				</NextIntlClientProvider>
 				<Toaster
 					className='w-full max-w-[320px] max-[350px]:max-w-[280px] !z-60 !important '
 					position='top-right'

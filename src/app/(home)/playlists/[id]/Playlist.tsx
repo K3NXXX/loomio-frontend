@@ -16,11 +16,13 @@ import { formatDate } from '@/utils/formatDate'
 import { truncateName } from '@/utils/truncateName'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Play, Trash2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { TbDotsVertical } from 'react-icons/tb'
 
 export default function Playlist() {
+	const t = useTranslations()
 	const { id } = useParams<{ id: string }>()
 	const { playlist, isLoading, isError } = useGetOneUserPlaylist(id)
 	const { removeVideoFromPlaylist } = useRemoveVideoFromPlaylist()
@@ -34,7 +36,7 @@ export default function Playlist() {
 	if (isError || !playlist)
 		return (
 			<div className='min-h-[60vh] flex items-center justify-center text-destructive'>
-				Failed to load playlist
+				{t('playlists.loadError')}
 			</div>
 		)
 
@@ -52,9 +54,8 @@ export default function Playlist() {
 							{playlist.name}
 						</h1>
 						<p className='text-muted-foreground mt-1 text-sm'>
-							{playlist.videos.length} video
-							{playlist.videos.length !== 1 && 's'} · Created{' '}
-							{formatDate(playlist.createdAt)}
+							{t('playlists.videoCount', { count: playlist.videos.length })} ·{' '}
+							{t('playlists.created')} {formatDate(playlist.createdAt)}
 						</p>
 						{playlist.description && (
 							<p className='text-muted-foreground text-sm mt-2 max-w-2xl'>
@@ -66,7 +67,7 @@ export default function Playlist() {
 						<Link href={PAGES.PLAYLISTS}>
 							<Button variant='outline' className='flex items-center gap-2'>
 								<ArrowLeft className='size-4' />
-								Back to playlists
+								{t('playlists.backToPlaylists')}
 							</Button>
 						</Link>
 						<PlaylistActionsDropdown
@@ -79,7 +80,7 @@ export default function Playlist() {
 
 				{!playlist.videos?.length ? (
 					<p className='text-center text-muted-foreground mt-20'>
-						This playlist is empty.
+						{t('playlists.playlistEmpty')}
 					</p>
 				) : (
 					<div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
@@ -137,14 +138,18 @@ export default function Playlist() {
 													className='flex items-center gap-2 text-destructive hover:text-destructive cursor-pointer'
 												>
 													<Trash2 className='w-4 h-4' />
-													Remove from playlist
+													{t('playlists.removeFromPlaylist')}
 												</DropdownMenuItem>
 											</DropdownMenuContent>
 										</DropdownMenu>
 									</div>
 
 									<div className='flex items-center gap-1 text-gray-400 text-sm'>
-										<span>{video._count?.views} views</span>
+										<span>
+											{t('videoItem.viewsCount', {
+												count: video._count?.views,
+											})}
+										</span>
 										<span>•</span>
 										<span>{formatDate(video.createdAt)}</span>
 									</div>

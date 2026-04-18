@@ -9,6 +9,7 @@ import {
 import { PAGES } from '@/constants/pages.constants'
 import { useDeletePlaylist } from '@/hooks/playlists/useDeletePlaylist'
 import type { IPlaylist } from '@/types/playlist.types'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { MdDelete, MdEdit } from 'react-icons/md'
@@ -26,6 +27,7 @@ export function PlaylistActionsDropdown({
 	initialData,
 	isPlaylistPage,
 }: IPlaylistActionsDropdownProps) {
+	const t = useTranslations()
 	const [isEditPlaylistFormOpened, setIsEditPlaylistFormOpened] =
 		useState(false)
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -71,7 +73,7 @@ export function PlaylistActionsDropdown({
 						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
 					>
 						<MdEdit className='w-4 h-4' />
-						Edit
+						{t('playlists.edit')}
 					</DropdownMenuItem>
 
 					<DropdownMenuItem
@@ -85,7 +87,7 @@ export function PlaylistActionsDropdown({
 						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
 					>
 						<MdDelete className='w-4 h-4' />
-						Delete
+						{t('playlists.delete')}
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { MoreHorizontal, PlusCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { TbMessageReportFilled } from 'react-icons/tb'
 import { WatchReportVideoModal } from './WatchReportVideoModal'
@@ -23,6 +24,7 @@ export function WatchVideoMoreMenu({
 	videoId,
 	videoAuthorId,
 }: IWatchVideoMoreMenuProps) {
+	const t = useTranslations()
 	const [isAddToPlaylistOpen, setIsAddToPlaylistOpen] = useState(false)
 	const [isReportOpen, setIsReportOpen] = useState(false)
 
@@ -57,7 +59,7 @@ export function WatchVideoMoreMenu({
 						className='flex items-center gap-2 cursor-pointer'
 					>
 						<PlusCircle className='size-4 text-muted-foreground' />
-						Add to playlist
+						{t('watchMoreMenu.addToPlaylist')}
 					</DropdownMenuItem>
 					{userData?.id !== videoAuthorId && (
 						<DropdownMenuItem
@@ -69,7 +71,7 @@ export function WatchVideoMoreMenu({
 							className='flex items-center gap-2 cursor-pointer'
 						>
 							<TbMessageReportFilled className='w-4 h-4' />
-							Report
+							{t('watchMoreMenu.report')}
 						</DropdownMenuItem>
 					)}
 				</DropdownMenuContent>

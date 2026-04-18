@@ -1,6 +1,5 @@
 'use client'
 
-import { WatchCommentsList } from '@/components/account/videos/watch/watch-comments/WatchCommentsList'
 import { WatchVideo } from '@/components/account/videos/watch/WatchVideo'
 import WatchVideoActions from '@/components/account/videos/watch/WatchVideoActions'
 import { WatchRecommendedVideosSkeleton } from '@/components/skeletons/videos/WatchRecommendedVideosSkeleton'
@@ -11,20 +10,22 @@ import { useGetChannel } from '@/hooks/channel/useGetChannel'
 import { useGetOnePublicVideo } from '@/hooks/videos/useGetOnePublicVideo'
 import { useGetPublicVideos } from '@/hooks/videos/useGetPublicVideos'
 import { formatDate } from '@/utils/formatDate'
+import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { WatchRecommendedVideos } from '../../../components/account/videos/watch/WatchRecommendedVideos'
+import { WatchCommentsList } from '@/components/account/videos/watch/watch-comments/WatchCommentsList'
 
 export default function Watch() {
+	const t = useTranslations()
 	const searchParams = useSearchParams()
 	const videoId = searchParams.get('v')
 	const { video, isLoading, isError } = useGetOnePublicVideo(videoId ?? '')
 	const commentId = searchParams.get('commentId')
 	const { videos: allVideos } = useGetPublicVideos()
-	const { channel } = useGetChannel(video?.channel.username)
+	const { channel } = useGetChannel(video?.channel.username ?? '')
 	const channelVideos = channel?.videos || []
 	const publicVideos = allVideos || []
-
 
 	const channelIndex = channelVideos.findIndex((v) => v.id === video?.id)
 
@@ -89,12 +90,14 @@ export default function Watch() {
 	}
 
 	if (isError || !video) {
-		return <div className='p-4 text-center text-red-500'>Video not found</div>
+		return (
+			<div className='p-4 text-center text-red-500'>{t('watch.notFound')}</div>
+		)
 	}
 
 	return (
-		<div className='flex flex-col lg:flex-row gap-6 pb-30'>
-			<div className='flex-1 max-w-[73%]'>
+		<div className='flex max-[1500px]:flex-col gap-6 pb-30'>
+			<div className='flex-1 max-w-[73%] max-[1500px]:max-w-full'>
 				<WatchVideo
 					videoId={video.id}
 					videoSrc={video.videoFile}
@@ -104,19 +107,21 @@ export default function Watch() {
 						router.push(PAGES.WATCH(nextVideo.id))
 					}}
 				/>
-				<h1 className='mt-4 text-2xl font-bold'>{video.title}</h1>
+				<h1 className='mt-3 min-[400px]:mt-4 text-lg min-[400px]:text-xl min-[600px]:text-2xl font-bold leading-snug'>
+					{video.title}
+				</h1>
 
 				<WatchVideoActions video={video} />
 
-				<div className='mt-4 bg-neutral-100/60 dark:bg-neutral-800/60 rounded-xl p-4'>
-					<div className='mb-2 flex gap-3 items-center text-sm text-neutral-600 dark:text-neutral-400 font-medium'>
-						{video._count.views.toLocaleString()} views •{' '}
+				<div className='mt-3 min-[400px]:mt-4 bg-neutral-100/60 dark:bg-neutral-800/60 rounded-xl p-3 min-[400px]:p-4'>
+					<div className='mb-2 flex flex-wrap gap-1.5 min-[400px]:gap-3 items-center text-xs min-[400px]:text-sm text-neutral-600 dark:text-neutral-400 font-medium'>
+						{t('videoItem.viewsCount', { count: video._count.views })} •{' '}
 						{formatDate(video.createdAt)}
-						<p className=''>{video.tags}</p>
+						<p>{video.tags}</p>
 					</div>
 
 					<p
-						className={`text-neutral-700 dark:text-neutral-300 transition-all duration-300 ${
+						className={`text-sm min-[400px]:text-base text-neutral-700 dark:text-neutral-300 transition-all duration-300 ${
 							isDescriptionExpanded ? 'line-clamp-none' : 'line-clamp-3'
 						}`}
 					>
@@ -126,9 +131,11 @@ export default function Watch() {
 					{video.description && video.description.length > 120 && (
 						<button
 							onClick={toggleDescription}
-							className='mt-2 text-sm font-semibold text-primary hover:underline'
+							className='mt-2 text-xs min-[400px]:text-sm font-semibold text-primary hover:underline'
 						>
-							{isDescriptionExpanded ? 'Show less' : 'Show more'}
+							{isDescriptionExpanded
+								? t('watch.showLess')
+								: t('watch.showMore')}
 						</button>
 					)}
 				</div>

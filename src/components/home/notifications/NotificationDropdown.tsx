@@ -23,6 +23,7 @@ import { BiCheckDouble } from 'react-icons/bi'
 import { FaBell } from 'react-icons/fa'
 import { TiDelete } from 'react-icons/ti'
 import { NotificationItem } from './NotificationItem'
+import { useTranslations } from 'next-intl'
 
 export function NotificationDropdown() {
 	const { userChannels = [] } = useGetUserChannels()
@@ -32,8 +33,8 @@ export function NotificationDropdown() {
 	const { deletePersonalNotifications } = useDeletePersonalNotifications()
 	const { markAllChannelRead } = useMarkAllChannelRead()
 	const { markAllPersonalRead } = useMarkAllPersonalRead()
+	const t = useTranslations()
 
-	console.log(notifications)
 
 	const [selectedChannel, setSelectedChannel] = useState<string | null>(null)
 	const [personalOpen, setPersonalOpen] = useState<boolean>(false)
@@ -79,7 +80,7 @@ export function NotificationDropdown() {
 				{!selectedChannel && !personalOpen && (
 					<>
 						<DropdownMenuLabel className='px-4 py-2 text-base font-semibold'>
-							Notifications
+							{t('notifications.title')}
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 
@@ -90,9 +91,11 @@ export function NotificationDropdown() {
 								className='flex items-center gap-3 px-4 py-3 cursor-pointer'
 							>
 								<div className='flex flex-col'>
-									<span className='font-medium'>Personal activity</span>
+									<span className='font-medium'>
+										{t('notifications.personalActivity')}
+									</span>
 									<span className='text-xs text-muted-foreground'>
-										Replies & followed creators
+										{t('notifications.repliesAndCreators')}
 									</span>
 								</div>
 
@@ -147,11 +150,11 @@ export function NotificationDropdown() {
 				{selectedChannel && (
 					<>
 						<DropdownMenuLabel className='px-4 py-2 text-base font-semibold flex items-center justify-between'>
-							<span>Channel notifications</span>
+							<span>{t('notifications.channelNotifications')}</span>
 
 							<div className='flex items-center gap-4'>
 								<button
-									title='Mark all as read'
+									title={t('notifications.markAllAsRead')}
 									onClick={(e) => {
 										e.preventDefault()
 										markAllChannelRead(selectedChannel)
@@ -162,7 +165,7 @@ export function NotificationDropdown() {
 								</button>
 
 								<button
-									title='Delete all notifications'
+									title={t('notifications.deleteAllNotifications')}
 									onClick={(e) => e.preventDefault()}
 									className='text-muted-foreground hover:text-primary transition cursor-pointer'
 								>
@@ -179,7 +182,7 @@ export function NotificationDropdown() {
 									}}
 									className='text-primary text-sm cursor-pointer hover:underline'
 								>
-									Back
+									{t('notifications.back')}
 								</button>
 							</div>
 						</DropdownMenuLabel>
@@ -189,7 +192,7 @@ export function NotificationDropdown() {
 						<ScrollArea className='h-[431px]'>
 							{channelFiltered.length === 0 ? (
 								<div className='px-4 py-6 text-center text-sm text-muted-foreground'>
-									No notifications
+									{t('notifications.noNotifications')}
 								</div>
 							) : (
 								channelFiltered.map((n) => (
@@ -203,11 +206,11 @@ export function NotificationDropdown() {
 				{personalOpen && (
 					<>
 						<DropdownMenuLabel className='px-4 py-2 text-base font-semibold flex items-center justify-between'>
-							<span>Personal notifications</span>
+							<span>{t('notifications.personalNotifications')}</span>
 
 							<div className='flex items-center gap-4'>
 								<button
-									title='Mark all as read'
+									title={t('notifications.markAllAsRead')}
 									onClick={(e) => {
 										e.preventDefault()
 										markAllPersonalRead()
@@ -218,7 +221,7 @@ export function NotificationDropdown() {
 								</button>
 
 								<button
-									title='Delete all notifications'
+									title={t('notifications.deleteAllNotifications')}
 									onClick={(e) => {
 										deletePersonalNotifications()
 										e.preventDefault()
@@ -235,7 +238,7 @@ export function NotificationDropdown() {
 									}}
 									className='text-primary text-sm cursor-pointer hover:underline'
 								>
-									Back
+									{t('notifications.back')}
 								</button>
 							</div>
 						</DropdownMenuLabel>
@@ -245,7 +248,7 @@ export function NotificationDropdown() {
 						<ScrollArea className='h-[431px]'>
 							{personalNotifications.length === 0 ? (
 								<div className='px-4 py-6 text-center text-sm text-muted-foreground'>
-									No personal activity
+									{t('notifications.noPersonalActivity')}
 								</div>
 							) : (
 								personalNotifications.map((n) => (

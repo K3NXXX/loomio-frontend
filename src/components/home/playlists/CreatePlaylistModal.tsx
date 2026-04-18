@@ -19,10 +19,8 @@ import {
 import type { ICreatePlaylistRequest } from '@/types/playlist.types'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
-
-import loader from '@/assets/animations/loader.json'
-import Lottie from 'lottie-react'
 
 interface CreatePlaylistModalProps {
 	open: boolean
@@ -33,6 +31,7 @@ export function CreatePlaylistModal({
 	open,
 	onOpenChange,
 }: CreatePlaylistModalProps) {
+	const t = useTranslations()
 	const {
 		register,
 		handleSubmit,
@@ -61,11 +60,11 @@ export function CreatePlaylistModal({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
 				onInteractOutside={(e) => e.preventDefault()}
-				className='w-full max-w-md rounded-2xl border border-neutral-800 bg-neutral-950/95 text-white shadow-2xl backdrop-blur-xl p-0'
+				className='w-[calc(100%-1rem)] max-w-md rounded-2xl border border-neutral-800 bg-neutral-950/95 text-white shadow-2xl backdrop-blur-xl p-0 '
 			>
 				<DialogHeader className='px-5 pt-5 pb-3 border-b border-neutral-800'>
 					<DialogTitle className='text-base font-semibold'>
-						New Playlist
+						{t('playlists.createModalTitle')}
 					</DialogTitle>
 				</DialogHeader>
 
@@ -75,11 +74,11 @@ export function CreatePlaylistModal({
 				>
 					<div className='space-y-2'>
 						<Label htmlFor='playlist-name' className='text-sm text-neutral-300'>
-							Name (required)
+							{t('playlists.nameLabel')}
 						</Label>
 						<Input
 							id='playlist-name'
-							placeholder='Enter playlist name'
+							placeholder={t('playlists.namePlaceholder')}
 							className='bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary'
 							{...register('name')}
 						/>
@@ -90,11 +89,11 @@ export function CreatePlaylistModal({
 							htmlFor='playlist-description'
 							className='text-sm text-neutral-300'
 						>
-							Description (optional)
+							{t('playlists.descriptionLabel')}
 						</Label>
 						<Textarea
 							id='playlist-description'
-							placeholder='Add an optional description...'
+							placeholder={t('playlists.descriptionPlaceholder')}
 							className='bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary resize-none min-h-[80px]'
 							{...register('description')}
 						/>
@@ -110,7 +109,7 @@ export function CreatePlaylistModal({
 								reset()
 							}}
 						>
-							Cancel
+							{t('common.cancel')}
 						</Button>
 
 						<Button
@@ -121,7 +120,7 @@ export function CreatePlaylistModal({
 							{isSubmitting ? (
 								<Lottie animationData={loader} loop className='w-10 h-10' />
 							) : (
-								'Create'
+								t('playlists.createButton')
 							)}
 						</Button>
 					</div>

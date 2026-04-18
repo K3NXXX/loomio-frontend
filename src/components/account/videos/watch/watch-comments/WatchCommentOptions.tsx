@@ -18,6 +18,7 @@ import {
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useDeleteComment } from '@/hooks/comment/useDeleteComment'
 import type { IVideoComment } from '@/types/comment.types'
+import { useTranslations } from 'next-intl'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { TbDotsVertical, TbMessageReportFilled } from 'react-icons/tb'
@@ -34,6 +35,7 @@ export function WatchCommentOptions({
 	setIsCommentEditing,
 	videoId,
 }: IWatchCommentOptions) {
+	const t = useTranslations()
 	const { userData } = useGetMe()
 	const { deleteComment } = useDeleteComment(videoId)
 
@@ -65,7 +67,7 @@ export function WatchCommentOptions({
 								className='flex items-center gap-2 cursor-pointer'
 							>
 								<MdEdit className='w-4 h-4' />
-								Edit
+								{t('watchComments.edit')}
 							</DropdownMenuItem>
 
 							<DropdownMenuItem
@@ -73,7 +75,7 @@ export function WatchCommentOptions({
 								className='flex items-center gap-2 cursor-pointer'
 							>
 								<MdDelete className='w-4 h-4' />
-								Delete
+								{t('watchComments.delete')}
 							</DropdownMenuItem>
 						</>
 					)}
@@ -83,7 +85,7 @@ export function WatchCommentOptions({
 							className='flex items-center gap-2 cursor-pointer'
 						>
 							<TbMessageReportFilled className='w-4 h-4' />
-							Report
+							{t('watchMoreMenu.report')}
 						</DropdownMenuItem>
 					)}
 				</DropdownMenuContent>
@@ -93,11 +95,10 @@ export function WatchCommentOptions({
 				<AlertDialogContent className='bg-neutral-900 border border-neutral-700 rounded-xl'>
 					<AlertDialogHeader>
 						<AlertDialogTitle className='text-neutral-100'>
-							Delete comment?
+							{t('watchComments.deleteCommentTitle')}
 						</AlertDialogTitle>
 						<AlertDialogDescription className='text-neutral-400'>
-							This action cannot be undone. The comment will be permanently
-							deleted.
+							{t('watchComments.deleteCommentDescription')}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
@@ -106,14 +107,14 @@ export function WatchCommentOptions({
 							onClick={() => setIsConfirmOpen(false)}
 							className='bg-neutral-700 text-neutral-200 hover:bg-neutral-600'
 						>
-							Cancel
+							{t('watchComments.cancel')}
 						</AlertDialogCancel>
 
 						<AlertDialogAction
 							onClick={() => handleDelete()}
 							className='bg-primary text-white'
 						>
-							Delete
+							{t('watchComments.delete')}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

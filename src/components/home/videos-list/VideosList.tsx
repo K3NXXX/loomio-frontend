@@ -10,7 +10,7 @@ export default function VideosList() {
 
 	if (isLoading) {
 		return (
-			<ul className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+			<ul className='grid grid-cols-3 gap-6 max-[600px]:grid-cols-1 max-[1420px]:grid-cols-2'>
 				{Array.from({ length: 6 }).map((_, index) => (
 					<VideoSkeleton key={index} />
 				))}
@@ -37,7 +37,7 @@ export default function VideosList() {
 	}
 
 	return (
-		<ul className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+		<ul className='grid grid-cols-3 gap-6 max-[600px]:grid-cols-1 max-[1420px]:grid-cols-2'>
 			{videos?.map((video) => (
 				<VideoItem key={video.id} video={video} />
 			))}

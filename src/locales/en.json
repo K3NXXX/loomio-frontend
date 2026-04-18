@@ -8,5 +8,124 @@
 		"playlists": "Playlists",
 		"followings": "Followings",
 		"account": "Account"
+	},
+	"userMenu": {
+		"upgrade": "Upgrade to premium",
+		"account": "Account",
+		"channels": "Channels",
+		"logout": "Log out"
+	},
+	"uiConfigurator": {
+		"title": "Loomio Configurator",
+		"subtitle": "See our platform options",
+		"themeColors": "Theme colors",
+		"language": "Language"
+	},
+	"videoItem": {
+		"viewsCount": "{count, plural, one {# view} other {# views}}",
+		"userAvatarAlt": "user avatar"
+	},
+	"notifications": {
+		"title": "Notifications",
+		"personalActivity": "Personal activity",
+		"repliesAndCreators": "Replies & followed creators",
+		"channelNotifications": "Channel notifications",
+		"personalNotifications": "Personal notifications",
+		"markAllAsRead": "Mark all as read",
+		"deleteAllNotifications": "Delete all notifications",
+		"back": "Back",
+		"noNotifications": "No notifications",
+		"noPersonalActivity": "No personal activity"
+	},
+	"watch": {
+		"notFound": "Video not found",
+		"showLess": "Show less",
+		"showMore": "Show more"
+	},
+	"watchVideo": {
+		"skipSeconds": "{count} sec",
+		"reportTitle": "Report video",
+		"reportDescription": "Select the reason for reporting this video.",
+		"reportReasonPlaceholder": "Describe your reason..."
+	},
+	"watchActions": {
+		"subscribersCount": "{count, plural, one {# subscriber} other {# subscribers}}",
+		"editVideo": "Edit video",
+		"subscribed": "Subscribed",
+		"subscribe": "Subscribe",
+		"notifications": "Notifications",
+		"share": "Share"
+	},
+	"watchMoreMenu": {
+		"addToPlaylist": "Add to playlist",
+		"report": "Report"
+	},
+	"watchComments": {
+		"header": "Comments ({count})",
+		"addCommentPlaceholder": "Add a comment...",
+		"addCommentButton": "Add Comment",
+		"reportTitle": "Report comment",
+		"reportDescription": "Select the reason for reporting this comment.",
+		"reportReasonPlaceholder": "Describe your reason...",
+		"editYourComment": "Edit your comment...",
+		"edit": "Edit",
+		"delete": "Delete",
+		"deleteCommentTitle": "Delete comment?",
+		"deleteCommentDescription": "This action cannot be undone. The comment will be permanently deleted.",
+		"cancel": "Cancel",
+		"save": "Save",
+		"reply": "Reply",
+		"writeReply": "Write a reply",
+		"repliesCount": "{count, plural, one {# reply} other {# replies}}",
+		"like": "Like",
+		"dislike": "Dislike"
+	},
+	"common": {
+		"loading": "Loading…",
+		"noChannels": "You have no channels yet.",
+		"createNew": "Create new",
+		"selectChannel": "Select a channel",
+		"cancel": "Cancel",
+		"sendReport": "Send report"
+	},
+	"report": {
+		"reasons": {
+			"hateSpeech": "Hate speech",
+			"harassmentOrBullying": "Harassment or bullying",
+			"spamOrMisleading": "Spam or misleading",
+			"sexualContent": "Sexual content",
+			"violenceOrDangerousContent": "Violence or dangerous content",
+			"other": "Other"
+		}
+	},
+	"playlists": {
+		"title": "My Playlists",
+		"description": "Organize and enjoy your favorite video collections",
+		"createButton": "Create playlist",
+		"emptyState": "You don't have any playlists yet.",
+		"noDescription": "No description provided",
+		"videoCount": "{count, plural, one {# video} other {# videos}}",
+		"addToPlaylistTitle": "Add video to playlist",
+		"loadingPlaylists": "Loading playlists...",
+		"createNewPlaylist": "Create new playlist",
+		"createModalTitle": "New Playlist",
+		"nameLabel": "Name (required)",
+		"namePlaceholder": "Enter playlist name",
+		"descriptionLabel": "Description (optional)",
+		"descriptionPlaceholder": "Add an optional description...",
+		"editModalTitle": "Edit Playlist",
+		"saveChanges": "Save changes",
+		"edit": "Edit",
+		"delete": "Delete",
+		"loadError": "Failed to load playlist",
+		"created": "Created",
+		"backToPlaylists": "Back to playlists",
+		"playlistEmpty": "This playlist is empty.",
+		"removeFromPlaylist": "Remove from playlist"
+	},
+	"followings": {
+		"title": "Followed Channels",
+		"description": "Explore channels you've subscribed to",
+		"emptyState": "You haven't followed any channels yet."
 	}
 }

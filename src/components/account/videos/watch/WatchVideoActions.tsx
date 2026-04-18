@@ -14,6 +14,7 @@ import { useToggleVideoLike } from '@/hooks/like/useToggleVideoLike'
 import type { IVideo } from '@/types/video.types'
 import { getInitials } from '@/utils/get-initials'
 import { Share, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaBell } from 'react-icons/fa'
@@ -24,6 +25,7 @@ interface IWatchVideoActionsProps {
 }
 
 export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
+	const t = useTranslations()
 	const { userData } = useGetMe()
 	const { toggleFollowUser } = useToggleFollowUser()
 	const { isFollowing } = useIsFollowing(video.channel.id)
@@ -53,10 +55,10 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	}
 
 	return (
-		<div className='mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
-			<div className='flex items-center gap-4'>
-				<Link href={PAGES.CHANNEL(video.channel.username)}>
-					<Avatar className='w-12 h-12'>
+		<div className='mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3'>
+			<div className='flex items-center gap-2 min-w-0'>
+				<Link href={PAGES.CHANNEL(video.channel.username)} className='shrink-0'>
+					<Avatar className='w-9 h-9 min-[400px]:w-11 min-[400px]:h-11'>
 						<AvatarImage
 							src={video.channel.avatarUrl ?? ''}
 							alt={video.channel.name}
@@ -65,44 +67,54 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					</Avatar>
 				</Link>
 
-				<div className='flex flex-col'>
+				<div className='flex flex-col min-w-0 flex-1'>
 					<Link href={PAGES.CHANNEL(video.channel.username)}>
-						<p className='font-semibold'>{video.channel.name}</p>
+						<p className='font-semibold text-sm min-[400px]:text-base truncate'>
+							{video.channel.name}
+						</p>
 					</Link>
-					<p className='text-sm text-muted-foreground'>
-						{video.channel._count.followers.toLocaleString()} subscribers
+					<p className='text-xs min-[400px]:text-sm text-muted-foreground truncate'>
+						{t('watchActions.subscribersCount', {
+							count: video.channel._count.followers,
+						})}
 					</p>
 				</div>
+
 				{isThatMe ? (
-					<Link href={PAGES.WORKPLACE_CONTENT(video.channel.username)}>
+					<Link
+						href={PAGES.WORKPLACE_CONTENT(video.channel.username)}
+						className='shrink-0'
+					>
 						<Button
 							variant='default'
-							className='ml-2 font-semibold rounded-full px-6'
+							className='font-semibold rounded-full px-3 min-[400px]:px-5 text-xs min-[400px]:text-sm h-8 min-[400px]:h-10'
 						>
-							Edit video
+							{t('watchActions.editVideo')}
 						</Button>
 					</Link>
 				) : (
-					<div className='flex items-center gap-2'>
+					<div className='flex items-center gap-1 min-[400px]:gap-2 shrink-0'>
 						<Button
 							onClick={() => handleFollow()}
 							variant={isFollowing ? 'outline' : 'default'}
-							className='font-semibold rounded-full px-6'
+							className='font-semibold rounded-full px-3 min-[400px]:px-5 text-xs min-[400px]:text-sm h-8 min-[400px]:h-10'
 						>
-							{isFollowing ? 'Subscribed' : 'Subscribe'}
+							{isFollowing
+								? t('watchActions.subscribed')
+								: t('watchActions.subscribe')}
 						</Button>
 
 						{isFollowing && (
 							<button
 								onClick={() => toggleChannelNotifications(video.channel.id)}
-								title='Notifications'
-								className='flex items-center justify-center w-10 h-10 rounded-full
-								bg-neutral-200 dark:bg-neutral-800 
-								hover:bg-neutral-300 dark:hover:bg-neutral-700 
-								transition cursor-pointer'
+								title={t('watchActions.notifications')}
+								className='flex items-center justify-center w-8 h-8 min-[400px]:w-10 min-[400px]:h-10 rounded-full
+								bg-neutral-200 dark:bg-neutral-800
+								hover:bg-neutral-300 dark:hover:bg-neutral-700
+								transition cursor-pointer shrink-0'
 							>
 								<FaBell
-									className={`w-5 h-5 ${
+									className={`w-4 h-4 min-[400px]:w-5 min-[400px]:h-5 ${
 										isNotificationsEnabled
 											? 'text-[var(--primary)]'
 											: 'text-neutral-700 dark:text-neutral-300'
@@ -114,20 +126,20 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 				)}
 			</div>
 
-			<div className='flex flex-wrap items-center gap-3 mt-4'>
+			<div className='flex flex-wrap items-center gap-2 min-[400px]:gap-3'>
 				<Button
 					onClick={() => toggleVideoLike(video.id)}
 					variant='secondary'
 					size='sm'
-					className={`group rounded-full h-10 px-5 flex items-center gap-2 font-semibold
+					className={`group rounded-full h-8 min-[400px]:h-10 px-3 min-[400px]:px-5 flex items-center gap-1.5 min-[400px]:gap-2 text-xs min-[400px]:text-sm font-semibold
 					backdrop-blur hover:shadow-md active:scale-95 transition-all
-				 ${
+					${
 						isLiked
 							? 'bg-[var(--primary)] text-white hover:brightness-90'
 							: 'bg-neutral-100/60 dark:bg-neutral-800/60 hover:bg-neutral-200 dark:hover:bg-neutral-700'
 					}`}
 				>
-					<ThumbsUp className='size-4 group-hover:scale-110 transition-transform' />
+					<ThumbsUp className='size-3.5 min-[400px]:size-4 group-hover:scale-110 transition-transform' />
 					{video.likesCount}
 				</Button>
 
@@ -135,15 +147,15 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					onClick={() => toggleVideoDislike(video.id)}
 					variant='secondary'
 					size='sm'
-					className={`group rounded-full h-10 px-5 flex items-center gap-2 font-semibold
+					className={`group rounded-full h-8 min-[400px]:h-10 px-3 min-[400px]:px-5 flex items-center gap-1.5 min-[400px]:gap-2 text-xs min-[400px]:text-sm font-semibold
 					backdrop-blur hover:shadow-md active:scale-95 transition-all
-				 ${
+					${
 						isDisliked
 							? 'bg-[var(--primary)] text-white hover:brightness-90'
 							: 'bg-neutral-100/60 dark:bg-neutral-800/60 hover:bg-neutral-200 dark:hover:bg-neutral-700'
 					}`}
 				>
-					<ThumbsDown className='size-4 group-hover:scale-110 transition-transform' />
+					<ThumbsDown className='size-3.5 min-[400px]:size-4 group-hover:scale-110 transition-transform' />
 					{video.dislikesCount}
 				</Button>
 
@@ -151,13 +163,13 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					onClick={() => setIsShareOpen(true)}
 					variant='secondary'
 					size='sm'
-					className='group rounded-full h-10 px-5 flex items-center gap-2 font-semibold 
-							bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur 
-							hover:bg-neutral-200 dark:hover:bg-neutral-700 
-							hover:shadow-md active:scale-95 transition-all'
+					className='group rounded-full h-8 min-[400px]:h-10 px-3 min-[400px]:px-5 flex items-center gap-1.5 min-[400px]:gap-2 text-xs min-[400px]:text-sm font-semibold
+					bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur
+					hover:bg-neutral-200 dark:hover:bg-neutral-700
+					hover:shadow-md active:scale-95 transition-all'
 				>
-					<Share className='size-4 group-hover:scale-110 transition-transform' />
-					Share
+					<Share className='size-3.5 min-[400px]:size-4 group-hover:scale-110 transition-transform' />
+					{t('watchActions.share')}
 				</Button>
 
 				<WatchVideoMoreMenu

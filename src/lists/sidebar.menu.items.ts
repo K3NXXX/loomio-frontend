@@ -18,26 +18,25 @@ interface ISidebarMenu {
 export const sidebarMenu: ISidebarMenu[] = [
 	{
 		id: 1,
-		label: 'Home',
+		label: 'sidebar.home',
 		url: PAGES.HOME,
 		icon: IoHome,
 	},
-
 	{
 		id: 3,
-		label: 'Playlists',
+		label: 'sidebar.playlists',
 		url: PAGES.PLAYLISTS,
 		icon: MdFeaturedPlayList,
 	},
 	{
 		id: 4,
-		label: 'Followings',
+		label: 'sidebar.followings',
 		url: PAGES.FOLLOWINGS,
 		icon: FaUserFriends,
 	},
 	{
 		id: 5,
-		label: 'Account',
+		label: 'sidebar.account',
 		url: PAGES.ACCOUNT,
 		icon: RiAccountPinCircleFill,
 	},
