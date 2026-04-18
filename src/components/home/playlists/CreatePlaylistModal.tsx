@@ -60,7 +60,7 @@ export function CreatePlaylistModal({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
 				onInteractOutside={(e) => e.preventDefault()}
-				className='w-[calc(100%-1rem)] max-w-md rounded-2xl border border-neutral-800 bg-neutral-950/95 text-white shadow-2xl backdrop-blur-xl p-0 '
+				className='w-[calc(100%-1rem)] max-w-md rounded-2xl border border-neutral-800 bg-neutral-950/95 text-white shadow-2xl backdrop-blur-xl p-0'
 			>
 				<DialogHeader className='px-5 pt-5 pb-3 border-b border-neutral-800'>
 					<DialogTitle className='text-base font-semibold'>

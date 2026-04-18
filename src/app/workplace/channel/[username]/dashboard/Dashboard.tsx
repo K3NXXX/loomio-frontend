@@ -7,8 +7,11 @@ import { useGetChannelViews } from '@/hooks/channel/useGetChannelViews'
 import { getInitials } from '@/utils/get-initials'
 import { useChannelStore } from '@/zustand/store/channelStore'
 import { useVideoStore } from '@/zustand/store/videoStore'
+import { useTranslations } from 'next-intl'
 
 export function Dashboard() {
+	const t = useTranslations('workplaceDashboard')
+	const tUpload = useTranslations('uploadVideoModal')
 	const { channel } = useChannelStore()
 
 	const { totalViews } = useGetChannelViews(channel?.username)
@@ -25,7 +28,7 @@ export function Dashboard() {
 	if (!channel) {
 		return (
 			<div className='p-10 text-muted-foreground text-center'>
-				Loading channel data...
+				{t('loadingChannel')}
 			</div>
 		)
 	}
@@ -33,21 +36,20 @@ export function Dashboard() {
 	return (
 		<div className='p-10 flex flex-col items-start'>
 			<h1 className='text-[25px] font-bold mb-8 tracking-tight text-left w-full'>
-				Channel management panel
+				{t('title')}
 			</h1>
 
 			<div className='flex flex-col md:flex-row gap-10 w-full'>
 				<div className='w-[420px] h-[320px] rounded-2xl border border-border/40 transition-all flex flex-col items-center justify-center text-center p-6 hover:shadow-md'>
-					<h2 className='text-xl font-semibold mb-2'>Add videos</h2>
+					<h2 className='text-xl font-semibold mb-2'>{t('addVideosTitle')}</h2>
 					<p className='text-muted-foreground text-sm mb-6 max-w-[260px]'>
-						Start growing your channel by uploading your first video. You can
-						track its performance here once it’s published.
+						{t('addVideosDescription')}
 					</p>
 					<Button
 						onClick={() => handleUploadVideo()}
 						className='rounded-full px-6 py-2 text-sm font-semibold shadow-sm hover:shadow-md transition-all'
 					>
-						Upload Video
+						{tUpload('title')}
 					</Button>
 				</div>
 
@@ -73,7 +75,7 @@ export function Dashboard() {
 					<div className='flex flex-col gap-3'>
 						<div className='flex items-center justify-between px-5 py-3 rounded-lg border border-border/40 bg-muted/10'>
 							<p className='text-sm text-muted-foreground tracking-wide'>
-								Videos
+								{t('statVideos')}
 							</p>
 							<p className='text-xl font-semibold text-foreground'>
 								{channel._count?.videos ?? 0}
@@ -81,7 +83,7 @@ export function Dashboard() {
 						</div>
 						<div className='flex items-center justify-between px-5 py-3 rounded-lg border border-border/40 bg-muted/10'>
 							<p className='text-sm text-muted-foreground tracking-wide'>
-								Followers
+								{t('statFollowers')}
 							</p>
 							<p className='text-xl font-semibold text-foreground'>
 								{channel._count?.followers ?? 0}
@@ -89,7 +91,7 @@ export function Dashboard() {
 						</div>
 						<div className='flex items-center justify-between px-5 py-3 rounded-lg border border-border/40 bg-muted/10'>
 							<p className='text-sm text-muted-foreground tracking-wide'>
-								Total views
+								{t('statTotalViews')}
 							</p>
 							<p className='text-xl font-semibold text-foreground'>
 								{totalViews}

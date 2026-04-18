@@ -9,6 +9,7 @@ import { useDeleteAvatar } from '@/hooks/user/useDeleteAvatar'
 import { useUpdateAvatar } from '@/hooks/user/useUpdateAvatar'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
@@ -23,6 +24,7 @@ type Video = {
 }
 
 export default function Account() {
+	const t = useTranslations()
 	const { userData } = useGetMe()
 	const { openUploadingVideo, setOpenUploadingVideo } = useVideoStore()
 	const [isChannelsOpen, setIsChannelsOpen] = useState(false)
@@ -31,7 +33,7 @@ export default function Account() {
 	const { deleteAvatar } = useDeleteAvatar()
 
 	return (
-		<div className='px-4 py-10'>
+		<div className='py-10'>
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -44,7 +46,7 @@ export default function Account() {
 
 						<div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(120,119,198,0.12),transparent_70%)] opacity-0 hover:opacity-100 transition-opacity duration-500' />
 
-						<div className='flex flex-col md:flex-row md:items-center gap-6 py-3 relative z-10'>
+						<div className='flex flex-col md:flex-row md:items-center gap-6 py-3 relative z-10 max-[770px]:items-center max-[770px]:text-center'>
 							<AvatarUploader
 								value={userData?.avatarUrl}
 								fallbackName={userData?.name}
@@ -54,10 +56,10 @@ export default function Account() {
 									else deleteAvatar()
 								}}
 							/>
-							<div className='flex flex-col md:flex-row md:items-center md:justify-between gap-6 w-full'>
-								<div>
+							<div className='flex flex-col md:flex-row md:items-center md:justify-between gap-6 w-full max-[770px]:items-center'>
+								<div className='max-[770px]:flex max-[770px]:flex-col max-[770px]:items-center'>
 									<h1 className='text-3xl font-semibold tracking-tight bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent'>
-										My Account
+										{t('accountPage.title')}
 									</h1>
 
 									<p className='text-muted-foreground mt-1'>
@@ -69,12 +71,12 @@ export default function Account() {
 									</p>
 								</div>
 
-								<div className='flex flex-wrap gap-3'>
+								<div className='flex flex-wrap gap-3 max-[770px]:justify-center'>
 									<Button
 										onClick={() => setIsChannelsOpen(true)}
 										className='rounded-full px-5 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20'
 									>
-										Your channels
+										{t('accountPage.yourChannels')}
 									</Button>
 
 									<Link href={PAGES.PLAYLISTS}>
@@ -82,7 +84,7 @@ export default function Account() {
 											variant='outline'
 											className='rounded-full px-5 border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur'
 										>
-											Playlists
+											{t('accountPage.playlists')}
 										</Button>
 									</Link>
 								</div>
@@ -93,9 +95,9 @@ export default function Account() {
 				<EditAccount />
 				<AuthProviderCard
 					provider='google'
-					description='You signed in using Google'
+					description={t('accountPage.googleAuthDescription')}
 					icon={<FcGoogle className='w-6 h-6' />}
-					isConnected={userData?.authProviders?.includes('google')}
+					isConnected={userData?.authProviders?.includes('google') ?? false}
 				/>
 			</motion.div>
 

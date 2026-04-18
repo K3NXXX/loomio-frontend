@@ -5,6 +5,7 @@ import type { IVideo } from '@/types/video.types'
 import { getCroppedImg } from '@/utils/getCroppedImage'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { Globe, Lock, Users } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import { type Area } from 'react-easy-crop'
 import type { UseFormRegister, UseFormSetValue } from 'react-hook-form'
@@ -22,6 +23,7 @@ export function EditVideoStepSecond({
 	register,
 	video,
 }: EditVideoStepSecondProps) {
+	const t = useTranslations()
 	const [crop, setCrop] = useState({ x: 0, y: 0 })
 	const [zoom, setZoom] = useState(1)
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
@@ -81,13 +83,11 @@ export function EditVideoStepSecond({
 		}
 	}
 
-	// ---- Render ----
 	return (
 		<div className='flex flex-col h-[700px] gap-8'>
-			{/* --- Thumbnail Upload --- */}
 			<div className='flex flex-col'>
 				<h3 className='text-lg font-semibold mb-3 text-white'>
-					Upload Thumbnail (required)
+					{t('editVideo.stepSecond.thumbnailTitle')}
 				</h3>
 
 				{thumbnailPreview || video.thumbnailFile ? (
@@ -95,7 +95,7 @@ export function EditVideoStepSecond({
 						<div className='relative w-full aspect-video bg-black rounded-xl overflow-hidden'>
 							<img
 								src={thumbnailPreview || video.thumbnailFile}
-								alt='Thumbnail Preview'
+								alt={t('editVideo.stepSecond.thumbnailPreviewAlt')}
 								className='object-cover w-full h-full'
 							/>
 							<div className='absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-4'>
@@ -103,7 +103,7 @@ export function EditVideoStepSecond({
 									type='button'
 									onClick={handleReplaceClick}
 									className='p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition'
-									title='Change thumbnail'
+									title={t('editVideo.stepSecond.changeThumbnailTitle')}
 								>
 									<FiEdit2 className='w-5 h-5' />
 								</button>
@@ -111,7 +111,7 @@ export function EditVideoStepSecond({
 									type='button'
 									onClick={handleDeleteClick}
 									className='p-2 rounded-full bg-white/20 hover:bg-red-600 transition text-white'
-									title='Delete thumbnail'
+									title={t('editVideo.stepSecond.deleteThumbnailTitle')}
 								>
 									<FiTrash2 className='w-5 h-5' />
 								</button>
@@ -131,8 +131,12 @@ export function EditVideoStepSecond({
 						htmlFor='thumbnail'
 						className='border-2 border-dashed border-neutral-700 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition w-full max-w-[250px] aspect-video text-gray-400'
 					>
-						<span className='mb-2'>Click to upload thumbnail</span>
-						<span className='text-xs text-gray-500'>(JPG, PNG, WEBP)</span>
+						<span className='mb-2'>
+							{t('editVideo.stepSecond.clickUploadThumbnail')}
+						</span>
+						<span className='text-xs text-gray-500'>
+							{t('editVideo.stepSecond.imageFormats')}
+						</span>
 						<input
 							type='file'
 							id='thumbnail'
@@ -144,9 +148,10 @@ export function EditVideoStepSecond({
 				)}
 			</div>
 
-			{/* --- Visibility --- */}
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>Visibility</h3>
+				<h3 className='text-lg font-semibold mb-3 text-white'>
+					{t('editVideo.stepSecond.visibilityTitle')}
+				</h3>
 				<div className='flex gap-4'>
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
@@ -165,8 +170,12 @@ export function EditVideoStepSecond({
 						/>
 						<Globe className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Public</span>
-							<span className='text-xs text-gray-400'>Anyone can see</span>
+							<span className='text-white font-medium'>
+								{t('editVideo.stepSecond.public')}
+							</span>
+							<span className='text-xs text-gray-400'>
+								{t('editVideo.stepSecond.publicHint')}
+							</span>
 						</div>
 					</label>
 
@@ -187,18 +196,23 @@ export function EditVideoStepSecond({
 						/>
 						<Lock className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Private</span>
-							<span className='text-xs text-gray-400'>Only you can see</span>
+							<span className='text-white font-medium'>
+								{t('editVideo.stepSecond.private')}
+							</span>
+							<span className='text-xs text-gray-400'>
+								{t('editVideo.stepSecond.privateHint')}
+							</span>
 						</div>
 					</label>
 				</div>
 			</div>
 
-			{/* --- Audience --- */}
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>Audience</h3>
+				<h3 className='text-lg font-semibold mb-3 text-white'>
+					{t('editVideo.stepSecond.audienceTitle')}
+				</h3>
 				<p className='text-sm text-gray-400 mb-3'>
-					Is this video made for kids? (required)
+					{t('editVideo.stepSecond.audienceQuestion')}
 				</p>
 				<div className='flex gap-4'>
 					<label
@@ -218,8 +232,12 @@ export function EditVideoStepSecond({
 						/>
 						<Users className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Yes</span>
-							<span className='text-xs text-gray-400'>Made for kids</span>
+							<span className='text-white font-medium'>
+								{t('editVideo.stepSecond.yes')}
+							</span>
+							<span className='text-xs text-gray-400'>
+								{t('editVideo.stepSecond.yesHint')}
+							</span>
 						</div>
 					</label>
 
@@ -240,14 +258,17 @@ export function EditVideoStepSecond({
 						/>
 						<Lock className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>No</span>
-							<span className='text-xs text-gray-400'>Not made for kids</span>
+							<span className='text-white font-medium'>
+								{t('editVideo.stepSecond.no')}
+							</span>
+							<span className='text-xs text-gray-400'>
+								{t('editVideo.stepSecond.noHint')}
+							</span>
 						</div>
 					</label>
 				</div>
 			</div>
 
-			{/* --- Crop modal --- */}
 			<CropVideoModal
 				isOpen={isCropModalOpen}
 				onOpenChange={setIsCropModalOpen}

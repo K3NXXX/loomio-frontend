@@ -2,6 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import Lottie from 'lottie-react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -20,6 +21,7 @@ import type { TSignupSchema } from '@/schemas/auth/signup-schema'
 import type { SubmitHandler } from 'react-hook-form'
 
 export function SignUpForm() {
+	const t = useTranslations()
 	const [email, setEmail] = useState('')
 
 	const {
@@ -42,7 +44,6 @@ export function SignUpForm() {
 			email: data.email,
 			password: data.password,
 			confirmPassword: data.passwordConfirm,
-			name: data.name,
 			username: data.username,
 		})
 		setEmail(data.email)
@@ -64,10 +65,10 @@ export function SignUpForm() {
 						<FaRecordVinyl className='text-primary-foreground' />
 					</div>
 					<h1 className='text-white text-2xl font-bold mt-4'>
-						Create your account
+						{t('auth.signup.title')}
 					</h1>
 					<p className='text-gray-400 text-sm mt-1 text-center'>
-						Join Loomio and start streaming today.
+						{t('auth.signup.subtitle')}
 					</p>
 				</div>
 
@@ -75,7 +76,9 @@ export function SignUpForm() {
 
 				<div className='flex items-center gap-3 my-5'>
 					<div className='h-[1px] bg-neutral-700 flex-1'></div>
-					<p className='text-gray-400 text-xs uppercase'>or</p>
+					<p className='text-gray-400 text-xs uppercase'>
+						{t('auth.signup.orDivider')}
+					</p>
 					<div className='h-[1px] bg-neutral-700 flex-1'></div>
 				</div>
 
@@ -103,17 +106,17 @@ export function SignUpForm() {
 							{isLoading ? (
 								<Lottie animationData={loader} loop className='w-10 h-10' />
 							) : (
-								'Sign Up'
+								t('auth.signup.submit')
 							)}
 						</Button>
 
 						<p className='text-gray-400 text-sm text-center mt-3'>
-							Already have an account?{' '}
+							{t('auth.signup.alreadyHaveAccount')}{' '}
 							<Link
 								href={PAGES.LOGIN}
 								className='text-primary hover:text-primary/80 font-medium'
 							>
-								Log in
+								{t('auth.signup.logIn')}
 							</Link>
 						</p>
 					</form>

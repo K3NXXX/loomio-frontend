@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { BsFillEyeSlashFill } from 'react-icons/bs'
@@ -19,6 +20,7 @@ import type { TResetPasswordSchema } from '@/schemas/auth/reset-password-schema'
 import type { SubmitHandler } from 'react-hook-form'
 
 export default function PasswordReset() {
+	const t = useTranslations()
 	const [showPassword, setShowPassword] = useState(false)
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 	const searchParams = useSearchParams()
@@ -46,7 +48,7 @@ export default function PasswordReset() {
 
 	const onSubmit: SubmitHandler<TResetPasswordSchema> = (data) => {
 		if (!token) {
-			toast.error('Invalid or missing token.')
+			toast.error(t('auth.passwordReset.invalidToken'))
 			return
 		}
 		const resetPasswordData = {
@@ -77,11 +79,10 @@ export default function PasswordReset() {
 				<div className='flex justify-center py-10'>
 					<div className='flex flex-col'>
 						<p className='font-bold text-[24px]  max-[450px]:text-[20px]'>
-							Create a new password
+							{t('auth.passwordReset.title')}
 						</p>
 						<p className='text-neutral-400 text-[14px] max-w-[400px] mb-5'>
-							Create a new password for your account. Make sure it’s strong and
-							unique to keep your account secure.
+							{t('auth.passwordReset.description')}
 						</p>
 						<form
 							className='flex flex-col gap-4'
@@ -89,7 +90,7 @@ export default function PasswordReset() {
 						>
 							<div className='flex flex-col'>
 								<label htmlFor='reset-password' className='text-white mb-2'>
-									Password
+									{t('auth.passwordReset.passwordLabel')}
 								</label>
 								<div className='relative'>
 									{showPassword ? (
@@ -108,7 +109,7 @@ export default function PasswordReset() {
 									<Input
 										id='reset-password'
 										type={showPassword ? 'text' : 'password'}
-										placeholder='Your password'
+										placeholder={t('auth.passwordReset.passwordPlaceholder')}
 										className='text-white py-5 pr-10'
 										{...register('password')}
 									/>
@@ -119,7 +120,7 @@ export default function PasswordReset() {
 									htmlFor='reset-password-confirm'
 									className='text-white mb-2'
 								>
-									Confirm password
+									{t('auth.passwordReset.confirmPasswordLabel')}
 								</label>
 								<div className='relative'>
 									{showConfirmPassword ? (
@@ -138,19 +139,21 @@ export default function PasswordReset() {
 									<Input
 										id='reset-password-confirm'
 										type={showConfirmPassword ? 'text' : 'password'}
-										placeholder='Confirm your password'
+										placeholder={t(
+											'auth.passwordReset.confirmPasswordPlaceholder',
+										)}
 										className='text-white py-5 pr-10'
 										{...register('confirmPassword')}
 									/>
 								</div>
 							</div>
 							<div className='flex gap-3 pt-2'>
-								<Button className='mt-1 font-bold text-[14px] py-3 w-[90px] bg-primary '>
-									Confirm
+								<Button className='mt-1 font-bold text-[14px] py-3 w-[120px] bg-primary '>
+									{t('auth.passwordReset.confirm')}
 								</Button>
 								<Link href={PAGES.FORGOT_PASSWORD}>
 									<Button className='bg-neutral-700 mt-1 font-bold text-[14px] py-3'>
-										Return
+										{t('auth.passwordReset.return')}
 									</Button>
 								</Link>
 							</div>

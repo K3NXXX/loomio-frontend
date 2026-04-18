@@ -1,20 +1,27 @@
+'use client'
+
+import { useTranslations } from 'next-intl'
+
 interface IEditVideoStepsProps {
 	currentStep: number
 	publishType: string
 }
 
+const baseSteps = [
+	{ number: 1, labelKey: 'general' as const },
+	{ number: 2, labelKey: 'additional' as const },
+]
+
 export function EditVideoSteps({
 	currentStep,
 	publishType,
 }: IEditVideoStepsProps) {
-	const steps = [
-		{ number: 1, label: 'General' },
-		{ number: 2, label: 'Additional' },
-	]
+	const t = useTranslations('videoWizard.steps')
 
-	if (publishType === 'scheduled') {
-		steps.push({ number: 3, label: 'Schedule' })
-	}
+	const steps =
+		publishType === 'scheduled'
+			? [...baseSteps, { number: 3, labelKey: 'schedule' as const }]
+			: baseSteps
 
 	return (
 		<div className='flex items-center justify-center gap-10'>
@@ -36,7 +43,7 @@ export function EditVideoSteps({
 								${currentStep === step.number ? 'text-white' : 'text-gray-400'}
 							`}
 						>
-							{step.label}
+							{t(step.labelKey)}
 						</span>
 					</div>
 

@@ -4,6 +4,7 @@ import type { TUploadVideoSchema } from '@/schemas/videos/upload-video.schema'
 import { getCroppedImg } from '@/utils/getCroppedImage'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { Globe, Lock, Users } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import { type Area } from 'react-easy-crop'
 import type { UseFormSetValue } from 'react-hook-form'
@@ -17,6 +18,7 @@ interface UploadVideoStepSecondProps {
 export function UploadVideoStepSecond({
 	setValue,
 }: UploadVideoStepSecondProps) {
+	const t = useTranslations()
 	const [crop, setCrop] = useState({ x: 0, y: 0 })
 	const [zoom, setZoom] = useState(1)
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
@@ -104,7 +106,7 @@ export function UploadVideoStepSecond({
 		<div className='flex flex-col h-[700px] gap-8'>
 			<div className='flex flex-col'>
 				<h3 className='text-lg font-semibold mb-3 text-white'>
-					Upload Thumbnail (required)
+					{t('uploadVideoModal.stepSecond.thumbnailTitle')}
 				</h3>
 
 				{thumbnailPreview ? (
@@ -112,7 +114,7 @@ export function UploadVideoStepSecond({
 						<div className='relative w-full aspect-video bg-black rounded-xl overflow-hidden'>
 							<img
 								src={thumbnailPreview ?? ''}
-								alt='Thumbnail Preview'
+								alt={t('uploadVideoModal.stepSecond.thumbnailPreviewAlt')}
 								className='object-cover w-full h-full'
 							/>
 							<div className='absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-4'>
@@ -120,7 +122,7 @@ export function UploadVideoStepSecond({
 									type='button'
 									onClick={handleReplaceClick}
 									className='p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition cursor-pointer'
-									title='Change thumbnail'
+									title={t('uploadVideoModal.stepSecond.changeThumbnailTitle')}
 								>
 									<FiEdit2 className='w-5 h-5' />
 								</button>
@@ -128,7 +130,7 @@ export function UploadVideoStepSecond({
 									type='button'
 									onClick={handleDeleteClick}
 									className='p-2 rounded-full bg-white/20 hover:bg-red-600 transition text-white cursor-pointer'
-									title='Delete thumbnail'
+									title={t('uploadVideoModal.stepSecond.deleteThumbnailTitle')}
 								>
 									<FiTrash2 className='w-5 h-5' />
 								</button>
@@ -158,8 +160,12 @@ export function UploadVideoStepSecond({
 						}
 					`}
 					>
-						<span className='mb-2'>Click to upload thumbnail</span>
-						<span className='text-xs text-gray-500'>(JPG, PNG, WEBP)</span>
+						<span className='mb-2 text-center'>
+							{t('uploadVideoModal.stepSecond.clickUploadThumbnail')}
+						</span>
+						<span className='text-xs text-gray-500'>
+							{t('uploadVideoModal.stepSecond.imageFormats')}
+						</span>
 						<input
 							type='file'
 							id='thumbnail'
@@ -172,7 +178,9 @@ export function UploadVideoStepSecond({
 			</div>
 
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>Visibility</h3>
+				<h3 className='text-lg font-semibold mb-3 text-white'>
+					{t('uploadVideoModal.stepSecond.visibilityTitle')}
+				</h3>
 				<div className='flex gap-4'>
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
@@ -192,8 +200,12 @@ export function UploadVideoStepSecond({
 						/>
 						<Globe className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Public</span>
-							<span className='text-xs text-gray-400'>Anyone can see</span>
+							<span className='text-white font-medium'>
+								{t('uploadVideoModal.stepSecond.public')}
+							</span>
+							<span className='text-xs text-gray-400'>
+								{t('uploadVideoModal.stepSecond.publicHint')}
+							</span>
 						</div>
 					</label>
 
@@ -215,17 +227,23 @@ export function UploadVideoStepSecond({
 						/>
 						<Lock className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Private</span>
-							<span className='text-xs text-gray-400'>Only you can see</span>
+							<span className='text-white font-medium'>
+								{t('uploadVideoModal.stepSecond.private')}
+							</span>
+							<span className='text-xs text-gray-400'>
+								{t('uploadVideoModal.stepSecond.privateHint')}
+							</span>
 						</div>
 					</label>
 				</div>
 			</div>
 
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>Audience</h3>
+				<h3 className='text-lg font-semibold mb-3 text-white'>
+					{t('uploadVideoModal.stepSecond.audienceTitle')}
+				</h3>
 				<p className='text-sm text-gray-400 mb-3'>
-					Is this video made for kids? (required)
+					{t('uploadVideoModal.stepSecond.audienceQuestion')}
 				</p>
 				<div className='flex gap-4'>
 					{/* Yes */}
@@ -247,8 +265,12 @@ export function UploadVideoStepSecond({
 						/>
 						<Users className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Yes</span>
-							<span className='text-xs text-gray-400'>Made for kids</span>
+							<span className='text-white font-medium'>
+								{t('uploadVideoModal.stepSecond.yes')}
+							</span>
+							<span className='text-xs text-gray-400'>
+								{t('uploadVideoModal.stepSecond.yesHint')}
+							</span>
 						</div>
 					</label>
 
@@ -271,8 +293,12 @@ export function UploadVideoStepSecond({
 						/>
 						<Lock className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>No</span>
-							<span className='text-xs text-gray-400'>Not made for kids</span>
+							<span className='text-white font-medium'>
+								{t('uploadVideoModal.stepSecond.no')}
+							</span>
+							<span className='text-xs text-gray-400'>
+								{t('uploadVideoModal.stepSecond.noHint')}
+							</span>
 						</div>
 					</label>
 				</div>

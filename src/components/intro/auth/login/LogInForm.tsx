@@ -1,6 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -20,6 +21,7 @@ import type { SubmitHandler } from 'react-hook-form'
 import { FaRecordVinyl } from 'react-icons/fa6'
 
 export function LogInForm() {
+	const t = useTranslations()
 	const [showPassword, setShowPassword] = useState(false)
 	const { logIn } = useLogIn()
 
@@ -54,28 +56,30 @@ export function LogInForm() {
 						<FaRecordVinyl className='text-primary-foreground' />
 					</div>
 					<h1 className='text-white text-2xl font-bold mt-4'>
-						Log in to Loomio
+						{t('auth.login.title')}
 					</h1>
 					<p className='text-gray-400 text-sm mt-1 text-center'>
-						Your gateway to endless streaming.
+						{t('auth.login.subtitle')}
 					</p>
 				</div>
 
 				<AuthSocialButtons />
 				<div className='flex items-center gap-3 my-5'>
 					<div className='h-[1px] bg-neutral-700 flex-1'></div>
-					<p className='text-gray-400 text-xs uppercase'>or</p>
+					<p className='text-gray-400 text-xs uppercase'>
+						{t('auth.login.orDivider')}
+					</p>
 					<div className='h-[1px] bg-neutral-700 flex-1'></div>
 				</div>
 
 				<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
 					<div className='flex flex-col'>
 						<label htmlFor='login-identifier' className='text-white mb-2'>
-							Email or username
+							{t('auth.login.identifierLabel')}
 						</label>
 						<Input
 							id='login-identifier'
-							placeholder='example@mail.com'
+							placeholder={t('auth.login.identifierPlaceholder')}
 							className='w-full text-white py-6'
 							{...register('identifier')}
 						/>
@@ -83,7 +87,7 @@ export function LogInForm() {
 
 					<div className='flex flex-col'>
 						<label htmlFor='login-password' className='text-white mb-2'>
-							Password
+							{t('auth.login.passwordLabel')}
 						</label>
 						<div className='relative'>
 							{showPassword ? (
@@ -102,7 +106,7 @@ export function LogInForm() {
 							<Input
 								id='login-password'
 								type={showPassword ? 'text' : 'password'}
-								placeholder='Your password'
+								placeholder={t('auth.login.passwordPlaceholder')}
 								className='text-white py-6 pr-10'
 								{...register('password')}
 							/>
@@ -113,7 +117,7 @@ export function LogInForm() {
 						href={PAGES.FORGOT_PASSWORD}
 						className='text-xs font-bold text-primary hover:text-primary/80 self-end'
 					>
-						Forgot password?
+						{t('auth.login.forgotPassword')}
 					</Link>
 
 					<Button
@@ -128,16 +132,16 @@ export function LogInForm() {
               transition-all
             '
 					>
-						Log In
+						{t('auth.login.submit')}
 					</Button>
 
 					<p className='text-gray-400 text-sm text-center mt-3'>
-						Don&apos;t have an account?{' '}
+						{t('auth.login.noAccount')}{' '}
 						<Link
 							href={PAGES.SIGNUP}
 							className='text-primary hover:text-primary/80 font-medium'
 						>
-							Sign up
+							{t('auth.login.signUp')}
 						</Link>
 					</p>
 				</form>

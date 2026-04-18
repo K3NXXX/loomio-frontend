@@ -3,6 +3,7 @@
 import { truncateName } from '@/utils/truncateName'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 interface IUploadVideoPreviewProps {
@@ -14,6 +15,7 @@ export function UploadVideoPreview({
 	previewUrl,
 	fileName,
 }: IUploadVideoPreviewProps) {
+	const t = useTranslations('uploadVideoModal.preview')
 	const { thumbnailPreview } = useVideoStore()
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
@@ -48,7 +50,7 @@ export function UploadVideoPreview({
 					>
 						<Image
 							src={thumbnailPreview}
-							alt='Thumbnail Overlay'
+							alt={t('thumbnailAlt')}
 							fill
 							className='object-cover transition-transform duration-300 group-hover:scale-105'
 						/>
@@ -76,7 +78,7 @@ export function UploadVideoPreview({
 			</div>
 
 			<p className='font-medium pt-3 pr-2 text-gray-400 truncate'>
-				Filename: {truncateName(fileName, 30)}
+				{t('filenameLabel', { name: truncateName(fileName, 30) })}
 			</p>
 		</div>
 	)

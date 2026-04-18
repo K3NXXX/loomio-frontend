@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import type { TUploadVideoSchema } from '@/schemas/videos/upload-video.schema'
 import type { UseFormRegister } from 'react-hook-form'
 import { FaCloudUploadAlt } from 'react-icons/fa'
@@ -14,6 +15,7 @@ export function UploadVideoFile({
 	handleFileChange,
 	errorMessage,
 }: UploadVideoFileProps) {
+	const t = useTranslations()
 	const [isDragging, setIsDragging] = useState(false)
 
 	const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
@@ -62,9 +64,11 @@ export function UploadVideoFile({
 				</div>
 
 				<p className='text-gray-300 text-lg font-medium'>
-					Drag & drop your video here
+					{t('uploadVideoModal.file.dragDrop')}
 				</p>
-				<p className='text-gray-500 text-sm mt-1'>or click to select a file</p>
+				<p className='text-gray-500 text-sm mt-1'>
+					{t('uploadVideoModal.file.orClick')}
+				</p>
 
 				<input
 					type='file'
@@ -77,8 +81,11 @@ export function UploadVideoFile({
 			</label>
 
 			<p className='text-gray-400 text-sm mt-4'>
-				Supported formats: <span className='text-white'>MP4, MOV, AVI</span> •
-				Max size 2 GB
+				{t('uploadVideoModal.file.supportedPrefix')}{' '}
+				<span className='text-white'>
+					{t('uploadVideoModal.file.formatsList')}
+				</span>{' '}
+				• {t('uploadVideoModal.file.maxSize')}
 			</p>
 
 			{errorMessage && (

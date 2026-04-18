@@ -14,17 +14,19 @@ import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 export function Channel() {
+	const t = useTranslations()
 	const { username } = useParams<{ username: string }>()
 	const cleanUsername = decodeURIComponent(username || '').replace(/^@/, '')
 	const { channel, isLoading } = useGetChannel(cleanUsername)
 	const { setOpenUploadingVideo, setUploadChannelId } = useVideoStore()
 	const { userData } = useGetMe()
-	const { isFollowing } = useIsFollowing(channel?.id)
+	const { isFollowing } = useIsFollowing(channel?.id ?? '')
 
 	const [isInfoOpen, setIsInfoOpen] = useState(false)
 
@@ -43,19 +45,23 @@ export function Channel() {
 	if (!channel)
 		return (
 			<div className='w-full flex flex-col items-center justify-center py-20 text-center'>
-				<h2 className='text-2xl font-bold mb-2'>Channel not found</h2>
+				<h2 className='text-2xl font-bold mb-2'>
+					{t('channelPage.notFoundTitle')}
+				</h2>
 				<p className='text-muted-foreground mb-6 max-w-sm'>
-					The channel you are looking for doesn’t exist or has been removed.
+					{t('channelPage.notFoundDescription')}
 				</p>
 
 				<Link href={PAGES.HOME}>
-					<Button className='px-6 rounded-full'>Go back home</Button>
+					<Button className='px-6 rounded-full'>
+						{t('channelPage.goHome')}
+					</Button>
 				</Link>
 			</div>
 		)
 
 	return (
-		<div className='px-4 py-10'>
+		<div className='py-10'>
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -66,12 +72,11 @@ export function Channel() {
 					<div className='w-full h-[230px] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3'>
 						<img
 							src={channel.bannerUrl}
-							alt='channel banner'
+							alt={t('channelPage.bannerAlt')}
 							className='w-full h-full object-cover object-[center_5%]'
 						/>
 					</div>
 				)}
-
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
@@ -82,68 +87,74 @@ export function Channel() {
 					<div>
 						<div className='absolute left-0 top-0 h-full w-[4px] bg-gradient-to-b from-primary via-primary/60 to-transparent blur-[1px]' />
 
-						<div className='p-6 flex flex-col sm:flex-row sm:items-center gap-6'>
-							<Avatar className='w-[160px] h-[160px] ring-2 ring-primary/30 shadow-sm shrink-0'>
+						<div className='p-4 min-[400px]:p-6 flex flex-col sm:flex-row sm:items-center gap-4 min-[400px]:gap-6 max-[640px]:items-center max-[640px]:text-center'>
+							<Avatar className='w-24 h-24 min-[400px]:w-32 min-[400px]:h-32 sm:w-[160px] sm:h-[160px] ring-2 ring-primary/30 shadow-sm shrink-0'>
 								<AvatarImage src={channel.avatarUrl || undefined} />
-								<AvatarFallback className='text-2xl font-semibold'>
+								<AvatarFallback className='text-xl min-[400px]:text-2xl font-semibold'>
 									{getInitials(channel.username)}
 								</AvatarFallback>
 							</Avatar>
 
-							<div className='flex-1'>
-								<h1 className='text-3xl font-bold tracking-tight'>
+							<div className='flex-1 max-[640px]:flex max-[640px]:flex-col max-[640px]:items-center'>
+								<h1 className='text-xl min-[400px]:text-2xl sm:text-3xl font-bold tracking-tight'>
 									{channel.name}
 								</h1>
-								<p className='text-muted-foreground mt-1 text-sm'>
+								<p className='text-muted-foreground mt-1 text-xs min-[400px]:text-sm'>
 									<span className='font-bold text-white'>
 										@{channel.username}
 									</span>{' '}
-									· {channel._count?.followers ?? 0} follower
-									{(channel._count?.followers ?? 0) !== 1 && 's'} ·{' '}
-									{channel._count?.videos ?? 0} video
-									{(channel._count?.videos ?? 0) !== 1 && 's'}
+									·{' '}
+									{t('channelPage.followersCount', {
+										count: channel._count?.followers ?? 0,
+									})}{' '}
+									·{' '}
+									{t('channelPage.videosCount', {
+										count: channel._count?.videos ?? 0,
+									})}
 								</p>
-								<div className='flex items-center gap-2 mt-3'>
-									<p className='text-muted-foreground text-sm max-w-lg'>
+								<div className='flex items-center justify-center sm:justify-start gap-2 mt-3'>
+									<p className='text-muted-foreground text-xs min-[400px]:text-sm max-w-lg'>
 										{truncateName(channel?.description, 40)}
 									</p>
 									{channel.description && (
 										<span
 											onClick={() => setIsInfoOpen(true)}
-											className='font-bold text-primary cursor-pointer'
+											className='font-bold text-primary cursor-pointer shrink-0'
 										>
-											more
+											{t('channelPage.more')}
 										</span>
 									)}
 								</div>
 								{isThisMe ? (
-									<div className='flex flex-wrap gap-3 mt-5'>
+									<div className='flex flex-wrap justify-center sm:justify-start gap-2 min-[400px]:gap-3 mt-4 min-[400px]:mt-5'>
 										<Button
 											onClick={() => handleUploadVideo()}
-											className='rounded-full px-5 py-2 text-sm font-medium shadow-sm hover:shadow-md transition-all'
+											className='rounded-full px-4 min-[400px]:px-5 py-2 text-xs min-[400px]:text-sm font-medium shadow-sm hover:shadow-md transition-all'
 										>
-											Upload video
+											{t('channelPage.uploadVideo')}
 										</Button>
-										<a
+										<Link
 											href={PAGES.WORKPLACE_DASHBOARD(channel.username)}
 											target='_blank'
 											rel='noopener noreferrer'
 										>
 											<Button
 												variant='outline'
-												className='rounded-full px-5 py-2 text-sm font-medium shadow-sm hover:shadow-md transition-all'
+												className='rounded-full px-4 min-[400px]:px-5 py-2 text-xs min-[400px]:text-sm font-medium shadow-sm hover:shadow-md transition-all'
 											>
-												Customize Channel
+												{t('channelPage.customizeChannel')}
 											</Button>
-										</a>
+										</Link>
 									</div>
 								) : (
 									<Button
 										onClick={() => toggleFollowUser(channel.id)}
 										variant={isFollowing ? 'outline' : 'default'}
-										className={`${isThisMe && 'ml-2'} font-semibold rounded-full px-6 mt-5`}
+										className='font-semibold rounded-full px-5 min-[400px]:px-6 text-xs min-[400px]:text-sm mt-4 min-[400px]:mt-5'
 									>
-										{isFollowing ? 'Subscribed' : 'Subscribe'}
+										{isFollowing
+											? t('channelPage.subscribed')
+											: t('channelPage.subscribe')}
 									</Button>
 								)}
 							</div>

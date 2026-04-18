@@ -1,23 +1,49 @@
 import { type Notification, NotificationType } from '@/types/notification.types'
 
-export function renderNotificationText(n: Notification, displayName: string) {
+type NotificationTextTranslator = (
+	key:
+		| 'text.commentNew'
+		| 'text.commentReply'
+		| 'text.likeVideo'
+		| 'text.dislikeVideo'
+		| 'text.videoPublished'
+		| 'text.channelNewFollower'
+		| 'text.videoRestricted',
+	values?: Record<string, string | number | Date | null | undefined>,
+) => string
+
+export function renderNotificationText(
+	n: Notification,
+	displayName: string | undefined,
+	t: NotificationTextTranslator,
+) {
+	const authorHandle = n.author?.username ? `@${n.author.username}` : ''
+	const replyAuthorHandle = displayName ? `@${displayName}` : ''
+	const publishedFromName = displayName ?? ''
+
 	switch (n.type) {
 		case NotificationType.COMMENT_NEW:
-			return `@${n.author?.username} commented your video`
+			return t('text.commentNew', { author: authorHandle })
 		case NotificationType.COMMENT_REPLY:
-			return `@${displayName} replied to your comment`
+			return t('text.commentReply', { author: replyAuthorHandle })
 		case NotificationType.LIKE_VIDEO:
-			return `@${n.author?.username} liked your video`
+			return t('text.likeVideo', { author: authorHandle })
 		case NotificationType.DISLIKE_VIDEO:
-			return `@${n.author?.username} disliked your video`
+			return t('text.dislikeVideo', { author: authorHandle })
 		case NotificationType.VIDEO_PUBLISHED:
-			return `New video from ${displayName}`
+			return t('text.videoPublished', { name: publishedFromName })
 		case NotificationType.CHANNEL_NEW_FOLLOWER:
-			return `@${n.author?.username} followed your channel "${n.channel?.name}"`
+			return t('text.channelNewFollower', {
+				author: authorHandle,
+				channelName: n.channel?.name ?? '',
+			})
 		case NotificationType.VIDEO_RESTRICTED:
-			return `Your video "${n.video?.title}" was restricted for ${n.message?.toLowerCase()}.`
+			return t('text.videoRestricted', {
+				title: n.video?.title ?? '',
+				reason: n.message?.toLowerCase() ?? '',
+			})
 
 		default:
-			return n.message
+			return n.message ?? ''
 	}
 }

@@ -9,6 +9,7 @@ import { getNotificationUrl } from '@/utils/getNotificationUrl'
 import { renderNotificationText } from '@/utils/renderNotificationText'
 import { truncateName } from '@/utils/truncateName'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import {} from './NotificationDropdown'
 
 interface INotificationItemProps {
@@ -16,6 +17,7 @@ interface INotificationItemProps {
 }
 
 export function NotificationItem({ n }: INotificationItemProps) {
+	const t = useTranslations('notifications')
 	const { markRead } = useMarkNotificationRead()
 
 	const isFromChannelOwner = n.author?.id === n.channel?.userId
@@ -44,7 +46,7 @@ export function NotificationItem({ n }: INotificationItemProps) {
 				<div className='flex gap-3 w-full items-center'>
 					<div className='flex flex-col text-sm leading-tight'>
 						<span className=''>
-							{truncateName(renderNotificationText(n, displayName), 200)}
+							{truncateName(renderNotificationText(n, displayName, t), 200)}
 						</span>
 						<span className='text-[11px] text-muted-foreground mt-1 '>
 							{formatDate(n.createdAt)}

@@ -15,6 +15,127 @@
 		"channels": "Мої канали",
 		"logout": "Вийти"
 	},
+	"auth": {
+		"login": {
+			"title": "Увійти в Loomio",
+			"subtitle": "Ваш шлях до безкінечного стримінгу.",
+			"orDivider": "або",
+			"identifierLabel": "Електронна пошта або юзернейм",
+			"identifierPlaceholder": "example@mail.com",
+			"passwordLabel": "Пароль",
+			"passwordPlaceholder": "Ваш пароль",
+			"forgotPassword": "Забули пароль?",
+			"submit": "Увійти",
+			"noAccount": "Немає акаунта?",
+			"signUp": "Зареєструватися"
+		},
+		"forgotPassword": {
+			"step1": {
+				"title": "Введіть вашу електронну адресу",
+				"description": "Ми надішлемо вам посилання для скидання пароля. Переконайтеся, що вводите email, який використовували під час реєстрації.",
+				"emailPlaceholder": "Ваша електронна адреса",
+				"confirm": "Підтвердити",
+				"return": "Повернутися"
+			},
+			"step2": {
+				"title": "Перевірте вашу пошту",
+				"description": "Ми надіслали посилання для скидання пароля на вашу електронну адресу. Перевірте вхідні та дотримуйтесь інструкцій для зміни пароля. Якщо листа не видно — перевірте спам або «Небажані».",
+				"close": "Закрити",
+				"startOver": "Почати спочатку"
+			}
+		},
+		"passwordReset": {
+			"title": "Створити новий пароль",
+			"description": "Створіть новий пароль для вашого акаунта. Переконайтеся, що він надійний і унікальний, щоб захистити ваш профіль.",
+			"passwordLabel": "Пароль",
+			"passwordPlaceholder": "Ваш пароль",
+			"confirmPasswordLabel": "Підтвердіть пароль",
+			"confirmPasswordPlaceholder": "Підтвердьте ваш пароль",
+			"confirm": "Підтвердити",
+			"return": "Повернутися",
+			"invalidToken": "Некоректний або відсутній токен."
+		},
+		"signup": {
+			"title": "Створіть акаунт",
+			"subtitle": "Приєднуйтеся до Loomio та почніть ділитися відео вже сьогодні",
+			"orDivider": "або",
+			"submit": "Зареєструватися",
+			"alreadyHaveAccount": "Вже є акаунт?",
+			"logIn": "Увійти",
+			"fields": {
+				"fullNameLabel": "Повне ім’я",
+				"fullNamePlaceholder": "Джон Доу",
+				"usernameLabel": "Юзернейм",
+				"usernamePlaceholder": "jonedoe",
+				"emailLabel": "Електронна адреса",
+				"emailPlaceholder": "Ваша електронна адреса",
+				"passwordLabel": "Пароль",
+				"passwordPlaceholder": "Ваш пароль",
+				"confirmPasswordLabel": "Підтвердіть пароль",
+				"confirmPasswordPlaceholder": "Підтвердьте ваш пароль",
+				"termsLabel": "Я погоджуюся з умовами та положеннями"
+			}
+		}
+	},
+	"accountPage": {
+		"title": "Мій профіль",
+		"yourChannels": "Ваші канали",
+		"playlists": "Плейлисти",
+		"googleAuthDescription": "Ви увійшли через Google",
+		"channelsModal": {
+			"title": "Ваші канали",
+			"descriptionPrefix": "Керуйте своїми каналами, шукайте серед них або",
+			"createNewInline": "створіть новий",
+			"searchPlaceholder": "Пошук каналів..."
+		},
+		"userChannelItem": {
+			"menuChannel": "Канал",
+			"menuWorkplace": "Управління каналом"
+		},
+		"createChannelModal": {
+			"title": "Створити канал",
+			"subtitle": "Оберіть аватар і задайте назву та юзернейм каналу",
+			"avatarLabel": "Аватар",
+			"nameLabel": "Назва каналу",
+			"namePlaceholder": "напр. Tech Vision",
+			"usernameLabel": "Юзернейм",
+			"usernamePlaceholder": "techvision",
+			"previewHint": "Так ваш канал може виглядати в застосунку.",
+			"cancel": "Скасувати",
+			"submit": "Створити канал",
+			"previewNameFallback": "Назва каналу",
+			"previewUsernameFallback": "@username"
+		},
+		"editAccount": {
+			"title": "Редагувати профіль",
+			"subtitle": "Оновіть дані профілю нижче",
+			"profileSectionTitle": "Дані профілю",
+			"securitySectionTitle": "Безпека",
+			"authProvider": {
+				"connectedAccountLabel": "Підключений акаунт",
+				"connectedBadge": "Підключено",
+				"disconnectButton": "Від’єднати"
+			},
+			"setPassword": {
+				"label": "Встановити пароль",
+				"emptyValue": "Пароль не встановлено",
+				"newPasswordPlaceholder": "Новий пароль",
+				"confirmPasswordPlaceholder": "Підтвердьте пароль",
+				"editButton": "Встановити",
+				"cancelButton": "Скасувати",
+				"saveButton": "Зберегти"
+			},
+			"fields": {
+				"name": "Ім’я",
+				"username": "Юзернейм",
+				"email": "Email"
+			}
+		},
+		"channelVideoList": {
+			"emptyState": "Поки що немає відео. Завантажте перше відео, щоб почати.",
+			"privateBadge": "Приватне"
+		}
+	},
 	"uiConfigurator": {
 		"title": "Налаштування Loomio",
 		"subtitle": "Оберіть параметри платформи",
@@ -35,7 +156,16 @@
 		"deleteAllNotifications": "Видалити всі сповіщення",
 		"back": "Назад",
 		"noNotifications": "Немає сповіщень",
-		"noPersonalActivity": "Немає особистої активності"
+		"noPersonalActivity": "Немає особистої активності",
+		"text": {
+			"commentNew": "{author} прокоментував ваше відео",
+			"commentReply": "{author} відповів на ваш коментар",
+			"likeVideo": "{author} вподобав ваше відео",
+			"dislikeVideo": "{author} поставив дизлайк вашому відео",
+			"videoPublished": "Нове відео від {name}",
+			"channelNewFollower": "{author} підписався на ваш канал «{channelName}»",
+			"videoRestricted": "Ваше відео «{title}» обмежено через {reason}."
+		}
 	},
 	"watch": {
 		"notFound": "Відео не знайдено",
@@ -88,6 +218,27 @@
 		"cancel": "Скасувати",
 		"sendReport": "Надіслати скаргу"
 	},
+	"videoWizard": {
+		"steps": {
+			"general": "Загальне",
+			"additional": "Деталі",
+			"schedule": "Публікація"
+		}
+	},
+	"workplaceHeader": {
+		"brandTitle": "Loomio Creator",
+		"myChannel": "Мій канал",
+		"avatarAlt": "Аватар каналу"
+	},
+	"workplaceDashboard": {
+		"loadingChannel": "Завантаження даних каналу…",
+		"title": "Панель керування каналом",
+		"addVideosTitle": "Додайте відео",
+		"addVideosDescription": "Розвивайте канал, завантаживши перше відео. Після публікації ви зможете відстежувати показники тут.",
+		"statVideos": "Відео",
+		"statFollowers": "Підписники",
+		"statTotalViews": "Усього переглядів"
+	},
 	"report": {
 		"reasons": {
 			"hateSpeech": "Мовна ненависть",
@@ -127,5 +278,111 @@
 		"title": "Канали, на які ви підписані",
 		"description": "Досліджуйте канали, на які ви підписані",
 		"emptyState": "Ви ще не підписалися на жоден канал."
+	},
+	"channelPage": {
+		"notFoundTitle": "Канал не знайдено",
+		"notFoundDescription": "Такого каналу не існує або його було видалено.",
+		"goHome": "На головну",
+		"bannerAlt": "Банер каналу",
+		"followersCount": "{count, plural, one {# підписник} few {# підписники} many {# підписників} other {# підписника}}",
+		"videosCount": "{count, plural, one {# відео} few {# відео} many {# відео} other {# відео}}",
+		"more": "далі",
+		"uploadVideo": "Завантажити відео",
+		"customizeChannel": "Налаштувати канал",
+		"subscribed": "Ви підписані",
+		"subscribe": "Підписатися"
+	},
+	"uploadVideoModal": {
+		"title": "Завантажити відео",
+		"statusUploading": "Завантаження відео...",
+		"statusProcessing": "Обробка відео...",
+		"statusReady": "Готово",
+		"back": "Назад",
+		"next": "Далі",
+		"confirm": "Підтвердити",
+		"discardTitle": "Скинути зміни?",
+		"discardDescription": "Є незбережені зміни. Якщо ви вийдете, вони будуть втрачені.",
+		"cancel": "Скасувати",
+		"leave": "Вийти",
+		"toastStillUploading": "Відео ще завантажується",
+		"toastNoChannel": "Канал не обрано",
+		"file": {
+			"dragDrop": "Перетягніть відео сюди",
+			"orClick": "або натисніть, щоб обрати файл",
+			"supportedPrefix": "Підтримувані формати:",
+			"formatsList": "MP4, MOV, AVI",
+			"maxSize": "Максимум 2 ГБ"
+		},
+		"preview": {
+			"thumbnailAlt": "Прев’ю мініатюри",
+			"filenameLabel": "Файл: {name}"
+		},
+		"stepFirst": {
+			"titleLabel": "Назва (обов’язково)",
+			"titlePlaceholder": "Введіть помітну назву...",
+			"descriptionLabel": "Опис",
+			"descriptionPlaceholder": "Коротко опишіть відео...",
+			"tagsLabel": "Теги",
+			"tagsPlaceholder": "напр. #travel #vlog #music",
+			"tagsFormatPrefix": "Формат:",
+			"tagsFormatExample": "#top #live #music"
+		},
+		"stepSecond": {
+			"thumbnailTitle": "Завантажити прев’ю (обов’язково)",
+			"thumbnailPreviewAlt": "Прев’ю мініатюри",
+			"changeThumbnailTitle": "Змінити прев’ю",
+			"deleteThumbnailTitle": "Видалити прев’ю",
+			"clickUploadThumbnail": "Натисніть, щоб завантажити прев’ю",
+			"imageFormats": "(JPG, PNG, WEBP)",
+			"visibilityTitle": "Видимість",
+			"public": "Публічне",
+			"publicHint": "Бачать усі",
+			"private": "Приватне",
+			"privateHint": "Бачите лише ви",
+			"audienceTitle": "Аудиторія",
+			"audienceQuestion": "Чи відео для дітей? (обов’язково)",
+			"yes": "Так",
+			"yesHint": "Для дітей",
+			"no": "Ні",
+			"noHint": "Не для дітей"
+		},
+		"stepThird": {
+			"title": "Розклад",
+			"description": "Оберіть, коли відео має стати доступним.",
+			"publishNow": "Опублікувати відео зараз",
+			"publishNowHint": "Відео буде видиме одразу",
+			"scheduleOption": "Запланувати публікацію",
+			"scheduleHint": "Оберіть дату й час",
+			"publishDateTimeLabel": "Дата й час публікації",
+			"pickDate": "Оберіть дату"
+		}
+	},
+	"editVideo": {
+		"stepSecond": {
+			"thumbnailTitle": "Завантажити прев’ю (обов’язково)",
+			"thumbnailPreviewAlt": "Прев’ю мініатюри",
+			"changeThumbnailTitle": "Змінити прев’ю",
+			"deleteThumbnailTitle": "Видалити прев’ю",
+			"clickUploadThumbnail": "Натисніть, щоб завантажити прев’ю",
+			"imageFormats": "(JPG, PNG, WEBP)",
+			"visibilityTitle": "Видимість",
+			"public": "Публічне",
+			"publicHint": "Бачать усі",
+			"private": "Приватне",
+			"privateHint": "Бачите лише ви",
+			"audienceTitle": "Аудиторія",
+			"audienceQuestion": "Чи відео для дітей? (обов’язково)",
+			"yes": "Так",
+			"yesHint": "Для дітей",
+			"no": "Ні",
+			"noHint": "Не для дітей"
+		}
+	},
+	"emailVerification": {
+		"title": "Підтвердження пошти",
+		"description": "Ми надіслали код підтвердження на вашу електронну адресу. Перевірте вхідні та введіть код, щоб продовжити.",
+		"codePlaceholder": "Ваш код підтвердження",
+		"completeButton": "Завершити реєстрацію",
+		"resendButton": "Надіслати знову"
 	}
 }

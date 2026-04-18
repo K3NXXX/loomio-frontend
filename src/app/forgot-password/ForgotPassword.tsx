@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -21,6 +22,7 @@ import type { TForgotPasswordSchema } from '@/schemas/auth/forgot-password-schem
 import type { SubmitHandler } from 'react-hook-form'
 
 export function ForgotPassword() {
+	const t = useTranslations()
 	const [step, setStep] = useState(FORGOT_PASSWORD_STEPS.FIRST)
 
 	const { forgotPassword, loading, expiresAt } = useForgotPassword(setStep)
@@ -59,11 +61,10 @@ export function ForgotPassword() {
 					{step === FORGOT_PASSWORD_STEPS.FIRST && (
 						<div className='flex flex-col'>
 							<p className='font-bold text-[24px] max-[450px]:text-[20px]'>
-								Please enter your email
+								{t('auth.forgotPassword.step1.title')}
 							</p>
 							<p className=' text-neutral-400 text-[14px] max-w-[400px] mb-5'>
-								We’ll send you a link to reset your password. Make sure you
-								enter the email you used to register.
+								{t('auth.forgotPassword.step1.description')}
 							</p>
 							<form
 								className='flex flex-col gap-2'
@@ -71,7 +72,7 @@ export function ForgotPassword() {
 							>
 								<Input
 									autoFocus
-									placeholder='Your email address'
+									placeholder={t('auth.forgotPassword.step1.emailPlaceholder')}
 									className='text-white py-5'
 									aria-label='email'
 									{...register('email')}
@@ -80,7 +81,7 @@ export function ForgotPassword() {
 									<div className='flex gap-3'>
 										<Button
 											disabled={isResendDisabled}
-											className='mt-1 font-bold text-[14px] py-3 w-[90px]'
+											className='mt-1 font-bold text-[14px] py-2 px-5 w-[120px]'
 										>
 											{loading ? (
 												<Lottie
@@ -89,12 +90,12 @@ export function ForgotPassword() {
 													className='absolute w-20 h-20'
 												/>
 											) : (
-												'Confirm'
+												t('auth.forgotPassword.step1.confirm')
 											)}
 										</Button>
 										<Link href={PAGES.LOGIN}>
 											<Button className='bg-neutral-700 mt-1 font-bold text-[14px] py-3'>
-												Return
+												{t('auth.forgotPassword.step1.return')}
 											</Button>
 										</Link>
 									</div>
@@ -116,25 +117,22 @@ export function ForgotPassword() {
 					{step === FORGOT_PASSWORD_STEPS.SECOND && (
 						<div className='flex flex-col'>
 							<p className='font-bold text-[24px]  max-[450px]:text-[20px]'>
-								Please check your email
+								{t('auth.forgotPassword.step2.title')}
 							</p>
 							<p className='text-neutral-400 text-[14px] max-w-[400px] mb-5'>
-								We’ve sent a password reset link to your email address. Please
-								check your inbox and follow the instructions to reset your
-								password. If you don’t see the email, check your spam or junk
-								folder.
+								{t('auth.forgotPassword.step2.description')}
 							</p>
 							<div className='flex gap-3'>
 								<Link href={PAGES.LOGIN}>
 									<Button className='mt-1 font-bold text-[14px] py-3 max-w-[100px]'>
-										Close
+										{t('auth.forgotPassword.step2.close')}
 									</Button>
 								</Link>
 								<Button
 									onClick={() => setStep(FORGOT_PASSWORD_STEPS.FIRST)}
-									className='bg-neutral-700 mt-1 font-bold text-[14px] py-3 max-w-[100px]'
+									className='bg-neutral-700 mt-1 font-bold text-[14px] py-3 w-[150px]'
 								>
-									Start over
+									{t('auth.forgotPassword.step2.startOver')}
 								</Button>
 							</div>
 						</div>

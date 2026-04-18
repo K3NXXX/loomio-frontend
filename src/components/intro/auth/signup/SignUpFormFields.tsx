@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { BsFillEyeSlashFill } from 'react-icons/bs'
 import { HiEye } from 'react-icons/hi'
+import { useTranslations } from 'next-intl'
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
@@ -12,6 +13,7 @@ import { useSignupFormErrors } from '@/hooks/auth/useSignupFormErrors'
 import type { TSignupSchema } from '@/schemas/auth/signup-schema'
 
 export function SignUpFormFields() {
+	const t = useTranslations()
 	const [showPassword, setShowPassword] = useState(false)
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -28,37 +30,42 @@ export function SignUpFormFields() {
 	return (
 		<>
 			<div className='flex gap-3 max-[540px]:flex-col'>
-				<div className='flex flex-col flex-1 '>
+				{/* <div className='flex flex-col flex-1 '>
 					<label htmlFor='signup-name' className='text-white mb-2'>
-						Full name
+						{t('auth.signup.fields.fullNameLabel')}
 					</label>
 					<Input
 						id='signup-name'
-						placeholder='John Doe'
+						placeholder={t('auth.signup.fields.fullNamePlaceholder')}
 						className='w-full text-white py-6'
 						{...register('name')}
 					/>
-				</div>
+				</div> */}
 				<div className='flex flex-col flex-1'>
 					<label htmlFor='signup-username' className='text-white mb-2'>
-						Username
+						{t('auth.signup.fields.usernameLabel')}
 					</label>
-					<Input
-						id='signup-username'
-						placeholder='johnsmith'
-						className='w-full text-white py-6'
-						{...register('username')}
-					/>
+					<div className='relative'>
+						<span className='absolute left-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none'>
+							@
+						</span>
+						<Input
+							id='signup-username'
+							placeholder={t('auth.signup.fields.usernamePlaceholder')}
+							className='w-full text-white py-6 pl-7'
+							{...register('username')}
+						/>
+					</div>
 				</div>
 			</div>
 			<div className='flex flex-col'>
 				<label htmlFor='signup-email' className='text-white mb-2'>
-					Email
+					{t('auth.signup.fields.emailLabel')}
 				</label>
 				<Input
 					type='email'
 					id='signup-email'
-					placeholder='Your email address'
+					placeholder={t('auth.signup.fields.emailPlaceholder')}
 					className='text-white py-6'
 					{...register('email')}
 				/>
@@ -66,7 +73,7 @@ export function SignUpFormFields() {
 			<div className='flex gap-3 max-[540px]:flex-col'>
 				<div className='flex flex-col'>
 					<label htmlFor='signup-password' className='text-white mb-2'>
-						Password
+						{t('auth.signup.fields.passwordLabel')}
 					</label>
 					<div className='relative'>
 						{showPassword ? (
@@ -85,7 +92,7 @@ export function SignUpFormFields() {
 						<Input
 							id='signup-password'
 							type={showPassword ? 'text' : 'password'}
-							placeholder='Your password'
+							placeholder={t('auth.signup.fields.passwordPlaceholder')}
 							className='text-white py-6 pr-10'
 							{...register('password')}
 						/>
@@ -93,7 +100,7 @@ export function SignUpFormFields() {
 				</div>
 				<div className='flex flex-col'>
 					<label htmlFor='signup-confirm-password' className='text-white mb-2'>
-						Confirm password
+						{t('auth.signup.fields.confirmPasswordLabel')}
 					</label>
 					<div className='relative'>
 						{showConfirmPassword ? (
@@ -112,7 +119,7 @@ export function SignUpFormFields() {
 						<Input
 							id='signup-confirm-password'
 							type={showConfirmPassword ? 'text' : 'password'}
-							placeholder='Confirm your password'
+							placeholder={t('auth.signup.fields.confirmPasswordPlaceholder')}
 							className='text-white py-6 pr-10'
 							{...register('passwordConfirm')}
 						/>
@@ -137,7 +144,7 @@ export function SignUpFormFields() {
 					)}
 				/>
 				<label htmlFor='signup-terms-checkbox' className='text-white'>
-					I agree to the terms and conditions
+					{t('auth.signup.fields.termsLabel')}
 				</label>
 			</div>
 		</>

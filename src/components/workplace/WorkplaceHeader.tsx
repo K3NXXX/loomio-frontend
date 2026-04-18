@@ -1,3 +1,5 @@
+'use client'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,6 +15,7 @@ import type { IChannel } from '@/types/channel.types'
 import { getInitials } from '@/utils/get-initials'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { FaPlus, FaRecordVinyl } from 'react-icons/fa'
 import { IoHome } from 'react-icons/io5'
 import { MdLogout, MdOutlineVideoLibrary } from 'react-icons/md'
@@ -23,6 +26,10 @@ interface IWorkplaceHeaderProps {
 }
 
 export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
+	const t = useTranslations('workplaceHeader')
+	const tHeader = useTranslations('header')
+	const tSidebar = useTranslations('sidebar')
+	const tUserMenu = useTranslations('userMenu')
 	const { logout } = useLogout()
 	const { openUploadingVideo, setOpenUploadingVideo, setUploadChannelId } =
 		useVideoStore()
@@ -40,7 +47,7 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 						<FaRecordVinyl className='text-primary-foreground text-xl animate-spin-slower' />
 					</div>
 					<span className='text-white font-extrabold text-[20px] tracking-tight transition-colors duration-300 group-hover:text-primary'>
-						Loomio Workplace
+						{t('brandTitle')}
 					</span>
 				</div>
 
@@ -50,7 +57,7 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 						variant='outline'
 						className='hidden rounded-full px-4 sm:inline-flex'
 					>
-						<FaPlus className='mr-2 size-4' /> Upload
+						<FaPlus className='mr-2 size-4' /> {tHeader('upload')}
 					</Button>
 
 					<DropdownMenu>
@@ -58,7 +65,7 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 							<Avatar className='size-8 ring-1 ring-border cursor-pointer'>
 								<AvatarImage
 									src={channel?.avatarUrl || undefined}
-									alt='avatar'
+									alt={t('avatarAlt')}
 								/>
 								<AvatarFallback>{getInitials(channel.name)}</AvatarFallback>
 							</Avatar>
@@ -69,7 +76,7 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 								<Avatar className='size-8 ring-1 ring-border cursor-pointer'>
 									<AvatarImage
 										src={channel?.avatarUrl || undefined}
-										alt='avatar'
+										alt={t('avatarAlt')}
 									/>
 									<AvatarFallback>{getInitials(channel.name)}</AvatarFallback>
 								</Avatar>
@@ -89,7 +96,7 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 								>
 									<div className='flex items-center gap-2'>
 										<MdOutlineVideoLibrary className='size-4' />
-										My channel
+										{t('myChannel')}
 									</div>
 								</Link>
 							</DropdownMenuItem>
@@ -98,7 +105,7 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 								<Link href={PAGES.HOME} className='cursor-pointer'>
 									<div className='flex items-center gap-2'>
 										<IoHome className='size-4' />
-										Home
+										{tSidebar('home')}
 									</div>
 								</Link>
 							</DropdownMenuItem>
@@ -110,7 +117,7 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 								onClick={() => logout()}
 							>
 								<MdLogout className='size-4' />
-								Log out
+								{tUserMenu('logout')}
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>

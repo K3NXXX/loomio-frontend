@@ -22,6 +22,7 @@ import { truncateName } from '@/utils/truncateName'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
 import Lottie from 'lottie-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -34,6 +35,7 @@ export default function CreateChannelModal({
 	open,
 	onOpenChange,
 }: CreateChannelModalProps) {
+	const t = useTranslations()
 	const { userData } = useGetMe()
 
 	const {
@@ -66,13 +68,19 @@ export default function CreateChannelModal({
 	const usernameValue = watch('username')
 
 	const previewName = useMemo(
-		() => (nameValue?.trim() ? nameValue.trim() : 'Channel Name'),
-		[nameValue],
+		() =>
+			nameValue?.trim()
+				? nameValue.trim()
+				: t('accountPage.createChannelModal.previewNameFallback'),
+		[nameValue, t],
 	)
 
 	const previewUsername = useMemo(
-		() => (usernameValue?.trim() ? `@${usernameValue.trim()}` : '@username'),
-		[usernameValue],
+		() =>
+			usernameValue?.trim()
+				? `@${usernameValue.trim()}`
+				: t('accountPage.createChannelModal.previewUsernameFallback'),
+		[usernameValue, t],
 	)
 
 	const { createChannel, channelCreatingLoading } = useCreateChannel()
@@ -129,10 +137,12 @@ export default function CreateChannelModal({
 			>
 				<DialogHeader className='px-6 pt-6 pb-4 border-b border-neutral-800'>
 					<DialogTitle className='text-lg font-semibold flex items-center justify-between'>
-						<span className='flex items-center gap-2'>Create Channel</span>
+						<span className='flex items-center gap-2'>
+							{t('accountPage.createChannelModal.title')}
+						</span>
 					</DialogTitle>
 					<p className='text-sm text-neutral-400 mt-1'>
-						Choose an avatar and set your channel name & username
+						{t('accountPage.createChannelModal.subtitle')}
 					</p>
 				</DialogHeader>
 
@@ -143,7 +153,7 @@ export default function CreateChannelModal({
 					<div className='flex flex-col gap-6'>
 						<div>
 							<Label className='block mb-2 text-sm text-neutral-300'>
-								Avatar
+								{t('accountPage.createChannelModal.avatarLabel')}
 							</Label>
 							<AvatarUploader
 								value={avatarPreview}
@@ -160,11 +170,11 @@ export default function CreateChannelModal({
 								htmlFor='channel-name'
 								className='text-sm text-neutral-300'
 							>
-								Channel name
+								{t('accountPage.createChannelModal.nameLabel')}
 							</Label>
 							<Input
 								id='channel-name'
-								placeholder='e.g. Tech Vision'
+								placeholder={t('accountPage.createChannelModal.namePlaceholder')}
 								className='bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary'
 								{...register('name')}
 							/>
@@ -175,7 +185,7 @@ export default function CreateChannelModal({
 								htmlFor='channel-username'
 								className='text-sm text-neutral-300'
 							>
-								Username
+								{t('accountPage.createChannelModal.usernameLabel')}
 							</Label>
 							<div className='relative'>
 								<span className='absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500'>
@@ -183,7 +193,9 @@ export default function CreateChannelModal({
 								</span>
 								<Input
 									id='channel-username'
-									placeholder='techvision'
+									placeholder={t(
+										'accountPage.createChannelModal.usernamePlaceholder',
+									)}
 									className='pl-7 bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary'
 									{...register('username', {
 										setValueAs: (v) =>
@@ -216,7 +228,7 @@ export default function CreateChannelModal({
 								</div>
 							</div>
 							<div className='px-6 py-3 text-sm text-neutral-400 border-t border-neutral-800/70'>
-								This is how your channel may appear across the app.
+								{t('accountPage.createChannelModal.previewHint')}
 							</div>
 						</div>
 
@@ -235,7 +247,7 @@ export default function CreateChannelModal({
 									setInitialAvatar(null)
 								}}
 							>
-								Cancel
+								{t('accountPage.createChannelModal.cancel')}
 							</Button>
 							<Button
 								type='submit'
@@ -249,7 +261,7 @@ export default function CreateChannelModal({
 										className='absolute w-20 h-20'
 									/>
 								) : (
-									'Create channel'
+									t('accountPage.createChannelModal.submit')
 								)}
 							</Button>
 						</div>

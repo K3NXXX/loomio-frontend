@@ -1,17 +1,23 @@
+'use client'
+
+import { useTranslations } from 'next-intl'
+
 interface UploadVideoStepsProps {
 	currentStep: number
 }
 
-const steps = [
-	{ number: 1, label: 'General' },
-	{ number: 2, label: 'Additional' },
-	{ number: 3, label: 'Schedule' },
+const stepDefs = [
+	{ number: 1, labelKey: 'general' as const },
+	{ number: 2, labelKey: 'additional' as const },
+	{ number: 3, labelKey: 'schedule' as const },
 ]
 
 export function UploadVideoSteps({ currentStep }: UploadVideoStepsProps) {
+	const t = useTranslations('videoWizard.steps')
+
 	return (
 		<div className='flex items-center justify-center gap-10'>
-			{steps.map((step, index) => (
+			{stepDefs.map((step, index) => (
 				<div key={step.number} className='flex items-center gap-10'>
 					<div className='flex flex-col items-center gap-1'>
 						<div
@@ -29,11 +35,11 @@ export function UploadVideoSteps({ currentStep }: UploadVideoStepsProps) {
 								${currentStep === step.number ? 'text-white' : 'text-gray-400'}
 							`}
 						>
-							{step.label}
+							{t(step.labelKey)}
 						</span>
 					</div>
 
-					{index < steps.length - 1 && (
+					{index < stepDefs.length - 1 && (
 						<div
 							className={`h-[2px] w-20 rounded-full transition
 								${currentStep >= step.number + 1 ? 'bg-gradient-to-r from-primary to-primary/60' : 'bg-neutral-700'}

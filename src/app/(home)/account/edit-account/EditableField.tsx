@@ -40,29 +40,31 @@ export function EditableField({
 	}, [isSuccess])
 
 	return (
-		<div className='flex items-end justify-between gap-4 rounded-xl bg-white/5 border border-white/10 px-4 py-3 transition-colors'>
+		<div className='flex flex-col min-[500px]:flex-row min-[500px]:items-end justify-between gap-3 rounded-xl bg-white/5 border border-white/10 px-3 min-[400px]:px-4 py-3 transition-colors'>
 			<div className='flex flex-col gap-1 w-full max-w-xl'>
-				<span className='text-sm text-white/50'>{label}</span>
+				<span className='text-xs min-[400px]:text-sm text-white/50'>
+					{label}
+				</span>
 
 				{!isEditing ? (
-					<span className='text-white text-base h-11 flex items-center'>
+					<span className='text-white text-sm min-[400px]:text-base h-9 min-[400px]:h-11 flex items-center'>
 						{value || '—'}
 					</span>
 				) : (
 					<Input
 						autoFocus
 						{...register(field)}
-						className='h-11 text-base bg-white/10 border-white/20 focus:border-primary'
+						className='h-9 min-[400px]:h-11 text-sm min-[400px]:text-base bg-white/10 border-white/20 focus:border-primary'
 					/>
 				)}
 			</div>
 
-			<div className='shrink-0 flex items-center gap-2'>
+			<div className='shrink-0 flex items-center gap-2 min-[500px]:pb-0'>
 				{!isEditing ? (
 					<Button
 						type='button'
 						variant='outline'
-						className='rounded-full px-4 border-white/10 bg-white/5 hover:bg-white/10'
+						className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm border-white/10 bg-white/5 hover:bg-white/10'
 						onClick={handleEdit}
 					>
 						Edit
@@ -72,7 +74,7 @@ export function EditableField({
 						<Button
 							type='button'
 							variant='outline'
-							className='rounded-full px-4 border-white/10 bg-white/5 hover:bg-white/10'
+							className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm border-white/10 bg-white/5 hover:bg-white/10'
 							onClick={handleCancel}
 						>
 							Cancel
@@ -80,7 +82,7 @@ export function EditableField({
 
 						<Button
 							type='submit'
-							className='rounded-full px-4 bg-primary hover:bg-primary/90 shadow-md shadow-primary/20'
+							className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm bg-primary hover:bg-primary/90 shadow-md shadow-primary/20'
 						>
 							Save
 						</Button>

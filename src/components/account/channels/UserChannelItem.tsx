@@ -12,6 +12,7 @@ import { PAGES } from '@/constants/pages.constants'
 import type { IChannel } from '@/types/channel.types'
 import { getInitials } from '@/utils/get-initials'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { FiSettings, FiExternalLink } from 'react-icons/fi'
 import { HiOutlineViewGrid } from 'react-icons/hi'
 
@@ -28,6 +29,8 @@ export function UserChannelItem({
 	activeDropdown,
 	setActiveDropdown,
 }: IUserChannelItemProps) {
+	const t = useTranslations()
+
 	return (
 		<li
 			className={`group w-full flex items-center justify-between px-4 py-3 rounded-lg transition cursor-pointer ${
@@ -89,7 +92,7 @@ export function UserChannelItem({
 							className='flex items-center gap-2 cursor-pointer'
 						>
 							<HiOutlineViewGrid className='w-4 h-4 text-neutral-400' />
-							<span>Channel</span>
+							<span>{t('accountPage.userChannelItem.menuChannel')}</span>
 						</Link>
 					</DropdownMenuItem>
 
@@ -103,7 +106,7 @@ export function UserChannelItem({
 							className='flex items-center gap-2 cursor-pointer'
 						>
 							<FiExternalLink className='w-4 h-4 text-neutral-400' />
-							<span>Workplace</span>
+							<span>{t('accountPage.userChannelItem.menuWorkplace')}</span>
 						</a>
 					</DropdownMenuItem>
 				</DropdownMenuContent>

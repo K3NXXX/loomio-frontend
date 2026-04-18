@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { useTranslations } from 'next-intl'
 import type { TUploadVideoSchema } from '@/schemas/videos/upload-video.schema'
 import type { UseFormRegister } from 'react-hook-form'
 
@@ -12,6 +13,8 @@ export function UploadVideoStepFirst({
 	register,
 	fileName,
 }: UploadVideoStepFirstProps) {
+	const t = useTranslations()
+
 	return (
 		<div className='flex flex-col gap-6 h-[476px]'>
 			<div className='space-y-6'>
@@ -20,13 +23,13 @@ export function UploadVideoStepFirst({
 						htmlFor='title'
 						className='block text-sm font-medium text-gray-300 mb-2'
 					>
-						Title (required)
+						{t('uploadVideoModal.stepFirst.titleLabel')}
 					</label>
 					<Input
 						id='title'
 						type='text'
 						defaultValue={fileName}
-						placeholder='Enter a catchy title...'
+						placeholder={t('uploadVideoModal.stepFirst.titlePlaceholder')}
 						{...register('title')}
 						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
 						text-white placeholder-gray-500 px-4 
@@ -40,12 +43,14 @@ export function UploadVideoStepFirst({
 						htmlFor='description'
 						className='block text-sm font-medium text-gray-300 mb-2'
 					>
-						Description
+						{t('uploadVideoModal.stepFirst.descriptionLabel')}
 					</label>
 					<Textarea
 						id='description'
 						rows={6}
-						placeholder='Write something about your video...'
+						placeholder={t(
+							'uploadVideoModal.stepFirst.descriptionPlaceholder',
+						)}
 						{...register('description')}
 						className='h-[140px] overflow-y-auto text-base bg-neutral-800/80 border border-neutral-700 
 						rounded-xl text-white placeholder-gray-500 px-4 py-3 
@@ -59,12 +64,12 @@ export function UploadVideoStepFirst({
 						htmlFor='tags'
 						className='block text-sm font-medium text-gray-300 mb-2'
 					>
-						Tags
+						{t('uploadVideoModal.stepFirst.tagsLabel')}
 					</label>
 					<Input
 						id='tags'
 						type='text'
-						placeholder='e.g. #travel #vlog #music'
+						placeholder={t('uploadVideoModal.stepFirst.tagsPlaceholder')}
 						{...register('tags')}
 						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
 						text-white placeholder-gray-500 px-4 
@@ -72,7 +77,10 @@ export function UploadVideoStepFirst({
 						transition-colors'
 					/>
 					<p className='text-xs text-gray-500'>
-						Use format: <span className='text-primary'>#top #live #music</span>
+						{t('uploadVideoModal.stepFirst.tagsFormatPrefix')}{' '}
+						<span className='text-primary'>
+							{t('uploadVideoModal.stepFirst.tagsFormatExample')}
+						</span>
 					</p>
 				</div>
 			</div>

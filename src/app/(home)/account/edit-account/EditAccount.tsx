@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import { Lock, User } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
@@ -20,8 +21,12 @@ import { EditablePasswordField } from './EditablePasswordField'
 import { SetPasswordField } from './SetPasswordField'
 
 export default function EditAccount() {
+	const t = useTranslations()
 	const { userData } = useGetMe()
 	const { updateAccount, isSuccess } = useUpdateAccount()
+
+	const canChangeEmail = Boolean((userData as any)?.canChangeEmail)
+	const canChangePassword = Boolean((userData as any)?.canChangePassword)
 
 	const isGoogleOnly =
 		userData?.authProviders?.includes('google') && !userData?.hasPassword
@@ -46,6 +51,7 @@ export default function EditAccount() {
 			return updateAccount({
 				currentPassword: data.currentPassword,
 				newPassword: data.newPassword,
+				hasPassword: Boolean(userData?.hasPassword),
 			})
 		}
 
@@ -55,7 +61,7 @@ export default function EditAccount() {
 		if (data.email) payload.email = data.email
 		if (data.username) payload.username = data.username
 
-		updateAccount(payload)
+		updateAccount({ ...payload, hasPassword: Boolean(userData?.hasPassword) })
 	}
 
 	return (
@@ -66,11 +72,11 @@ export default function EditAccount() {
 				transition={{ duration: 0.4 }}
 				className='max-w-6xl mx-auto'
 			>
-				<h1 className='text-3xl font-bold tracking-tight text-center'>
-					Edit Account
+				<h1 className='text-xl min-[400px]:text-2xl min-[600px]:text-3xl font-bold tracking-tight text-center'>
+					{t('accountPage.editAccount.title')}
 				</h1>
-				<p className='text-muted-foreground mt-1 text-center pb-5'>
-					Update your profile information below
+				<p className='text-sm min-[400px]:text-base text-muted-foreground mt-1 text-center pb-5'>
+					{t('accountPage.editAccount.subtitle')}
 				</p>
 
 				<form onSubmit={handleSubmit(onSubmit)}>
@@ -86,24 +92,26 @@ export default function EditAccount() {
 						<div className='p-6'>
 							<div className='flex items-center gap-2 mb-6'>
 								<User className='size-5 text-primary' />
-								<h2 className='text-lg font-semibold'>Your profile data</h2>
+								<h2 className='text-lg font-semibold'>
+									{t('accountPage.editAccount.profileSectionTitle')}
+								</h2>
 							</div>
 
 							<div className='divide-y divide-white/10'>
-								<div className='py-4'>
+								{/* <div className='py-4'>
 									<EditableField
-										label='Name'
+										label={t('accountPage.editAccount.fields.name')}
 										value={userData?.name}
 										field='name'
 										register={register}
 										setValue={setValue}
 										isSuccess={isSuccess}
 									/>
-								</div>
+								</div> */}
 
 								<div className='py-4'>
 									<EditableField
-										label='Username'
+										label={t('accountPage.editAccount.fields.username')}
 										value={userData?.username}
 										field='username'
 										register={register}
@@ -113,9 +121,9 @@ export default function EditAccount() {
 								</div>
 
 								<div className='py-4'>
-									{userData?.canChangeEmail && (
+									{canChangeEmail && (
 										<EditableField
-											label='Email'
+											label={t('accountPage.editAccount.fields.email')}
 											value={userData?.email}
 											field='email'
 											register={register}
@@ -141,7 +149,9 @@ export default function EditAccount() {
 							<div className='p-6'>
 								<div className='flex items-center gap-2 mb-6'>
 									<Lock className='size-5 text-primary' />
-									<h2 className='text-lg font-semibold'>Security</h2>
+									<h2 className='text-lg font-semibold'>
+										{t('accountPage.editAccount.securitySectionTitle')}
+									</h2>
 								</div>
 
 								<div className='divide-y divide-white/10'>
@@ -154,7 +164,7 @@ export default function EditAccount() {
 								</div>
 							</div>
 						</motion.div>
-					) : userData?.canChangePassword ? (
+					) : canChangePassword ? (
 						<motion.div
 							initial={{ opacity: 0, y: 20 }}
 							whileInView={{ opacity: 1, y: 0 }}
@@ -167,7 +177,9 @@ export default function EditAccount() {
 							<div className='p-6'>
 								<div className='flex items-center gap-2 mb-6'>
 									<Lock className='size-5 text-primary' />
-									<h2 className='text-lg font-semibold'>Security</h2>
+									<h2 className='text-lg font-semibold'>
+										{t('accountPage.editAccount.securitySectionTitle')}
+									</h2>
 								</div>
 
 								<div className='divide-y divide-white/10'>

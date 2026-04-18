@@ -15,6 +15,127 @@
 		"channels": "Channels",
 		"logout": "Log out"
 	},
+	"auth": {
+		"login": {
+			"title": "Log in to Loomio",
+			"subtitle": "Your gateway to endless streaming.",
+			"orDivider": "or",
+			"identifierLabel": "Email or username",
+			"identifierPlaceholder": "example@mail.com",
+			"passwordLabel": "Password",
+			"passwordPlaceholder": "Your password",
+			"forgotPassword": "Forgot password?",
+			"submit": "Log In",
+			"noAccount": "Don't have an account?",
+			"signUp": "Sign up"
+		},
+		"forgotPassword": {
+			"step1": {
+				"title": "Please enter your email",
+				"description": "We’ll send you a link to reset your password. Make sure you enter the email you used to register.",
+				"emailPlaceholder": "Your email address",
+				"confirm": "Confirm",
+				"return": "Return"
+			},
+			"step2": {
+				"title": "Please check your email",
+				"description": "We’ve sent a password reset link to your email address. Please check your inbox and follow the instructions to reset your password. If you don’t see the email, check your spam or junk folder.",
+				"close": "Close",
+				"startOver": "Start over"
+			}
+		},
+		"passwordReset": {
+			"title": "Create a new password",
+			"description": "Create a new password for your account. Make sure it’s strong and unique to keep your account secure.",
+			"passwordLabel": "Password",
+			"passwordPlaceholder": "Your password",
+			"confirmPasswordLabel": "Confirm password",
+			"confirmPasswordPlaceholder": "Confirm your password",
+			"confirm": "Confirm",
+			"return": "Return",
+			"invalidToken": "Invalid or missing token."
+		},
+		"signup": {
+			"title": "Create your account",
+			"subtitle": "Join Loomio and start streaming today.",
+			"orDivider": "or",
+			"submit": "Sign Up",
+			"alreadyHaveAccount": "Already have an account?",
+			"logIn": "Log in",
+			"fields": {
+				"fullNameLabel": "Full name",
+				"fullNamePlaceholder": "John Doe",
+				"usernameLabel": "Username",
+				"usernamePlaceholder": "johnsmith",
+				"emailLabel": "Email",
+				"emailPlaceholder": "Your email address",
+				"passwordLabel": "Password",
+				"passwordPlaceholder": "Your password",
+				"confirmPasswordLabel": "Confirm password",
+				"confirmPasswordPlaceholder": "Confirm your password",
+				"termsLabel": "I agree to the terms and conditions"
+			}
+		}
+	},
+	"accountPage": {
+		"title": "My Account",
+		"yourChannels": "Your channels",
+		"playlists": "Playlists",
+		"googleAuthDescription": "You signed in using Google",
+		"channelsModal": {
+			"title": "Your Channels",
+			"descriptionPrefix": "Manage your channels, search through them, or",
+			"createNewInline": "create a new one",
+			"searchPlaceholder": "Search your channels..."
+		},
+		"userChannelItem": {
+			"menuChannel": "Channel",
+			"menuWorkplace": "Workplace"
+		},
+		"createChannelModal": {
+			"title": "Create Channel",
+			"subtitle": "Choose an avatar and set your channel name & username",
+			"avatarLabel": "Avatar",
+			"nameLabel": "Channel name",
+			"namePlaceholder": "e.g. Tech Vision",
+			"usernameLabel": "Username",
+			"usernamePlaceholder": "techvision",
+			"previewHint": "This is how your channel may appear across the app.",
+			"cancel": "Cancel",
+			"submit": "Create channel",
+			"previewNameFallback": "Channel Name",
+			"previewUsernameFallback": "@username"
+		},
+		"editAccount": {
+			"title": "Edit Account",
+			"subtitle": "Update your profile information below",
+			"profileSectionTitle": "Your profile data",
+			"securitySectionTitle": "Security",
+			"authProvider": {
+				"connectedAccountLabel": "Connected account",
+				"connectedBadge": "Connected",
+				"disconnectButton": "Disconnect"
+			},
+			"setPassword": {
+				"label": "Set password",
+				"emptyValue": "No password set",
+				"newPasswordPlaceholder": "New password",
+				"confirmPasswordPlaceholder": "Confirm password",
+				"editButton": "Set",
+				"cancelButton": "Cancel",
+				"saveButton": "Save"
+			},
+			"fields": {
+				"name": "Name",
+				"username": "Username",
+				"email": "Email"
+			}
+		},
+		"channelVideoList": {
+			"emptyState": "No videos yet. Upload your first video to get started.",
+			"privateBadge": "Private"
+		}
+	},
 	"uiConfigurator": {
 		"title": "Loomio Configurator",
 		"subtitle": "See our platform options",
@@ -35,7 +156,16 @@
 		"deleteAllNotifications": "Delete all notifications",
 		"back": "Back",
 		"noNotifications": "No notifications",
-		"noPersonalActivity": "No personal activity"
+		"noPersonalActivity": "No personal activity",
+		"text": {
+			"commentNew": "{author} commented on your video",
+			"commentReply": "{author} replied to your comment",
+			"likeVideo": "{author} liked your video",
+			"dislikeVideo": "{author} disliked your video",
+			"videoPublished": "New video from {name}",
+			"channelNewFollower": "{author} followed your channel «{channelName}»",
+			"videoRestricted": "Your video «{title}» was restricted for {reason}."
+		}
 	},
 	"watch": {
 		"notFound": "Video not found",
@@ -88,6 +218,27 @@
 		"cancel": "Cancel",
 		"sendReport": "Send report"
 	},
+	"videoWizard": {
+		"steps": {
+			"general": "General",
+			"additional": "Additional",
+			"schedule": "Schedule"
+		}
+	},
+	"workplaceHeader": {
+		"brandTitle": "Loomio Creator",
+		"myChannel": "My channel",
+		"avatarAlt": "Channel avatar"
+	},
+	"workplaceDashboard": {
+		"loadingChannel": "Loading channel data...",
+		"title": "Channel management panel",
+		"addVideosTitle": "Add videos",
+		"addVideosDescription": "Start growing your channel by uploading your first video. You can track its performance here once it's published.",
+		"statVideos": "Videos",
+		"statFollowers": "Followers",
+		"statTotalViews": "Total views"
+	},
 	"report": {
 		"reasons": {
 			"hateSpeech": "Hate speech",
@@ -127,5 +278,111 @@
 		"title": "Followed Channels",
 		"description": "Explore channels you've subscribed to",
 		"emptyState": "You haven't followed any channels yet."
+	},
+	"channelPage": {
+		"notFoundTitle": "Channel not found",
+		"notFoundDescription": "The channel you are looking for doesn’t exist or has been removed.",
+		"goHome": "Go back home",
+		"bannerAlt": "Channel banner",
+		"followersCount": "{count, plural, one {# follower} other {# followers}}",
+		"videosCount": "{count, plural, one {# video} other {# videos}}",
+		"more": "more",
+		"uploadVideo": "Upload video",
+		"customizeChannel": "Customize Channel",
+		"subscribed": "Subscribed",
+		"subscribe": "Subscribe"
+	},
+	"uploadVideoModal": {
+		"title": "Upload Video",
+		"statusUploading": "Uploading video...",
+		"statusProcessing": "Processing video...",
+		"statusReady": "Ready",
+		"back": "Back",
+		"next": "Next",
+		"confirm": "Confirm",
+		"discardTitle": "Discard changes?",
+		"discardDescription": "You have unsaved changes. If you leave, they will be lost.",
+		"cancel": "Cancel",
+		"leave": "Leave",
+		"toastStillUploading": "Video is still uploading",
+		"toastNoChannel": "Channel is not selected",
+		"file": {
+			"dragDrop": "Drag & drop your video here",
+			"orClick": "or click to select a file",
+			"supportedPrefix": "Supported formats:",
+			"formatsList": "MP4, MOV, AVI",
+			"maxSize": "Max size 2 GB"
+		},
+		"preview": {
+			"thumbnailAlt": "Thumbnail preview",
+			"filenameLabel": "Filename: {name}"
+		},
+		"stepFirst": {
+			"titleLabel": "Title (required)",
+			"titlePlaceholder": "Enter a catchy title...",
+			"descriptionLabel": "Description",
+			"descriptionPlaceholder": "Write something about your video...",
+			"tagsLabel": "Tags",
+			"tagsPlaceholder": "e.g. #travel #vlog #music",
+			"tagsFormatPrefix": "Use format:",
+			"tagsFormatExample": "#top #live #music"
+		},
+		"stepSecond": {
+			"thumbnailTitle": "Upload Thumbnail (required)",
+			"thumbnailPreviewAlt": "Thumbnail preview",
+			"changeThumbnailTitle": "Change thumbnail",
+			"deleteThumbnailTitle": "Delete thumbnail",
+			"clickUploadThumbnail": "Click to upload thumbnail",
+			"imageFormats": "(JPG, PNG, WEBP)",
+			"visibilityTitle": "Visibility",
+			"public": "Public",
+			"publicHint": "Anyone can see",
+			"private": "Private",
+			"privateHint": "Only you can see",
+			"audienceTitle": "Audience",
+			"audienceQuestion": "Is this video made for kids? (required)",
+			"yes": "Yes",
+			"yesHint": "Made for kids",
+			"no": "No",
+			"noHint": "Not made for kids"
+		},
+		"stepThird": {
+			"title": "Schedule",
+			"description": "Choose when you want your video to go live.",
+			"publishNow": "Publish now",
+			"publishNowHint": "Video will be visible right away",
+			"scheduleOption": "Schedule",
+			"scheduleHint": "Choose a specific date & time",
+			"publishDateTimeLabel": "Publish Date & Time",
+			"pickDate": "Pick a date"
+		}
+	},
+	"editVideo": {
+		"stepSecond": {
+			"thumbnailTitle": "Upload Thumbnail (required)",
+			"thumbnailPreviewAlt": "Thumbnail preview",
+			"changeThumbnailTitle": "Change thumbnail",
+			"deleteThumbnailTitle": "Delete thumbnail",
+			"clickUploadThumbnail": "Click to upload thumbnail",
+			"imageFormats": "(JPG, PNG, WEBP)",
+			"visibilityTitle": "Visibility",
+			"public": "Public",
+			"publicHint": "Anyone can see",
+			"private": "Private",
+			"privateHint": "Only you can see",
+			"audienceTitle": "Audience",
+			"audienceQuestion": "Is this video made for kids? (required)",
+			"yes": "Yes",
+			"yesHint": "Made for kids",
+			"no": "No",
+			"noHint": "Not made for kids"
+		}
+	},
+	"emailVerification": {
+		"title": "Email verification",
+		"description": "We have sent a verification code to your email address. Please check your inbox and enter the code to continue.",
+		"codePlaceholder": "Your verification code",
+		"completeButton": "Complete registration",
+		"resendButton": "Resend code"
 	}
 }

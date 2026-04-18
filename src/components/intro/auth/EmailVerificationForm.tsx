@@ -18,6 +18,7 @@ import { useEmailVerification } from '@/hooks/auth/useEmailVerification'
 import { useResendCode } from '@/hooks/auth/useResendCode'
 import { emailVerificationSchema } from '@/schemas/auth/email-verify-schema'
 import { formatTime } from '@/utils/format-time'
+import { useTranslations } from 'next-intl'
 
 interface IEmailVerificationFormProps {
 	open: boolean
@@ -34,6 +35,7 @@ export function EmailVerificationForm({
 	setExpiresAt,
 	email,
 }: IEmailVerificationFormProps) {
+	const t = useTranslations()
 	const [code, setCode] = useState('')
 
 	const { confirmEmail } = useEmailVerification()
@@ -68,32 +70,31 @@ export function EmailVerificationForm({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent>
 				<DialogHeader className='flex-col gap-3 text-start'>
-					<DialogTitle className=''>Email verification</DialogTitle>
+					<DialogTitle>{t('emailVerification.title')}</DialogTitle>
 					<DialogDescription>
-						We have sent a verification code to your email address. Please check
-						your inbox and enter the code to continue.
+						{t('emailVerification.description')}
 					</DialogDescription>
 					<Input
 						value={code}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 							setCode(e.target.value)
 						}
-						placeholder='Your verification code hereeee'
+						placeholder={t('emailVerification.codePlaceholder')}
 						className='uppercase placeholder:normal-case'
 					/>
 					<div className='flex gap-3 justify-between items-center'>
-						<div className='flex gap-3 items-center max-[430px]:flex-col w-full '>
+						<div className='flex gap-3 items-center max-[430px]:flex-col w-full'>
 							<Button
 								onClick={handleEmailVerification}
-								className='max-w-[170px] font-bold max-[430px]:max-w-none max-[430px]:w-full'
+								className='max-w-[190px] font-bold max-[430px]:max-w-none max-[430px]:w-full'
 								disabled={code.trim().length === 0}
 							>
-								Complete registration
+								{t('emailVerification.completeButton')}
 							</Button>
 							<div className='flex items-center w-full justify-between'>
 								<Button
 									onClick={handleResendCode}
-									className='relative w-[113px] font-bold max-[430px]:w-full'
+									className='relative w-[140px] font-bold max-[430px]:w-full'
 									disabled={isResendDisabled}
 								>
 									{loading ? (
@@ -105,11 +106,11 @@ export function EmailVerificationForm({
 									) : (
 										<div className='flex items-center justify-center gap-1'>
 											<div className='flex items-center'>
-												<span className=''>Resend code</span>
+												<span>{t('emailVerification.resendButton')}</span>
 												{isResendDisabled && (
 													<span
 														aria-live='polite'
-														className='text-sm w-[50px]  min-[430px]:hidden'
+														className='text-sm w-[50px] min-[430px]:hidden'
 													>
 														{formatTime(timeLeft)}
 													</span>

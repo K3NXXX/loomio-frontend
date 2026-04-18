@@ -8,6 +8,7 @@ import { formatDate } from '@/utils/formatDate'
 import { Play } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 interface ChannelVideoListProps {
 	videos: IVideo[]
@@ -20,10 +21,13 @@ export function ChannelVideoList({
 	className,
 	makeWatchHref = (id) => PAGES.WATCH(id),
 }: ChannelVideoListProps) {
+	const t = useTranslations('accountPage.channelVideoList')
+	const tVideoItem = useTranslations('videoItem')
+
 	if (!videos?.length) {
 		return (
 			<div className='mt-8 rounded-xl border border-dashed p-10 text-center text-sm text-muted-foreground'>
-				No videos yet. Upload your first video to get started
+				{t('emptyState')}
 			</div>
 		)
 	}
@@ -43,6 +47,7 @@ export function ChannelVideoList({
 							src={v.thumbnailFile}
 							alt={v.title}
 							fill
+							unoptimized
 							sizes='(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw'
 							className='object-cover'
 							priority={false}
@@ -56,7 +61,7 @@ export function ChannelVideoList({
 						</div>
 						{v.visibility === 'private' && (
 							<Badge className='absolute bottom-2 left-2 bg-neutral-800/80 backdrop-blur text-white'>
-								Private
+								{t('privateBadge')}
 							</Badge>
 						)}
 					</div>
@@ -67,7 +72,11 @@ export function ChannelVideoList({
 						</h3>
 
 						<div className='mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground'>
-							<span>{v._count?.views ?? 0} views</span>
+							<span>
+								{tVideoItem('viewsCount', {
+									count: v._count?.views ?? 0,
+								})}
+							</span>
 							<span>•</span>
 							<span>{formatDate(v.createdAt)}</span>
 						</div>

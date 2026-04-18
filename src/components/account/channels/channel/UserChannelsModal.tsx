@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import UserChannelsList from '../UserChannelsList'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { X } from 'lucide-react'
 import CreateChannelModal from '@/components/account/channels/CreateChannelModal'
@@ -18,22 +19,23 @@ interface Props {
 }
 
 export function UserChannelsModal({ open, onOpenChange }: Props) {
+	const t = useTranslations()
 	const [search, setSearch] = useState('')
 	const [isCreateOpen, setIsCreateOpen] = useState(false)
 
 	return (
 		<>
 			<Dialog open={open} onOpenChange={onOpenChange}>
-				<DialogContent className='max-w-5xl w-full'>
+				<DialogContent className='w-[calc(100%-1rem)]'>
 					<DialogHeader className='space-y-2'>
-						<DialogTitle>Your Channels</DialogTitle>
+						<DialogTitle>{t('accountPage.channelsModal.title')}</DialogTitle>
 						<p className='text-sm text-muted-foreground'>
-							Manage your channels, search through them, or{' '}
+							{t('accountPage.channelsModal.descriptionPrefix')}{' '}
 							<button
 								onClick={() => setIsCreateOpen(true)}
 								className='text-primary hover:underline cursor-pointer font-bold'
 							>
-								create a new one
+								{t('accountPage.channelsModal.createNewInline')}
 							</button>
 						</p>
 					</DialogHeader>
@@ -42,7 +44,7 @@ export function UserChannelsModal({ open, onOpenChange }: Props) {
 						<Input
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
-							placeholder='Search your channels...'
+							placeholder={t('accountPage.channelsModal.searchPlaceholder')}
 							className='h-9 pr-10 text-sm'
 						/>
 

@@ -30,6 +30,7 @@ import { truncateName } from '@/utils/truncateName'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { FaUpload } from 'react-icons/fa6'
@@ -55,6 +56,7 @@ export function UploadVideoModal({
 	open,
 	onOpenChange,
 }: UploadVideoModalProps) {
+	const t = useTranslations()
 	const {
 		register,
 		handleSubmit,
@@ -222,7 +224,7 @@ export function UploadVideoModal({
 				return
 			}
 			if (!videoId) {
-				toast.error('Video is still uploading')
+				toast.error(t('uploadVideoModal.toastStillUploading'))
 				return
 			}
 			handleSubmit(onSubmit)()
@@ -230,10 +232,9 @@ export function UploadVideoModal({
 	}
 	const onSubmit: SubmitHandler<TUploadVideoSchema> = (data) => {
 		setIsLoading(true)
-		console.log('hello')
 
 		if (!uploadChannelId) {
-			toast.error('Channel is not selected')
+			toast.error(t('uploadVideoModal.toastNoChannel'))
 			return
 		}
 		try {
@@ -347,7 +348,7 @@ export function UploadVideoModal({
 							) : (
 								<>
 									<FaUpload className='text-primary' />
-									Upload Video
+									{t('uploadVideoModal.title')}
 								</>
 							)}
 						</div>
@@ -355,9 +356,10 @@ export function UploadVideoModal({
 						{fileName && (
 							<div className='flex items-center gap-2 w-[300px]'>
 								<span className='text-xs text-muted-foreground whitespace-nowrap'>
-									{status === 'uploading' && 'Uploading video...'}
-									{status === 'processing' && 'Processing video...'}
-									{status === 'ready' && 'Ready'}
+									{status === 'uploading' && t('uploadVideoModal.statusUploading')}
+									{status === 'processing' &&
+										t('uploadVideoModal.statusProcessing')}
+									{status === 'ready' && t('uploadVideoModal.statusReady')}
 								</span>
 
 								<div className='flex-1 h-[4px] bg-neutral-800 rounded-full overflow-hidden'>
@@ -416,7 +418,7 @@ export function UploadVideoModal({
 												disabled={isLoading}
 												className='bg-secondary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 											>
-												Back
+												{t('uploadVideoModal.back')}
 											</Button>
 											<Button
 												onClick={handleNextStep}
@@ -433,9 +435,9 @@ export function UploadVideoModal({
 														className='w-15 h-15'
 													/>
 												) : steps === 3 ? (
-													'Confirm'
+													t('uploadVideoModal.confirm')
 												) : (
-													'Next'
+													t('uploadVideoModal.next')
 												)}
 											</Button>
 										</div>
@@ -449,14 +451,14 @@ export function UploadVideoModal({
 			<AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Discard changes?</AlertDialogTitle>
+						<AlertDialogTitle>{t('uploadVideoModal.discardTitle')}</AlertDialogTitle>
 						<AlertDialogDescription>
-							You have unsaved changes. If you leave, they will be lost.
+							{t('uploadVideoModal.discardDescription')}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogCancel>{t('uploadVideoModal.cancel')}</AlertDialogCancel>
 
 						<AlertDialogAction
 							onClick={async () => {
@@ -481,7 +483,7 @@ export function UploadVideoModal({
 								}
 							}}
 						>
-							Leave
+							{t('uploadVideoModal.leave')}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
