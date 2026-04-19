@@ -21,4 +21,4 @@ export const reportSchema = z
 		},
 	)
 
-export type TReportSchema = z.infer<typeof reportCommentSchema>
+export type TReportSchema = z.infer<typeof reportSchema>

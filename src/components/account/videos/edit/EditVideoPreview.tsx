@@ -51,6 +51,7 @@ export function EditVideoPreview({
 							src={thumbnailPreview || video.thumbnailFile}
 							alt='Thumbnail Overlay'
 							fill
+							unoptimized
 							className='object-cover transition-transform duration-300 group-hover:scale-105'
 						/>
 						<div className='absolute inset-0 flex items-center justify-center bg-black/30'>

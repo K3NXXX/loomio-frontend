@@ -42,7 +42,7 @@ export function UploadVideoFile({
 	}
 
 	return (
-		<div className='flex flex-col items-center justify-center py-20 text-center w-full'>
+		<div className='flex flex-col items-center justify-center py-10 min-[500px]:py-16 min-[700px]:py-20 text-center w-full px-3 min-[500px]:px-0'>
 			<label
 				htmlFor='file'
 				onDragOver={handleDragOver}
@@ -50,8 +50,9 @@ export function UploadVideoFile({
 				onDrop={handleDrop}
 				className={`
 					flex flex-col items-center justify-center w-full
-					max-w-lg border-2 border-dashed rounded-2xl p-10 cursor-pointer
-					transition-all duration-300 ease-in-out
+					max-w-lg border-2 border-dashed rounded-2xl
+					p-5 min-[400px]:p-7 min-[700px]:p-10
+					cursor-pointer transition-all duration-300 ease-in-out
 					${
 						isDragging
 							? 'border-primary bg-neutral-800/60 scale-[1.02]'
@@ -59,14 +60,14 @@ export function UploadVideoFile({
 					}
 				`}
 			>
-				<div className='mb-5 bg-neutral-800 p-6 rounded-full'>
-					<FaCloudUploadAlt className='text-primary text-7xl' />
+				<div className='mb-3 min-[500px]:mb-5 bg-neutral-800 p-4 min-[500px]:p-5 min-[700px]:p-6 rounded-full'>
+					<FaCloudUploadAlt className='text-primary text-4xl min-[400px]:text-5xl min-[700px]:text-7xl' />
 				</div>
 
-				<p className='text-gray-300 text-lg font-medium'>
+				<p className='text-gray-300 text-sm min-[400px]:text-base min-[700px]:text-lg font-medium'>
 					{t('uploadVideoModal.file.dragDrop')}
 				</p>
-				<p className='text-gray-500 text-sm mt-1'>
+				<p className='text-gray-500 text-xs min-[400px]:text-sm mt-1'>
 					{t('uploadVideoModal.file.orClick')}
 				</p>
 
@@ -80,7 +81,7 @@ export function UploadVideoFile({
 				/>
 			</label>
 
-			<p className='text-gray-400 text-sm mt-4'>
+			<p className='text-gray-400 text-xs min-[400px]:text-sm mt-3 min-[500px]:mt-4'>
 				{t('uploadVideoModal.file.supportedPrefix')}{' '}
 				<span className='text-white'>
 					{t('uploadVideoModal.file.formatsList')}
@@ -89,7 +90,9 @@ export function UploadVideoFile({
 			</p>
 
 			{errorMessage && (
-				<p className='text-red-400 text-sm mt-1'>{errorMessage}</p>
+				<p className='text-red-400 text-xs min-[400px]:text-sm mt-1'>
+					{errorMessage}
+				</p>
 			)}
 		</div>
 	)

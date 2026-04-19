@@ -12,8 +12,10 @@ import { MdEdit } from 'react-icons/md'
 import { Button } from '@/components/ui/button'
 import { useRequestReview } from '@/hooks/report/useRequestReview'
 import { TRestrictVideoSchema } from '@/schemas/videos/restrict-video.schema'
+import { getValidationMessage } from '@/utils/validationMessage'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import Lottie from 'lottie-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -32,6 +34,7 @@ export function RestrictVideoModal({
 	open,
 	onOpenChange,
 }: IEditVideoModalProps) {
+	const t = useTranslations('editVideo.modal')
 	const {
 		register,
 		handleSubmit,
@@ -76,9 +79,11 @@ export function RestrictVideoModal({
 			const isValid = await trigger(['title', 'tags'])
 			if (!isValid) {
 				const titleState = getFieldState('title')
-				if (titleState.error) toast.error(titleState.error.message)
+				if (titleState.error)
+					toast.error(getValidationMessage(titleState.error.message, t))
 				const tagsState = getFieldState('tags')
-				if (tagsState.error?.message) toast.error(tagsState.error.message)
+				if (tagsState.error?.message)
+					toast.error(getValidationMessage(tagsState.error.message, t))
 				return
 			}
 			setSteps(2)
@@ -91,7 +96,7 @@ export function RestrictVideoModal({
 				const thumbErr = getFieldState('thumbnail').error?.message
 
 				const audErr = getFieldState('audience').error?.message
-				toast.error(thumbErr || audErr)
+				toast.error(getValidationMessage(thumbErr || audErr, t))
 				return
 			}
 
@@ -106,7 +111,7 @@ export function RestrictVideoModal({
 		setIsLoading(true)
 
 		if (!editingVideo) {
-			toast.error('No video selected for editing')
+			toast.error(t('toastNoVideoSelected'))
 			setIsLoading(false)
 			return
 		}
@@ -155,7 +160,11 @@ export function RestrictVideoModal({
 	}, [open, reset])
 
 	if (!editingVideo) {
-		return 'Loading...'
+		return (
+			<div className='flex items-center justify-center p-8 text-sm text-muted-foreground'>
+				{t('loading')}
+			</div>
+		)
 	}
 
 	return (
@@ -179,7 +188,7 @@ export function RestrictVideoModal({
 					<DialogTitle className='flex items-center gap-2 text-lg font-semibold'>
 						<>
 							<MdEdit className='text-primary' size={20} />
-							Edit Video
+							{t('title')}
 						</>
 					</DialogTitle>
 				</DialogHeader>
@@ -230,7 +239,7 @@ export function RestrictVideoModal({
 										disabled={isLoading}
 										className='bg-secondary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 									>
-										Back
+										{t('back')}
 									</Button>
 									<Button
 										onClick={(e) => {
@@ -258,9 +267,9 @@ export function RestrictVideoModal({
 											/>
 										) : steps ===
 										  (editingVideo.publishType === 'scheduled' ? 3 : 2) ? (
-											'Confirm'
+											t('confirm')
 										) : (
-											'Next'
+											t('next')
 										)}
 									</Button>
 								</div>

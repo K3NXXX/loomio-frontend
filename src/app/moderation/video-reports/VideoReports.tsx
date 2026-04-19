@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { useGetVideoReports } from '@/hooks/report/useGetVideoReports'
 import { cn } from '@/lib/utils'
 import { truncateName } from '@/utils/truncateName'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 const formatReason = (reason: string) => {
@@ -24,6 +25,7 @@ const formatStatus = (status: string) => {
 
 export function VideoReports() {
 	const { videoReports, isLoading } = useGetVideoReports()
+	const t = useTranslations('moderation.videoReports')
 
 	const [selectedId, setSelectedId] = useState<string | null>(null)
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -36,7 +38,7 @@ export function VideoReports() {
 	if (isLoading) {
 		return (
 			<div className='p-10 text-muted-foreground text-center'>
-				Loading video reports...
+				{t('loading')}
 			</div>
 		)
 	}
@@ -44,7 +46,7 @@ export function VideoReports() {
 	if (!videoReports?.length) {
 		return (
 			<div className='p-10 text-muted-foreground text-center'>
-				No video reports yet.
+				{t('noReports')}
 			</div>
 		)
 	}
@@ -78,13 +80,13 @@ export function VideoReports() {
 			)}
 		>
 			<div />
-			<div>Video</div>
-			<div className='text-center'>Video author</div>
-			<div className='text-center'>Reporter</div>
-			<div className='text-center'>Assigned to</div>
-			<div className='text-center'>Reason</div>
-			<div className='text-center'>Status</div>
-			<div className='text-center'>Date</div>
+			<div>{t('video')}</div>
+			<div className='text-center'>{t('videoAuthor')}</div>
+			<div className='text-center'>{t('reporter')}</div>
+			<div className='text-center'>{t('assignedTo')}</div>
+			<div className='text-center'>{t('reason')}</div>
+			<div className='text-center'>{t('status')}</div>
+			<div className='text-center'>{t('date')}</div>
 		</div>
 	)
 
@@ -112,7 +114,9 @@ export function VideoReports() {
 
 					{r.message && (
 						<div className='text-[12px] leading-[1.4] text-muted-foreground/90 pl-[2px] border-l border-border/30 ml-[2px]'>
-							<span className='font-medium text-foreground/70'>Note:</span>{' '}
+							<span className='font-medium text-foreground/70'>
+								{t('note')}
+							</span>{' '}
 							{truncateName(r.message, 75)}
 						</div>
 					)}
@@ -132,7 +136,7 @@ export function VideoReports() {
 						@{r.assignedTo.username}
 					</div>
 				) : (
-					<div className='text-xs text-muted-foreground'>Unassigned</div>
+					<div className='text-xs text-muted-foreground'>{t('unassigned')}</div>
 				)}
 			</div>
 
@@ -171,7 +175,7 @@ export function VideoReports() {
 	return (
 		<div className='p-10 flex flex-col items-start w-full'>
 			<h1 className='text-[26px] font-bold mb-8 tracking-tight w-full'>
-				Video Reports
+				{t('title')}
 			</h1>
 
 			<div className='relative w-full space-y-4'>

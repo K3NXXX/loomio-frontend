@@ -7,8 +7,9 @@ import type { IChannel } from '@/types/channel.types'
 import { getInitials } from '@/utils/get-initials'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { FaPalette, FaThLarge, FaVideo } from 'react-icons/fa'
-import { MdDangerous } from "react-icons/md";
+import { MdDangerous } from 'react-icons/md'
 
 interface WorkplaceSidebarProps {
 	channel: IChannel
@@ -17,25 +18,26 @@ interface WorkplaceSidebarProps {
 
 export function WorkplaceSidebar({ channel }: WorkplaceSidebarProps) {
 	const pathname = usePathname()
+	const t = useTranslations('workplaceSidebar')
 
-	const items = [
+	 const items = [
 		{
-			label: 'Dashboard',
+			label: t('dashboard'),
 			icon: FaThLarge,
 			href: PAGES.WORKPLACE_DASHBOARD(channel.username),
 		},
 		{
-			label: 'Content',
+			label: t('content'),
 			icon: FaVideo,
 			href: PAGES.WORKPLACE_CONTENT(channel.username),
 		},
 		{
-			label: 'Branding',
+			label: t('branding'),
 			icon: FaPalette,
 			href: PAGES.WORKPLACE_BRANDING(channel.username),
 		},
 		{
-			label: 'Danger Zone',
+			label: t('dangerZone'),
 			icon: MdDangerous,
 			href: PAGES.WORKPLACE_DANGER_ZONE(channel.username),
 		},
@@ -49,19 +51,24 @@ export function WorkplaceSidebar({ channel }: WorkplaceSidebarProps) {
 			border-r border-border/60
 			bg-background/95 backdrop-blur
 			shadow-[0_8px_20px_-8px_rgb(0_0_0_/0.35)]
-			hidden md:flex md:flex-col
+			max-[1200px]:hidden
 			'
 		>
 			<div className='flex flex-col items-center px-4 pt-6 pb-4'>
 				<Avatar className='size-30'>
-					<AvatarImage src={channel?.avatarUrl || undefined} alt='avatar' />
+					<AvatarImage
+						src={channel?.avatarUrl || undefined}
+						alt={t('avatarAlt')}
+					/>
 					<AvatarFallback className='text-lg font-semibold'>
 						{getInitials(channel?.username || '')}
 					</AvatarFallback>
 				</Avatar>
 
 				<div className='mt-3 text-center'>
-					<h2 className='font-bold text-lg leading-tight'>Your channel</h2>
+					<h2 className='font-bold text-lg leading-tight'>
+						{t('yourChannel')}
+					</h2>
 					<p className='text-muted-foreground text-sm'>@{channel?.username}</p>
 				</div>
 			</div>

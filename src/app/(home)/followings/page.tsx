@@ -1,10 +1,15 @@
 import { SITE_NAME } from '@/constants/seo.constants'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { Followings } from './Followings'
 
-export const metadata: Metadata = {
-	title: 'Loomio | Followings',
-	description: `${SITE_NAME} followings page`,
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getTranslations('pages')
+
+	return {
+		title: `Loomio | ${t('followings')}`,
+		description: `${SITE_NAME} followings page`,
+	}
 }
 
 export default function FollowingsPage() {

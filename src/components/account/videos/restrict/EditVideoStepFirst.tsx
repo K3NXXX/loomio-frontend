@@ -1,7 +1,10 @@
+'use client'
+
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import type { TEditVideoSchema } from '@/schemas/videos/edit-video.schema'
 import type { IVideo } from '@/types/video.types'
+import { useTranslations } from 'next-intl'
 import type { UseFormRegister } from 'react-hook-form'
 
 interface IEditVideoStepFirstProps {
@@ -14,7 +17,8 @@ export function EditVideoStepFirst({
 	register,
 	video,
 }: IEditVideoStepFirstProps) {
-	console.log(video)
+	const t = useTranslations('uploadVideoModal.stepFirst')
+
 	return (
 		<div className='flex flex-col gap-6 h-[476px]'>
 			<div className='space-y-6'>
@@ -23,13 +27,13 @@ export function EditVideoStepFirst({
 						htmlFor='title'
 						className='block text-sm font-medium text-gray-300 mb-2'
 					>
-						Title (required)
+						{t('titleLabel')}
 					</label>
 					<Input
 						id='title'
 						type='text'
 						defaultValue={video.title}
-						placeholder='Enter a catchy title...'
+						placeholder={t('titlePlaceholder')}
 						{...register('title')}
 						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
 						text-white placeholder-gray-500 px-4 
@@ -43,13 +47,13 @@ export function EditVideoStepFirst({
 						htmlFor='description'
 						className='block text-sm font-medium text-gray-300 mb-2'
 					>
-						Description
+						{t('descriptionLabel')}
 					</label>
 					<Textarea
 						id='description'
 						rows={6}
 						defaultValue={video.description ? video.description : ''}
-						placeholder='Write something about your video...'
+						placeholder={t('descriptionPlaceholder')}
 						{...register('description')}
 						className='h-[140px] overflow-y-auto text-base bg-neutral-800/80 border border-neutral-700 
 						rounded-xl text-white placeholder-gray-500 px-4 py-3 
@@ -63,12 +67,12 @@ export function EditVideoStepFirst({
 						htmlFor='tags'
 						className='block text-sm font-medium text-gray-300 mb-2'
 					>
-						Tags
+						{t('tagsLabel')}
 					</label>
 					<Input
 						id='tags'
 						type='text'
-						placeholder='e.g. #travel #vlog #music'
+						placeholder={t('tagsPlaceholder')}
 						defaultValue={video.tags ? video.tags : ''}
 						{...register('tags')}
 						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
@@ -77,7 +81,8 @@ export function EditVideoStepFirst({
 						transition-colors'
 					/>
 					<p className='text-xs text-gray-500'>
-						Use format: <span className='text-primary'>#top #live #music</span>
+						{t('tagsFormatPrefix')}{' '}
+						<span className='text-primary'>{t('tagsFormatExample')}</span>
 					</p>
 				</div>
 			</div>

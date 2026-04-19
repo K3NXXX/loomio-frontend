@@ -1,11 +1,16 @@
+import { SITE_NAME } from '@/constants/seo.constants'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { use } from 'react'
 import { Search } from './Search'
-import { SITE_NAME } from '@/constants/seo.constants'
 
-export const metadata: Metadata = {
-	title: 'Loomio | Search data',
-	description: `${SITE_NAME} home page`,
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getTranslations('pages')
+
+	return {
+		title: `Loomio | ${t('search')}`,
+		description: `${SITE_NAME} home page`,
+	}
 }
 
 export default function SearchPage({

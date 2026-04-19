@@ -42,7 +42,7 @@ export function HomeUserMenu() {
 						<div className='flex items-center gap-3'>
 							<Avatar className='h-9 w-9'>
 								<AvatarImage src={userData?.avatarUrl} />
-								<AvatarFallback>{getInitials(userData?.name)}</AvatarFallback>
+								<AvatarFallback>{getInitials(userData?.username)}</AvatarFallback>
 							</Avatar>
 							{!isSidebarCollapsed && (
 								<div className='flex flex-col overflow-hidden'>
@@ -65,7 +65,7 @@ export function HomeUserMenu() {
 					<DropdownMenuLabel className='flex gap-3 items-center'>
 						<Avatar className='h-8 w-8'>
 							<AvatarImage src={userData?.avatarUrl} />
-							<AvatarFallback>{getInitials(userData?.name)}</AvatarFallback>
+							<AvatarFallback>{getInitials(userData?.username)}</AvatarFallback>
 						</Avatar>
 						<div className='flex flex-col'>
 							<span className='font-semibold'>

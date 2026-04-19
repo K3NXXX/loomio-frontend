@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
 import { getCroppedImg } from '@/utils/getCroppedImage'
 import { useEffect, useRef, useState } from 'react'
 import { type Area } from 'react-easy-crop'
@@ -23,6 +24,8 @@ export function BannerUploader({
 	minHeight = 1152,
 	valueUrl,
 }: BannerUploaderProps) {
+	const t = useTranslations('workplaceBranding.bannerUploader')
+	const tRoot = useTranslations('workplaceBranding')
 	const fileInputRef = useRef<HTMLInputElement | null>(null)
 	const [tempImageUrl, setTempImageUrl] = useState<string | null>(null)
 	const [isCropModalOpen, setIsCropModalOpen] = useState(false)
@@ -81,15 +84,14 @@ export function BannerUploader({
 				{currentUrl ? (
 					<img
 						src={currentUrl}
-						alt='Channel banner'
+						alt={t('bannerAlt')}
 						className='w-full h-full object-cover object-[center_5%]'
 					/>
 				) : (
 					<span className='text-sm text-muted-foreground'>
-						Recommended size:{' '}
-						<b>
-							{minWidth}×{minHeight}px
-						</b>
+						{t('recommendedWithDims', {
+							dims: `${minWidth}×${minHeight}px`,
+						})}
 					</span>
 				)}
 			</div>
@@ -98,11 +100,10 @@ export function BannerUploader({
 
 			<div className='flex items-center justify-between'>
 				<p className='text-sm text-muted-foreground leading-relaxed max-w-[500px]'>
-					To ensure your banner looks great on all devices, upload at least{' '}
-					<b>
-						{minWidth}×{minHeight}px
-					</b>
-					. Max file size <b>{maxSizeMB} MB</b>.
+					{t('specsLine', {
+						dims: `${minWidth}×${minHeight}px`,
+						maxMb: `${maxSizeMB} MB`,
+					})}
 				</p>
 
 				<input
@@ -119,7 +120,7 @@ export function BannerUploader({
 					className='rounded-full px-5'
 					onClick={openFileDialog}
 				>
-					{currentUrl ? 'Change' : 'Upload'}
+					{currentUrl ? tRoot('change') : tRoot('upload')}
 				</Button>
 			</div>
 

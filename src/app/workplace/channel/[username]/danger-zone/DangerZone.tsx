@@ -17,12 +17,15 @@ import { PAGES } from '@/constants/pages.constants'
 import { useDeleteChannel } from '@/hooks/channel/useDeleteChannel'
 import { useChannelStore } from '@/zustand/store/channelStore'
 import Lottie from 'lottie-react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export function DangerZone() {
 	const { channel } = useChannelStore()
-	const requiredPhrase = `delete channel @${channel?.username}`
+	const t = useTranslations('workplaceDangerZone')
+	const username = channel?.username ?? ''
+	const requiredPhrase = t('confirmPhrase', { username })
 	const [value, setValue] = useState('')
 
 	const router = useRouter()
@@ -32,79 +35,83 @@ export function DangerZone() {
 	})
 
 	return (
-		<div className='p-10 flex flex-col items-start space-y-10'>
+		<div className='p-4 min-[500px]:p-6 min-[980px]:p-10 flex flex-col items-start space-y-6 min-[980px]:space-y-10'>
 			<div className='sticky top-[73px] z-30 bg-background/80 backdrop-blur border-b border-border/40 w-full py-3'>
-				<h1 className='text-[25px] font-bold tracking-tight'>
-					Channel danger zone
+				<h1 className='text-lg min-[400px]:text-xl min-[980px]:text-[25px] font-bold tracking-tight'>
+					{t('pageTitle')}
 				</h1>
 			</div>
 
-			<div className='w-full border border-destructive/40 bg-destructive/10 rounded-xl p-6 space-y-4'>
-				<h2 className='text-lg font-semibold text-destructive'>
-					Delete this channel
+			<div className='w-full border border-destructive/40 bg-destructive/10 rounded-xl p-4 min-[500px]:p-6 space-y-3 min-[500px]:space-y-4'>
+				<h2 className='text-base min-[500px]:text-lg font-semibold text-destructive'>
+					{t('deleteSectionTitle')}
 				</h2>
 
-				<p className='text-sm text-muted-foreground'>
-					Deleting your channel is a permanent action and cannot be undone. All
-					videos, comments, playlists, followers, statistics, and branding
-					associated with this channel will be permanently removed. Make sure
-					you have saved any important content before continuing.
+				<p className='text-xs min-[500px]:text-sm text-muted-foreground'>
+					{t('deleteWarning')}
 				</p>
 
 				<Dialog>
 					<DialogTrigger asChild>
-						<Button variant='destructive' className='mt-2 rounded-full px-6'>
-							Delete channel
+						<Button
+							variant='destructive'
+							className='mt-2 rounded-full px-4 min-[500px]:px-6 text-xs min-[500px]:text-sm'
+						>
+							{t('openDialogButton')}
 						</Button>
 					</DialogTrigger>
 
-					<DialogContent className='max-w-[420px] p-6'>
+					<DialogContent className='w-[calc(100%-1rem)] max-w-[420px] p-4 min-[500px]:p-6'>
 						<DialogHeader className='space-y-1.5'>
-							<DialogTitle className='text-xl font-semibold'>
-								Delete channel?
+							<DialogTitle className='text-base min-[500px]:text-xl font-semibold'>
+								{t('dialogTitle')}
 							</DialogTitle>
 
-							<DialogDescription className='text-sm leading-relaxed text-muted-foreground'>
-								This action is permanent and cannot be undone. All content
-								associated with this channel will be removed.
+							<DialogDescription className='text-xs min-[500px]:text-sm leading-relaxed text-muted-foreground'>
+								{t('dialogDescription')}
 							</DialogDescription>
 						</DialogHeader>
 
-						<div className='flex items-center gap-2 text-sm font-medium mt-4'>
-							<span className='text-foreground'>
-								Type the confirmation phrase:
+						<div className='flex flex-wrap items-center gap-x-2 gap-y-1 text-xs min-[500px]:text-sm font-medium mt-3 min-[500px]:mt-4'>
+							<span className='text-foreground'>{t('confirmPhraseLabel')}</span>
+							<span className='text-destructive break-all'>
+								{requiredPhrase}
 							</span>
-
-							<span className='text-destructive'>{requiredPhrase}</span>
 						</div>
 
 						<Input
 							value={value}
-							placeholder='Enter the phrase above'
+							placeholder={t('phrasePlaceholder')}
 							onChange={(e) => setValue(e.target.value)}
+							className='text-xs min-[500px]:text-sm'
 						/>
 
-						<DialogFooter className='flex justify-end gap-3 pt-4'>
+						<DialogFooter className='flex justify-end gap-2 min-[500px]:gap-3 pt-3 min-[500px]:pt-4'>
 							<DialogClose asChild>
-								<Button variant='outline' className='rounded-full px-5'>
-									Cancel
+								<Button
+									variant='outline'
+									className='rounded-full px-3 min-[500px]:px-5 text-xs min-[500px]:text-sm h-8 min-[500px]:h-10'
+								>
+									{t('cancel')}
 								</Button>
 							</DialogClose>
 
 							<Button
-								disabled={value !== requiredPhrase}
+								disabled={value !== requiredPhrase || channel?.id == null}
 								variant='destructive'
-								className='rounded-full px-6 relative w-[142px]'
-								onClick={() => deleteChannel(channel.id)}
+								className='rounded-full px-4 min-[500px]:px-6 relative w-[120px] min-[500px]:w-[142px] text-xs min-[500px]:text-sm h-8 min-[500px]:h-10'
+								onClick={() => {
+									if (channel?.id != null) deleteChannel(channel.id)
+								}}
 							>
 								{deleteChannelLoading ? (
 									<Lottie
 										animationData={loader}
 										loop={true}
-										className='absolute w-15 h-15'
+										className='absolute w-12 h-12 min-[500px]:w-15 min-[500px]:h-15'
 									/>
 								) : (
-									'	Delete channel'
+									t('confirmDeleteButton')
 								)}
 							</Button>
 						</DialogFooter>

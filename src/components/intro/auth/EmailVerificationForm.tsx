@@ -18,6 +18,7 @@ import { useEmailVerification } from '@/hooks/auth/useEmailVerification'
 import { useResendCode } from '@/hooks/auth/useResendCode'
 import { emailVerificationSchema } from '@/schemas/auth/email-verify-schema'
 import { formatTime } from '@/utils/format-time'
+import { getValidationMessage } from '@/utils/validationMessage'
 import { useTranslations } from 'next-intl'
 
 interface IEmailVerificationFormProps {
@@ -49,7 +50,7 @@ export function EmailVerificationForm({
 
 		if (!result.success) {
 			const message = result.error.issues[0]?.message || 'Invalid code'
-			toast.error(message)
+			toast.error(getValidationMessage(message, t))
 			return
 		}
 

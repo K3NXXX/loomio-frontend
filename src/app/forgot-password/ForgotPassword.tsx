@@ -17,6 +17,7 @@ import { useForgotPassword } from '@/hooks/auth/useForgotPassword'
 import { forgotPasswordSchema } from '@/schemas/auth/forgot-password-schema'
 import { FORGOT_PASSWORD_STEPS } from '@/types/auth.types'
 import { formatTime } from '@/utils/format-time'
+import { getValidationMessage } from '@/utils/validationMessage'
 
 import type { TForgotPasswordSchema } from '@/schemas/auth/forgot-password-schema'
 import type { SubmitHandler } from 'react-hook-form'
@@ -45,9 +46,9 @@ export function ForgotPassword() {
 
 	useEffect(() => {
 		if (errors.email?.message) {
-			toast(errors.email.message)
+			toast(getValidationMessage(errors.email.message, t))
 		}
-	}, [errors.email])
+	}, [errors.email, t])
 
 	return (
 		<div

@@ -5,6 +5,7 @@ import type { IVideo } from '@/types/video.types'
 import { formatDateTimeLocal } from '@/utils/formatDateTimeLocal'
 
 import { Calendar, Clock } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import type { UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
 interface EditVideoStepThirdProps {
@@ -18,16 +19,15 @@ export function EditVideoStepThird({
 	watch,
 	video,
 }: EditVideoStepThirdProps) {
+	const t = useTranslations('uploadVideoModal.stepThird')
 	const publishType = watch('publishType') || video.publishType
 	const publishDate = watch('publishDate') || video.publishDate
 
 	return (
 		<div className='flex flex-col gap-6 h-[476px]'>
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>Schedule</h3>
-				<p className='text-sm text-gray-400 mb-3'>
-					Choose when you want your video to go live.
-				</p>
+				<h3 className='text-lg font-semibold mb-3 text-white'>{t('title')}</h3>
+				<p className='text-sm text-gray-400 mb-3'>{t('description')}</p>
 
 				<div className='flex gap-4'>
 					<label
@@ -51,9 +51,9 @@ export function EditVideoStepThird({
 						/>
 						<Clock className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Publish now</span>
+							<span className='text-white font-medium'>{t('publishNow')}</span>
 							<span className='text-xs text-gray-400'>
-								Video will be visible right away
+								{t('publishNowHint')}
 							</span>
 						</div>
 					</label>
@@ -79,10 +79,10 @@ export function EditVideoStepThird({
 						/>
 						<Calendar className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Schedule</span>
-							<span className='text-xs text-gray-400'>
-								Choose a specific date & time
+							<span className='text-white font-medium'>
+								{t('scheduleOption')}
 							</span>
+							<span className='text-xs text-gray-400'>{t('scheduleHint')}</span>
 						</div>
 					</label>
 				</div>
@@ -93,7 +93,7 @@ export function EditVideoStepThird({
 							htmlFor='publish-date'
 							className='block text-sm text-gray-300 mb-1'
 						>
-							Publish Date & Time
+							{t('publishDateTimeLabel')}
 						</label>
 						<input
 							type='datetime-local'

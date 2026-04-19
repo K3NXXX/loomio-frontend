@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 type Props = {
@@ -22,6 +23,7 @@ export function EditableField({
 	isSuccess,
 }: Props) {
 	const [isEditing, setIsEditing] = useState(false)
+	const t = useTranslations()
 
 	const handleEdit = () => {
 		setValue(field, value || '', { shouldDirty: true })
@@ -67,7 +69,7 @@ export function EditableField({
 						className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm border-white/10 bg-white/5 hover:bg-white/10'
 						onClick={handleEdit}
 					>
-						Edit
+						{t('playlists.edit')}
 					</Button>
 				) : (
 					<>
@@ -77,14 +79,14 @@ export function EditableField({
 							className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm border-white/10 bg-white/5 hover:bg-white/10'
 							onClick={handleCancel}
 						>
-							Cancel
+							{t('common.cancel')}
 						</Button>
 
 						<Button
 							type='submit'
 							className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm bg-primary hover:bg-primary/90 shadow-md shadow-primary/20'
 						>
-							Save
+							{t('common.save')}
 						</Button>
 					</>
 				)}

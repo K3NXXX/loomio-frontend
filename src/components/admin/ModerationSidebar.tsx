@@ -1,6 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -21,10 +22,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 export function ModerationSidebar({ user }: { user: IGetUserData }) {
 	const pathname = usePathname()
+	const t = useTranslations('moderation.sidebar')
 
 	const dashboardItem = [
 		{
-			label: 'Dashboard',
+			label: t('dashboard'),
 			icon: MdDashboard,
 			href: PAGES.MODERATION_DASHBOARD,
 		},
@@ -32,17 +34,17 @@ export function ModerationSidebar({ user }: { user: IGetUserData }) {
 
 	const reportItems = [
 		{
-			label: 'Reports: Videos',
+			label: t('reportsVideos'),
 			icon: MdOutlineVideoLibrary,
 			href: PAGES.MODERATION_VIDEO_REPORTS,
 		},
 		{
-			label: 'Reports: Comments',
+			label: t('reportsComments'),
 			icon: FaFlag,
 			href: PAGES.MODERATION_COMMENT_REPORTS,
 		},
 		{
-			label: 'Reports: Reviews',
+			label: t('reportsReviews'),
 			icon: MdOutlineRateReview,
 			href: PAGES.MODERATION_VIDEO_REVIEWS,
 		},
@@ -50,12 +52,12 @@ export function ModerationSidebar({ user }: { user: IGetUserData }) {
 
 	const historyItems = [
 		{
-			label: 'Video History',
+			label: t('videoHistory'),
 			icon: MdHistory,
 			href: PAGES.MODERATION_VIDEO_HISTORY,
 		},
 		{
-			label: 'Comment History',
+			label: t('commentHistory'),
 			icon: MdHistory,
 			href: PAGES.MODERATION_COMMENT_HISTORY,
 		},

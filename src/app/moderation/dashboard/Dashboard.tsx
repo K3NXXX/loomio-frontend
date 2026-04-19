@@ -3,45 +3,45 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useReportStats } from '@/hooks/report/useReportStats'
 import { BarChart2, CheckCircle, Clock, Users } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export function Dashboard() {
 	const { data: stats, isLoading } = useReportStats()
+	const t = useTranslations('moderation.dashboard')
 
 	return (
 		<div className='p-10 flex flex-col gap-12'>
 			{/* HEADER */}
 			<div>
 				<h1 className='text-[26px] font-semibold tracking-tight'>
-					Moderation dashboard
+					{t('title')}
 				</h1>
-				<p className='text-muted-foreground text-sm mt-1'>
-					Track report flow, workload and moderation queue in real-time.
-				</p>
+				<p className='text-muted-foreground text-sm mt-1'>{t('subtitle')}</p>
 			</div>
 
 			{/* TOP STAT BLOCK */}
 			<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
 				<StatCard
 					icon={<BarChart2 size={18} />}
-					title='Total reports'
+					title={t('totalReports')}
 					value={stats?.total}
 					loading={isLoading}
 				/>
 				<StatCard
 					icon={<Clock size={18} />}
-					title='Pending'
+					title={t('pending')}
 					value={stats?.pending}
 					loading={isLoading}
 				/>
 				<StatCard
 					icon={<Users size={18} />}
-					title='In progress'
+					title={t('inProgress')}
 					value={stats?.inProgress}
 					loading={isLoading}
 				/>
 				<StatCard
 					icon={<CheckCircle size={18} />}
-					title='Resolved'
+					title={t('resolved')}
 					value={stats?.resolved}
 					loading={isLoading}
 				/>
@@ -49,22 +49,22 @@ export function Dashboard() {
 
 			{/* REPORT TYPE BREAKDOWN */}
 			<div>
-				<SectionTitle>Reports type breakdown</SectionTitle>
+				<SectionTitle>{t('reportsTypeBreakdown')}</SectionTitle>
 
 				<div className='grid grid-cols-2 md:w-[400px] gap-4'>
-					<TypeCard title='Video reports' value={stats?.videoReports} />
-					<TypeCard title='Comment reports' value={stats?.commentReports} />
+					<TypeCard title={t('videoReports')} value={stats?.videoReports} />
+					<TypeCard title={t('commentReports')} value={stats?.commentReports} />
 				</div>
 			</div>
 
 			{/* MODERATORS LOAD */}
 			<div className='flex flex-col gap-3'>
-				<SectionTitle>Moderators workload</SectionTitle>
+				<SectionTitle>{t('moderatorsWorkload')}</SectionTitle>
 
 				<ListPanel>
-					{isLoading && <EntityFallback text='Loading...' />}
+					{isLoading && <EntityFallback text={t('loading')} />}
 					{!isLoading && !stats?.moderatorsWorking?.length && (
-						<EntityFallback text='No active moderators' />
+						<EntityFallback text={t('noActiveModerators')} />
 					)}
 
 					{stats?.moderatorsWorking?.map((m) => (
@@ -73,18 +73,19 @@ export function Dashboard() {
 							name={m.user.username}
 							avatar={m.user.avatarUrl}
 							count={m.count}
+							t={t}
 						/>
 					))}
 				</ListPanel>
 			</div>
 
 			<div className='flex flex-col gap-3'>
-				<SectionTitle>Active review queue</SectionTitle>
+				<SectionTitle>{t('activeReviewQueue')}</SectionTitle>
 
 				<ListPanel>
-					{isLoading && <EntityFallback text='Loading queue...' />}
+					{isLoading && <EntityFallback text={t('loadingQueue')} />}
 					{!isLoading && !stats?.activeAssignments?.length && (
-						<EntityFallback text='No active reports' />
+						<EntityFallback text={t('noActiveReports')} />
 					)}
 
 					{stats?.activeAssignments?.map((r) => (
@@ -92,7 +93,7 @@ export function Dashboard() {
 							key={r.id}
 							label={r.reason.replace(/_/g, ' ')}
 							value={r.assignedTo?.username ?? '—'}
-							sub={r.videoId ? 'Video report' : 'Comment report'}
+							sub={r.videoId ? t('videoReport') : t('commentReport')}
 						/>
 					))}
 				</ListPanel>
@@ -101,8 +102,7 @@ export function Dashboard() {
 	)
 }
 
-
-const ModeratorItem = ({ name, avatar, count, id }: any) => (
+const ModeratorItem = ({ name, avatar, count, t }: any) => (
 	<div className='p-4 flex items-center justify-between hover:bg-muted/10 transition'>
 		<div className='flex items-center gap-3'>
 			<Avatar className='size-8'>
@@ -115,7 +115,9 @@ const ModeratorItem = ({ name, avatar, count, id }: any) => (
 			</div>
 		</div>
 
-		<p className='text-sm font-semibold opacity-90'>{count} reports</p>
+		<p className='text-sm font-semibold opacity-90'>
+			{t('reportsCount', { count })}
+		</p>
 	</div>
 )
 

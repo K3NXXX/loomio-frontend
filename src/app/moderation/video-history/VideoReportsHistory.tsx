@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { useGetVideoHistory } from '@/hooks/report/useGetVideoHistory'
 import { cn } from '@/lib/utils'
 import { truncateName } from '@/utils/truncateName'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 const formatReason = (reason: string) =>
@@ -22,6 +23,7 @@ const formatStatus = (status: string) =>
 
 export function VideoReportsHistory() {
 	const { videoHistory, isLoading } = useGetVideoHistory()
+	const t = useTranslations('moderation.videoHistory')
 
 	const [selectedId, setSelectedId] = useState<string | null>(null)
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -34,7 +36,7 @@ export function VideoReportsHistory() {
 	if (isLoading) {
 		return (
 			<div className='p-10 text-muted-foreground text-center'>
-				Loading history...
+				{t('loading')}
 			</div>
 		)
 	}
@@ -42,7 +44,7 @@ export function VideoReportsHistory() {
 	if (!videoHistory?.length) {
 		return (
 			<div className='p-10 text-muted-foreground text-center'>
-				No resolved video reports.
+				{t('noReports')}
 			</div>
 		)
 	}
@@ -76,13 +78,13 @@ export function VideoReportsHistory() {
 			)}
 		>
 			<div />
-			<div>Video</div>
-			<div className='text-center'>Video author</div>
-			<div className='text-center'>Reporter</div>
-			<div className='text-center'>Resolved by</div>
-			<div className='text-center'>Reason</div>
-			<div className='text-center'>Status</div>
-			<div className='text-center'>Date</div>
+			<div>{t('video')}</div>
+			<div className='text-center'>{t('videoAuthor')}</div>
+			<div className='text-center'>{t('reporter')}</div>
+			<div className='text-center'>{t('resolvedBy')}</div>
+			<div className='text-center'>{t('reason')}</div>
+			<div className='text-center'>{t('status')}</div>
+			<div className='text-center'>{t('date')}</div>
 		</div>
 	)
 
@@ -120,7 +122,7 @@ export function VideoReportsHistory() {
 						@{r.assignedTo.username}
 					</div>
 				) : (
-					<div className='text-xs text-muted-foreground'>Unassigned</div>
+					<div className='text-xs text-muted-foreground'>{t('unassigned')}</div>
 				)}
 			</div>
 
@@ -158,7 +160,7 @@ export function VideoReportsHistory() {
 	return (
 		<div className='p-10 flex flex-col items-start w-full'>
 			<h1 className='text-[26px] font-bold mb-8 tracking-tight w-full'>
-				Video Reports — History
+				{t('title')}
 			</h1>
 
 			<div className='relative w-full space-y-4'>

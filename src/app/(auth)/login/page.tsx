@@ -4,12 +4,17 @@ import LogIn from './LogIn'
 
 import { PAGES } from '@/constants/pages.constants'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export const metadata: Metadata = {
-	title: 'Log in',
-	description: `${SITE_NAME} log in page`,
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getTranslations('pages')
+
+	return {
+		title: t('login'),
+		description: `${SITE_NAME} log in page`,
+	}
 }
 
 export default async function LogInPage() {

@@ -13,12 +13,14 @@ import {
 import { useChannelStore } from '@/zustand/store/channelStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export function Branding() {
 	const { channel } = useChannelStore()
 	const { editChannel } = useEditChannel()
+	const t = useTranslations('workplaceBranding')
 
 	const [avatarTouched, setAvatarTouched] = useState(false)
 	const [bannerTouched, setBannerTouched] = useState(false)
@@ -51,7 +53,6 @@ export function Branding() {
 		defaultValues,
 	})
 
-	// 🚀 must register file inputs for RHF
 	useEffect(() => {
 		register('avatarFile')
 		register('bannerFile')
@@ -115,7 +116,6 @@ export function Branding() {
 		fd.append('removeBanner', String(data.removeBanner ?? false))
 
 		if (!channel?.id) {
-			console.error('❌ No channel id — aborting submit')
 			return
 		}
 
@@ -136,35 +136,38 @@ export function Branding() {
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className='p-10 flex flex-col items-start min-h-[calc(100vh-73px)] space-y-10'
+			className='py-10 px-5 flex flex-col items-start min-h-[calc(100vh-73px)] space-y-10'
 		>
-			<div className='sticky top-[73px] z-30 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40 flex justify-between w-full'>
-				<div className='flex items-center justify-between w-full px-0 py-3'>
-					<h1 className='text-[25px] font-bold tracking-tight'>
-						Channel branding
+			<div className='sticky top-[73px] z-30 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40 w-full'>
+				<div className='flex flex-col min-[500px]:flex-row min-[500px]:items-center justify-between w-full py-3 gap-2 min-[500px]:gap-3'>
+					<h1 className='text-lg min-[400px]:text-xl min-[980px]:text-[25px] font-bold tracking-tight shrink-0'>
+						{t('pageTitle')}
 					</h1>
-					<div className='flex items-center gap-3'>
+					<div className='flex items-center gap-2 flex-wrap'>
 						<Button
 							type='button'
 							variant='secondary'
-							className='rounded-full px-5 text-sm font-medium'
+							className='rounded-full px-3 min-[400px]:px-4 text-xs min-[400px]:text-sm font-medium h-8 min-[400px]:h-9'
+							asChild
 						>
-							<Link href={PAGES.CHANNEL(channel?.username)}>Go to channel</Link>
+							<Link href={PAGES.CHANNEL(channel?.username ?? '')}>
+								{t('goToChannel')}
+							</Link>
 						</Button>
 						<Button
 							type='button'
 							variant='outline'
-							className='rounded-full px-5 text-sm font-medium'
+							className='rounded-full px-3 min-[400px]:px-4 text-xs min-[400px]:text-sm font-medium h-8 min-[400px]:h-9'
 							onClick={onCancel}
 						>
-							Cancel
+							{t('cancel')}
 						</Button>
 						<Button
 							type='submit'
 							disabled={isPublishDisabled}
-							className='rounded-full px-6 text-sm font-medium'
+							className='rounded-full px-3 min-[400px]:px-4 text-xs min-[400px]:text-sm font-medium h-8 min-[400px]:h-9'
 						>
-							Publish
+							{t('publish')}
 						</Button>
 					</div>
 				</div>

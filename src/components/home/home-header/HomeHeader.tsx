@@ -71,6 +71,67 @@ export function HomeHeader() {
 						</Breadcrumb>
 						<HeaderSearch className='max-[1024px]:hidden' />
 						<div className='flex items-center gap-5'>
+							<div className='min-[1024px]:hidden flex'>
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<button className='cursor-pointer flex items-center justify-center w-9 h-9 rounded-full hover:bg-white/10 transition-colors'>
+											<FaPlus size={18} color='white' />
+										</button>
+									</DropdownMenuTrigger>
+
+									<DropdownMenuContent
+										align='start'
+										alignOffset={80}
+										className='w-[calc(100vw-2rem)] max-w-72 mx-4'
+									>
+										<DropdownMenuLabel>
+											{t('common.selectChannel')}
+										</DropdownMenuLabel>
+										<DropdownMenuSeparator />
+
+										{isLoading ? (
+											<div className='px-3 py-2 text-sm text-muted-foreground'>
+												{t('common.loading')}
+											</div>
+										) : !userChannels?.length ? (
+											<div className='px-3 py-2 text-sm text-muted-foreground'>
+												{t('common.noChannels')}{' '}
+												<span
+													onClick={() => setIsCreateFormOpen(true)}
+													className='text-primary font-bold cursor-pointer pl-1'
+												>
+													{t('common.createNew')}
+												</span>
+											</div>
+										) : (
+											<ScrollArea className='max-h-72'>
+												{userChannels.map((ch) => (
+													<DropdownMenuItem
+														key={ch.id}
+														onClick={() => handlePickChannel(ch.id)}
+														className='cursor-pointer gap-3 py-2.5'
+													>
+														<Avatar className='h-9 w-9 min-[400px]:h-10 min-[400px]:w-10 shrink-0'>
+															<AvatarImage src={ch.avatarUrl ?? undefined} />
+															<AvatarFallback>
+																{getInitials(ch.name)}
+															</AvatarFallback>
+														</Avatar>
+														<div className='flex flex-col leading-tight min-w-0'>
+															<span className='text-sm font-medium truncate'>
+																{ch.name}
+															</span>
+															<span className='text-xs text-muted-foreground truncate'>
+																@{ch.username}
+															</span>
+														</div>
+													</DropdownMenuItem>
+												))}
+											</ScrollArea>
+										)}
+									</DropdownMenuContent>
+								</DropdownMenu>
+							</div>
 							<NotificationDropdown />
 							<div
 								onClick={() => setIsMobileSidebarOpen(true)}

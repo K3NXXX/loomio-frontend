@@ -3,6 +3,7 @@
 import type { IVideo } from '@/types/video.types'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 interface IEditVideoPreviewProps {
@@ -15,6 +16,7 @@ export function RestrictVideoPreview({
 	previewUrl,
 	video,
 }: IEditVideoPreviewProps) {
+	const t = useTranslations('editVideo.restrictPreview')
 	const { thumbnailPreview, setVideoFile } = useVideoStore()
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
@@ -62,7 +64,7 @@ export function RestrictVideoPreview({
 					>
 						<Image
 							src={thumbnailPreview || video.thumbnailFile}
-							alt='Thumbnail Overlay'
+							alt={t('thumbnailOverlayAlt')}
 							fill
 							className='object-cover duration-300 group-hover:scale-105'
 						/>
@@ -95,7 +97,7 @@ export function RestrictVideoPreview({
 						onClick={() => videoInputRef.current?.click()}
 						className='px-6 py-2 text-sm rounded-lg bg-primary text-white font-semibold hover:bg-primary/80 transition cursor-pointer'
 					>
-						Upload new video
+						{t('uploadNewVideo')}
 					</button>
 
 					<input

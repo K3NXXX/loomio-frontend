@@ -8,6 +8,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog'
 import { ZoomIn } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Cropper, { type Area } from 'react-easy-crop'
 
 interface CropAvatarModalProps {
@@ -33,13 +34,14 @@ export function CropAvatarModal({
 	onCropComplete,
 	onSave,
 }: CropAvatarModalProps) {
+	const t = useTranslations()
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogContent className='max-w-[380px] p-0 overflow-hidden border-white/10 bg-neutral-950 text-white rounded-2xl'>
 				<div className='px-5 pt-5 pb-3 bg-gradient-to-b from-white/5 to-transparent'>
 					<DialogHeader>
 						<DialogTitle className='text-sm font-semibold tracking-wide uppercase text-white/50'>
-							Adjust Avatar
+							{t('common.cropAvatar')}
 						</DialogTitle>
 					</DialogHeader>
 				</div>
@@ -85,7 +87,7 @@ export function CropAvatarModal({
 						className='text-white/50 hover:text-white hover:bg-white/8 rounded-lg'
 						onClick={() => onOpenChange(false)}
 					>
-						Cancel
+						{t('common.cancel')}
 					</Button>
 					<Button
 						type='button'
@@ -93,7 +95,7 @@ export function CropAvatarModal({
 						className='bg-primary hover:bg-primary/90 text-white rounded-lg px-6 shadow-md shadow-primary/20'
 						onClick={onSave}
 					>
-						Save
+						{t('common.save')}
 					</Button>
 				</div>
 			</DialogContent>

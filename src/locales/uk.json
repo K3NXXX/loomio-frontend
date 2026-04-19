@@ -128,7 +128,7 @@
 			"fields": {
 				"name": "Ім’я",
 				"username": "Юзернейм",
-				"email": "Email"
+				"email": "Електронна пошта"
 			}
 		},
 		"channelVideoList": {
@@ -141,6 +141,27 @@
 		"subtitle": "Оберіть параметри платформи",
 		"themeColors": "Кольори теми",
 		"language": "Мова"
+	},
+	"pages": {
+		"home": "Головна",
+		"account": "Профіль",
+		"editAccount": "Редагувати профіль",
+		"followings": "Підписки",
+		"playlists": "Плейлисти",
+		"playlist": "Плейлист",
+		"channels": "Канали",
+		"search": "Пошук",
+		"watch": "Перегляд",
+		"videoNotFound": "Відео не знайдено",
+		"creator": "Творець",
+		"workplace": "Робоче місце",
+		"moderationPanel": "Панель модерації",
+		"login": "Увійти",
+		"registration": "Реєстрація",
+		"oauthRegistration": "OAuth реєстрація",
+		"forgotPassword": "Забули пароль",
+		"resetPassword": "Скинути пароль",
+		"intro": "Вступ"
 	},
 	"videoItem": {
 		"viewsCount": "{count, plural, one {# перегляд} few {# перегляди} many {# переглядів} other {# перегляду}}",
@@ -165,6 +186,113 @@
 			"videoPublished": "Нове відео від {name}",
 			"channelNewFollower": "{author} підписався на ваш канал «{channelName}»",
 			"videoRestricted": "Ваше відео «{title}» обмежено через {reason}."
+		}
+	},
+	"moderation": {
+		"dashboard": {
+			"title": "Панель модерації",
+			"subtitle": "Відстежуйте потік звітів, навантаження та чергу модерації в режимі реального часу.",
+			"totalReports": "Загальна кількість звітів",
+			"pending": "Очікують",
+			"inProgress": "В процесі",
+			"resolved": "Вирішені",
+			"reportsTypeBreakdown": "Розподіл типів звітів",
+			"videoReports": "Звіти про відео",
+			"commentReports": "Звіти про коментарі",
+			"moderatorsWorkload": "Навантаження модераторів",
+			"loading": "Завантаження...",
+			"noActiveModerators": "Немає активних модераторів",
+			"activeReviewQueue": "Активна черга перевірки",
+			"loadingQueue": "Завантаження черги...",
+			"noActiveReports": "Немає активних звітів",
+			"videoReport": "Звіт про відео",
+			"commentReport": "Звіт про коментар",
+			"reportsCount": "{count} звітів"
+		},
+		"videoReviews": {
+			"title": "Звіти про відео",
+			"loading": "Завантаження звітів про відео...",
+			"noReports": "Поки що немає звітів про відео.",
+			"video": "Відео",
+			"videoAuthor": "Автор відео",
+			"reporter": "Звітодавець",
+			"assignedTo": "Призначено",
+			"reason": "Причина",
+			"status": "Статус",
+			"date": "Дата",
+			"note": "Примітка:",
+			"unassigned": "Не призначено"
+		},
+		"videoReports": {
+			"title": "Звіти про відео",
+			"loading": "Завантаження звітів про відео...",
+			"noReports": "Поки що немає звітів про відео.",
+			"video": "Відео",
+			"videoAuthor": "Автор відео",
+			"reporter": "Звітодавець",
+			"assignedTo": "Призначено",
+			"reason": "Причина",
+			"status": "Статус",
+			"date": "Дата",
+			"note": "Примітка:",
+			"unassigned": "Не призначено"
+		},
+		"commentReports": {
+			"title": "Звіти про коментарі",
+			"loading": "Завантаження звітів про коментарі...",
+			"noReports": "Немає звітів про коментарі.",
+			"comment": "Коментар",
+			"commentAuthor": "Автор коментаря",
+			"reporter": "Звітодавець",
+			"assignedTo": "Призначено",
+			"reason": "Причина",
+			"status": "Статус",
+			"date": "Дата",
+			"note": "Примітка:",
+			"unassigned": "Не призначено"
+		},
+		"header": {
+			"title": "Панель модерації",
+			"logout": "Вийти"
+		},
+		"sidebar": {
+			"panelTitle": "Панель модерації",
+			"reportsSection": "Звіти",
+			"historySection": "Історія",
+			"dashboard": "Панель",
+			"reportsVideos": "Звіти: відео",
+			"reportsComments": "Звіти: коментарі",
+			"reportsReviews": "Звіти: оцінки",
+			"videoHistory": "Історія відео",
+			"commentHistory": "Історія коментарів"
+		},
+		"commentHistory": {
+			"title": "Історія звітів про коментарі",
+			"loading": "Завантаження звітів про коментарі...",
+			"noReports": "Немає звітів про коментарі.",
+			"comment": "Коментар",
+			"commentAuthor": "Автор коментаря",
+			"reporter": "Звітодавець",
+			"resolvedBy": "Вирішив",
+			"reason": "Причина",
+			"status": "Статус",
+			"date": "Дата",
+			"note": "Примітка:",
+			"unassigned": "Не призначено",
+			"deletedComment": "Видалений коментар"
+		},
+		"videoHistory": {
+			"title": "Звіти про відео — Історія",
+			"loading": "Завантаження історії...",
+			"noReports": "Немає вирішених звітів про відео.",
+			"video": "Відео",
+			"videoAuthor": "Автор відео",
+			"reporter": "Звітодавець",
+			"resolvedBy": "Вирішив",
+			"reason": "Причина",
+			"status": "Статус",
+			"date": "Дата",
+			"unassigned": "Не призначено"
 		}
 	},
 	"watch": {
@@ -215,8 +343,11 @@
 		"noChannels": "У вас ще немає каналів.",
 		"createNew": "Створити",
 		"selectChannel": "Оберіть канал",
+		"sendReport": "Надіслати скаргу",
+		"cropAvatar": "Налаштування аватара",
 		"cancel": "Скасувати",
-		"sendReport": "Надіслати скаргу"
+		"save": "Зберегти",
+		"edit": "Редагувати"
 	},
 	"videoWizard": {
 		"steps": {
@@ -230,6 +361,74 @@
 		"myChannel": "Мій канал",
 		"avatarAlt": "Аватар каналу"
 	},
+	"workplaceSidebar": {
+		"yourChannel": "Ваш канал",
+		"avatarAlt": "Аватар каналу",
+		"dashboard": "Панель",
+		"content": "Контент",
+		"branding": "Брендинг",
+		"dangerZone": "Небезпечні дії"
+	},
+	"workplaceDangerZone": {
+		"pageTitle": "Небезпечні дії",
+		"deleteSectionTitle": "Видалити цей канал",
+		"deleteWarning": "Видалення каналу є остаточною дією, її не можна скасувати. Усі відео, коментарі, плейлисти, підписники, статистика та брендинг, пов’язані з цим каналом, будуть безповоротно вилучені. Переконайтеся, що ви зберегли важливий контент, перш ніж продовжити.",
+		"openDialogButton": "Видалити канал",
+		"dialogTitle": "Видалити канал?",
+		"dialogDescription": "Цю дію не можна скасувати. Увесь контент, пов’язаний із цим каналом, буде вилучено.",
+		"confirmPhraseLabel": "Введіть фразу підтвердження:",
+		"confirmPhrase": "видалити канал @{username}",
+		"phrasePlaceholder": "Введіть фразу згори",
+		"cancel": "Скасувати",
+		"confirmDeleteButton": "Видалити канал"
+	},
+	"workplaceBranding": {
+		"pageTitle": "Брендинг каналу",
+		"goToChannel": "Перейти до каналу",
+		"cancel": "Скасувати",
+		"publish": "Опублікувати",
+		"save": "Зберегти",
+		"upload": "Завантажити",
+		"change": "Змінити",
+		"delete": "Видалити",
+		"banner": {
+			"sectionTitle": "Банер",
+			"sectionDescription": "Це зображення показується вгорі сторінки вашого каналу.",
+			"removeBannerTitle": "Прибрати банер"
+		},
+		"bannerUploader": {
+			"bannerAlt": "Банер каналу",
+			"recommendedWithDims": "Рекомендований розмір: {dims}",
+			"specsLine": "Щоб банер добре виглядав на всіх пристроях, завантажте зображення принаймні {dims}. Максимальний розмір файлу — {maxMb}.",
+			"adjustTitle": "Налаштування банера"
+		},
+		"avatar": {
+			"sectionTitle": "Фото профілю",
+			"sectionDescription": "Фото профілю може відображатися поруч із вашими відео та коментарями.",
+			"selectedPrefix": "Обрано:"
+		},
+		"avatarUploader": {
+			"hintLine": "Використовуйте принаймні {dims}. Максимальний розмір файлу — {maxMb}.",
+			"adjustTitle": "Налаштування фото",
+			"previewAlt": "Аватар",
+			"aspectPlaceholder": "Аватар 1:1",
+			"errors": {
+				"fileTooLarge": "Файл завеликий. Максимум {maxMB} МБ.",
+				"imageTooSmall": "Зображення замале. Мінімум {minW}×{minH}px.",
+				"invalidImage": "Некоректне зображення"
+			}
+		},
+		"fields": {
+			"sectionTitle": "Інформація про канал",
+			"sectionDescription": "Налаштуйте, як назва каналу, юзернейм і опис відображаються на Loomio.",
+			"nameLabel": "Назва каналу",
+			"nameHint": "Оберіть назву, що відображає вас або ваш контент.",
+			"usernameLabel": "Юзернейм каналу",
+			"usernameHint": "Створіть унікальний юзернейм літерами та цифрами.",
+			"descriptionLabel": "Опис каналу",
+			"descriptionPlaceholder": "Розкажіть про свій канал..."
+		}
+	},
 	"workplaceDashboard": {
 		"loadingChannel": "Завантаження даних каналу…",
 		"title": "Панель керування каналом",
@@ -238,6 +437,36 @@
 		"statVideos": "Відео",
 		"statFollowers": "Підписники",
 		"statTotalViews": "Усього переглядів"
+	},
+	"workplaceContent": {
+		"pageTitle": "Контент на вашому каналі"
+	},
+	"workplaceChannelVideosList": {
+		"emptyState": "Ви ще не завантажили відео.",
+		"colVideo": "Відео",
+		"colVisibility": "Видимість",
+		"colRestrictions": "Обмеження",
+		"colDate": "Дата",
+		"colScheduledFor": "Заплановано на",
+		"colViews": "Перегляди",
+		"colComments": "Коментарі",
+		"noThumbnail": "Немає прев’ю",
+		"badgeScheduled": "Заплановано",
+		"addDescription": "Додайте опис",
+		"visibilityPublic": "Публічне",
+		"visibilityPrivate": "Приватне",
+		"visibilityRestricted": "Обмежено",
+		"restrictedTooltipLine1": "⚠ Це відео обмежено через порушення правил контенту.",
+		"restrictedTooltipLine2": "Відредагуйте відео й подайте запит на перевірку, перш ніж знову публікувати.",
+		"audienceForChildren": "Для дітей",
+		"audienceAgeRestrictions": "Вікові обмеження",
+		"edit": "Редагувати",
+		"scheduledVideosTitle": "Заплановані відео",
+		"menuDelete": "Видалити",
+		"deleteDialogTitle": "Видалити відео?",
+		"deleteDialogDescription": "Цю дію не можна скасувати. Відео буде видалено назавжди.",
+		"deleteDialogCancel": "Скасувати",
+		"deleteDialogConfirm": "Видалити"
 	},
 	"report": {
 		"reasons": {
@@ -358,6 +587,18 @@
 		}
 	},
 	"editVideo": {
+		"modal": {
+			"title": "Редагувати відео",
+			"loading": "Завантаження…",
+			"toastNoVideoSelected": "Не обрано відео для редагування",
+			"back": "Назад",
+			"next": "Далі",
+			"confirm": "Підтвердити"
+		},
+		"restrictPreview": {
+			"thumbnailOverlayAlt": "Прев’ю мініатюри відео",
+			"uploadNewVideo": "Завантажити нове відео"
+		},
 		"stepSecond": {
 			"thumbnailTitle": "Завантажити прев’ю (обов’язково)",
 			"thumbnailPreviewAlt": "Прев’ю мініатюри",
@@ -378,11 +619,89 @@
 			"noHint": "Не для дітей"
 		}
 	},
+	"validation": {
+		"common": {
+			"max100": "Має бути менше 100 символів"
+		},
+		"auth": {
+			"identifierRequired": "Введіть email або юзернейм",
+			"identifierInvalid": "Введіть коректний email або юзернейм",
+			"passwordRequired": "Пароль обов’язковий",
+			"passwordMin10": "Пароль має містити щонайменше 10 символів",
+			"usernameRequired": "Юзернейм обов’язковий",
+			"usernameMin3": "Юзернейм має містити щонайменше 3 символи",
+			"usernameMax39": "Юзернейм має містити не більше 39 символів",
+			"usernameSlug": "Юзернейм може містити лише літери, цифри та одинарні дефіси",
+			"emailRequired": "Email обов’язковий",
+			"emailInvalid": "Некоректний email",
+			"emailMax100": "Email має містити не більше 100 символів",
+			"passwordComplex": "Пароль має містити щонайменше одну латинську літеру, одну цифру та один спецсимвол",
+			"passwordConfirmRequired": "Підтвердіть пароль",
+			"termsRequired": "Потрібно погодитися з умовами та положеннями",
+			"passwordsMismatch": "Паролі не збігаються",
+			"codeInvalid": "Некоректний код",
+			"codeAlnum": "Код має містити лише літери та цифри"
+		},
+		"channel": {
+			"nameRequired": "Назва каналу обов’язкова",
+			"nameMin2": "Назва каналу має містити щонайменше 2 символи",
+			"nameMax50": "Назва каналу має містити менше 50 символів",
+			"namePattern": "Назва може містити лише літери, цифри, пробіли, апострофи або дефіси",
+			"usernameMax20": "Юзернейм має містити не більше 20 символів",
+			"usernameLowerUnderscore": "Юзернейм може містити лише малі літери, цифри та підкреслення",
+			"avatarUrlInvalid": "Некоректне посилання на аватар"
+		},
+		"account": {
+			"nameTwoWords": "Ім’я має містити рівно два слова лише з літерами",
+			"nameMax100": "Ім’я має містити менше 100 символів",
+			"bioMax500": "Опис має містити менше 500 символів",
+			"currentPasswordRequired": "Поточний пароль обов’язковий",
+			"newPasswordDifferent": "Новий пароль має відрізнятися від поточного"
+		},
+		"playlist": {
+			"nameRequired": "Назва плейлиста обов’язкова",
+			"nameMin2": "Назва плейлиста має містити щонайменше 2 символи",
+			"nameMax100": "Назва має містити до 100 символів",
+			"descriptionMax500": "Опис має містити до 500 символів"
+		},
+		"video": {
+			"titleMin3": "Назва має містити щонайменше 3 символи",
+			"titleMax200": "Назва має містити менше 200 символів",
+			"descriptionMax1000": "Опис має містити менше 1000 символів",
+			"tagsInvalid": "Некоректний формат тегів",
+			"fileRequired": "Потрібно вибрати відеофайл",
+			"thumbnailRequired": "Потрібно додати прев’ю",
+			"visibilityRequired": "Потрібно вказати видимість",
+			"audienceRequired": "Потрібно вказати, чи призначено контент для дітей",
+			"publishTypeRequired": "Потрібно вибрати час публікації",
+			"publishDateRequired": "Потрібно вказати дату публікації для запланованого відео"
+		},
+		"report": {
+			"reasonRequired": "Оберіть причину",
+			"messageRequired": "Будь ласка, додайте більше деталей"
+		},
+		"file": {
+			"imageOnly": "Файл має бути зображенням",
+			"required": "Файл обов’язковий",
+			"maxMb6": "Розмір файлу має бути до 6 МБ"
+		}
+	},
 	"emailVerification": {
 		"title": "Підтвердження пошти",
 		"description": "Ми надіслали код підтвердження на вашу електронну адресу. Перевірте вхідні та введіть код, щоб продовжити.",
 		"codePlaceholder": "Ваш код підтвердження",
 		"completeButton": "Завершити реєстрацію",
 		"resendButton": "Надіслати знову"
+	},
+	"OauthLoading": "Триває авторизація, будь ласка, зачекайте...",
+	"errors": {
+		"auth": {
+			"invalidCredentials": "Невірний email або пароль",
+			"userInactive": "Акаунт не активний",
+			"waitBeforeResend": "Зачекайте {waitTime} секунд перед повторним запитом коду"
+		}
+	},
+	"success": {
+		"registrationCompleted": "Реєстрацію завершено!"
 	}
 }

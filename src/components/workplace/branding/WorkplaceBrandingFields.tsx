@@ -2,6 +2,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import type { TEditingChannelSchema } from '@/schemas/channel/edit-channel.schema'
+import { getValidationMessage } from '@/utils/validationMessage'
+import { useTranslations } from 'next-intl'
 import type { FieldErrors, UseFormRegister } from 'react-hook-form'
 import { FiAtSign } from 'react-icons/fi'
 
@@ -16,19 +18,20 @@ export function WorkplaceBrandingFields({
 	register,
 	watchedUsername,
 }: IWorkplaceBrandingFields) {
+	const t = useTranslations('workplaceBranding.fields')
+	const tAll = useTranslations()
 	return (
-		<section className='w-[700px] rounded-2xl border border-border/40 bg-background/60 p-6 shadow-sm hover:shadow-md transition-all'>
-			<h2 className='text-xl font-semibold mb-2'>Channel information</h2>
+		<section className='w-full max-w-[700px] rounded-2xl border border-border/40 bg-background/60 p-6 shadow-sm hover:shadow-md transition-all'>
+			<h2 className='text-xl font-semibold mb-2'>{t('sectionTitle')}</h2>
 			<p className='text-sm text-muted-foreground mb-6'>
-				Customize how your channel name, username, and description appear across
-				Loomio.
+				{t('sectionDescription')}
 			</p>
 			<div className='space-y-6'>
 				<div>
-					<Label className='block text-sm font-medium mb-1'>Channel name</Label>
-					<p className='text-xs text-muted-foreground mb-2'>
-						Choose a name that represents you or your content.
-					</p>
+					<Label className='block text-sm font-medium mb-1'>
+						{t('nameLabel')}
+					</Label>
+					<p className='text-xs text-muted-foreground mb-2'>{t('nameHint')}</p>
 					<Input
 						type='text'
 						aria-invalid={!!errors.name}
@@ -40,16 +43,18 @@ export function WorkplaceBrandingFields({
 						{...register('name')}
 					/>
 					{errors.name && (
-						<p className='mt-1 text-xs text-red-500'>{errors.name.message}</p>
+						<p className='mt-1 text-xs text-red-500'>
+							{getValidationMessage(String(errors.name.message), tAll)}
+						</p>
 					)}
 				</div>
 
 				<div>
 					<Label className='block text-sm font-medium mb-1'>
-						Channel username
+						{t('usernameLabel')}
 					</Label>
 					<p className='text-xs text-muted-foreground mb-2'>
-						Create a unique username using letters and numbers.
+						{t('usernameHint')}
 					</p>
 					<div className='relative w-full'>
 						<FiAtSign className='absolute top-[10px] left-[6px]' size={16} />
@@ -67,7 +72,7 @@ export function WorkplaceBrandingFields({
 					</div>
 					{errors.username && (
 						<p className='mt-1 text-xs text-red-500'>
-							{errors.username.message}
+							{getValidationMessage(String(errors.username.message), tAll)}
 						</p>
 					)}
 					<p className='text-xs text-muted-foreground mt-1'>
@@ -77,11 +82,11 @@ export function WorkplaceBrandingFields({
 
 				<div>
 					<Label className='block text-sm font-medium mb-1'>
-						Channel description
+						{t('descriptionLabel')}
 					</Label>
 					<Textarea
 						rows={7}
-						placeholder='Write something about your channel...'
+						placeholder={t('descriptionPlaceholder')}
 						aria-invalid={!!errors.description}
 						className={`w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 resize-none min-h-[150px] ${
 							errors.description
@@ -92,7 +97,7 @@ export function WorkplaceBrandingFields({
 					/>
 					{errors.description && (
 						<p className='mt-1 text-xs text-red-500'>
-							{errors.description.message}
+							{getValidationMessage(String(errors.description.message), tAll)}
 						</p>
 					)}
 				</div>

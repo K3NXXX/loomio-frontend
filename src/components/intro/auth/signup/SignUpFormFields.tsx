@@ -46,7 +46,7 @@ export function SignUpFormFields() {
 						{t('auth.signup.fields.usernameLabel')}
 					</label>
 					<div className='relative'>
-						<span className='absolute left-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none'>
+						<span className='absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-primary'>
 							@
 						</span>
 						<Input

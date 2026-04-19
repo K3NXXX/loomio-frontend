@@ -15,10 +15,12 @@ import {
 	editVideoSchema,
 	type TEditVideoSchema,
 } from '@/schemas/videos/edit-video.schema'
-import type { IAddVideoRequest, IEditVideoRequest } from '@/types/video.types'
+import type { IEditVideoRequest } from '@/types/video.types'
+import { getValidationMessage } from '@/utils/validationMessage'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -34,6 +36,7 @@ interface IEditVideoModalProps {
 }
 
 export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
+	const t = useTranslations('editVideo.modal')
 	const {
 		register,
 		handleSubmit,
@@ -77,9 +80,11 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 			const isValid = await trigger(['title', 'tags'])
 			if (!isValid) {
 				const titleState = getFieldState('title')
-				if (titleState.error) toast.error(titleState.error.message)
+				if (titleState.error)
+					toast.error(getValidationMessage(titleState.error.message, t))
 				const tagsState = getFieldState('tags')
-				if (tagsState.error?.message) toast.error(tagsState.error.message)
+				if (tagsState.error?.message)
+					toast.error(getValidationMessage(tagsState.error.message, t))
 				return
 			}
 			setSteps(2)
@@ -92,7 +97,7 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 				const thumbErr = getFieldState('thumbnail').error?.message
 				const visErr = getFieldState('visibility').error?.message
 				const audErr = getFieldState('audience').error?.message
-				toast.error(thumbErr || visErr || audErr)
+				toast.error(getValidationMessage(thumbErr || visErr || audErr, t))
 				return
 			}
 
@@ -107,7 +112,7 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 		setIsLoading(true)
 
 		if (!editingVideo) {
-			toast.error('No video selected for editing')
+			toast.error(t('toastNoVideoSelected'))
 			setIsLoading(false)
 			return
 		}
@@ -169,7 +174,11 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 	}, [open, reset])
 
 	if (!editingVideo) {
-		return 'Loading...'
+		return (
+			<div className='flex items-center justify-center p-8 text-sm text-muted-foreground'>
+				{t('loading')}
+			</div>
+		)
 	}
 
 	return (
@@ -193,7 +202,7 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 					<DialogTitle className='flex items-center gap-2 text-lg font-semibold'>
 						<>
 							<MdEdit className='text-primary' size={20} />
-							Edit Video
+							{t('title')}
 						</>
 					</DialogTitle>
 				</DialogHeader>
@@ -244,7 +253,7 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 										disabled={isLoading}
 										className='bg-secondary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 									>
-										Back
+										{t('back')}
 									</Button>
 									<Button
 										onClick={(e) => {
@@ -272,9 +281,9 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 											/>
 										) : steps ===
 										  (editingVideo.publishType === 'scheduled' ? 3 : 2) ? (
-											'Confirm'
+											t('confirm')
 										) : (
-											'Next'
+											t('next')
 										)}
 									</Button>
 								</div>

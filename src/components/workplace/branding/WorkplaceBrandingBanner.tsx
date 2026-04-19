@@ -1,6 +1,7 @@
 import type { TEditingChannelSchema } from '@/schemas/channel/edit-channel.schema'
 import type { IChannel } from '@/types/channel.types'
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import type { UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { FiTrash2 } from 'react-icons/fi'
 import { BannerUploader } from './BannerUploader'
@@ -18,6 +19,7 @@ export function WorkplaceBrandingBanner({
 	onSelectBanner,
 	channel,
 }: IWorkplaceBrandingBanner) {
+	const t = useTranslations('workplaceBranding.banner')
 	const [previewUrl, setPreviewUrl] = useState<string | undefined>(
 		channel?.bannerUrl ?? undefined,
 	)
@@ -48,7 +50,6 @@ export function WorkplaceBrandingBanner({
 		})
 		setValue('bannerUrl', undefined as any, { shouldDirty: true })
 		setValue('removeBanner', true, { shouldDirty: true })
-
 		setPreviewUrl(undefined)
 
 		const fakeEvent = {
@@ -58,10 +59,12 @@ export function WorkplaceBrandingBanner({
 	}
 
 	return (
-		<section className='relative w-[1282px] rounded-2xl border border-border/40 bg-background/60 p-6 shadow-sm hover:shadow-md transition-all'>
-			<h2 className='text-xl font-semibold mb-2'>Banner</h2>
-			<p className='text-sm text-muted-foreground mb-5'>
-				This image is displayed at the top of your channel page.
+		<section className='relative w-full rounded-2xl border border-border/40 bg-background/60 p-4 min-[500px]:p-6 shadow-sm hover:shadow-md transition-all'>
+			<h2 className='text-base min-[500px]:text-xl font-semibold mb-2'>
+				{t('sectionTitle')}
+			</h2>
+			<p className='text-xs min-[500px]:text-sm text-muted-foreground mb-4 min-[500px]:mb-5'>
+				{t('sectionDescription')}
 			</p>
 
 			<BannerUploader
@@ -82,10 +85,10 @@ export function WorkplaceBrandingBanner({
 				<button
 					type='button'
 					onClick={handleRemove}
-					className='absolute top-6 right-6 p-2 rounded-full bg-primary text-destructive-foreground cursor-pointer hover:opacity-90 transition'
-					title='Remove banner'
+					className='absolute top-4 min-[500px]:top-6 right-4 min-[500px]:right-6 p-1.5 min-[500px]:p-2 rounded-full bg-primary text-destructive-foreground cursor-pointer hover:opacity-90 transition'
+					title={t('removeBannerTitle')}
 				>
-					<FiTrash2 className='w-4 h-4' />
+					<FiTrash2 className='w-3.5 h-3.5 min-[500px]:w-4 min-[500px]:h-4' />
 				</button>
 			)}
 		</section>

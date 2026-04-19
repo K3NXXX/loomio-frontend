@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
 import {
 	Dialog,
 	DialogContent,
@@ -32,11 +33,13 @@ export function CropBannerModal({
 	onCropComplete,
 	onSave,
 }: CropBannerModalProps) {
+	const tBanner = useTranslations('workplaceBranding.bannerUploader')
+	const t = useTranslations('workplaceBranding')
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogContent className='min-w-[900px] min-h-[700px] bg-neutral-900 text-white'>
 				<DialogHeader>
-					<DialogTitle>Adjust Banner</DialogTitle>
+					<DialogTitle>{tBanner('adjustTitle')}</DialogTitle>
 				</DialogHeader>
 
 				<div className='relative w-full h-[450px] bg-black rounded-lg overflow-hidden'>
@@ -76,10 +79,10 @@ export function CropBannerModal({
 						variant='secondary'
 						onClick={() => onOpenChange(false)}
 					>
-						Cancel
+						{t('cancel')}
 					</Button>
 					<Button type='button' onClick={onSave}>
-						Save
+						{t('save')}
 					</Button>
 				</div>
 			</DialogContent>

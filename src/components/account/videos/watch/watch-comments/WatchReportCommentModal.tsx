@@ -22,6 +22,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { getValidationMessage } from '@/utils/validationMessage'
 
 interface IWatchReportCommentModalProps {
 	open: boolean
@@ -113,7 +114,9 @@ export function WatchReportCommentModal({
 						))}
 
 						{errors.reason && (
-							<p className='text-red-500 text-sm'>{errors.reason.message}</p>
+							<p className='text-red-500 text-sm'>
+								{getValidationMessage(String(errors.reason.message), t)}
+							</p>
 						)}
 
 						{reason === ReportReason.OTHER && (
@@ -126,7 +129,7 @@ export function WatchReportCommentModal({
 								/>
 								{errors.message && (
 									<p className='text-red-500 text-sm'>
-										{errors.message.message}
+										{getValidationMessage(String(errors.message.message), t)}
 									</p>
 								)}
 							</div>

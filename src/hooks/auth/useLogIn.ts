@@ -9,9 +9,11 @@ import type {
 	IEmailVerificationResponse,
 	ILogInRequest,
 } from '@/types/auth.types'
+import { useTranslations } from 'next-intl'
 
 export const useLogIn = () => {
 	const router = useRouter()
+	const t = useTranslations()
 	const { mutate: logIn } = useMutation({
 		mutationKey: ['logIn'],
 		mutationFn: (data: ILogInRequest) => authService.login(data),
@@ -20,7 +22,13 @@ export const useLogIn = () => {
 			router.replace(PAGES.HOME)
 		},
 		onError: (error: any) => {
-			toast(error?.response?.data?.message)
+			const code = error?.response?.data?.code
+
+			if (code) {
+				toast(t(`errors.${code}`))
+			} else {
+				toast(t('errors.unknown'))
+			}
 		},
 	})
 

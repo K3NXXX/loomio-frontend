@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { useGetCommentHistory } from '@/hooks/report/useGetCommentHistory'
 import { cn } from '@/lib/utils'
 import { truncateName } from '@/utils/truncateName'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 const formatReason = (reason: string) => {
@@ -24,6 +25,7 @@ const formatStatus = (status: string) => {
 
 export function CommentReportsHistory() {
 	const { commentHistory, isLoading } = useGetCommentHistory()
+	const t = useTranslations('moderation.commentHistory')
 
 	const [selectedId, setSelectedId] = useState<string | null>(null)
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -38,7 +40,7 @@ export function CommentReportsHistory() {
 	if (isLoading) {
 		return (
 			<div className='p-10 text-muted-foreground text-center'>
-				Loading comment reports...
+				{t('loading')}
 			</div>
 		)
 	}
@@ -46,7 +48,7 @@ export function CommentReportsHistory() {
 	if (!commentHistory?.length) {
 		return (
 			<div className='p-10 text-muted-foreground text-center'>
-				No reports for comments.
+				{t('noReports')}
 			</div>
 		)
 	}
@@ -92,13 +94,13 @@ export function CommentReportsHistory() {
 			)}
 		>
 			<div />
-			<div>Comment</div>
-			<div className='text-center'>Comment author</div>
-			<div className='text-center'>Reporter</div>
-			<div className='text-center'>Resolved by</div>
-			<div className='text-center'>Reason</div>
-			<div className='text-center'>Status</div>
-			<div className='text-center'>Date</div>
+			<div>{t('comment')}</div>
+			<div className='text-center'>{t('commentAuthor')}</div>
+			<div className='text-center'>{t('reporter')}</div>
+			<div className='text-center'>{t('resolvedBy')}</div>
+			<div className='text-center'>{t('reason')}</div>
+			<div className='text-center'>{t('status')}</div>
+			<div className='text-center'>{t('date')}</div>
 		</div>
 	)
 
@@ -124,13 +126,15 @@ export function CommentReportsHistory() {
 						{r.comment ? (
 							truncateName(r.comment.content, 40)
 						) : (
-							<span className='text-red-500'>Deleted comment</span>
+							<span className='text-red-500'>{t('deletedComment')}</span>
 						)}
 					</div>
 
 					{r.message && (
 						<div className='text-[12px] leading-[1.4] text-muted-foreground/90 pl-[2px] border-l border-border/30 ml-[2px]'>
-							<span className='font-medium text-foreground/70'>Note:</span>{' '}
+							<span className='font-medium text-foreground/70'>
+								{t('note')}
+							</span>{' '}
 							{truncateName(r.message, 75)}
 						</div>
 					)}
@@ -152,7 +156,7 @@ export function CommentReportsHistory() {
 						@{r.assignedTo.username}
 					</div>
 				) : (
-					<div className='text-xs text-muted-foreground'>Unassigned</div>
+					<div className='text-xs text-muted-foreground'>{t('unassigned')}</div>
 				)}
 			</div>
 
@@ -191,7 +195,7 @@ export function CommentReportsHistory() {
 	return (
 		<div className='p-10 flex flex-col items-start w-full'>
 			<h1 className='text-[26px] font-bold mb-8 tracking-tight w-full'>
-				Comment Reports History
+				{t('title')}
 			</h1>
 
 			<div className='relative w-full space-y-4'>

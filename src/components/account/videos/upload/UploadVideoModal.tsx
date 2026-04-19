@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/button'
 import { useAddVideo } from '@/hooks/videos/useAddVideo'
 import type { IAddVideoRequest } from '@/types/video.types'
 import { truncateName } from '@/utils/truncateName'
+import { getValidationMessage } from '@/utils/validationMessage'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
@@ -180,19 +181,19 @@ export function UploadVideoModal({
 			if (!isValid) {
 				const titleState = getFieldState('title')
 				if (titleState.error) {
-					toast.error(titleState.error.message as string)
+					toast.error(getValidationMessage(titleState.error.message as string, t))
 					return
 				}
 
 				const fileState = getFieldState('file')
 				if (fileState.error) {
-					toast.error(fileState.error.message as string)
+					toast.error(getValidationMessage(fileState.error.message as string, t))
 					return
 				}
 
 				const tagsState = getFieldState('tags')
 				if (tagsState.error?.message) {
-					toast.error(tagsState.error.message)
+					toast.error(getValidationMessage(tagsState.error.message, t))
 					return
 				}
 
@@ -211,7 +212,7 @@ export function UploadVideoModal({
 				const thumbErr = getFieldState('thumbnail').error?.message
 				const visErr = getFieldState('visibility').error?.message
 				const audErr = getFieldState('audience').error?.message
-				toast.error(thumbErr || visErr || audErr)
+				toast.error(getValidationMessage(thumbErr || visErr || audErr, t))
 			}
 			return
 		}
@@ -220,7 +221,7 @@ export function UploadVideoModal({
 			const isValid = await trigger(['publishType', 'publishDate'])
 			if (!isValid) {
 				const dateErr = getFieldState('publishDate').error?.message
-				if (dateErr) toast.error(dateErr)
+				if (dateErr) toast.error(getValidationMessage(dateErr, t))
 				return
 			}
 			if (!videoId) {
@@ -384,7 +385,7 @@ export function UploadVideoModal({
 							<UploadVideoFile
 								register={register}
 								handleFileChange={handleFileChange}
-								errorMessage={errors.file?.message}
+								errorMessage={getValidationMessage(errors.file?.message, t)}
 							/>
 						)}
 

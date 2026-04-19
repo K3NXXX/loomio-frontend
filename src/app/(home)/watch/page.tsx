@@ -1,5 +1,6 @@
 import { SITE_NAME } from '@/constants/seo.constants'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import Watch from './Watch'
 
 export async function generateMetadata({
@@ -7,12 +8,13 @@ export async function generateMetadata({
 }: {
 	searchParams: Promise<{ v?: string }>
 }): Promise<Metadata> {
+	const t = await getTranslations('pages')
 	const { v } = await searchParams
 	const videoId = v
 
 	if (!videoId) {
 		return {
-			title: `Watch | ${SITE_NAME}`,
+			title: `${t('watch')} | ${SITE_NAME}`,
 			description: `${SITE_NAME} watch page`,
 		}
 	}
@@ -24,7 +26,7 @@ export async function generateMetadata({
 
 	if (!res.ok) {
 		return {
-			title: `Video not found | ${SITE_NAME}`,
+			title: `${t('videoNotFound')} | ${SITE_NAME}`,
 			description: `This video does not exist on ${SITE_NAME}`,
 		}
 	}

@@ -9,9 +9,11 @@ import type {
 	IEmailVerification,
 	IEmailVerificationResponse,
 } from '@/types/auth.types'
+import { useTranslations } from 'next-intl'
 
 export const useEmailVerification = () => {
 	const router = useRouter()
+	const t = useTranslations()
 	const { mutate: confirmEmail } = useMutation({
 		mutationKey: ['emailVerification'],
 		mutationFn: (data: IEmailVerification) =>
@@ -20,7 +22,7 @@ export const useEmailVerification = () => {
 			if (data.user) {
 				localStorage.setItem('user', JSON.stringify(data.user))
 			}
-			toast('Registration completed!')
+			toast(t('success.registrationCompleted'))
 			router.push(PAGES.HOME)
 		},
 		onError: () => {

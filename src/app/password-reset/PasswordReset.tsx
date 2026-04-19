@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { PAGES } from '@/constants/pages.constants'
 import { useResetPassword } from '@/hooks/auth/useResetPassword'
 import { resetPasswordSchema } from '@/schemas/auth/reset-password-schema'
+import { getValidationMessage } from '@/utils/validationMessage'
 
 import type { TResetPasswordSchema } from '@/schemas/auth/reset-password-schema'
 import type { SubmitHandler } from 'react-hook-form'
@@ -61,12 +62,12 @@ export default function PasswordReset() {
 
 	useEffect(() => {
 		if (errors.confirmPassword?.message) {
-			toast.error(errors.confirmPassword.message)
+			toast.error(getValidationMessage(errors.confirmPassword.message, t))
 		}
 		if (errors.password?.message) {
-			toast.error(errors.password.message)
+			toast.error(getValidationMessage(errors.password.message, t))
 		}
-	}, [errors.password, errors.confirmPassword])
+	}, [errors.password, errors.confirmPassword, t])
 
 	return (
 		<div

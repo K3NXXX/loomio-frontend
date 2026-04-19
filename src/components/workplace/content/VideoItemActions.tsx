@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { useDeleteVideo } from '@/hooks/videos/useDeleteVideo'
+import { useTranslations } from 'next-intl'
 import { FaEllipsisV } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
 
@@ -26,6 +27,7 @@ interface IVideoItemActionsProps {
 }
 
 export function VideoItemActions({ videoId }: IVideoItemActionsProps) {
+	const t = useTranslations('workplaceChannelVideosList')
 	const { deleteVideo } = useDeleteVideo()
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false)
 
@@ -52,7 +54,7 @@ export function VideoItemActions({ videoId }: IVideoItemActionsProps) {
 							className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
 						>
 							<MdDelete className='w-4 h-4' />
-							Delete
+							{t('menuDelete')}
 						</DropdownMenuItem>
 					</div>
 				</DropdownMenuContent>
@@ -61,11 +63,10 @@ export function VideoItemActions({ videoId }: IVideoItemActionsProps) {
 				<AlertDialogContent className='bg-neutral-900 border border-neutral-700 rounded-xl'>
 					<AlertDialogHeader>
 						<AlertDialogTitle className='text-neutral-100'>
-							Delete video?
+							{t('deleteDialogTitle')}
 						</AlertDialogTitle>
 						<AlertDialogDescription className='text-neutral-400'>
-							This action cannot be undone. The video will be permanently
-							deleted.
+							{t('deleteDialogDescription')}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
@@ -74,14 +75,14 @@ export function VideoItemActions({ videoId }: IVideoItemActionsProps) {
 							onClick={() => setIsConfirmOpen(false)}
 							className='bg-neutral-700 text-neutral-200 hover:bg-neutral-600'
 						>
-							Cancel
+							{t('deleteDialogCancel')}
 						</AlertDialogCancel>
 
 						<AlertDialogAction
 							onClick={() => handleDelete()}
 							className='bg-primary text-white'
 						>
-							Delete
+							{t('deleteDialogConfirm')}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

@@ -1,11 +1,16 @@
 import { SITE_NAME } from '@/constants/seo.constants'
 
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import EditAccount from './EditAccount'
 
-export const metadata: Metadata = {
-	title: 'Edit account',
-	description: `${SITE_NAME} editing account page`,
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getTranslations('pages')
+
+	return {
+		title: `Loomio | ${t('editAccount')}`,
+		description: `${SITE_NAME} editing account page`,
+	}
 }
 
 export default function EditAccountPage() {

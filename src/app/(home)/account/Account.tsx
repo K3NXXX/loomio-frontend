@@ -49,7 +49,7 @@ export default function Account() {
 						<div className='flex flex-col md:flex-row md:items-center gap-6 py-3 relative z-10 max-[770px]:items-center max-[770px]:text-center'>
 							<AvatarUploader
 								value={userData?.avatarUrl}
-								fallbackName={userData?.name}
+								fallbackName={userData?.username}
 								isLoading={isUploadAvatarLoading}
 								onChange={(file) => {
 									if (file) updateAvatar(file)

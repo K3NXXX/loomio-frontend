@@ -142,6 +142,27 @@
 		"themeColors": "Theme colors",
 		"language": "Language"
 	},
+	"pages": {
+		"home": "Home",
+		"account": "Account",
+		"editAccount": "Edit Account",
+		"followings": "Followings",
+		"playlists": "Playlists",
+		"playlist": "Playlist",
+		"channels": "Channels",
+		"search": "Search data",
+		"watch": "Watch",
+		"videoNotFound": "Video not found",
+		"creator": "Creator",
+		"workplace": "Workplace",
+		"moderationPanel": "Moderation panel",
+		"login": "Log in",
+		"registration": "Registration",
+		"oauthRegistration": "OAuth registration",
+		"forgotPassword": "Forgot password",
+		"resetPassword": "Reset password",
+		"intro": "Intro"
+	},
 	"videoItem": {
 		"viewsCount": "{count, plural, one {# view} other {# views}}",
 		"userAvatarAlt": "user avatar"
@@ -165,6 +186,113 @@
 			"videoPublished": "New video from {name}",
 			"channelNewFollower": "{author} followed your channel «{channelName}»",
 			"videoRestricted": "Your video «{title}» was restricted for {reason}."
+		}
+	},
+	"moderation": {
+		"dashboard": {
+			"title": "Moderation dashboard",
+			"subtitle": "Track report flow, workload and moderation queue in real-time.",
+			"totalReports": "Total reports",
+			"pending": "Pending",
+			"inProgress": "In progress",
+			"resolved": "Resolved",
+			"reportsTypeBreakdown": "Reports type breakdown",
+			"videoReports": "Video reports",
+			"commentReports": "Comment reports",
+			"moderatorsWorkload": "Moderators workload",
+			"loading": "Loading...",
+			"noActiveModerators": "No active moderators",
+			"activeReviewQueue": "Active review queue",
+			"loadingQueue": "Loading queue...",
+			"noActiveReports": "No active reports",
+			"videoReport": "Video report",
+			"commentReport": "Comment report",
+			"reportsCount": "{count} reports"
+		},
+		"videoReviews": {
+			"title": "Video Reports",
+			"loading": "Loading video reports...",
+			"noReports": "No video reports yet.",
+			"video": "Video",
+			"videoAuthor": "Video author",
+			"reporter": "Reporter",
+			"assignedTo": "Assigned to",
+			"reason": "Reason",
+			"status": "Status",
+			"date": "Date",
+			"note": "Note:",
+			"unassigned": "Unassigned"
+		},
+		"videoReports": {
+			"title": "Video Reports",
+			"loading": "Loading video reports...",
+			"noReports": "No video reports yet.",
+			"video": "Video",
+			"videoAuthor": "Video author",
+			"reporter": "Reporter",
+			"assignedTo": "Assigned to",
+			"reason": "Reason",
+			"status": "Status",
+			"date": "Date",
+			"note": "Note:",
+			"unassigned": "Unassigned"
+		},
+		"commentReports": {
+			"title": "Comment Reports",
+			"loading": "Loading comment reports...",
+			"noReports": "No reports for comments.",
+			"comment": "Comment",
+			"commentAuthor": "Comment author",
+			"reporter": "Reporter",
+			"assignedTo": "Assigned to",
+			"reason": "Reason",
+			"status": "Status",
+			"date": "Date",
+			"note": "Note:",
+			"unassigned": "Unassigned"
+		},
+		"header": {
+			"title": "Moderation Dashboard",
+			"logout": "Log out"
+		},
+		"sidebar": {
+			"panelTitle": "Moderation Panel",
+			"reportsSection": "Reports",
+			"historySection": "History",
+			"dashboard": "Dashboard",
+			"reportsVideos": "Reports: Videos",
+			"reportsComments": "Reports: Comments",
+			"reportsReviews": "Reports: Reviews",
+			"videoHistory": "Video History",
+			"commentHistory": "Comment History"
+		},
+		"commentHistory": {
+			"title": "Comment Reports History",
+			"loading": "Loading comment reports...",
+			"noReports": "No reports for comments.",
+			"comment": "Comment",
+			"commentAuthor": "Comment author",
+			"reporter": "Reporter",
+			"resolvedBy": "Resolved by",
+			"reason": "Reason",
+			"status": "Status",
+			"date": "Date",
+			"note": "Note:",
+			"unassigned": "Unassigned",
+			"deletedComment": "Deleted comment"
+		},
+		"videoHistory": {
+			"title": "Video Reports — History",
+			"loading": "Loading history...",
+			"noReports": "No resolved video reports.",
+			"video": "Video",
+			"videoAuthor": "Video author",
+			"reporter": "Reporter",
+			"resolvedBy": "Resolved by",
+			"reason": "Reason",
+			"status": "Status",
+			"date": "Date",
+			"unassigned": "Unassigned"
 		}
 	},
 	"watch": {
@@ -216,7 +344,9 @@
 		"createNew": "Create new",
 		"selectChannel": "Select a channel",
 		"cancel": "Cancel",
-		"sendReport": "Send report"
+		"sendReport": "Send report",
+		"cropAvatar": "Adjust avatar",
+		"save": "Save"
 	},
 	"videoWizard": {
 		"steps": {
@@ -230,6 +360,74 @@
 		"myChannel": "My channel",
 		"avatarAlt": "Channel avatar"
 	},
+	"workplaceSidebar": {
+		"yourChannel": "Your channel",
+		"avatarAlt": "Channel avatar",
+		"dashboard": "Dashboard",
+		"content": "Content",
+		"branding": "Branding",
+		"dangerZone": "Danger Zone"
+	},
+	"workplaceDangerZone": {
+		"pageTitle": "Channel danger zone",
+		"deleteSectionTitle": "Delete this channel",
+		"deleteWarning": "Deleting your channel is a permanent action and cannot be undone. All videos, comments, playlists, followers, statistics, and branding associated with this channel will be permanently removed. Make sure you have saved any important content before continuing.",
+		"openDialogButton": "Delete channel",
+		"dialogTitle": "Delete channel?",
+		"dialogDescription": "This action is permanent and cannot be undone. All content associated with this channel will be removed.",
+		"confirmPhraseLabel": "Type the confirmation phrase:",
+		"confirmPhrase": "delete channel @{username}",
+		"phrasePlaceholder": "Enter the phrase above",
+		"cancel": "Cancel",
+		"confirmDeleteButton": "Delete channel"
+	},
+	"workplaceBranding": {
+		"pageTitle": "Channel branding",
+		"goToChannel": "Go to channel",
+		"cancel": "Cancel",
+		"publish": "Publish",
+		"save": "Save",
+		"upload": "Upload",
+		"change": "Change",
+		"delete": "Delete",
+		"banner": {
+			"sectionTitle": "Banner",
+			"sectionDescription": "This image is displayed at the top of your channel page.",
+			"removeBannerTitle": "Remove banner"
+		},
+		"bannerUploader": {
+			"bannerAlt": "Channel banner",
+			"recommendedWithDims": "Recommended size: {dims}",
+			"specsLine": "To ensure your banner looks great on all devices, upload at least {dims}. Max file size {maxMb}.",
+			"adjustTitle": "Adjust Banner"
+		},
+		"avatar": {
+			"sectionTitle": "Profile photo",
+			"sectionDescription": "Your profile photo may appear next to your videos and comments.",
+			"selectedPrefix": "Selected:"
+		},
+		"avatarUploader": {
+			"hintLine": "Use at least {dims}. Max file size {maxMb}.",
+			"adjustTitle": "Adjust Avatar",
+			"previewAlt": "Avatar",
+			"aspectPlaceholder": "1:1 avatar",
+			"errors": {
+				"fileTooLarge": "File is too large. Max {maxMB} MB.",
+				"imageTooSmall": "Image too small. Minimum {minW}×{minH}px.",
+				"invalidImage": "Invalid image"
+			}
+		},
+		"fields": {
+			"sectionTitle": "Channel information",
+			"sectionDescription": "Customize how your channel name, username, and description appear across Loomio.",
+			"nameLabel": "Channel name",
+			"nameHint": "Choose a name that represents you or your content.",
+			"usernameLabel": "Channel username",
+			"usernameHint": "Create a unique username using letters and numbers.",
+			"descriptionLabel": "Channel description",
+			"descriptionPlaceholder": "Write something about your channel..."
+		}
+	},
 	"workplaceDashboard": {
 		"loadingChannel": "Loading channel data...",
 		"title": "Channel management panel",
@@ -238,6 +436,36 @@
 		"statVideos": "Videos",
 		"statFollowers": "Followers",
 		"statTotalViews": "Total views"
+	},
+	"workplaceContent": {
+		"pageTitle": "Content on your channel"
+	},
+	"workplaceChannelVideosList": {
+		"emptyState": "No videos uploaded yet.",
+		"colVideo": "Video",
+		"colVisibility": "Visibility",
+		"colRestrictions": "Restrictions",
+		"colDate": "Date",
+		"colScheduledFor": "Scheduled for",
+		"colViews": "Views",
+		"colComments": "Comments",
+		"noThumbnail": "No thumbnail",
+		"badgeScheduled": "Scheduled",
+		"addDescription": "Add a description",
+		"visibilityPublic": "Public",
+		"visibilityPrivate": "Private",
+		"visibilityRestricted": "Restricted",
+		"restrictedTooltipLine1": "⚠ This video was restricted for violating content rules.",
+		"restrictedTooltipLine2": "You must edit the video and request review before publishing again.",
+		"audienceForChildren": "For children",
+		"audienceAgeRestrictions": "Age restrictions",
+		"edit": "Edit",
+		"scheduledVideosTitle": "Scheduled videos",
+		"menuDelete": "Delete",
+		"deleteDialogTitle": "Delete video?",
+		"deleteDialogDescription": "This action cannot be undone. The video will be permanently deleted.",
+		"deleteDialogCancel": "Cancel",
+		"deleteDialogConfirm": "Delete"
 	},
 	"report": {
 		"reasons": {
@@ -358,6 +586,18 @@
 		}
 	},
 	"editVideo": {
+		"modal": {
+			"title": "Edit Video",
+			"loading": "Loading…",
+			"toastNoVideoSelected": "No video selected for editing",
+			"back": "Back",
+			"next": "Next",
+			"confirm": "Confirm"
+		},
+		"restrictPreview": {
+			"thumbnailOverlayAlt": "Video thumbnail preview",
+			"uploadNewVideo": "Upload new video"
+		},
 		"stepSecond": {
 			"thumbnailTitle": "Upload Thumbnail (required)",
 			"thumbnailPreviewAlt": "Thumbnail preview",
@@ -378,11 +618,89 @@
 			"noHint": "Not made for kids"
 		}
 	},
+	"validation": {
+		"common": {
+			"max100": "Must be less than 100 characters"
+		},
+		"auth": {
+			"identifierRequired": "Please enter your email or username",
+			"identifierInvalid": "Enter a valid email address or username",
+			"passwordRequired": "Password is required",
+			"passwordMin10": "Password requires min 10 characters",
+			"usernameRequired": "Username is required",
+			"usernameMin3": "Username must be at least 3 characters",
+			"usernameMax39": "Username must be at most 39 characters",
+			"usernameSlug": "Username should contain only letters, numbers, single hyphens.",
+			"emailRequired": "Email is required",
+			"emailInvalid": "Incorrect email",
+			"emailMax100": "Email requires max 100 characters",
+			"passwordComplex": "Password must contain at least one latin letter, one digit, and one special character",
+			"passwordConfirmRequired": "Please confirm your password",
+			"termsRequired": "You must agree to the terms and conditions",
+			"passwordsMismatch": "Passwords do not match",
+			"codeInvalid": "Invalid code",
+			"codeAlnum": "Code must contain only letters and digits"
+		},
+		"channel": {
+			"nameRequired": "Channel name is required",
+			"nameMin2": "Channel name must be at least 2 characters",
+			"nameMax50": "Channel name must be less than 50 characters",
+			"namePattern": "Name can contain only letters, numbers, spaces, apostrophes, or dashes",
+			"usernameMax20": "Username must be at most 20 characters",
+			"usernameLowerUnderscore": "Username must contain only lowercase letters, numbers, and underscores",
+			"avatarUrlInvalid": "Invalid avatar URL"
+		},
+		"account": {
+			"nameTwoWords": "Name must contain exactly two words with only letters",
+			"nameMax100": "Name must be less than 100 characters",
+			"bioMax500": "Bio must be less than 500 characters",
+			"currentPasswordRequired": "Current password is required",
+			"newPasswordDifferent": "New password must be different from current password"
+		},
+		"playlist": {
+			"nameRequired": "Playlist name is required",
+			"nameMin2": "Playlist name must be at least 2 characters",
+			"nameMax100": "Name must be under 100 characters",
+			"descriptionMax500": "Description must be under 500 characters"
+		},
+		"video": {
+			"titleMin3": "Title must be at least 3 characters",
+			"titleMax200": "Title must be less than 200 characters",
+			"descriptionMax1000": "Description must be less than 1000 characters",
+			"tagsInvalid": "Invalid tags format",
+			"fileRequired": "Video file is required",
+			"thumbnailRequired": "Thumbnail is required",
+			"visibilityRequired": "Visibility is required",
+			"audienceRequired": "You must specify if the content is made for kids",
+			"publishTypeRequired": "You must choose when to publish",
+			"publishDateRequired": "Publish date is required when scheduling"
+		},
+		"report": {
+			"reasonRequired": "Select a reason",
+			"messageRequired": "Please provide more details"
+		},
+		"file": {
+			"imageOnly": "File must be an image",
+			"required": "File is required",
+			"maxMb6": "File size must be ≤ 6 MB"
+		}
+	},
 	"emailVerification": {
 		"title": "Email verification",
 		"description": "We have sent a verification code to your email address. Please check your inbox and enter the code to continue.",
 		"codePlaceholder": "Your verification code",
 		"completeButton": "Complete registration",
 		"resendButton": "Resend code"
+	},
+	"OauthLoading": "Authorization in progress, please wait...",
+	"errors": {
+		"auth": {
+			"invalidCredentials": "Invalid email or password",
+			"userInactive": "User account is inactive",
+			"waitBeforeResend": "Please wait {waitTime} seconds before requesting a new code"
+		}
+	},
+	"success": {
+		"registrationCompleted": "Registration completed!"
 	}
 }

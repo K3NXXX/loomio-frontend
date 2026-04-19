@@ -3,11 +3,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { useLogout } from '@/hooks/auth/useLogout'
-import type { IGetUserData, IUser } from '@/types/auth.types'
+import type { IGetUserData } from '@/types/auth.types'
 import { getInitials } from '@/utils/get-initials'
+import { useTranslations } from 'next-intl'
 
 export function ModerationHeader({ user }: { user: IGetUserData }) {
 	const { logout } = useLogout()
+	const t = useTranslations('moderation.header')
 
 	return (
 		<header
@@ -18,7 +20,7 @@ export function ModerationHeader({ user }: { user: IGetUserData }) {
 			flex items-center justify-between px-6
 		'
 		>
-			<h1 className='text-xl font-semibold'>Moderation Dashboard</h1>
+			<h1 className='text-xl font-semibold'>{t('title')}</h1>
 
 			<div className='flex items-center gap-3'>
 				<Avatar className='size-9 ring-1 ring-border'>
@@ -27,7 +29,7 @@ export function ModerationHeader({ user }: { user: IGetUserData }) {
 				</Avatar>
 
 				<Button variant='outline' onClick={() => logout()}>
-					Log out
+					{t('logout')}
 				</Button>
 			</div>
 		</header>
