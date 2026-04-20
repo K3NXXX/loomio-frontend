@@ -11,9 +11,18 @@ class PlaylistService {
 	async createPlaylist(
 		playlistData: ICreatePlaylistRequest,
 	): Promise<{ success: boolean }> {
+		const formData = new FormData()
+		formData.append('name', playlistData.name)
+		if (playlistData.description) {
+			formData.append('description', playlistData.description)
+		}
+		if (playlistData.cover) {
+			formData.append('cover', playlistData.cover)
+		}
+
 		const { data } = await axiosInstance.post<{ success: boolean }>(
 			`${this.BASE_URL}`,
-			playlistData,
+			formData,
 		)
 		return data
 	}
@@ -38,10 +47,29 @@ class PlaylistService {
 	}
 
 	async editPlaylist(playlistId: string, editContent: IEditPlaylistRequest) {
+		const formData = new FormData()
+
+		if (editContent.name) {
+			formData.append('name', editContent.name)
+		}
+
+		if (editContent.description !== undefined) {
+			formData.append('description', editContent.description ?? '')
+		}
+
+		if (editContent.cover instanceof File) {
+			formData.append('cover', editContent.cover)
+		}
+
+		if (editContent.removeCover) {
+			formData.append('removeCover', 'true')
+		}
+
 		const { data } = await axiosInstance.patch(
 			`${this.BASE_URL}/${playlistId}`,
-			editContent,
+			formData,
 		)
+
 		return data
 	}
 }

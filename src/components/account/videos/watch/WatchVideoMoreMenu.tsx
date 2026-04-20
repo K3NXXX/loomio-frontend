@@ -9,7 +9,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useGetMe } from '@/hooks/auth/useGetMe'
-import { MoreHorizontal, PlusCircle } from 'lucide-react'
+import { MoreHorizontal, MoreVertical, PlusCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { TbMessageReportFilled } from 'react-icons/tb'
@@ -46,7 +46,7 @@ export function WatchVideoMoreMenu({
 							size='sm'
 							className='group rounded-full h-10 w-10 flex items-center justify-center bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:shadow-md active:scale-95 transition-all'
 						>
-							<MoreHorizontal className='size-4 group-hover:scale-110 transition-transform' />
+							<MoreVertical className='size-4 group-hover:scale-110 transition-transform' />
 						</Button>
 					</DropdownMenuTrigger>
 				</div>

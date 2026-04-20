@@ -153,7 +153,7 @@
 		"search": "Пошук",
 		"watch": "Перегляд",
 		"videoNotFound": "Відео не знайдено",
-		"creator": "Творець",
+		"creator": "Creator",
 		"workplace": "Робоче місце",
 		"moderationPanel": "Панель модерації",
 		"login": "Увійти",
@@ -450,7 +450,7 @@
 		"colScheduledFor": "Заплановано на",
 		"colViews": "Перегляди",
 		"colComments": "Коментарі",
-		"noThumbnail": "Немає прев’ю",
+		"noThumbnail": "Немає обкладинки",
 		"badgeScheduled": "Заплановано",
 		"addDescription": "Додайте опис",
 		"visibilityPublic": "Публічне",
@@ -490,6 +490,7 @@
 		"createNewPlaylist": "Створити новий плейлист",
 		"createModalTitle": "Новий плейлист",
 		"nameLabel": "Назва (обов'язково)",
+		"coverLabel": "Обкладинка (необов'язково)",
 		"namePlaceholder": "Введіть назву плейлиста",
 		"descriptionLabel": "Опис (необов'язково)",
 		"descriptionPlaceholder": "Додайте необов'язковий опис...",
@@ -501,7 +502,14 @@
 		"created": "Створено",
 		"backToPlaylists": "Назад до плейлистів",
 		"playlistEmpty": "Цей плейлист порожній.",
-		"removeFromPlaylist": "Видалити з плейлиста"
+		"removeFromPlaylist": "Видалити з плейлиста",
+		"cover": {
+			"dragDrop": "Перетягніть обкладинку сюди",
+			"orClick": "або натисніть, щоб обрати зображення",
+			"supportedPrefix": "Підтримувані формати:",
+			"formatsList": "JPG, PNG, WEBP",
+			"maxSize": "Максимальний розмір 5 МБ"
+		}
 	},
 	"followings": {
 		"title": "Канали, на які ви підписані",
@@ -515,11 +523,16 @@
 		"bannerAlt": "Банер каналу",
 		"followersCount": "{count, plural, one {# підписник} few {# підписники} many {# підписників} other {# підписника}}",
 		"videosCount": "{count, plural, one {# відео} few {# відео} many {# відео} other {# відео}}",
-		"more": "далі",
+		"more": "більше",
 		"uploadVideo": "Завантажити відео",
 		"customizeChannel": "Налаштувати канал",
 		"subscribed": "Ви підписані",
-		"subscribe": "Підписатися"
+		"subscribe": "Підписатися",
+		"tabs": {
+			"videos": "Відео",
+			"playlists": "Плейлисти",
+			"playlistsEmpty": "Плейлистів ще немає"
+		}
 	},
 	"uploadVideoModal": {
 		"title": "Завантажити відео",
@@ -543,7 +556,7 @@
 			"maxSize": "Максимум 2 ГБ"
 		},
 		"preview": {
-			"thumbnailAlt": "Прев’ю мініатюри",
+			"thumbnailAlt": "Обкладинка мініатюри",
 			"filenameLabel": "Файл: {name}"
 		},
 		"stepFirst": {
@@ -557,11 +570,11 @@
 			"tagsFormatExample": "#top #live #music"
 		},
 		"stepSecond": {
-			"thumbnailTitle": "Завантажити прев’ю (обов’язково)",
-			"thumbnailPreviewAlt": "Прев’ю мініатюри",
-			"changeThumbnailTitle": "Змінити прев’ю",
-			"deleteThumbnailTitle": "Видалити прев’ю",
-			"clickUploadThumbnail": "Натисніть, щоб завантажити прев’ю",
+			"thumbnailTitle": "Завантажити обкладинку (обов’язково)",
+			"thumbnailPreviewAlt": "Обкладинка мініатюри",
+			"changeThumbnailTitle": "Змінити обкладинку",
+			"deleteThumbnailTitle": "Видалити обкладинку",
+			"clickUploadThumbnail": "Натисніть, щоб завантажити обкладинку",
 			"imageFormats": "(JPG, PNG, WEBP)",
 			"visibilityTitle": "Видимість",
 			"public": "Публічне",
@@ -600,11 +613,11 @@
 			"uploadNewVideo": "Завантажити нове відео"
 		},
 		"stepSecond": {
-			"thumbnailTitle": "Завантажити прев’ю (обов’язково)",
-			"thumbnailPreviewAlt": "Прев’ю мініатюри",
-			"changeThumbnailTitle": "Змінити прев’ю",
-			"deleteThumbnailTitle": "Видалити прев’ю",
-			"clickUploadThumbnail": "Натисніть, щоб завантажити прев’ю",
+			"thumbnailTitle": "Завантажити обкладинку (обов’язково)",
+			"thumbnailPreviewAlt": "Обкладинка мініатюри",
+			"changeThumbnailTitle": "Змінити обкладинку",
+			"deleteThumbnailTitle": "Видалити обкладинку",
+			"clickUploadThumbnail": "Натисніть, щоб завантажити обкладинку",
 			"imageFormats": "(JPG, PNG, WEBP)",
 			"visibilityTitle": "Видимість",
 			"public": "Публічне",
@@ -703,5 +716,10 @@
 	},
 	"success": {
 		"registrationCompleted": "Реєстрацію завершено!"
+	},
+	"tabs": {
+		"videos": "Відео",
+		"playlists": "Плейлисти",
+		"playlistsEmpty": "Плейлистів ще немає"
 	}
 }

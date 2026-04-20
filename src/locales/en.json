@@ -489,6 +489,7 @@
 		"createNewPlaylist": "Create new playlist",
 		"createModalTitle": "New Playlist",
 		"nameLabel": "Name (required)",
+		"coverLabel": "Cover (optional)",
 		"namePlaceholder": "Enter playlist name",
 		"descriptionLabel": "Description (optional)",
 		"descriptionPlaceholder": "Add an optional description...",
@@ -500,7 +501,14 @@
 		"created": "Created",
 		"backToPlaylists": "Back to playlists",
 		"playlistEmpty": "This playlist is empty.",
-		"removeFromPlaylist": "Remove from playlist"
+		"removeFromPlaylist": "Remove from playlist",
+		"cover": {
+			"dragDrop": "Drag & drop your cover image here",
+			"orClick": "or click to select an image",
+			"supportedPrefix": "Supported formats:",
+			"formatsList": "JPG, PNG, WEBP",
+			"maxSize": "Max size 5 MB"
+		}
 	},
 	"followings": {
 		"title": "Followed Channels",
@@ -518,7 +526,12 @@
 		"uploadVideo": "Upload video",
 		"customizeChannel": "Customize Channel",
 		"subscribed": "Subscribed",
-		"subscribe": "Subscribe"
+		"subscribe": "Subscribe",
+		"tabs": {
+			"videos": "Videos",
+			"playlists": "Playlists",
+			"playlistsEmpty": "No playlists yet"
+		}
 	},
 	"uploadVideoModal": {
 		"title": "Upload Video",

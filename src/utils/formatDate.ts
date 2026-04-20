@@ -1,28 +1,18 @@
 type SupportedLocale = 'uk' | 'en'
 
-function resolveLocale(locale?: string): SupportedLocale {
-	if (locale?.toLowerCase().startsWith('uk')) return 'uk'
-
+function resolveLocale(): SupportedLocale {
 	if (typeof document !== 'undefined') {
-		const documentLang = document.documentElement.lang
-		if (documentLang?.toLowerCase().startsWith('uk')) return 'uk'
+		const match = document.cookie.match(/(?:^|;\s*)locale=([^;]*)/)
+		const locale = match?.[1]
+		if (locale?.toLowerCase().startsWith('uk')) return 'uk'
 	}
-
-	if (typeof navigator !== 'undefined') {
-		const browserLocale = navigator.language
-		if (browserLocale?.toLowerCase().startsWith('uk')) return 'uk'
-	}
-
 	return 'en'
 }
 
-export function formatDate(
-	date: Date | string | number,
-	locale?: string,
-): string {
+export function formatDate(date: Date | string | number): string {
 	const parsedDate =
 		typeof date === 'string' || typeof date === 'number' ? new Date(date) : date
-	const currentLocale = resolveLocale(locale)
+	const currentLocale = resolveLocale()
 	const diffInSeconds = Math.round((parsedDate.getTime() - Date.now()) / 1000)
 	const absSeconds = Math.abs(diffInSeconds)
 

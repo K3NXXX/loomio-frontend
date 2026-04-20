@@ -70,7 +70,7 @@ export function PlaylistActionsDropdown({
 						onSelect={(e) => {
 							e.preventDefault()
 						}}
-						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
+						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors cursor-pointer'
 					>
 						<MdEdit className='w-4 h-4' />
 						{t('playlists.edit')}
@@ -84,9 +84,9 @@ export function PlaylistActionsDropdown({
 						onSelect={(e) => {
 							e.preventDefault()
 						}}
-						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors'
+						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors cursor-pointer'
 					>
-						<MdDelete className='w-4 h-4' />
+						<MdDelete className='w-4 h-4 ' />
 						{t('playlists.delete')}
 					</DropdownMenuItem>
 				</DropdownMenuContent>

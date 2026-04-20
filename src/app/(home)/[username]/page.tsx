@@ -1,6 +1,5 @@
 import { SITE_NAME } from '@/constants/seo.constants'
 import type { Metadata } from 'next'
-import { Channel } from './Channel'
 
 export async function generateMetadata({
 	params,
@@ -17,5 +16,5 @@ export async function generateMetadata({
 }
 
 export default function ChannelPage() {
-	return <Channel />
+	return null
 }

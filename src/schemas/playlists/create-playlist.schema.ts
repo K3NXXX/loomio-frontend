@@ -10,6 +10,7 @@ export const createPlaylistSchema = z.object({
 		.max(500, { message: 'Description must be under 500 characters' })
 		.optional()
 		.or(z.literal('')),
+	cover: z.instanceof(File).optional().nullable(),
 })
 
 export type TCreatePlaylistSchema = z.infer<typeof createPlaylistSchema>

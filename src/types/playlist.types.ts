@@ -3,11 +3,14 @@ import type { IVideo } from './video.types'
 export interface ICreatePlaylistRequest {
 	name: string
 	description?: string
+	cover?: File
 }
 
 export interface IEditPlaylistRequest {
 	name?: string
 	description?: string
+	cover?: File | null
+	removeCover?: boolean
 }
 
 export interface IPlaylist {
@@ -16,6 +19,7 @@ export interface IPlaylist {
 	description?: string
 	createdAt: string
 	updatedAt: string
+	coverUrl?: string
 	videos: IVideo[]
 	_count: {
 		videos: number

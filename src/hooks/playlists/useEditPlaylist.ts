@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 export const useEditPlaylist = () => {
 	const queryClient = useQueryClient()
 
-	const { mutate: editPlaylist } = useMutation({
+	const { mutate: editPlaylist, isPending } = useMutation({
 		mutationKey: ['editPlaylist'],
 		mutationFn: ({ id, ...editData }: { id: string } & IEditPlaylistRequest) =>
 			playlistService.editPlaylist(id, editData),
@@ -20,5 +20,5 @@ export const useEditPlaylist = () => {
 		},
 	})
 
-	return { editPlaylist }
+	return { editPlaylist, isPending }
 }

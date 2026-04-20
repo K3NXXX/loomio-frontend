@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 
 export const useCreatePlaylist = () => {
 	const queryClient = useQueryClient()
-	const { mutate: createPlaylist } = useMutation({
+	const { mutate: createPlaylist, isPending } = useMutation({
 		mutationKey: ['createPlaylist'],
 		mutationFn: (data: ICreatePlaylistRequest) =>
 			playlistService.createPlaylist(data),
@@ -18,5 +18,5 @@ export const useCreatePlaylist = () => {
 		},
 	})
 
-	return { createPlaylist }
+	return { createPlaylist, isPending }
 }

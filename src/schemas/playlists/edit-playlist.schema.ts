@@ -11,6 +11,8 @@ export const editPlaylistSchema = z.object({
 		.max(500, { message: 'Description must be under 500 characters' })
 		.optional()
 		.or(z.literal('')),
+	cover: z.instanceof(File).optional().nullable(),
+	removeCover: z.boolean().optional(),
 })
 
 export type TEditPlaylistSchema = z.infer<typeof editPlaylistSchema>

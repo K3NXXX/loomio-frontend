@@ -7,6 +7,7 @@ import { PAGES } from '@/constants/pages.constants'
 import { useGetSearchData } from '@/hooks/search/useGetSearchData'
 import { formatDate } from '@/utils/formatDate'
 import { getInitials } from '@/utils/get-initials'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -16,6 +17,8 @@ interface SearchProps {
 
 export function Search({ query }: SearchProps) {
 	const { videos, channels, isLoading, isError } = useGetSearchData(query)
+	const t = useTranslations()
+
 
 	if (!query.trim())
 		return (
@@ -51,7 +54,7 @@ export function Search({ query }: SearchProps) {
 												<AvatarImage src={c.avatarUrl} alt='user avatar' />
 											) : (
 												<AvatarFallback className='text-lg font-semibold'>
-													{getInitials(c?.name)}
+													{getInitials(c?.username)}
 												</AvatarFallback>
 											)}
 										</Avatar>
@@ -115,6 +118,7 @@ export function Search({ query }: SearchProps) {
 														alt={v.channel?.name}
 														width={28}
 														height={28}
+														unoptimized
 														className='rounded-full object-cover border border-border/30'
 													/>
 													<p className='text-sm text-muted-foreground'>
@@ -124,9 +128,9 @@ export function Search({ query }: SearchProps) {
 
 												<div className='text-sm text-muted-foreground mt-3 flex items-center gap-2'>
 													<span>
-														{v._count?.views
-															? `${v._count.views.toLocaleString()} views`
-															: '0 views'}
+														{t('videoItem.viewsCount', {
+															count: v?._count.views,
+														})}
 													</span>
 													<span>•</span>
 													<span>{formatDate(v.createdAt)}</span>
@@ -135,9 +139,11 @@ export function Search({ query }: SearchProps) {
 										</div>
 									</Link>
 
-									{/* ⛔ Дуже важливо: меню поза Link */}
 									<div onClick={(e) => e.stopPropagation()}>
-										<WatchVideoMoreMenu videoId={v.id} />
+										<WatchVideoMoreMenu
+											videoId={v.id}
+											videoAuthorId={v.channel.userId}
+										/>
 									</div>
 								</div>
 							))}

@@ -16,10 +16,16 @@ import { useVideoStore } from '@/zustand/store/videoStore'
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export function Channel() {
+type ChannelTab = 'videos' | 'playlists'
+
+interface ChannelLayoutProps {
+	children: React.ReactNode
+}
+
+export function ChannelLayout({ children }: ChannelLayoutProps) {
 	const t = useTranslations()
 	const { username } = useParams<{ username: string }>()
 	const cleanUsername = decodeURIComponent(username || '').replace(/^@/, '')
@@ -27,12 +33,25 @@ export function Channel() {
 	const { setOpenUploadingVideo, setUploadChannelId } = useVideoStore()
 	const { userData } = useGetMe()
 	const { isFollowing } = useIsFollowing(channel?.id ?? '')
+	const pathname = usePathname()
+	const router = useRouter()
 
 	const [isInfoOpen, setIsInfoOpen] = useState(false)
-
 	const { toggleFollowUser } = useToggleFollowUser()
 
 	const isThisMe = userData?.id === channel?.userId
+
+	const activeTab: ChannelTab = pathname.endsWith('/playlists')
+		? 'playlists'
+		: 'videos'
+
+	const handleTabChange = (tab: ChannelTab) => {
+		if (tab === 'videos') {
+			router.push(`/@${cleanUsername}`)
+		} else {
+			router.push(`/@${cleanUsername}/playlists`)
+		}
+	}
 
 	const handleUploadVideo = () => {
 		if (!channel) return
@@ -51,7 +70,6 @@ export function Channel() {
 				<p className='text-muted-foreground mb-6 max-w-sm'>
 					{t('channelPage.notFoundDescription')}
 				</p>
-
 				<Link href={PAGES.HOME}>
 					<Button className='px-6 rounded-full'>
 						{t('channelPage.goHome')}
@@ -77,6 +95,7 @@ export function Channel() {
 						/>
 					</div>
 				)}
+
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
@@ -125,44 +144,78 @@ export function Channel() {
 										</span>
 									)}
 								</div>
-								{isThisMe ? (
-									<div className='flex flex-wrap justify-center sm:justify-start gap-2 min-[400px]:gap-3 mt-4 min-[400px]:mt-5'>
-										<Button
-											onClick={() => handleUploadVideo()}
-											className='rounded-full px-4 min-[400px]:px-5 py-2 text-xs min-[400px]:text-sm font-medium shadow-sm hover:shadow-md transition-all'
-										>
-											{t('channelPage.uploadVideo')}
-										</Button>
-										<Link
-											href={PAGES.WORKPLACE_DASHBOARD(channel.username)}
-											target='_blank'
-											rel='noopener noreferrer'
-										>
+								<div className='flex items-end gap-3'>
+									{isThisMe ? (
+										<div className='flex flex-wrap justify-center sm:justify-start gap-2 min-[400px]:gap-3 mt-4 min-[400px]:mt-5'>
 											<Button
-												variant='outline'
+												onClick={() => handleUploadVideo()}
 												className='rounded-full px-4 min-[400px]:px-5 py-2 text-xs min-[400px]:text-sm font-medium shadow-sm hover:shadow-md transition-all'
 											>
-												{t('channelPage.customizeChannel')}
+												{t('channelPage.uploadVideo')}
 											</Button>
-										</Link>
-									</div>
-								) : (
-									<Button
-										onClick={() => toggleFollowUser(channel.id)}
-										variant={isFollowing ? 'outline' : 'default'}
-										className='font-semibold rounded-full px-5 min-[400px]:px-6 text-xs min-[400px]:text-sm mt-4 min-[400px]:mt-5'
-									>
-										{isFollowing
-											? t('channelPage.subscribed')
-											: t('channelPage.subscribe')}
-									</Button>
-								)}
+											<Link
+												href={PAGES.WORKPLACE_DASHBOARD(channel.username)}
+												target='_blank'
+												rel='noopener noreferrer'
+											>
+												<Button
+													variant='outline'
+													className='rounded-full px-4 min-[400px]:px-5 py-2 text-xs min-[400px]:text-sm font-medium shadow-sm hover:shadow-md transition-all'
+												>
+													{t('channelPage.customizeChannel')}
+												</Button>
+											</Link>
+										</div>
+									) : (
+										<Button
+											onClick={() => toggleFollowUser(channel.id)}
+											variant={isFollowing ? 'outline' : 'default'}
+											className='font-semibold rounded-full px-5 min-[400px]:px-6 text-xs min-[400px]:text-sm mt-4 min-[400px]:mt-5'
+										>
+											{isFollowing
+												? t('channelPage.subscribed')
+												: t('channelPage.subscribe')}
+										</Button>
+									)}
+								</div>
 							</div>
 						</div>
 					</div>
 				</motion.div>
-				<ChannelVideoList videos={channel.videos} />
+
+				<div className='mt-6 border-b border-border/40'>
+					<div className='flex gap-1'>
+						{(['videos', 'playlists'] as ChannelTab[]).map((tab) => (
+							<button
+								key={tab}
+								onClick={() => handleTabChange(tab)}
+								className={`px-5 py-2.5 text-sm font-medium transition-all relative cursor-pointer ${
+									activeTab === tab
+										? 'text-primary'
+										: 'text-muted-foreground hover:text-foreground'
+								}`}
+							>
+								{t(`channelPage.tabs.${tab}`)}
+								{activeTab === tab && (
+									<span className='absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-t-full' />
+								)}
+							</button>
+						))}
+					</div>
+				</div>
+
+				<div className='mt-6'>
+					{activeTab === 'videos' && (
+						<ChannelVideoList videos={channel.videos} />
+					)}
+					{activeTab === 'playlists' && (
+						<div className='text-muted-foreground text-center py-10'>
+							{t('channelPage.tabs.playlistsEmpty')}
+						</div>
+					)}
+				</div>
 			</motion.div>
+
 			<ChannelMoreInfoModal
 				isOpen={isInfoOpen}
 				onOpenChange={setIsInfoOpen}
