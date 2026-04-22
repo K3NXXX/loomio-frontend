@@ -3,14 +3,23 @@
 import { CreatePlaylistModal } from '@/components/home/playlists/CreatePlaylistModal'
 import { UserPlaylistsList } from '@/components/home/playlists/UserPlaylistsList'
 import { Button } from '@/components/ui/button'
+import { ChannelPlaylistsList } from '@/components/workplace/playlists/ChannelPlaylistsList'
+import { useChannelStore } from '@/zustand/store/channelStore'
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 
-export function Playlists() {
+interface PlaylistsProps {
+	channelId?: string
+}
+
+export function Playlists({ }: PlaylistsProps) {
 	const t = useTranslations()
 	const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
+	const { channel } = useChannelStore()
+
+	const isChannel = !!channel?.id
 
 	return (
 		<div className='px-1 py-10'>
@@ -32,10 +41,12 @@ export function Playlists() {
 					<div className='p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6'>
 						<div className='text-center sm:text-left'>
 							<h1 className='text-2xl sm:text-3xl font-bold tracking-tight'>
-								{t('playlists.title')}
+								{isChannel ? t('playlists.channelTitle') : t('playlists.title')}
 							</h1>
 							<p className='text-muted-foreground mt-1 text-sm sm:text-base'>
-								{t('playlists.description')}
+								{isChannel
+									? t('playlists.channelDescription')
+									: t('playlists.description')}
 							</p>
 						</div>
 
@@ -44,17 +55,24 @@ export function Playlists() {
 							className='flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-2 sm:py-3 font-semibold rounded-full text-sm sm:text-[16px] bg-[var(--primary)] text-white shadow-md hover:bg-[var(--primary)]/90 hover:shadow-lg active:scale-95 active:brightness-90 transition-all duration-300 w-full sm:w-auto justify-center'
 						>
 							<FaPlus className='text-sm sm:text-base' />
-							{t('playlists.createButton')}
+							{isChannel
+								? t('playlists.createChannelButton')
+								: t('playlists.createButton')}
 						</Button>
 					</div>
 				</motion.div>
 
-				<UserPlaylistsList />
+				{isChannel ? (
+					<ChannelPlaylistsList channelId={channel?.id!} channelUsername={channel?.username} />
+				) : (
+					<UserPlaylistsList />
+				)}
 			</motion.div>
 
 			<CreatePlaylistModal
 				open={isCreateFormOpen}
 				onOpenChange={setIsCreateFormOpen}
+				channelId={channel?.id} 
 			/>
 		</div>
 	)

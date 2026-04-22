@@ -4,6 +4,7 @@ export interface ICreatePlaylistRequest {
 	name: string
 	description?: string
 	cover?: File
+	channelId?: string
 }
 
 export interface IEditPlaylistRequest {

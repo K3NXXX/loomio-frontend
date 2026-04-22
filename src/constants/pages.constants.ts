@@ -19,9 +19,13 @@ export const PAGES = {
 		`/workplace/channel/@${username}/branding`,
 	WORKPLACE_DANGER_ZONE: (username: string) =>
 		`/workplace/channel/@${username}/danger-zone`,
+	WORKPLACE_PLAYLISTS: (username: string) =>
+		`/workplace/channel/@${username}/playlists`,
 	SEARCH: (query: string) => `/search?query=${query}`,
 	PLAYLISTS: '/playlists',
 	ONE_USER_PLAYLIST: (id: string) => `/playlists/${id}`,
+	ONE_CHANNEL_PLAYLIST: (username: string, id: string) =>
+		`/workplace/channel/@${username}/playlists/${id}`,
 	FOLLOWINGS: '/followings',
 	MODERATION_DASHBOARD: '/moderation/dashboard',
 	MODERATION_COMMENT_REPORTS: '/moderation/comment-reports',

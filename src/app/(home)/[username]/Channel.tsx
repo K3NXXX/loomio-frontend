@@ -12,12 +12,13 @@ import { useToggleFollowUser } from '@/hooks/follows/useFollowUser'
 import { useIsFollowing } from '@/hooks/follows/useIsFollowing'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
+import { useChannelStore } from '@/zustand/store/channelStore'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useParams, usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type ChannelTab = 'videos' | 'playlists'
 
@@ -27,6 +28,7 @@ interface ChannelLayoutProps {
 
 export function ChannelLayout({ children }: ChannelLayoutProps) {
 	const t = useTranslations()
+	const { setChannel } = useChannelStore()
 	const { username } = useParams<{ username: string }>()
 	const cleanUsername = decodeURIComponent(username || '').replace(/^@/, '')
 	const { channel, isLoading } = useGetChannel(cleanUsername)
@@ -58,6 +60,10 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 		setOpenUploadingVideo(true)
 		setUploadChannelId(channel.id)
 	}
+
+	useEffect(() => {
+		if (channel) setChannel(channel)
+	}, [channel])
 
 	if (isLoading) return <ChannelSkeleton />
 
@@ -208,11 +214,7 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 					{activeTab === 'videos' && (
 						<ChannelVideoList videos={channel.videos} />
 					)}
-					{activeTab === 'playlists' && (
-						<div className='text-muted-foreground text-center py-10'>
-							{t('channelPage.tabs.playlistsEmpty')}
-						</div>
-					)}
+					{activeTab === 'playlists' && children}
 				</div>
 			</motion.div>
 

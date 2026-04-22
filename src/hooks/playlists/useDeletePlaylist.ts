@@ -10,6 +10,7 @@ export const useDeletePlaylist = () => {
 			playlistService.deletePlaylist(playlistId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
+			queryClient.invalidateQueries({ queryKey: ['getChannelPlaylists'] })
 			toast.success('Playlist deleted successfully')
 		},
 		onError: () => {

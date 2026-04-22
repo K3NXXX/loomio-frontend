@@ -5,11 +5,11 @@ import { PAGES } from '@/constants/pages.constants'
 import { cn } from '@/lib/utils'
 import type { IChannel } from '@/types/channel.types'
 import { getInitials } from '@/utils/get-initials'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { FaPalette, FaThLarge, FaVideo } from 'react-icons/fa'
-import { MdDangerous } from 'react-icons/md'
+import { MdDangerous, MdFeaturedPlayList } from 'react-icons/md'
 
 interface WorkplaceSidebarProps {
 	channel: IChannel
@@ -20,7 +20,7 @@ export function WorkplaceSidebar({ channel }: WorkplaceSidebarProps) {
 	const pathname = usePathname()
 	const t = useTranslations('workplaceSidebar')
 
-	 const items = [
+	const items = [
 		{
 			label: t('dashboard'),
 			icon: FaThLarge,
@@ -35,6 +35,11 @@ export function WorkplaceSidebar({ channel }: WorkplaceSidebarProps) {
 			label: t('branding'),
 			icon: FaPalette,
 			href: PAGES.WORKPLACE_BRANDING(channel.username),
+		},
+		{
+			label: t('playlists'),
+			icon: MdFeaturedPlayList,
+			href: PAGES.WORKPLACE_PLAYLISTS(channel.username),
 		},
 		{
 			label: t('dangerZone'),

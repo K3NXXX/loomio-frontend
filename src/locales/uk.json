@@ -367,6 +367,7 @@
 		"dashboard": "Панель",
 		"content": "Контент",
 		"branding": "Брендинг",
+		"playlists": "Плейлисти",
 		"dangerZone": "Небезпечні дії"
 	},
 	"workplaceDangerZone": {
@@ -509,7 +510,11 @@
 			"supportedPrefix": "Підтримувані формати:",
 			"formatsList": "JPG, PNG, WEBP",
 			"maxSize": "Максимальний розмір 5 МБ"
-		}
+		},
+		"channelTitle": "Плейлисти каналу",
+		"channelDescription": "Плейлисти цього каналу",
+		"createChannelButton": "Створити плейлист каналу",
+		"emptyChannelState": "У цього каналу ще немає плейлистів"
 	},
 	"followings": {
 		"title": "Канали, на які ви підписані",

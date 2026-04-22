@@ -11,9 +11,9 @@ import {
 import { PAGES } from '@/constants/pages.constants'
 import type { IChannel } from '@/types/channel.types'
 import { getInitials } from '@/utils/get-initials'
-import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { FiSettings, FiExternalLink } from 'react-icons/fi'
+import Link from 'next/link'
+import { FiExternalLink, FiSettings } from 'react-icons/fi'
 import { HiOutlineViewGrid } from 'react-icons/hi'
 
 interface IUserChannelItemProps {
@@ -21,6 +21,7 @@ interface IUserChannelItemProps {
 	onClick?: (channelId: string) => void
 	activeDropdown: string | null
 	setActiveDropdown: (id: string | null) => void
+	onOpenChange: (v: boolean) => void
 }
 
 export function UserChannelItem({
@@ -28,6 +29,7 @@ export function UserChannelItem({
 	onClick,
 	activeDropdown,
 	setActiveDropdown,
+	onOpenChange,
 }: IUserChannelItemProps) {
 	const t = useTranslations()
 
@@ -40,7 +42,11 @@ export function UserChannelItem({
 			<Link
 				href={PAGES.CHANNEL(channel.username)}
 				className='flex items-center gap-4 min-w-0 flex-1'
-				onClick={() => onClick?.(channel.id)}
+				onClick={() => {
+					onClick?.(channel.id)
+					onOpenChange(false)
+					setActiveDropdown(null)
+				}}
 			>
 				<div className='w-11 h-11 rounded-full overflow-hidden bg-neutral-800 flex-shrink-0 ring-1 ring-white/10'>
 					<Avatar className='w-full h-full'>

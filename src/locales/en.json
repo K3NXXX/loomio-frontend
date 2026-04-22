@@ -366,6 +366,7 @@
 		"dashboard": "Dashboard",
 		"content": "Content",
 		"branding": "Branding",
+		"playlists": "Playlists",
 		"dangerZone": "Danger Zone"
 	},
 	"workplaceDangerZone": {
@@ -508,7 +509,11 @@
 			"supportedPrefix": "Supported formats:",
 			"formatsList": "JPG, PNG, WEBP",
 			"maxSize": "Max size 5 MB"
-		}
+		},
+		"channelTitle": "Channel playlists",
+		"channelDescription": "Playlists for this channel",
+		"createChannelButton": "Create channel playlist",
+		"emptyChannelState": "This channel has no playlists yet"
 	},
 	"followings": {
 		"title": "Followed Channels",

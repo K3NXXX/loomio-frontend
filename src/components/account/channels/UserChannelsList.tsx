@@ -7,9 +7,10 @@ import { useState, useMemo } from 'react'
 
 interface Props {
 	search: string
+	onOpenChange: (v: boolean) => void
 }
 
-export default function UserChannelsList({ search }: Props) {
+export default function UserChannelsList({ search, onOpenChange }: Props) {
 	const { userChannels, isError, isLoading } = useGetUserChannels()
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 
@@ -50,6 +51,7 @@ export default function UserChannelsList({ search }: Props) {
 					channel={channel}
 					activeDropdown={activeDropdown}
 					setActiveDropdown={setActiveDropdown}
+					onOpenChange={onOpenChange}
 				/>
 			))}
 		</ul>

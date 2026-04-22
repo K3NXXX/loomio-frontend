@@ -13,7 +13,7 @@ import { useRemoveVideoFromPlaylist } from '@/hooks/videos/useRemoveVideoFromPla
 import { motion } from 'framer-motion'
 import { Loader2, PlusCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaCheckCircle } from 'react-icons/fa'
 import { CreatePlaylistModal } from './CreatePlaylistModal'
 
@@ -30,109 +30,141 @@ export function AddToPlaylistModal({
 }: AddToPlaylistModalProps) {
 	const t = useTranslations()
 	const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
-	const { allMyPlaylists, isLoading, refetch } = useGetMyPlaylists()
-	const { addVideoToPlaylist, isPending: isAdding } = useAddVideoToPlaylist()
-	const { removeVideoFromPlaylist, isPending: isRemoving } =
-		useRemoveVideoFromPlaylist()
+	const { allMyPlaylists, isLoading } = useGetMyPlaylists()
+	const { addVideoToPlaylist } = useAddVideoToPlaylist()
+	const { removeVideoFromPlaylist } = useRemoveVideoFromPlaylist()
+
+	const [localPlaylists, setLocalPlaylists] = useState<any[]>([])
+	const [processingId, setProcessingId] = useState<string | null>(null)
+
+	useEffect(() => {
+		if (allMyPlaylists) setLocalPlaylists(allMyPlaylists)
+	}, [allMyPlaylists])
 
 	const handleToggle = (playlistId: string, alreadyContains: boolean) => {
-		if (alreadyContains) {
-			removeVideoFromPlaylist(
-				{ videoId, playlistId },
-				{
-					onSuccess: () => {
-						refetch()
-					},
-				},
-			)
-		} else {
-			addVideoToPlaylist(
-				{ videoId, playlistId },
-				{
-					onSuccess: () => {
-						refetch()
-					},
-				},
-			)
-		}
+		setProcessingId(playlistId)
+
+		setLocalPlaylists((prev) =>
+			prev.map((p) => {
+				if (p.id !== playlistId) return p
+				return {
+					...p,
+					videos: alreadyContains
+						? p.videos.filter((v: any) => v.id !== videoId)
+						: [...(p.videos || []), { id: videoId }],
+				}
+			}),
+		)
+
+		const action = alreadyContains
+			? removeVideoFromPlaylist
+			: addVideoToPlaylist
+
+		action(
+			{ videoId, playlistId },
+			{
+				onSettled: () => setProcessingId(null),
+			},
+		)
 	}
 
 	return (
 		<Dialog open={open} onOpenChange={onClose}>
-			<DialogContent
-				onClick={(e) => e.stopPropagation()}
-				className='w-[500px] rounded-2xl border border-border/40 bg-background/95 backdrop-blur p-6 shadow-xl'
-			>
-				<DialogHeader>
-					<DialogTitle className='text-xl font-semibold text-center'>
+			<DialogContent className='w-full max-w-md p-0 overflow-hidden rounded-2xl border border-border/40 bg-background shadow-xl'>
+				<DialogHeader className='p-5 pb-2'>
+					<DialogTitle className='text-lg font-semibold text-center'>
 						{t('playlists.addToPlaylistTitle')}
 					</DialogTitle>
 				</DialogHeader>
 
-				{isLoading ? (
-					<p className='text-muted-foreground text-center mt-4'>
-						{t('playlists.loadingPlaylists')}
-					</p>
-				) : !allMyPlaylists?.length ? (
-					<div className='text-center text-muted-foreground py-10'>
-						<p>{t('playlists.emptyState')}</p>
-						<Button
-							onClick={() => setIsCreateFormOpen(true)}
-							variant='outline'
-							className='mt-4'
-						>
-							<PlusCircle className='mr-2 size-4' />
-							{t('playlists.createNewPlaylist')}
-						</Button>
-					</div>
-				) : (
-					<div className='flex flex-col gap-3 mt-4 max-h-[350px] overflow-y-auto pr-1'>
-						{allMyPlaylists.map((playlist) => {
-							const alreadyContains = playlist.videos?.some(
-								(v) => v.id === videoId,
-							)
+				<div className='px-3 pb-20'>
+					{isLoading ? (
+						<div className='flex justify-center py-10'>
+							<Loader2 className='animate-spin size-6 text-muted-foreground' />
+						</div>
+					) : !localPlaylists?.length ? (
+						<div className='text-center text-muted-foreground py-10'>
+							<p>{t('playlists.emptyState')}</p>
+						</div>
+					) : (
+						<div className='flex flex-col gap-1.5 mt-2 max-h-[320px] overflow-y-auto'>
+							{localPlaylists.map((playlist) => {
+								const alreadyContains = playlist.videos?.some(
+									(v: any) => v.id === videoId,
+								)
 
-							const isProcessing = isAdding || isRemoving
+								const isProcessing = processingId === playlist.id
 
-							return (
-								<motion.button
-									key={playlist.id}
-									whileTap={{ scale: 0.97 }}
-									disabled={isProcessing}
-									onClick={() => handleToggle(playlist.id, alreadyContains)}
-									className={`flex items-center justify-between p-4 py-2 rounded-xl border border-border transition-all cursor-pointer
-										hover:bg-muted/50 active:scale-[0.98]
-										${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}
-									`}
-								>
-									<div className='flex flex-col items-start text-left'>
-										<p className='font-medium text-foreground'>
-											{playlist.name}
-										</p>
-										<p className='text-xs text-muted-foreground'>
-											{t('playlists.videoCount', {
-												count: playlist._count.videos,
-											})}
-										</p>
-									</div>
+								return (
+									<motion.button
+										key={playlist.id}
+										whileTap={{ scale: 0.97 }}
+										disabled={isProcessing}
+										onClick={() => handleToggle(playlist.id, alreadyContains)}
+										className={`flex items-center gap-3 px-3 py-2 rounded-xl w-full cursor-pointer
+		transition-colors
+		bg-secondary/60 hover:bg-secondary/80
+		border border-border/40
+		${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}
+	`}
+									>
+										<div className='w-16 h-10 rounded-md overflow-hidden shrink-0 bg-muted'>
+											{playlist.coverUrl ? (
+												<img
+													src={playlist.coverUrl}
+													alt={playlist.name}
+													className='w-full h-full object-cover'
+												/>
+											) : (
+												<div className='w-full h-full flex items-center justify-center text-xs text-muted-foreground'>
+													🎵
+												</div>
+											)}
+										</div>
 
-									{isProcessing ? (
-										<Loader2 className='size-5 text-primary animate-spin' />
-									) : alreadyContains ? (
-										<FaCheckCircle className='size-5 text-primary' />
-									) : (
-										<FaCheckCircle className='size-5 text-muted-foreground/40' />
-									)}
-								</motion.button>
-							)
-						})}
-					</div>
-				)}
+										<div className='flex flex-col flex-1 text-left'>
+											<p className='text-sm font-medium text-foreground line-clamp-1'>
+												{playlist.name}
+											</p>
+											<p className='text-xs text-muted-foreground'>
+												{t('playlists.videoCount', {
+													count: playlist._count.videos,
+												})}
+											</p>
+										</div>
+
+										<div className='flex items-center justify-center w-6'>
+											{isProcessing ? (
+												<Loader2 className='size-4 animate-spin text-muted-foreground' />
+											) : alreadyContains ? (
+												<FaCheckCircle className='size-5 text-primary' />
+											) : (
+												<FaCheckCircle className='size-5 text-muted-foreground/40' />
+											)}
+										</div>
+									</motion.button>
+								)
+							})}
+						</div>
+					)}
+				</div>
+
+				<div className='absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background via-background/90 to-transparent'>
+					<Button
+						onClick={() => setIsCreateFormOpen(true)}
+						variant='secondary'
+						className='w-full rounded-xl'
+					>
+						<PlusCircle className='mr-2 size-4' />
+						{t('playlists.createNewPlaylist')}
+					</Button>
+				</div>
+
+				<CreatePlaylistModal
+					open={isCreateFormOpen}
+					onOpenChange={setIsCreateFormOpen}
+				/>
 			</DialogContent>
-			<CreatePlaylistModal
-				open={isCreateFormOpen}
-				onOpenChange={setIsCreateFormOpen}
-			/>
 		</Dialog>
 	)
 }

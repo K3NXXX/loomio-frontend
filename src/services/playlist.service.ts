@@ -13,6 +13,9 @@ class PlaylistService {
 	): Promise<{ success: boolean }> {
 		const formData = new FormData()
 		formData.append('name', playlistData.name)
+		if (playlistData.channelId) {
+			formData.append('channelId', playlistData.channelId)
+		}
 		if (playlistData.description) {
 			formData.append('description', playlistData.description)
 		}
@@ -35,6 +38,13 @@ class PlaylistService {
 	async getOneUserPlaylist(playlistId: string): Promise<IPlaylist> {
 		const { data } = await axiosInstance.get<IPlaylist>(
 			`${this.BASE_URL}/${playlistId}`,
+		)
+		return data
+	}
+
+	async getChannelPlaylists(channelId: string): Promise<IPlaylist[]> {
+		const { data } = await axiosInstance.get<IPlaylist[]>(
+			`${this.BASE_URL}/channel/${channelId}`,
 		)
 		return data
 	}
@@ -70,6 +80,13 @@ class PlaylistService {
 			formData,
 		)
 
+		return data
+	}
+
+	async getChannelPlaylistById(playlistId: string): Promise<IPlaylist> {
+		const { data } = await axiosInstance.get<IPlaylist>(
+			`${this.BASE_URL}/channel-playlist/${playlistId}`,
+		)
 		return data
 	}
 }

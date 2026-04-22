@@ -31,12 +31,14 @@ import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 
 interface CreatePlaylistModalProps {
 	open: boolean
-	onOpenChange: (open: boolean) => void
+	onOpenChange: (v: boolean) => void
+	channelId?: string
 }
 
 export function CreatePlaylistModal({
 	open,
 	onOpenChange,
+	channelId,
 }: CreatePlaylistModalProps) {
 	const t = useTranslations()
 	const [isDragging, setIsDragging] = useState(false)
@@ -106,13 +108,19 @@ export function CreatePlaylistModal({
 	}
 
 	const onSubmit = (data: ICreatePlaylistRequest) => {
-		createPlaylist(data, {
-			onSuccess: () => {
-				onOpenChange(false)
-				reset()
-				setCoverPreview(null)
+		createPlaylist(
+			{
+				...data,
+				channelId,
 			},
-		})
+			{
+				onSuccess: () => {
+					onOpenChange(false)
+					reset()
+					setCoverPreview(null)
+				},
+			},
+		)
 	}
 
 	useCreatePlaylistErrors(errors)

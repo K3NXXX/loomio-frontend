@@ -14,6 +14,7 @@ export const useEditPlaylist = () => {
 			toast.success('Playlist updated successfully')
 			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
 			queryClient.invalidateQueries({ queryKey: ['getOneUserPlaylist'] })
+			queryClient.invalidateQueries({ queryKey: ['getChannelPlaylists'] })
 		},
 		onError: () => {
 			toast.error('Failed to update playlist. Try again later.')

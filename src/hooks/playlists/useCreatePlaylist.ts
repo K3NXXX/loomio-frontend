@@ -5,14 +5,26 @@ import { toast } from 'sonner'
 
 export const useCreatePlaylist = () => {
 	const queryClient = useQueryClient()
+
 	const { mutate: createPlaylist, isPending } = useMutation({
 		mutationKey: ['createPlaylist'],
 		mutationFn: (data: ICreatePlaylistRequest) =>
 			playlistService.createPlaylist(data),
-		onSuccess: () => {
+
+		onSuccess: (_, variables) => {
 			toast.success('Playlist created successfully')
-			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
+
+			if (variables.channelId) {
+				queryClient.invalidateQueries({
+					queryKey: ['getChannelPlaylists', variables.channelId],
+				})
+			} else {
+				queryClient.invalidateQueries({
+					queryKey: ['getMyPlaylists'],
+				})
+			}
 		},
+
 		onError: () => {
 			toast.error('Something went wrong. Try later')
 		},

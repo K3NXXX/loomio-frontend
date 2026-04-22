@@ -59,7 +59,7 @@ export function UserChannelsModal({ open, onOpenChange }: Props) {
 					</div>
 
 					<div className='mt-4 min-h-[150px]'>
-						<UserChannelsList search={search} />
+						<UserChannelsList onOpenChange={onOpenChange} search={search} />
 					</div>
 				</DialogContent>
 			</Dialog>
