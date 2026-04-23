@@ -12,8 +12,6 @@ export const useCreatePlaylist = () => {
 			playlistService.createPlaylist(data),
 
 		onSuccess: (_, variables) => {
-			toast.success('Playlist created successfully')
-
 			if (variables.channelId) {
 				queryClient.invalidateQueries({
 					queryKey: ['getChannelPlaylists', variables.channelId],

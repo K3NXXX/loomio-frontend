@@ -13,7 +13,6 @@ export const useEditChannel = () => {
 			channelService.editChannel(channelId, fd),
 
 		onSuccess: () => {
-			toast.success('Channel updated!')
 			queryClient.invalidateQueries({ queryKey: ['getChannel'] })
 		},
 		onError: () => {

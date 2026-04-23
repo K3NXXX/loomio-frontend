@@ -45,7 +45,11 @@ export default function PublicChannelPlaylists() {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.3, delay: index * 0.05 }}
-					onClick={() => router.push(PAGES.CHANNEL_PLAYLIST(playlist.id))}
+					onClick={() =>
+						router.push(
+							PAGES.WATCH_WITH_PLAYLIST(playlist.videos[0]?.id, playlist.id),
+						)
+					}
 					className='group block rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden bg-card cursor-pointer'
 				>
 					<div className='relative w-full' style={{ paddingTop: '56.25%' }}>
@@ -64,7 +68,11 @@ export default function PublicChannelPlaylists() {
 							</div>
 						)}
 
-						{/* іконка плейліста в кутку */}
+						<div className='absolute top-2 left-2 flex items-center gap-1 bg-black/70 text-white text-xs px-2 py-1 rounded-md backdrop-blur'>
+							<ListVideo className='w-4 h-4' />
+							<span>{t('playlists.playlist')}</span>
+						</div>
+
 						<div className='absolute bottom-2 right-2 flex items-center gap-1 bg-black/70 text-white text-xs px-2 py-0.5 rounded-md backdrop-blur'>
 							<ListVideo className='w-3 h-3' />
 							<span>

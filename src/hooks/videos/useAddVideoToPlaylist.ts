@@ -16,7 +16,6 @@ export const useAddVideoToPlaylist = () => {
 			playlistId: string
 		}) => videoService.addVideoToUserPlaylist(videoId, playlistId),
 		onSuccess: () => {
-			toast.success('Video added to playlist')
 			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
 		},
 		onError: () => {

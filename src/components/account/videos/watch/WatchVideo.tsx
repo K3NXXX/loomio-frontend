@@ -2,6 +2,7 @@
 
 import { useAddView } from '@/hooks/view/useAddView'
 import { useTranslations } from 'next-intl'
+import { usePathname } from 'next/navigation'
 import 'plyr/dist/plyr.css'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'

@@ -9,8 +9,6 @@ export const useApproveReport = (reportId: string | undefined) => {
 		mutationFn: () => reportService.approveReport(reportId!),
 
 		onSuccess: () => {
-			toast.success('Report approved')
-
 			queryClient.invalidateQueries({ queryKey: ['report', reportId] })
 			queryClient.invalidateQueries({ queryKey: ['commentReports'] })
 			queryClient.invalidateQueries({ queryKey: ['videoReports'] })

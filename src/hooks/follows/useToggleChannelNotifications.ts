@@ -12,7 +12,6 @@ export const useToggleChannelNotifications = () => {
 			followService.toggleChannelNotifications(channelId),
 
 		onSuccess: () => {
-			toast.success('Notification settings updated')
 			queryClient.invalidateQueries({
 				queryKey: ['channelNotificationsStatus'],
 			})

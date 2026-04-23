@@ -8,7 +8,6 @@ export const useAddVideo = () => {
 		mutationKey: ['addVideo'],
 		mutationFn: (data: FormData) => videoService.addVideo(data),
 		onSuccess: () => {
-			toast.success('Video added successfully')
 			queryClient.invalidateQueries({ queryKey: ['getPublicVideos'] })
 			queryClient.invalidateQueries({ queryKey: ['channelStudioVideos'] })
 		},

@@ -12,7 +12,6 @@ export const useDeleteChannel = (onDone?: () => void) => {
 				channelService.deleteChannel(channelId),
 
 			onSuccess: () => {
-				toast.success('Channel deleted')
 				queryClient.invalidateQueries({ queryKey: ['getUserChannels'] })
 				onDone?.()
 			},

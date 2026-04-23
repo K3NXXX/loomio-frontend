@@ -30,6 +30,28 @@ class PlaylistService {
 		return data
 	}
 
+	async addVideosToPlaylist(
+		playlistId: string,
+		videoIds: string[],
+	): Promise<{ added: number }> {
+		const { data } = await axiosInstance.patch<{ added: number }>(
+			`${this.BASE_URL}/${playlistId}/videos`,
+			{ videoIds },
+		)
+		return data
+	}
+
+	async removeVideosFromPlaylist(
+		playlistId: string,
+		videoIds: string[],
+	): Promise<{ removed: number }> {
+		const { data } = await axiosInstance.delete<{ removed: number }>(
+			`${this.BASE_URL}/${playlistId}/videos`,
+			{ data: { videoIds } },
+		)
+		return data
+	}
+
 	async getMyPlaylists(): Promise<IPlaylist[]> {
 		const { data } = await axiosInstance.get<IPlaylist[]>(`${this.BASE_URL}/me`)
 		return data
@@ -86,6 +108,13 @@ class PlaylistService {
 	async getChannelPlaylistById(playlistId: string): Promise<IPlaylist> {
 		const { data } = await axiosInstance.get<IPlaylist>(
 			`${this.BASE_URL}/channel-playlist/${playlistId}`,
+		)
+		return data
+	}
+
+	async getPublicPlaylistById(playlistId: string): Promise<IPlaylist> {
+		const { data } = await axiosInstance.get<IPlaylist>(
+			`${this.BASE_URL}/public/${playlistId}`,
 		)
 		return data
 	}

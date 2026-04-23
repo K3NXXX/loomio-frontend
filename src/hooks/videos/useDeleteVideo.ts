@@ -8,7 +8,6 @@ export const useDeleteVideo = () => {
 		mutationKey: ['deleteVideo'],
 		mutationFn: (videoId: string) => videoService.deleteVideo(videoId),
 		onSuccess: () => {
-			toast.success('Video deleted successfully')
 			queryClient.invalidateQueries({ queryKey: ['channelStudioVideos'] })
 		},
 	})

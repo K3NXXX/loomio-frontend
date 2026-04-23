@@ -26,6 +26,10 @@ export const PAGES = {
 	ONE_USER_PLAYLIST: (id: string) => `/playlists/${id}`,
 	ONE_CHANNEL_PLAYLIST: (username: string, id: string) =>
 		`/workplace/channel/@${username}/playlists/${id}`,
+	WORKPLACE_STREAMS: (username: string) =>
+		`/workplace/channel/@${username}/streams`,
+	WATCH_WITH_PLAYLIST: (videoId: string, playlistId: string) =>
+		`/watch?v=${videoId}&playlist=${playlistId}`,
 	FOLLOWINGS: '/followings',
 	MODERATION_DASHBOARD: '/moderation/dashboard',
 	MODERATION_COMMENT_REPORTS: '/moderation/comment-reports',

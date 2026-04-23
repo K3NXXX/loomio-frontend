@@ -9,6 +9,8 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { AddChannelVideosToPlaylist } from '@/components/workplace/playlists/AddChannelVideosToPlaylist'
+import { RemoveChannelVideosFromPlaylist } from '@/components/workplace/playlists/RemoveChannelVideosFromPlaylist'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetOneChannelPlaylist } from '@/hooks/playlists/useGetOneChannelPlaylist'
 import { useRemoveVideoFromPlaylist } from '@/hooks/videos/useRemoveVideoFromPlaylist'
@@ -16,10 +18,11 @@ import { formatDate } from '@/utils/formatDate'
 import { truncateName } from '@/utils/truncateName'
 import { useChannelStore } from '@/zustand/store/channelStore'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Play, Trash2 } from 'lucide-react'
+import { ArrowLeft, Play, Plus, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import { useState } from 'react'
 import { TbDotsVertical } from 'react-icons/tb'
 
 export default function ChannelPlaylist() {
@@ -27,6 +30,9 @@ export default function ChannelPlaylist() {
 	const { id } = useParams<{ id: string }>()
 	const { playlist, isLoading, isError } = useGetOneChannelPlaylist(id)
 	const { removeVideoFromPlaylist } = useRemoveVideoFromPlaylist()
+
+	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+	const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false)
 	const { channel } = useChannelStore()
 
 	const handleRemove = (videoId: string, playlistId: string) => {
@@ -66,6 +72,23 @@ export default function ChannelPlaylist() {
 						)}
 					</div>
 					<div className='flex items-center gap-3'>
+						<Button
+							onClick={() => setIsAddModalOpen(true)}
+							className='flex items-center gap-2'
+						>
+							<Plus className='size-4' />
+							{t('playlists.addVideos')}
+						</Button>
+
+						<Button
+							variant='outline'
+							onClick={() => setIsRemoveModalOpen(true)}
+							disabled={!playlist.videos.length}
+							className='flex items-center gap-2'
+						>
+							<Trash2 className='size-4' />
+							{t('playlists.removeVideos')}
+						</Button>
 						{channel?.username && (
 							<Link
 								href={PAGES.WORKPLACE_PLAYLISTS(channel?.username)}
@@ -163,6 +186,25 @@ export default function ChannelPlaylist() {
 					</div>
 				)}
 			</motion.div>
+
+			{channel?.id && (
+				<AddChannelVideosToPlaylist
+					isOpen={isAddModalOpen}
+					onOpenChange={setIsAddModalOpen}
+					playlistId={playlist.id}
+					channelId={channel.id}
+					existingVideoIds={playlist.videos.map((v) => v.id)}
+				/>
+			)}
+
+			{channel?.id && (
+				<RemoveChannelVideosFromPlaylist
+					isOpen={isRemoveModalOpen}
+					onOpenChange={setIsRemoveModalOpen}
+					playlistId={playlist.id}
+					existingVideos={playlist.videos}
+				/>
+			)}
 		</div>
 	)
 }

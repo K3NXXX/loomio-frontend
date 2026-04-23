@@ -9,7 +9,6 @@ export const useEditVideo = () => {
 		mutationFn: ({ videoId, data }: { videoId: string; data: FormData }) =>
 			videoService.editVideo(videoId, data),
 		onSuccess: () => {
-			toast.success('Video edited successfully')
 			queryClient.invalidateQueries({ queryKey: ['getPublicVideos'] })
 			queryClient.invalidateQueries({ queryKey: ['channelStudioVideos'] })
 		},

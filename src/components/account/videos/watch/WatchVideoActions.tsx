@@ -56,7 +56,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 
 	return (
 		<div className='mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3'>
-			<div className='flex items-center gap-2 min-w-0'>
+			<div className='flex items-center gap-3 min-w-0'>
 				<Link href={PAGES.CHANNEL(video.channel.username)} className='shrink-0'>
 					<Avatar className='w-9 h-9 min-[400px]:w-11 min-[400px]:h-11'>
 						<AvatarImage

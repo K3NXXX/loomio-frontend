@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { WatchRecommendedVideos } from '../../../components/account/videos/watch/WatchRecommendedVideos'
 import { WatchCommentsList } from '@/components/account/videos/watch/watch-comments/WatchCommentsList'
+import { WatchPlaylistSidebar } from '@/components/account/videos/watch/WatchPlaylistSidebar'
 
 export default function Watch() {
 	const t = useTranslations()
@@ -26,6 +27,7 @@ export default function Watch() {
 	const { channel } = useGetChannel(video?.channel.username ?? '')
 	const channelVideos = channel?.videos || []
 	const publicVideos = allVideos || []
+	const playlistId = searchParams.get('playlist')
 
 	const channelIndex = channelVideos.findIndex((v) => v.id === video?.id)
 
@@ -141,8 +143,12 @@ export default function Watch() {
 				</div>
 				<WatchCommentsList video={video} />
 			</div>
-
-			<WatchRecommendedVideos videoId={video.id} />
+			<div className='w-[25%]'>
+				{playlistId && (
+					<WatchPlaylistSidebar videoId={video.id} playlistId={playlistId} />
+				)}
+				<WatchRecommendedVideos videoId={video.id} />
+			</div>
 		</div>
 	)
 }

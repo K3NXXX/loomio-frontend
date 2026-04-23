@@ -11,10 +11,6 @@ export const useReportComment = () => {
 			message?: string | null
 		}) => reportService.reportComment(data),
 
-		onSuccess: () => {
-			toast.success('Report sent successfully')
-		},
-
 		onError: (error: any) => {
 			const message =
 				error?.response?.data?.message ||

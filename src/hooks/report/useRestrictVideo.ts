@@ -10,7 +10,6 @@ export const useRestrictVideo = (reportId: string) => {
 		mutationFn: () => reportService.restrictVideo(reportId),
 
 		onSuccess: () => {
-			toast.success('Video has been restricted')
 
 			queryClient.invalidateQueries({
 				queryKey: ['videoReports'],

@@ -10,7 +10,6 @@ export const useRequestReview = () => {
 			reportService.requestReview(videoId, data),
 
 		onSuccess: () => {
-			toast.success('Review request submitted')
 			queryClient.invalidateQueries({ queryKey: ['videoHistory'] })
 		},
 

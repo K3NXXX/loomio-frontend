@@ -15,7 +15,6 @@ export const useCreateChannel = () => {
 				channelService.createChannel(data),
 
 			onSuccess: (channel) => {
-				toast.success('Channel created!')
 				queryClient.invalidateQueries({ queryKey: ['getUserChannels'] })
 				queryClient.refetchQueries({ queryKey: ['getUserChannels'] })
 				router.push(PAGES.CHANNEL(channel.username))

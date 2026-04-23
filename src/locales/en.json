@@ -367,7 +367,8 @@
 		"content": "Content",
 		"branding": "Branding",
 		"playlists": "Playlists",
-		"dangerZone": "Danger Zone"
+		"dangerZone": "Danger Zone",
+		"streams": "Streams"
 	},
 	"workplaceDangerZone": {
 		"pageTitle": "Channel danger zone",
@@ -503,6 +504,18 @@
 		"backToPlaylists": "Back to playlists",
 		"playlistEmpty": "This playlist is empty.",
 		"removeFromPlaylist": "Remove from playlist",
+		"addVideos": "Add videos",
+		"addSelected": "Add selected",
+		"selectedCount": "{count, plural, one {# video selected} other {# videos selected}}",
+		"noVideosToAdd": "No videos to add",
+		"searchVideos": "Search videos...",
+		"playlist": "Playlist",
+		"inPlaylist": "In playlist",
+		"availableVideos": "Available videos",
+		"removeVideos": "Remove videos",
+		"removeSelected": "Remove selected",
+		"noVideosToRemove": "No videos to remove",
+		"searchVideosToRemove": "Search videos to remove...",
 		"cover": {
 			"dragDrop": "Drag & drop your cover image here",
 			"orClick": "or click to select an image",

@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FaPalette, FaThLarge, FaVideo } from 'react-icons/fa'
-import { MdDangerous, MdFeaturedPlayList } from 'react-icons/md'
+import { MdDangerous, MdFeaturedPlayList, MdLiveTv } from 'react-icons/md'
 
 interface WorkplaceSidebarProps {
 	channel: IChannel
@@ -41,6 +41,12 @@ export function WorkplaceSidebar({ channel }: WorkplaceSidebarProps) {
 			icon: MdFeaturedPlayList,
 			href: PAGES.WORKPLACE_PLAYLISTS(channel.username),
 		},
+		{
+			label: t('streams'),
+			icon: MdLiveTv,
+			href: PAGES.WORKPLACE_STREAMS(channel.username),
+		},
+
 		{
 			label: t('dangerZone'),
 			icon: MdDangerous,

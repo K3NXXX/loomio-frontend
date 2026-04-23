@@ -11,7 +11,6 @@ export const useReportVideo = () => {
 			message?: string | null
 		}) => reportService.reportVideo(data),
 
-		onSuccess: () => toast.success('Report sent successfully'),
 		onError: (error: any) => {
 			const message =
 				error?.response?.data?.message ||

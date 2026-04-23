@@ -8,11 +8,9 @@ export const useDeleteCommentReport = (reportId: string | undefined) => {
 	const { mutate: deleteCommentReport, isPending } = useMutation({
 		mutationKey: ['deleteCommentReport'],
 
-		mutationFn: () => reportService.deleteComment(reportId!), // 🔥 тут reportId
+		mutationFn: () => reportService.deleteComment(reportId!), 
 
 		onSuccess: () => {
-			toast.success('Comment deleted successfully')
-
 			queryClient.invalidateQueries({ queryKey: ['report', reportId] })
 			queryClient.invalidateQueries({ queryKey: ['commentReports'] })
 			queryClient.invalidateQueries({ queryKey: ['videoReports'] })

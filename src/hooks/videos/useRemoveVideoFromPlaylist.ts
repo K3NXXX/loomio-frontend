@@ -14,10 +14,12 @@ export const useRemoveVideoFromPlaylist = () => {
 			videoId: string
 			playlistId: string
 		}) => videoService.removeVideoFromUserPlaylist(videoId, playlistId),
-		onSuccess: () => {
-			toast.success('Video removed from playlist')
+		onSuccess: (_, { playlistId }) => {
 			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
 			queryClient.invalidateQueries({ queryKey: ['getOneUserPlaylist'] })
+			queryClient.invalidateQueries({
+				queryKey: ['channel-playlist', playlistId],
+			})
 		},
 		onError: () => {
 			toast.error('Failed to remove video from playlist')

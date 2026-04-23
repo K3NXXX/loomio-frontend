@@ -11,7 +11,6 @@ export const useEditPlaylist = () => {
 		mutationFn: ({ id, ...editData }: { id: string } & IEditPlaylistRequest) =>
 			playlistService.editPlaylist(id, editData),
 		onSuccess: () => {
-			toast.success('Playlist updated successfully')
 			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
 			queryClient.invalidateQueries({ queryKey: ['getOneUserPlaylist'] })
 			queryClient.invalidateQueries({ queryKey: ['getChannelPlaylists'] })

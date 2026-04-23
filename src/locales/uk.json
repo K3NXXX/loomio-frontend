@@ -368,7 +368,8 @@
 		"content": "Контент",
 		"branding": "Брендинг",
 		"playlists": "Плейлисти",
-		"dangerZone": "Небезпечні дії"
+		"dangerZone": "Небезпечні дії",
+		"streams": "Стріми"
 	},
 	"workplaceDangerZone": {
 		"pageTitle": "Небезпечні дії",
@@ -504,6 +505,18 @@
 		"backToPlaylists": "Назад до плейлистів",
 		"playlistEmpty": "Цей плейлист порожній.",
 		"removeFromPlaylist": "Видалити з плейлиста",
+		"addVideos": "Додати відео",
+		"addSelected": "Додати обрані",
+		"selectedCount": "{count, plural, one {# відео обрано} few {# відео обрано} many {# відео обрано} other {# відео обрано}}",
+		"noVideosToAdd": "Немає відео для додавання",
+		"searchVideos": "Пошук відео...",
+		"playlist": "Плейлист",
+		"inPlaylist": "В плейлісті",
+		"availableVideos": "Доступні відео",
+		"removeVideos": "Видалити відео",
+		"removeSelected": "Видалити обрані",
+		"noVideosToRemove": "Немає відео для видалення",
+		"searchVideosToRemove": "Пошук відео для видалення...",
 		"cover": {
 			"dragDrop": "Перетягніть обкладинку сюди",
 			"orClick": "або натисніть, щоб обрати зображення",
