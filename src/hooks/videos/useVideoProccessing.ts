@@ -3,7 +3,7 @@ import { videoService } from '@/services/video.service'
 
 export const useVideoProcessing = (
 	videoId: string | null,
-	setStatus: string,
+	setStatus: (status: string) => void
 ) => {
 	const [isProcessing, setIsProcessing] = useState(false)
 

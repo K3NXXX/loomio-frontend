@@ -5,10 +5,7 @@ import { toast } from 'sonner'
 import { PAGES } from '@/constants/pages.constants'
 import { authService } from '@/services/auth.service'
 
-import type {
-	IEmailVerification,
-	IEmailVerificationResponse,
-} from '@/types/auth.types'
+import type { IEmailVerification } from '@/types/auth.types'
 import { useTranslations } from 'next-intl'
 
 export const useEmailVerification = () => {
@@ -18,10 +15,7 @@ export const useEmailVerification = () => {
 		mutationKey: ['emailVerification'],
 		mutationFn: (data: IEmailVerification) =>
 			authService.emailVerification(data),
-		onSuccess: (data: IEmailVerificationResponse) => {
-			if (data.user) {
-				localStorage.setItem('user', JSON.stringify(data.user))
-			}
+		onSuccess: () => {
 			toast(t('success.registrationCompleted'))
 			router.push(PAGES.LOGIN)
 		},

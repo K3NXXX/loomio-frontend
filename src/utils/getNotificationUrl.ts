@@ -15,10 +15,10 @@ export function getNotificationUrl(n: Notification) {
 			return PAGES.WATCH(n.video?.id ?? '')
 
 		case NotificationType.CHANNEL_NEW_FOLLOWER:
-			return PAGES.WORKPLACE_DASHBOARD(n.channel?.username)
+			PAGES.WORKPLACE_DASHBOARD(n.channel?.username ?? '')
 
 		case NotificationType.VIDEO_RESTRICTED:
-			return PAGES.WORKPLACE_CONTENT(n.channel?.username)
+			PAGES.WORKPLACE_DASHBOARD(n.channel?.username ?? '')
 
 		default:
 			return '#'

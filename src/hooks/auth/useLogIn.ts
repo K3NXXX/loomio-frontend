@@ -6,7 +6,6 @@ import { PAGES } from '@/constants/pages.constants'
 import { authService } from '@/services/auth.service'
 
 import type {
-	IEmailVerificationResponse,
 	ILogInRequest,
 } from '@/types/auth.types'
 import { useTranslations } from 'next-intl'
@@ -17,8 +16,7 @@ export const useLogIn = () => {
 	const { mutate: logIn } = useMutation({
 		mutationKey: ['logIn'],
 		mutationFn: (data: ILogInRequest) => authService.login(data),
-		onSuccess: (data: IEmailVerificationResponse) => {
-			localStorage.setItem('user', JSON.stringify(data.user))
+		onSuccess: () => {
 			router.replace(PAGES.HOME)
 		},
 		onError: (error: any) => {

@@ -122,18 +122,20 @@ export default function Watch() {
 						<p>{video.tags}</p>
 					</div>
 
-					<p
-						className={`text-sm min-[400px]:text-base text-neutral-700 dark:text-neutral-300 transition-all duration-300 ${
-							isDescriptionExpanded ? 'line-clamp-none' : 'line-clamp-3'
-						}`}
-					>
+				<p
+					className={`text-sm min-[400px]:text-base text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap transition-all duration-300 ${
+						video.description && video.description.length > 120 && !isDescriptionExpanded
+							? 'line-clamp-3'
+							: ''
+					}`}
+				>
 						{video.description}
 					</p>
 
 					{video.description && video.description.length > 120 && (
 						<button
 							onClick={toggleDescription}
-							className='mt-2 text-xs min-[400px]:text-sm font-semibold text-primary hover:underline'
+							className='mt-2 text-xs min-[400px]:text-sm font-semibold text-primary hover:underline cursor-pointer'
 						>
 							{isDescriptionExpanded
 								? t('watch.showLess')

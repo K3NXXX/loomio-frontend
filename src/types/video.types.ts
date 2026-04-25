@@ -6,6 +6,9 @@ export interface IAddVideoRequest {
 	audience: 'yes' | 'no'
 	thumbnail?: File
 	channelId: string | null
+	videoPublicId: string
+	publishType: 'now' | 'scheduled'
+	publishDate?: string
 }
 
 export interface IEditVideoRequest {

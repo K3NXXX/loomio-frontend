@@ -11,6 +11,7 @@
 	},
 	"userMenu": {
 		"upgrade": "Upgrade to premium",
+		"premiumActive": "Premium activated",
 		"account": "Account",
 		"channels": "Channels",
 		"logout": "Log out"
@@ -73,7 +74,9 @@
 				"passwordPlaceholder": "Your password",
 				"confirmPasswordLabel": "Confirm password",
 				"confirmPasswordPlaceholder": "Confirm your password",
-				"termsLabel": "I agree to the terms and conditions"
+				"termsLabel": "I agree to the terms and conditions",
+				"termsLabelPrefix": "I agree to the",
+				"termsLabelLink": "Terms of Service and Privacy Policy"
 			}
 		}
 	},
@@ -87,6 +90,10 @@
 			"descriptionPrefix": "Manage your channels, search through them, or",
 			"createNewInline": "create a new one",
 			"searchPlaceholder": "Search your channels..."
+		},
+		"authProviders": {
+			"title": "Connected Accounts",
+			"subtitle": "Manage how you sign in to your account"
 		},
 		"userChannelItem": {
 			"menuChannel": "Channel",
@@ -341,6 +348,8 @@
 	"common": {
 		"loading": "Loading…",
 		"noChannels": "You have no channels yet.",
+		"noChannelsFound": "No channels found.",
+		"channelsLoadError": "Failed to load channels. Please try again later.",
 		"createNew": "Create new",
 		"selectChannel": "Select a channel",
 		"cancel": "Cancel",
@@ -733,5 +742,24 @@
 	},
 	"success": {
 		"registrationCompleted": "Registration completed!"
+	},
+	"premium": {
+		"title": "Loomio Premium",
+		"inactive": "Inactive",
+		"active": "Active",
+		"description": "Unlock advanced platform features",
+		"activeDescription": "You enjoy all Premium benefits",
+		"upgradeButton": "Get Premium",
+		"manageButton": "Manage Plan",
+		"enjoying": "Enjoying Premium!",
+		"premiumSectionTitle": "Your premium plan",
+		"premiumSectionSubtitle": "Unlock advanced features and get the most out of Loomio",
+		"label": "Premium",
+		"premiumSuccess": {
+			"title": "Welcome to Premium!",
+			"description": "Thank you for your purchase. Your account has been upgraded to Loomio Premium — all platform features are now available to you.",
+			"goHome": "Go home",
+			"myProfile": "My profile"
+		}
 	}
 }

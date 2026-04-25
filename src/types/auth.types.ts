@@ -97,6 +97,7 @@ export interface IGetUserData {
 	role: string
 	hasPassword: string
 	authProviders: string[]
+	isPremium: boolean
 }
 
 interface AxiosErrorResponse {

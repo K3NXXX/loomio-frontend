@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { WatchCommentItem } from './WatchCommentItem'
 import { WatchCommentsHeader } from './WatchCommentsHeader'
+import { IVideoComment } from '@/types/comment.types'
 
 interface IWatchCommentsProps {
 	video: IVideo
@@ -28,7 +29,8 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 		if (!allComments?.data) return []
 
 		const sorted = [...allComments.data].sort(
-			(a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+			(a, b) =>
+				new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
 		)
 
 		const map: Record<string, any> = {}
@@ -63,7 +65,7 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 		if (!current) return null
 
 		while (current.parentId) {
-			current = raw.find((c) => c.id === current.parentId)!
+			current = raw.find((c) => c.id === current?.parentId)!
 			if (!current) return null
 		}
 
@@ -123,7 +125,7 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 
 						{expandedReplies[comment.id] && comment.replies.length > 0 && (
 							<div className='flex flex-col gap-2 ml-10 mt-3'>
-								{comment.replies.map((reply) => (
+								{(comment.replies as IVideoComment[]).map((reply) => (
 									<WatchCommentItem
 										key={reply.id}
 										comment={reply}

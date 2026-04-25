@@ -16,16 +16,13 @@ import { FcGoogle } from 'react-icons/fc'
 import { AuthProviderCard } from './edit-account/AuthProviderCard'
 import { AvatarUploader } from './edit-account/AvatarUploader'
 import EditAccount from './edit-account/EditAccount'
-
-type Video = {
-	title: string
-	thumbnail: string
-	createdAt: string
-}
+import { PremiumCard } from './PremiumCard'
 
 export default function Account() {
 	const t = useTranslations()
 	const { userData } = useGetMe()
+
+	console.log(userData)
 	const { openUploadingVideo, setOpenUploadingVideo } = useVideoStore()
 	const [isChannelsOpen, setIsChannelsOpen] = useState(false)
 
@@ -93,12 +90,35 @@ export default function Account() {
 					</div>
 				</div>
 				<EditAccount />
-				<AuthProviderCard
-					provider='google'
-					description={t('accountPage.googleAuthDescription')}
-					icon={<FcGoogle className='w-6 h-6' />}
-					isConnected={userData?.authProviders?.includes('google') ?? false}
-				/>
+			{userData?.authProviders && userData.authProviders.length > 0 && (
+				<>
+					<div>
+						<h1 className='text-xl min-[400px]:text-2xl min-[600px]:text-3xl font-bold tracking-tight text-center'>
+							{t('accountPage.authProviders.title')}
+						</h1>
+
+						<p className='text-sm min-[400px]:text-base text-muted-foreground mt-1 text-center pb-5'>
+							{t('accountPage.authProviders.subtitle')}
+						</p>
+					</div>
+					<AuthProviderCard
+						provider='google'
+						description={t('accountPage.googleAuthDescription')}
+						icon={<FcGoogle className='w-6 h-6' />}
+						isConnected={userData.authProviders.includes('google')}
+					/>
+				</>
+			)}
+				<div className='mt-10 '>
+					<h1 className='text-xl min-[400px]:text-2xl min-[600px]:text-3xl font-bold tracking-tight text-center'>
+						{t('premium.premiumSectionTitle')}
+					</h1>
+					<p className='text-sm min-[400px]:text-base text-muted-foreground mt-1 text-center pb-8'>
+						{t('premium.premiumSectionSubtitle')}
+					</p>
+
+					<PremiumCard isPremium={userData?.isPremium} />
+				</div>
 			</motion.div>
 
 			{openUploadingVideo && (

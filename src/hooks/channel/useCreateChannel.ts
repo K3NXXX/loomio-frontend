@@ -11,7 +11,7 @@ export const useCreateChannel = () => {
 	const { mutate: createChannel, isPending: channelCreatingLoading } =
 		useMutation({
 			mutationKey: ['createChannel'],
-			mutationFn: (data: ICreateChannelRequest) =>
+			mutationFn: (data: FormData) =>
 				channelService.createChannel(data),
 
 			onSuccess: (channel) => {

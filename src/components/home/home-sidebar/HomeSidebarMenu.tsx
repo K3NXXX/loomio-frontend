@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl'
 
 export function HomeSidebarMenu() {
 	const pathname = usePathname()
-	const ref = useRef(null)
+	const ref = useRef<HTMLElement | null>(null)
 	const { closeSidebar } = useGlobalStore()
 	const t = useTranslations()
 
@@ -21,6 +21,7 @@ export function HomeSidebarMenu() {
 		closeSidebar()
 	}
 
+	//@ts-ignore
 	useOnClickOutside(ref, handleClickOutside)
 
 	return (

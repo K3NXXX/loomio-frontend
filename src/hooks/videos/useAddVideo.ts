@@ -1,6 +1,5 @@
 import { videoService } from '@/services/video.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
 
 export const useAddVideo = () => {
 	const queryClient = useQueryClient()
@@ -10,6 +9,8 @@ export const useAddVideo = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['getPublicVideos'] })
 			queryClient.invalidateQueries({ queryKey: ['channelStudioVideos'] })
+			queryClient.invalidateQueries({ queryKey: ['getChannel'] })
+			
 		},
 	})
 

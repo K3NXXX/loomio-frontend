@@ -5,10 +5,12 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { BsFillEyeSlashFill } from 'react-icons/bs'
 import { HiEye } from 'react-icons/hi'
 import { useTranslations } from 'next-intl'
+import Link from 'next/link'
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { useSignupFormErrors } from '@/hooks/auth/useSignupFormErrors'
+import { PAGES } from '@/constants/pages.constants'
 
 import type { TSignupSchema } from '@/schemas/auth/signup-schema'
 
@@ -143,9 +145,16 @@ export function SignUpFormFields() {
 						</div>
 					)}
 				/>
-				<label htmlFor='signup-terms-checkbox' className='text-white'>
-					{t('auth.signup.fields.termsLabel')}
-				</label>
+			<label htmlFor='signup-terms-checkbox' className='text-white/70 text-sm leading-snug'>
+				{t('auth.signup.fields.termsLabelPrefix')}{' '}
+				<Link
+					href={PAGES.TERMS}
+					target='_blank'
+					className='text-primary hover:text-primary/80 underline underline-offset-2 transition-colors'
+				>
+					{t('auth.signup.fields.termsLabelLink')}
+				</Link>
+			</label>
 			</div>
 		</>
 	)

@@ -139,6 +139,7 @@ export function CreatePlaylistModal({
 					</DialogHeader>
 
 					<form
+						//@ts-ignore
 						onSubmit={handleSubmit(onSubmit)}
 						className='p-5 flex flex-col gap-5'
 					>

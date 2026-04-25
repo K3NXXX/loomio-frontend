@@ -46,11 +46,15 @@ export function Branding() {
 		setValue,
 		getValues,
 		trigger,
-		formState: { errors, isDirty, isSubmitting, isValid },
+		formState: { errors, isDirty, isSubmitting },
 	} = useForm<TEditingChannelSchema>({
+		// @ts-ignore
 		resolver: zodResolver(editingChannelSchema),
 		mode: 'onChange',
-		defaultValues,
+		defaultValues: {
+			removeAvatar: false,
+			removeBanner: false,
+		},
 	})
 
 	useEffect(() => {
@@ -135,6 +139,7 @@ export function Branding() {
 
 	return (
 		<form
+			// @ts-ignore
 			onSubmit={handleSubmit(onSubmit)}
 			className='py-10 px-5 flex flex-col items-start min-h-[calc(100vh-73px)] space-y-10'
 		>

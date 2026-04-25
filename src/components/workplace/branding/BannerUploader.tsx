@@ -80,7 +80,7 @@ export function BannerUploader({
 
 	return (
 		<div className='flex flex-col gap-3'>
-			<div className='w-full h-[230px] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3 flex items-center justify-center bg-muted/10'>
+			<div className='w-full aspect-[20/5] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3 flex items-center justify-center bg-muted/10'>
 				{currentUrl ? (
 					<img
 						src={currentUrl}

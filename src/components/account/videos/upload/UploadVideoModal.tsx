@@ -103,6 +103,7 @@ export function UploadVideoModal({
 	const { addVideo } = useAddVideo()
 	const { deleteTempVideo } = useDeleteTempVideo()
 
+	//@ts-ignore
 	useVideoProcessing(videoId, setStatus)
 	const { setThumbnailFile, setThumbnailPreview, uploadChannelId } =
 		useVideoStore()
@@ -181,13 +182,17 @@ export function UploadVideoModal({
 			if (!isValid) {
 				const titleState = getFieldState('title')
 				if (titleState.error) {
-					toast.error(getValidationMessage(titleState.error.message as string, t))
+					toast.error(
+						getValidationMessage(titleState.error.message as string, t),
+					)
 					return
 				}
 
 				const fileState = getFieldState('file')
 				if (fileState.error) {
-					toast.error(getValidationMessage(fileState.error.message as string, t))
+					toast.error(
+						getValidationMessage(fileState.error.message as string, t),
+					)
 					return
 				}
 
@@ -263,7 +268,9 @@ export function UploadVideoModal({
 			formData.append('visibility', payload.visibility)
 			formData.append('audience', payload.audience)
 			formData.append('publishType', payload.publishType)
-			formData.append('channelId', payload.channelId)
+			if (payload.channelId) {
+				formData.append('channelId', payload.channelId)
+			}
 			if (payload.publishDate)
 				formData.append('publishDate', payload.publishDate)
 			if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail)
@@ -357,7 +364,8 @@ export function UploadVideoModal({
 						{fileName && (
 							<div className='flex items-center gap-2 w-[300px]'>
 								<span className='text-xs text-muted-foreground whitespace-nowrap'>
-									{status === 'uploading' && t('uploadVideoModal.statusUploading')}
+									{status === 'uploading' &&
+										t('uploadVideoModal.statusUploading')}
 									{status === 'processing' &&
 										t('uploadVideoModal.statusProcessing')}
 									{status === 'ready' && t('uploadVideoModal.statusReady')}
@@ -452,14 +460,18 @@ export function UploadVideoModal({
 			<AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>{t('uploadVideoModal.discardTitle')}</AlertDialogTitle>
+						<AlertDialogTitle>
+							{t('uploadVideoModal.discardTitle')}
+						</AlertDialogTitle>
 						<AlertDialogDescription>
 							{t('uploadVideoModal.discardDescription')}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
 					<AlertDialogFooter>
-						<AlertDialogCancel>{t('uploadVideoModal.cancel')}</AlertDialogCancel>
+						<AlertDialogCancel>
+							{t('uploadVideoModal.cancel')}
+						</AlertDialogCancel>
 
 						<AlertDialogAction
 							onClick={async () => {

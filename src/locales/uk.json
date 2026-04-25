@@ -11,6 +11,7 @@
 	},
 	"userMenu": {
 		"upgrade": "Оновити до преміум",
+		"premiumActive": "Преміум активовано",
 		"account": "Профіль",
 		"channels": "Мої канали",
 		"logout": "Вийти"
@@ -26,7 +27,7 @@
 			"passwordPlaceholder": "Ваш пароль",
 			"forgotPassword": "Забули пароль?",
 			"submit": "Увійти",
-			"noAccount": "Немає акаунта?",
+			"noAccount": "Немає профілю?",
 			"signUp": "Зареєструватися"
 		},
 		"forgotPassword": {
@@ -73,7 +74,9 @@
 				"passwordPlaceholder": "Ваш пароль",
 				"confirmPasswordLabel": "Підтвердіть пароль",
 				"confirmPasswordPlaceholder": "Підтвердьте ваш пароль",
-				"termsLabel": "Я погоджуюся з умовами та положеннями"
+				"termsLabel": "Я погоджуюся з умовами та положеннями",
+				"termsLabelPrefix": "Я погоджуюся з",
+				"termsLabelLink": "Умовами використання та Політикою конфіденційності"
 			}
 		}
 	},
@@ -87,6 +90,10 @@
 			"descriptionPrefix": "Керуйте своїми каналами, шукайте серед них або",
 			"createNewInline": "створіть новий",
 			"searchPlaceholder": "Пошук каналів..."
+		},
+		"authProviders": {
+			"title": "Підключені акаунти",
+			"subtitle": "Керуйте способами входу до вашого профілю"
 		},
 		"userChannelItem": {
 			"menuChannel": "Канал",
@@ -341,6 +348,8 @@
 	"common": {
 		"loading": "Завантаження…",
 		"noChannels": "У вас ще немає каналів.",
+		"noChannelsFound": "Канали не знайдено.",
+		"channelsLoadError": "Не вдалося завантажити канали. Спробуйте пізніше.",
 		"createNew": "Створити",
 		"selectChannel": "Оберіть канал",
 		"sendReport": "Надіслати скаргу",
@@ -739,5 +748,24 @@
 		"videos": "Відео",
 		"playlists": "Плейлисти",
 		"playlistsEmpty": "Плейлистів ще немає"
+	},
+	"premium": {
+		"title": "Loomio Преміум",
+		"inactive": "Неактивно",
+		"active": "Активно",
+		"description": "Розблокуйте розширені можливості платформи",
+		"activeDescription": "Ви користуєтесь усіма перевагами Преміум",
+		"upgradeButton": "Отримати Преміум",
+		"manageButton": "Оглянути план",
+		"enjoying": "Насолоджуйтесь Преміумом!",
+		"premiumSectionTitle": "Ваш преміум план",
+		"premiumSectionSubtitle": "Відкрийте розширені можливості та отримайте максимум від Loomio",
+		"label": "Преміум",
+		"premiumSuccess": {
+			"title": "Ласкаво просимо до Преміум!",
+			"description": "Дякуємо за покупку. Ваш акаунт оновлено до Loomio Преміум — тепер вам доступні всі можливості платформи.",
+			"goHome": "На головну",
+			"myProfile": "Мій профіль"
+		}
 	}
 }

@@ -37,4 +37,7 @@ export const PAGES = {
 	MODERATION_COMMENT_HISTORY: '/moderation/comment-history',
 	MODERATION_VIDEO_HISTORY: '/moderation/video-history',
 	MODERATION_VIDEO_REVIEWS: '/moderation/video-reviews',
+	PREMIUM_INFO: 'account/premium',
+	PREMIUM_SUCCESS: 'account/premium/success',
+	TERMS: '/terms',
 }

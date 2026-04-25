@@ -9,7 +9,7 @@ type NotificationTextTranslator = (
 		| 'text.videoPublished'
 		| 'text.channelNewFollower'
 		| 'text.videoRestricted',
-	values?: Record<string, string | number | Date | null | undefined>,
+	values?: Record<string, string | number | Date>,
 ) => string
 
 export function renderNotificationText(

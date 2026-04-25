@@ -1,8 +1,14 @@
 import type { Area } from 'react-easy-crop'
 
+type CropOptions = {
+	targetWidth?: number
+	targetHeight?: number
+}
+
 export const getCroppedImg = async (
 	imageSrc: string,
 	pixelCrop: Area,
+	options?: CropOptions,
 ): Promise<string | null> => {
 	const image = await new Promise<HTMLImageElement>((resolve, reject) => {
 		const img = new Image()
@@ -15,8 +21,11 @@ export const getCroppedImg = async (
 	const ctx = canvas.getContext('2d')
 	if (!ctx) return null
 
-	canvas.width = pixelCrop.width
-	canvas.height = pixelCrop.height
+	const width = options?.targetWidth ?? pixelCrop.width
+	const height = options?.targetHeight ?? pixelCrop.height
+
+	canvas.width = width
+	canvas.height = height
 
 	ctx.drawImage(
 		image,
@@ -26,8 +35,8 @@ export const getCroppedImg = async (
 		pixelCrop.height,
 		0,
 		0,
-		pixelCrop.width,
-		pixelCrop.height,
+		width,
+		height,
 	)
 
 	return canvas.toDataURL('image/jpeg')

@@ -4,8 +4,8 @@ import type { IChannel } from '@/types/channel.types'
 class ChannelService {
 	private BASE_URL = `${process.env.NEXT_PUBLIC_API_URL!}/channel`
 
-	async createChannel(fd: FormData): Promise<{ success: boolean }> {
-		const { data } = await axiosInstance.post<{ success: boolean }>(
+	async createChannel(fd: FormData): Promise<IChannel> {
+		const { data } = await axiosInstance.post<IChannel>(
 			this.BASE_URL,
 			fd,
 		)

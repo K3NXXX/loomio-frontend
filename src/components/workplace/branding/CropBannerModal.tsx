@@ -54,8 +54,7 @@ export function CropBannerModal({
 							cropShape='rect'
 							showGrid={false}
 							objectFit='cover'
-							// 20:6 ≈ 3.333...
-							aspect={20 / 6}
+					aspect={20 / 5}
 						/>
 					)}
 				</div>

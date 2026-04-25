@@ -21,6 +21,7 @@ export interface IVideoComment {
 	parent: ParentComment | null
 	likes: number
 	dislikes: number
+	replies: IVideoComment[]
 	userReaction: ReactionType | null
 	_count: {
 		replies: number

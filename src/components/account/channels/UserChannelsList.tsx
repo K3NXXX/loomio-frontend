@@ -2,17 +2,19 @@
 
 import { UserChannelsSkeleton } from '@/components/skeletons/channels/UserChannelsSkeleton'
 import { useGetUserChannels } from '@/hooks/channel/useGetUserChannels'
+import { useTranslations } from 'next-intl'
 import { UserChannelItem } from './UserChannelItem'
 import { useState, useMemo } from 'react'
 
 interface Props {
-	search: string
-	onOpenChange: (v: boolean) => void
+	search?: string
+	onOpenChange?: (v: boolean) => void
 }
 
-export default function UserChannelsList({ search, onOpenChange }: Props) {
+export default function UserChannelsList({ search = '', onOpenChange }: Props) {
 	const { userChannels, isError, isLoading } = useGetUserChannels()
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+	const t = useTranslations('common')
 
 	const filteredChannels = useMemo(() => {
 		if (!userChannels) return []
@@ -28,9 +30,7 @@ export default function UserChannelsList({ search, onOpenChange }: Props) {
 	if (isError) {
 		return (
 			<div className='flex justify-center p-6'>
-				<p className='text-red-500'>
-					Failed to load channels. Please try again later.
-				</p>
+				<p className='text-red-500'>{t('channelsLoadError')}</p>
 			</div>
 		)
 	}
@@ -38,7 +38,7 @@ export default function UserChannelsList({ search, onOpenChange }: Props) {
 	if (!filteredChannels.length) {
 		return (
 			<div className='flex justify-center p-6 text-sm text-muted-foreground text-center'>
-				<p>{search ? 'No channels found. ' : 'No channels yet. '}</p>
+				<p>{search ? t('noChannelsFound') : t('noChannels')}</p>
 			</div>
 		)
 	}

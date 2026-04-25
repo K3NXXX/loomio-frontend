@@ -98,26 +98,17 @@ export default function EditAccount() {
 							</div>
 
 							<div className='divide-y divide-white/10'>
-								{/* <div className='py-4'>
-									<EditableField
-										label={t('accountPage.editAccount.fields.name')}
-										value={userData?.name}
-										field='name'
-										register={register}
-										setValue={setValue}
-										isSuccess={isSuccess}
-									/>
-								</div> */}
 
 								<div className='py-4'>
-									<EditableField
-										label={t('accountPage.editAccount.fields.username')}
-										value={userData?.username}
-										field='username'
-										register={register}
-										setValue={setValue}
-										isSuccess={isSuccess}
-									/>
+					<EditableField
+									label={t('accountPage.editAccount.fields.username')}
+									value={userData?.username}
+									field='username'
+									register={register}
+									setValue={setValue}
+									isSuccess={isSuccess}
+									showAtPrefix
+								/>
 								</div>
 
 								<div className='py-4'>

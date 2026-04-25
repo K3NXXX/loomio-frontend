@@ -5,6 +5,11 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { ClientHomeLayout } from './ClientHomeLayout'
 
+type JwtPayloadWithRole = {
+	role: string
+
+}
+
 export default async function HomeLayout({
 	children,
 }: {
@@ -17,7 +22,7 @@ export default async function HomeLayout({
 
 	let payload
 	try {
-		payload = jwtDecode(token)
+		payload = jwtDecode<JwtPayloadWithRole>(token)
 	} catch {
 		redirect(PAGES.LOGIN)
 	}

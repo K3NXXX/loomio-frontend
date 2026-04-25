@@ -23,7 +23,6 @@ export const useSignupFormErrors = () => {
 			'password',
 			'email',
 			'username',
-			'name',
 		] as const
 
 		fields.forEach((field) => {
@@ -39,7 +38,6 @@ export const useSignupFormErrors = () => {
 		errors.termsAccepted,
 		errors.email,
 		errors.username,
-		errors.name,
 		t,
 	])
 }

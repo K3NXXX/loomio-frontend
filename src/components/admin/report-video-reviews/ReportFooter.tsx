@@ -21,9 +21,9 @@ import type { IGetUserData } from '@/types/auth.types'
 import type { IReportItem } from '@/types/report.types'
 
 interface IReportFooterProps {
-	userData: IGetUserData
+	userData?: IGetUserData
 	report: IReportItem
-	onOpenChange: () => void
+	onOpenChange: (v: boolean) => void
 }
 
 export function ReportFooter({
@@ -44,7 +44,7 @@ export function ReportFooter({
 		confirmReview(report.id, {
 			onSuccess: () => {
 				setApproveDialog(false)
-				onOpenChange()
+				onOpenChange(false)
 			},
 		})
 	}
@@ -53,7 +53,7 @@ export function ReportFooter({
 		restrictVideo(undefined, {
 			onSuccess: () => {
 				setRestrictDialog(false)
-				onOpenChange()
+				onOpenChange(false)
 			},
 		})
 	}

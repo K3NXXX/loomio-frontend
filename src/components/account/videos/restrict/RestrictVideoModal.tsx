@@ -124,9 +124,9 @@ export function RestrictVideoModal({
 			if (data.tags) formData.append('tags', data.tags)
 			formData.append('audience', data.audience)
 
-			// ❗ ОБОВ'ЯЗКОВО
+			//@ts-ignore
 			formData.append('channelId', uploadChannelId)
-
+			//@ts-ignore
 			formData.append('video', videoFile)
 			if (data.thumbnail?.[0]) formData.append('thumbnail', data.thumbnail[0])
 
@@ -206,6 +206,7 @@ export function RestrictVideoModal({
 							<div className='h-[500px] flex flex-col justify-between'>
 								{steps === 1 && (
 									<EditVideoStepFirst
+										//@ts-ignore
 										register={register}
 										fileName={fileName}
 										video={editingVideo}
@@ -213,15 +214,19 @@ export function RestrictVideoModal({
 								)}
 								{steps === 2 && (
 									<EditVideoStepSecond
+										//@ts-ignore
 										setValue={setValue}
 										video={editingVideo}
+										//@ts-ignore
 										register={register}
 									/>
 								)}
 								{steps === 3 && (
 									<EditVideoStepThird
+										//@ts-ignore
 										setValue={setValue}
 										video={editingVideo}
+										//@ts-ignore
 										watch={watch}
 									/>
 								)}

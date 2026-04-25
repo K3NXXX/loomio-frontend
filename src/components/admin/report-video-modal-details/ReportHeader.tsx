@@ -6,9 +6,8 @@ import type { IGetUserData } from '@/types/auth.types'
 import type { IReportItem } from '@/types/report.types'
 
 interface IReportHeaderProps {
-	status: string
 	report: IReportItem
-	userData: IGetUserData
+	userData?: IGetUserData
 }
 
 export function ReportHeader({ report, userData }: IReportHeaderProps) {

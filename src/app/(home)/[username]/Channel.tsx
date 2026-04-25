@@ -10,6 +10,7 @@ import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useGetChannel } from '@/hooks/channel/useGetChannel'
 import { useToggleFollowUser } from '@/hooks/follows/useFollowUser'
 import { useIsFollowing } from '@/hooks/follows/useIsFollowing'
+import { useGetChannelPlaylists } from '@/hooks/playlists/useGetChannelPlaylists'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
 import { useChannelStore } from '@/zustand/store/channelStore'
@@ -35,6 +36,7 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 	const { setOpenUploadingVideo, setUploadChannelId } = useVideoStore()
 	const { userData } = useGetMe()
 	const { isFollowing } = useIsFollowing(channel?.id ?? '')
+	const { channelPlaylists } = useGetChannelPlaylists(channel?.id)
 	const pathname = usePathname()
 	const router = useRouter()
 
@@ -92,8 +94,8 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 				transition={{ duration: 0.4 }}
 				className='max-w-[1284px] mx-auto'
 			>
-				{channel.bannerUrl && (
-					<div className='w-full h-[230px] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3'>
+			{channel.bannerUrl && (
+				<div className='w-full aspect-[20/5] overflow-hidden rounded-2xl border border-border/40 shadow-sm mb-3'>
 						<img
 							src={channel.bannerUrl}
 							alt={t('channelPage.bannerAlt')}
@@ -191,7 +193,7 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 
 				<div className='mt-6 border-b border-border/40'>
 					<div className='flex gap-1'>
-						{(['videos', 'playlists'] as ChannelTab[]).map((tab) => (
+						{(['videos', ...(channelPlaylists?.length ? ['playlists'] : [])] as ChannelTab[]).map((tab) => (
 							<button
 								key={tab}
 								onClick={() => handleTabChange(tab)}

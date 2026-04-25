@@ -42,7 +42,9 @@ export function HomeUserMenu() {
 						<div className='flex items-center gap-3'>
 							<Avatar className='h-9 w-9'>
 								<AvatarImage src={userData?.avatarUrl} />
-								<AvatarFallback>{getInitials(userData?.username)}</AvatarFallback>
+								<AvatarFallback>
+									{getInitials(userData?.username)}
+								</AvatarFallback>
 							</Avatar>
 							{!isSidebarCollapsed && (
 								<div className='flex flex-col overflow-hidden'>
@@ -76,12 +78,29 @@ export function HomeUserMenu() {
 							</span>
 						</div>
 					</DropdownMenuLabel>
-					<DropdownMenuSeparator />
+				<DropdownMenuSeparator />
+				{userData?.isPremium ? (
 					<DropdownMenuItem className='cursor-pointer'>
-						<LuCrown />
-						{t('userMenu.upgrade')}
+						<Link
+							href={`/${PAGES.PREMIUM_INFO}`}
+							className='flex items-center gap-2 w-full'
+						>
+							<LuCrown className='text-yellow-400 shrink-0' />
+							<span className='text-yellow-400 font-medium'>{t('userMenu.premiumActive')}</span>
+						</Link>
 					</DropdownMenuItem>
-					<DropdownMenuSeparator />
+				) : (
+					<DropdownMenuItem className='cursor-pointer'>
+						<Link
+							href={PAGES.PREMIUM_INFO}
+							className='flex items-center gap-2 w-full cursor-pointer'
+						>
+							<LuCrown />
+							{t('userMenu.upgrade')}
+						</Link>
+					</DropdownMenuItem>
+				)}
+				<DropdownMenuSeparator />
 					<DropdownMenuItem>
 						<Link
 							href={PAGES.ACCOUNT}

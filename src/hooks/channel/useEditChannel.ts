@@ -14,6 +14,7 @@ export const useEditChannel = () => {
 
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['getChannel'] })
+			toast.success('Канал успішно оновлено')
 		},
 		onError: () => {
 			toast.error('Something went wrong. Try later')

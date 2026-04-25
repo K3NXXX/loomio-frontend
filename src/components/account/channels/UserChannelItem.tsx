@@ -21,7 +21,7 @@ interface IUserChannelItemProps {
 	onClick?: (channelId: string) => void
 	activeDropdown: string | null
 	setActiveDropdown: (id: string | null) => void
-	onOpenChange: (v: boolean) => void
+	onOpenChange?: (v: boolean) => void
 }
 
 export function UserChannelItem({
@@ -44,7 +44,7 @@ export function UserChannelItem({
 				className='flex items-center gap-4 min-w-0 flex-1'
 				onClick={() => {
 					onClick?.(channel.id)
-					onOpenChange(false)
+					onOpenChange?.(false)
 					setActiveDropdown(null)
 				}}
 			>

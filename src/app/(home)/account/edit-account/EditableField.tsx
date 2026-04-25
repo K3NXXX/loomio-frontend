@@ -12,6 +12,7 @@ type Props = {
 	register: any
 	setValue: any
 	isSuccess: boolean
+	showAtPrefix?: boolean
 }
 
 export function EditableField({
@@ -21,6 +22,7 @@ export function EditableField({
 	register,
 	setValue,
 	isSuccess,
+	showAtPrefix = false,
 }: Props) {
 	const [isEditing, setIsEditing] = useState(false)
 	const t = useTranslations()
@@ -48,17 +50,26 @@ export function EditableField({
 					{label}
 				</span>
 
-				{!isEditing ? (
-					<span className='text-white text-sm min-[400px]:text-base h-9 min-[400px]:h-11 flex items-center'>
-						{value || '—'}
-					</span>
-				) : (
+			{!isEditing ? (
+				<span className='text-white text-sm min-[400px]:text-base h-9 min-[400px]:h-11 flex items-center'>
+					{value ? (
+						showAtPrefix ? <><span className='text-primary'>@</span>{value}</> : value
+					) : '—'}
+				</span>
+			) : (
+				<div className='relative'>
+					{showAtPrefix && (
+						<span className='absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-primary text-sm min-[400px]:text-base'>
+							@
+						</span>
+					)}
 					<Input
 						autoFocus
 						{...register(field)}
-						className='h-9 min-[400px]:h-11 text-sm min-[400px]:text-base bg-white/10 border-white/20 focus:border-primary'
+						className={`h-9 min-[400px]:h-11 text-sm min-[400px]:text-base bg-white/10 border-white/20 focus:border-primary ${showAtPrefix ? 'pl-7' : ''}`}
 					/>
-				)}
+				</div>
+			)}
 			</div>
 
 			<div className='shrink-0 flex items-center gap-2 min-[500px]:pb-0'>
