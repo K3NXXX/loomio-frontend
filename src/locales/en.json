@@ -163,6 +163,12 @@
 		"creator": "Creator",
 		"workplace": "Workplace",
 		"moderationPanel": "Moderation panel",
+		"moderationDashboard": "Moderation — Dashboard",
+		"moderationVideoReports": "Moderation — Video reports",
+		"moderationVideoReviews": "Moderation — Video re-reviews",
+		"moderationCommentReports": "Moderation — Comment reports",
+		"moderationVideoHistory": "Moderation — Video history",
+		"moderationCommentHistory": "Moderation — Comment history",
 		"login": "Log in",
 		"registration": "Registration",
 		"oauthRegistration": "OAuth registration",
@@ -189,10 +195,21 @@
 			"commentNew": "{author} commented on your video",
 			"commentReply": "{author} replied to your comment",
 			"likeVideo": "{author} liked your video",
+			"likeComment": "{author} liked your comment",
 			"dislikeVideo": "{author} disliked your video",
 			"videoPublished": "New video from {name}",
 			"channelNewFollower": "{author} followed your channel «{channelName}»",
-			"videoRestricted": "Your video «{title}» was restricted for {reason}."
+			"videoRestricted": "Your video «{title}» was restricted for {reason}.",
+			"videoRestrictedModeratorNote": "Moderator comment: {note}",
+			"videoApproved": "Your video «{title}» has been approved and is now public."
+		},
+		"restrictReason": {
+			"HATE_SPEECH": "Hate speech",
+			"HARASSMENT": "Harassment",
+			"SPAM": "Spam",
+			"SEXUAL_CONTENT": "Sexual content",
+			"VIOLENCE": "Violence",
+			"OTHER": "Other"
 		}
 	},
 	"moderation": {
@@ -217,9 +234,9 @@
 			"reportsCount": "{count} reports"
 		},
 		"videoReviews": {
-			"title": "Video Reports",
-			"loading": "Loading video reports...",
-			"noReports": "No video reports yet.",
+			"title": "Video re-reviews",
+			"loading": "Loading re-review queue...",
+			"noReports": "No videos awaiting re-review yet.",
 			"video": "Video",
 			"videoAuthor": "Video author",
 			"reporter": "Reporter",
@@ -228,7 +245,9 @@
 			"status": "Status",
 			"date": "Date",
 			"note": "Note:",
-			"unassigned": "Unassigned"
+			"unassigned": "Unassigned",
+			"toastApproveSuccess": "Video approved — it's now public.",
+			"toastApproveErrorFallback": "Could not approve the review"
 		},
 		"videoReports": {
 			"title": "Video Reports",
@@ -262,6 +281,10 @@
 			"title": "Moderation Dashboard",
 			"logout": "Log out"
 		},
+		"layout": {
+			"settingsTooltip": "Appearance & language",
+			"loadingHint": "Loading…"
+		},
 		"sidebar": {
 			"panelTitle": "Moderation Panel",
 			"reportsSection": "Reports",
@@ -269,7 +292,7 @@
 			"dashboard": "Dashboard",
 			"reportsVideos": "Reports: Videos",
 			"reportsComments": "Reports: Comments",
-			"reportsReviews": "Reports: Reviews",
+			"reportsReviews": "Reports: Re-reviews",
 			"videoHistory": "Video History",
 			"commentHistory": "Comment History"
 		},
@@ -300,6 +323,99 @@
 			"status": "Status",
 			"date": "Date",
 			"unassigned": "Unassigned"
+		},
+		"common": {
+			"unknownUser": "unknown",
+			"userDeleted": "deleted",
+			"loadingEllipsis": "…",
+			"avatarAlt": "Avatar"
+		},
+		"enums": {
+			"reason": {
+				"HATE_SPEECH": "Hate speech",
+				"HARASSMENT": "Harassment",
+				"SPAM": "Spam",
+				"SEXUAL_CONTENT": "Sexual content",
+				"VIOLENCE": "Violence",
+				"OTHER": "Other"
+			},
+			"status": {
+				"PENDING": "Pending",
+				"IN_PROGRESS": "In progress",
+				"IN_REVIEW": "In review",
+				"RESOLVED": "Resolved",
+				"REJECTED": "Rejected"
+			}
+		},
+		"modals": {
+			"headers": {
+				"videoReport": "Report details",
+				"videoReview": "Re-review details",
+				"commentReport": "Report details"
+			},
+			"assign": {
+				"assignToMe": "Assign to me",
+				"unassign": "Unassign",
+				"assignedToPrefix": "Assigned to"
+			},
+			"labels": {
+				"video": "Video",
+				"comment": "Comment",
+				"reporterNote": "Reporter note",
+				"reason": "Reason",
+				"reportedAt": "Reported at",
+				"assignedTo": "Assigned to",
+				"videoAuthor": "Video author",
+				"commentAuthor": "Comment author",
+				"reportedBy": "Reported by",
+				"moderatorRestrictionReason": "Moderator restriction reason",
+				"moderatorComment": "Moderator comment",
+				"priorRestrictionReason": "Previous restriction reason",
+				"priorModeratorComment": "Previous moderator comment",
+				"priorRestrictionHint": "The creator resubmitted this video after it was restricted.",
+				"priorRestrictionCardTitle": "Earlier restriction",
+				"none": "None"
+			},
+			"restrictVideoForm": {
+				"title": "Restrict video",
+				"description": "Choose the official restriction reason. The creator will see it in their notification. You can add an optional comment.",
+				"reasonLabel": "Restriction reason",
+				"noteLabel": "Comment for the creator (optional)",
+				"notePlaceholder": "Additional context visible to the channel owner…",
+				"cancel": "Cancel",
+				"submit": "Restrict video"
+			},
+			"commentDeleted": "Comment was deleted",
+			"confirm": "Confirm",
+			"cancel": "Cancel",
+			"videoReport": {
+				"approve": "Approve",
+				"restrictVideo": "Restrict video",
+				"approveTitle": "Approve report?",
+				"approveDescription": "This will mark the report as resolved without affecting the video.",
+				"restrictTitle": "Restrict video?",
+				"restrictDescription": "The video will become restricted and the report will be marked as resolved.",
+				"confirmRestrict": "Restrict video"
+			},
+			"videoReview": {
+				"approve": "Approve",
+				"restrictVideo": "Restrict video",
+				"approveTitle": "Approve report?",
+				"approveDescription": "By confirming this action, the report will be marked as resolved. The video will keep its current visibility, files and status.",
+				"restrictTitle": "Restrict video?",
+				"restrictDescription": "The video will become restricted and the report will be marked as resolved.",
+				"confirmRestrict": "Restrict video"
+			},
+			"commentReport": {
+				"approve": "Approve",
+				"deleteComment": "Delete comment",
+				"approveTitle": "Approve report?",
+				"approveDescription": "Are you sure you want to approve this report? This will mark the report as resolved.",
+				"deleteTitle": "Delete comment?",
+				"deleteDescription": "This action is permanent. The comment will be removed and the report will be marked as resolved.",
+				"yesApprove": "Yes, approve",
+				"yesDelete": "Yes, delete"
+			}
 		}
 	},
 	"watch": {
@@ -466,11 +582,21 @@
 		"visibilityPublic": "Public",
 		"visibilityPrivate": "Private",
 		"visibilityRestricted": "Restricted",
+		"visibilityPendingReview": "Under review",
+		"pendingReviewTooltipLine1": "Your updated video has been sent to moderators.",
+		"pendingReviewTooltipLine2": "This may take some time. You'll get a notification when there's a decision.",
+		"pendingReviewTooltipLine3": "The video stays restricted until moderation is complete.",
+		"toastCannotEditPendingReview": "This video is already submitted for review. Please wait for the moderator.",
 		"restrictedTooltipLine1": "⚠ This video was restricted for violating content rules.",
 		"restrictedTooltipLine2": "You must edit the video and request review before publishing again.",
+		"restrictedTooltipReasonLabel": "Restriction reason",
+		"restrictedTooltipModeratorNoteLabel": "Moderator comment",
 		"audienceForChildren": "For children",
 		"audienceAgeRestrictions": "Age restrictions",
 		"edit": "Edit",
+		"restrictedVideosTitle": "Restricted videos",
+		"restrictedVideosHint": "These videos are not publicly visible. Edit each video and request review to restore access.",
+		"restrictedVideosScheduledGroupTitle": "Restricted — scheduled for publishing",
 		"scheduledVideosTitle": "Scheduled videos",
 		"menuDelete": "Delete",
 		"deleteDialogTitle": "Delete video?",
@@ -574,6 +700,7 @@
 		"leave": "Leave",
 		"toastStillUploading": "Video is still uploading",
 		"toastNoChannel": "Channel is not selected",
+		"toastUploadFailed": "Could not upload the video. Please try again.",
 		"file": {
 			"dragDrop": "Drag & drop your video here",
 			"orClick": "or click to select a file",
@@ -630,9 +757,19 @@
 			"title": "Edit Video",
 			"loading": "Loading…",
 			"toastNoVideoSelected": "No video selected for editing",
+			"toastPickNewVideoFirst": "Upload a new video file before continuing.",
+			"submitForReview": "Send for moderation review",
+			"reviewSubmittedTitle": "Submitted for moderator review",
+			"reviewSubmittedDescription": "Your updated video has been sent to the moderation team.\n\nReviews can take some time. You will receive a notification when a decision is made.",
+			"reviewSubmittedClose": "Got it",
 			"back": "Back",
 			"next": "Next",
 			"confirm": "Confirm"
+		},
+		"restrictFlow": {
+			"stepSecond": {
+				"thumbnailTitle": "Thumbnail (optional — your current one is kept if you skip this)"
+			}
 		},
 		"restrictPreview": {
 			"thumbnailOverlayAlt": "Video thumbnail preview",

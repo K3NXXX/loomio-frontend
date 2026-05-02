@@ -1,55 +1,48 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+	ModerationSidebarMetaBlock,
+	ModerationSidebarUserBlock,
+} from '@/components/admin/moderation-report/ModerationSidebarBlocks'
+import { getDateLocaleTag } from '@/utils/date-locale'
+import { useLocale, useTranslations } from 'next-intl'
 
 export function RightSidebar({ report }: any) {
-	const UserItem = ({ label, user }: any) => (
-		<div className='space-y-3 min-h-[82px]'>
-			<div className='text-[11px] uppercase tracking-wide text-muted-foreground/70 font-semibold'>
-				{label}
-			</div>
-
-			{user ? (
-				<div className='flex items-center gap-3'>
-					<Avatar className='w-10 h-10'>
-						<AvatarImage src={user.avatarUrl || ''} />
-						<AvatarFallback>{user.username?.[0]?.toUpperCase()}</AvatarFallback>
-					</Avatar>
-					<div className='text-sm font-medium'>@{user.username}</div>
-				</div>
-			) : (
-				<div className='text-sm text-muted-foreground'>None</div>
-			)}
-
-			<div className='h-[1px] bg-border/30 w-full' />
-		</div>
-	)
+	const tLabels = useTranslations('moderation.modals.labels')
+	const locale = useLocale()
+	const dateLocale = getDateLocaleTag(locale)
 
 	return (
 		<div
 			className='
-				border-l border-border/20 
-				bg-muted/15 
-				p-8 
-				space-y-8 
-				overflow-y-auto 
-				backdrop-blur-sm
-				shadow-inner
+				min-h-0 space-y-5 overflow-y-auto border-l border-border/50 
+				bg-gradient-to-b from-muted/25 via-muted/10 to-background/90 
+				p-6 md:p-8 
+				backdrop-blur-md 
+				shadow-[inset_1px_0_0_rgba(255,255,255,0.05)] 
+				dark:shadow-[inset_1px_0_0_rgba(255,255,255,0.03)]
 			'
 		>
-			<UserItem label='Assigned To' user={report.assignedTo} />
-			<UserItem label='Video Author' user={report.video?.channel} />
-			<UserItem label='Reported By' user={report.author} />
+			<ModerationSidebarUserBlock
+				label={tLabels('assignedTo')}
+				user={report.assignedTo}
+				noneText={tLabels('none')}
+			/>
+			<ModerationSidebarUserBlock
+				label={tLabels('videoAuthor')}
+				user={report.video?.channel}
+				noneText={tLabels('none')}
+			/>
+			<ModerationSidebarUserBlock
+				label={tLabels('reportedBy')}
+				user={report.author}
+				noneText={tLabels('none')}
+			/>
 
-			<div className='space-y-3'>
-				<div className='text-[11px] uppercase tracking-wide text-muted-foreground/70 font-semibold'>
-					Reported At
-				</div>
-
-				<div className='text-sm text-foreground'>
-					{new Date(report.createdAt).toLocaleString('en-GB')}
-				</div>
-			</div>
+			<ModerationSidebarMetaBlock
+				label={tLabels('reportedAt')}
+				value={new Date(report.createdAt).toLocaleString(dateLocale)}
+			/>
 		</div>
 	)
 }

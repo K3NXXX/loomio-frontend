@@ -7,15 +7,21 @@ export const useRestrictVideo = (reportId: string) => {
 
 	const { mutate: restrictVideo, isPending } = useMutation({
 		mutationKey: ['restrictVideo', reportId],
-		mutationFn: () => reportService.restrictVideo(reportId),
+		mutationFn: (payload: { reason: string; moderatorNote?: string }) =>
+			reportService.restrictVideo(reportId, payload),
 
 		onSuccess: () => {
-
 			queryClient.invalidateQueries({
 				queryKey: ['videoReports'],
 			})
 			queryClient.invalidateQueries({
 				queryKey: ['videoHistory'],
+			})
+			queryClient.invalidateQueries({
+				queryKey: ['report', reportId],
+			})
+			queryClient.invalidateQueries({
+				queryKey: ['report-stats'],
 			})
 		},
 

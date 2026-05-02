@@ -11,6 +11,7 @@ export const useRequestReview = () => {
 
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['videoHistory'] })
+			queryClient.invalidateQueries({ queryKey: ['channelStudioVideos'] })
 		},
 
 		onError: (error: any) => {

@@ -1,31 +1,24 @@
 'use client'
 
+import { ModerationPageShell } from '@/components/admin/ModerationPageShell'
 import { ReportVideoDetailsModal } from '@/components/admin/report-video-modal-details/ReportVideoDetailsModal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { useGetVideoReports } from '@/hooks/report/useGetVideoReports'
 import { cn } from '@/lib/utils'
 import { truncateName } from '@/utils/truncateName'
-import { useTranslations } from 'next-intl'
+import { getDateLocaleTag } from '@/utils/date-locale'
+import { useLocale, useTranslations } from 'next-intl'
 import { useState } from 'react'
-
-const formatReason = (reason: string) => {
-	return reason
-		.toLowerCase()
-		.replace(/_/g, ' ')
-		.replace(/^\w/, (c) => c.toUpperCase())
-}
-
-const formatStatus = (status: string) => {
-	return status
-		.toLowerCase()
-		.replace(/_/g, ' ')
-		.replace(/^\w/, (c) => c.toUpperCase())
-}
 
 export function VideoReports() {
 	const { videoReports, isLoading } = useGetVideoReports()
 	const t = useTranslations('moderation.videoReports')
+	const tReason = useTranslations('moderation.enums.reason')
+	const tStatus = useTranslations('moderation.enums.status')
+	const tCommon = useTranslations('moderation.common')
+	const locale = useLocale()
+	const dateLocale = getDateLocaleTag(locale)
 
 	const [selectedId, setSelectedId] = useState<string | null>(null)
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -37,17 +30,21 @@ export function VideoReports() {
 
 	if (isLoading) {
 		return (
-			<div className='p-10 text-muted-foreground text-center'>
-				{t('loading')}
-			</div>
+			<ModerationPageShell title={t('title')}>
+				<div className='rounded-2xl border border-border/45 bg-card/35 backdrop-blur-sm py-24 text-center text-muted-foreground shadow-inner'>
+					{t('loading')}
+				</div>
+			</ModerationPageShell>
 		)
 	}
 
 	if (!videoReports?.length) {
 		return (
-			<div className='p-10 text-muted-foreground text-center'>
-				{t('noReports')}
-			</div>
+			<ModerationPageShell title={t('title')}>
+				<div className='rounded-2xl border border-dashed border-border/50 bg-card/20 backdrop-blur-sm py-24 text-center text-muted-foreground'>
+					{t('noReports')}
+				</div>
+			</ModerationPageShell>
 		)
 	}
 
@@ -57,14 +54,17 @@ export function VideoReports() {
 	const renderUser = (user: any) => (
 		<div className='flex flex-col items-center gap-1'>
 			<Avatar className='w-9 h-9 shadow-sm'>
-				<AvatarImage src={user?.avatarUrl || ''} alt={user?.username} />
+				<AvatarImage
+					src={user?.avatarUrl || undefined}
+					alt={user?.username ?? tCommon('unknownUser')}
+				/>
 				<AvatarFallback className='text-xs bg-muted/40'>
 					{user?.username?.[0]?.toUpperCase() || 'U'}
 				</AvatarFallback>
 			</Avatar>
 
 			<div className='text-xs text-muted-foreground/90 font-medium truncate max-w-[140px]'>
-				@{user?.username || 'unknown'}
+				@{user?.username || tCommon('unknownUser')}
 			</div>
 		</div>
 	)
@@ -72,10 +72,10 @@ export function VideoReports() {
 	const renderHeader = () => (
 		<div
 			className={cn(
-				'sticky top-0 z-10 bg-background/90 backdrop-blur-md',
-				'border-b border-border/40 rounded-t-xl shadow-sm',
-				'px-5 py-3',
-				'grid items-center gap-4 text-[11px] tracking-wide font-semibold uppercase text-muted-foreground',
+				'sticky top-0 z-10 bg-muted/50 backdrop-blur-lg',
+				'border-b border-border/50 rounded-t-xl',
+				'px-5 py-3.5',
+				'grid items-center gap-4 text-[10px] tracking-[0.12em] font-semibold uppercase text-muted-foreground',
 				gridCols,
 			)}
 		>
@@ -96,10 +96,10 @@ export function VideoReports() {
 			onClick={() => openModal(r.id)}
 			className={cn(
 				'cursor-pointer group grid items-center gap-4',
-				'rounded-xl border border-border/40 bg-background',
-				'px-5 py-4 transition-all duration-150',
-				'hover:bg-muted/10 hover:shadow-sm',
-				'active:scale-[0.99]',
+				'rounded-xl border border-border/35 bg-card/45 backdrop-blur-sm',
+				'px-5 py-4 transition-all duration-200',
+				'hover:border-primary/30 hover:bg-muted/30 hover:shadow-md',
+				'active:scale-[0.995]',
 				gridCols,
 			)}
 		>
@@ -146,7 +146,7 @@ export function VideoReports() {
 					variant='outline'
 					className='rounded-full px-3 py-0.5 text-[11px] tracking-wide font-medium border-[1.5px]'
 				>
-					{formatReason(r.reason)}
+					{tReason(r.reason)}
 				</Badge>
 			</div>
 
@@ -161,29 +161,27 @@ export function VideoReports() {
 						r.status === 'REJECTED' && 'text-red-400',
 					)}
 				>
-					{formatStatus(r.status)}
+					{tStatus(r.status)}
 				</span>
 			</div>
 
 			{/* --- DATE --- */}
 			<div className='text-center text-[12px] text-muted-foreground/80'>
-				{new Date(r.createdAt).toLocaleString('en-GB')}
+				{new Date(r.createdAt).toLocaleString(dateLocale)}
 			</div>
 		</div>
 	)
 
 	return (
-		<div className='p-10 flex flex-col items-start w-full'>
-			<h1 className='text-[26px] font-bold mb-8 tracking-tight w-full'>
-				{t('title')}
-			</h1>
-
-			<div className='relative w-full space-y-4'>
-				{renderHeader()}
-				<div className='space-y-3 pt-3'>
-					{videoReports
-						.filter((r) => r.status !== 'RESOLVED')
-						.map((r) => renderRow(r))}
+		<ModerationPageShell title={t('title')}>
+			<div className='rounded-2xl border border-border/45 bg-card/25 backdrop-blur-md p-4 md:p-6 shadow-xl ring-1 ring-white/[0.04]'>
+				<div className='relative w-full space-y-3'>
+					{renderHeader()}
+					<div className='space-y-3'>
+						{videoReports
+							.filter((r) => r.status !== 'RESOLVED')
+							.map((r) => renderRow(r))}
+					</div>
 				</div>
 			</div>
 
@@ -192,6 +190,6 @@ export function VideoReports() {
 				open={isModalOpen}
 				onOpenChange={setIsModalOpen}
 			/>
-		</div>
+		</ModerationPageShell>
 	)
 }

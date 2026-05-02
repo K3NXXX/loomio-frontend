@@ -99,9 +99,13 @@ class ReportService {
 		return data
 	}
 
-	async restrictVideo(reportId: string) {
+	async restrictVideo(
+		reportId: string,
+		payload: { reason: string; moderatorNote?: string },
+	) {
 		const { data } = await axiosInstance.post(
 			`${this.BASE_URL}/report-video/${reportId}`,
+			payload,
 		)
 		return data
 	}

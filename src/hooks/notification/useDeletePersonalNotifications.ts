@@ -1,13 +1,27 @@
 import { notificationService } from '@/services/notification.service'
+import { PERSONAL_ACTIVITY_NOTIFICATION_TYPES } from '@/types/notification.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+
+async function deletePersonalActivityOrphans(): Promise<void> {
+	const { notifications } = await notificationService.getNotifications()
+	const orphanIds = notifications
+		.filter((n) => PERSONAL_ACTIVITY_NOTIFICATION_TYPES.includes(n.type))
+		.map((n) => n.id)
+	await Promise.allSettled(
+		orphanIds.map((id) => notificationService.deleteNotification(id)),
+	)
+}
 
 export const useDeletePersonalNotifications = (onDone?: () => void) => {
 	const queryClient = useQueryClient()
 
 	const { mutate: deletePersonalNotifications } = useMutation({
 		mutationKey: ['deletePersonalNotifications'],
-		mutationFn: () => notificationService.deletePersonal(),
+		mutationFn: async () => {
+			await notificationService.deletePersonal()
+			await deletePersonalActivityOrphans()
+		},
 
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['getNotifications'] })

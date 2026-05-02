@@ -46,7 +46,12 @@ export function NotificationItem({ n }: INotificationItemProps) {
 				<div className='flex gap-3 w-full items-center'>
 					<div className='flex flex-col text-sm leading-tight'>
 						<span className=''>
-							{truncateName(renderNotificationText(n, displayName, t), 200)}
+							{truncateName(
+								renderNotificationText(n, displayName, t, (code) =>
+									t(`restrictReason.${code}` as never),
+								),
+								200,
+							)}
 						</span>
 						<span className='text-[11px] text-muted-foreground mt-1 '>
 							{formatDate(n.createdAt)}

@@ -16,14 +16,18 @@ interface EditVideoStepSecondProps {
 	setValue: UseFormSetValue<TEditVideoSchema>
 	register: UseFormRegister<TEditVideoSchema>
 	video: IVideo
+	/** Restrict/review flow: existing thumbnail is kept if user does not upload a new one */
+	restrictReviewFlow?: boolean
 }
 
 export function EditVideoStepSecond({
 	setValue,
 	register,
 	video,
+	restrictReviewFlow = false,
 }: EditVideoStepSecondProps) {
 	const t = useTranslations('uploadVideoModal.stepSecond')
+	const tRestrictStep = useTranslations('editVideo.restrictFlow.stepSecond')
 	const [crop, setCrop] = useState({ x: 0, y: 0 })
 	const [zoom, setZoom] = useState(1)
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
@@ -86,7 +90,7 @@ export function EditVideoStepSecond({
 		<div className='flex flex-col h-[700px] gap-8'>
 			<div className='flex flex-col'>
 				<h3 className='text-lg font-semibold mb-3 text-white'>
-					{t('thumbnailTitle')}
+					{restrictReviewFlow ? tRestrictStep('thumbnailTitle') : t('thumbnailTitle')}
 				</h3>
 
 				{thumbnailPreview || video.thumbnailFile ? (
@@ -143,7 +147,8 @@ export function EditVideoStepSecond({
 				)}
 			</div>
 
-			{video.visibility !== 'restricted' && (
+			{video.visibility !== 'restricted' &&
+				video.visibility !== 'pending_review' && (
 				<div className='flex flex-col'>
 					<h3 className='text-lg font-semibold mb-3 text-white'>
 						{t('visibilityTitle')}

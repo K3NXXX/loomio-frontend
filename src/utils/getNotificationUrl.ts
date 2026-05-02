@@ -7,6 +7,7 @@ export function getNotificationUrl(n: Notification) {
 		case NotificationType.DISLIKE_VIDEO:
 		case NotificationType.COMMENT_NEW:
 		case NotificationType.COMMENT_REPLY:
+		case NotificationType.LIKE_COMMENT:
 			if (n.comment?.id) {
 				return PAGES.WATCH_WITH_COMMENT(n.video?.id ?? '', n.comment.id)
 			}
@@ -15,10 +16,13 @@ export function getNotificationUrl(n: Notification) {
 			return PAGES.WATCH(n.video?.id ?? '')
 
 		case NotificationType.CHANNEL_NEW_FOLLOWER:
-			PAGES.WORKPLACE_DASHBOARD(n.channel?.username ?? '')
+			return PAGES.WORKPLACE_DASHBOARD(n.channel?.username ?? '')
 
 		case NotificationType.VIDEO_RESTRICTED:
-			PAGES.WORKPLACE_DASHBOARD(n.channel?.username ?? '')
+			return PAGES.WORKPLACE_CONTENT(n.channel?.username ?? '')
+
+		case NotificationType.VIDEO_APPROVED:
+			return PAGES.WATCH(n.video?.id ?? '')
 
 		default:
 			return '#'

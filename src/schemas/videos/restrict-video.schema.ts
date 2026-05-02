@@ -23,13 +23,8 @@ export const restrictVideoSchema = z.object({
 				message: 'Invalid tags format',
 			},
 		),
-	video: z
-		.array(z.instanceof(File))
-		.min(1, { message: 'Video file is required' }),
 
-	thumbnail: z
-		.array(z.instanceof(File))
-		.min(1, { message: 'Thumbnail is required' }),
+	thumbnail: z.array(z.instanceof(File)).max(5).optional(),
 
 	audience: z.enum(['yes', 'no']).refine((val) => !!val, {
 		message: 'You must specify if the content is made for kids',

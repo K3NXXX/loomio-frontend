@@ -7,7 +7,7 @@ export const useGetNotifications = () => {
 		queryKey: ['getNotifications'],
 		queryFn: () => notificationService.getNotifications(),
 	})
-
+ 
 	return {
 		notifications: data?.notifications ?? [],
 		unreadCount: data?.unreadCount ?? 0,

@@ -10,5 +10,4 @@ class PaymentService {
 		return data
 	}
 }
-//
 export const paymentsService = new PaymentService()

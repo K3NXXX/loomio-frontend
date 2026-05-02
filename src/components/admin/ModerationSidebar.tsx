@@ -1,5 +1,7 @@
 'use client'
 
+import type { ComponentType } from 'react'
+
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -23,6 +25,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 export function ModerationSidebar({ user }: { user: IGetUserData }) {
 	const pathname = usePathname()
 	const t = useTranslations('moderation.sidebar')
+	const tCommon = useTranslations('moderation.common')
 
 	const dashboardItem = [
 		{
@@ -69,7 +72,7 @@ export function ModerationSidebar({ user }: { user: IGetUserData }) {
 		href,
 	}: {
 		label: string
-		icon: any
+		icon: ComponentType<{ className?: string }>
 		href: string
 	}) => {
 		const active = pathname === href || pathname.startsWith(href + '/')
@@ -79,24 +82,24 @@ export function ModerationSidebar({ user }: { user: IGetUserData }) {
 				key={href}
 				href={href}
 				className={cn(
-					'group relative flex items-center gap-3 rounded-xl px-4 py-3 text-[15px] font-medium transition-all',
-					'hover:bg-muted/40 hover:text-primary',
+					'group relative flex items-center gap-3 rounded-xl px-4 py-3 text-[14px] md:text-[15px] font-medium transition-all duration-200',
+					'hover:bg-muted/50 hover:text-primary hover:shadow-sm',
 					active
-						? 'bg-muted/70 text-primary shadow-inner'
+						? 'bg-primary/10 text-primary shadow-inner ring-1 ring-primary/25'
 						: 'text-muted-foreground',
 				)}
 			>
 				<span
 					className={cn(
-						'absolute left-0 top-1/2 -translate-y-1/2 h-8 w-1 rounded-r-md transition-all duration-300',
-						active ? 'bg-primary' : 'bg-transparent group-hover:bg-primary/60',
+						'absolute left-0 top-1/2 -translate-y-1/2 h-7 w-1 rounded-r-md transition-all duration-300',
+						active ? 'bg-primary' : 'bg-transparent group-hover:bg-primary/50',
 					)}
 				/>
 
 				<Icon
 					className={cn(
-						'size-[18px] shrink-0 transition-transform',
-						active ? 'scale-110 text-primary' : 'opacity-90',
+						'size-[18px] shrink-0 transition-transform duration-200',
+						active ? 'scale-110 text-primary' : 'opacity-85 group-hover:opacity-100',
 					)}
 				/>
 
@@ -108,47 +111,47 @@ export function ModerationSidebar({ user }: { user: IGetUserData }) {
 	return (
 		<aside
 			className='
-				w-64 shrink-0 border-r border-neutral-800
-				bg-[#101010]/95 backdrop-blur-xl
-				flex flex-col
+				w-[260px] md:w-64 shrink-0 border-r border-border/45
+				bg-card/45 backdrop-blur-xl
+				flex flex-col shadow-[inset_-1px_0_0_0_rgba(255,255,255,0.03)]
 			'
 		>
-			{/* USER HEADER */}
-			<div className='flex flex-col items-center px-4 pt-6 pb-4'>
-				<Avatar className='size-24 ring-1 ring-border'>
-					<AvatarImage src={user.avatarUrl || undefined} alt='avatar' />
-					<AvatarFallback className='text-lg font-semibold'>
-						{getInitials(user.username)}
-					</AvatarFallback>
-				</Avatar>
+			<div className='flex flex-col items-center px-4 pt-7 pb-5 border-b border-border/35'>
+				<div className='relative'>
+					<div className='absolute inset-0 rounded-full bg-primary/20 blur-xl scale-110 opacity-60' aria-hidden />
+					<Avatar className='relative size-[92px] md:size-24 ring-2 ring-primary/35 shadow-xl'>
+						<AvatarImage src={user.avatarUrl || undefined} alt={tCommon('avatarAlt')} />
+						<AvatarFallback className='text-lg font-semibold bg-muted'>
+							{getInitials(user.username)}
+						</AvatarFallback>
+					</Avatar>
+				</div>
 
-				<div className='mt-3 text-center'>
-					<h2 className='font-bold text-lg leading-tight'>
+				<div className='mt-4 text-center'>
+					<h2 className='font-bold text-base md:text-lg leading-tight'>
 						@{truncateName(user.username, 17)}
 					</h2>
-					<p className='text-muted-foreground text-sm'>Moderation Panel</p>
+					<p className='text-muted-foreground text-xs md:text-sm mt-1 font-medium'>
+						{t('panelTitle')}
+					</p>
 				</div>
 			</div>
 
-			{/* NAVIGATION */}
-			<nav className='mt-4 px-3 space-y-5'>
-				{/* Dashboard */}
+			<nav className='flex-1 overflow-y-auto mt-2 px-3 pb-8 space-y-6'>
 				<div>{dashboardItem.map(renderItem)}</div>
 
-				{/* Reports Section */}
 				<div>
-					<p className='px-4 pb-1 text-xs uppercase tracking-wider text-muted-foreground/60'>
-						Reports
+					<p className='px-4 pb-2 text-[10px] uppercase tracking-[0.18em] text-muted-foreground/55 font-semibold'>
+						{t('reportsSection')}
 					</p>
-					{reportItems.map(renderItem)}
+					<div className='space-y-1'>{reportItems.map(renderItem)}</div>
 				</div>
 
-				{/* History Section */}
 				<div>
-					<p className='px-4 pb-1 text-xs uppercase tracking-wider text-muted-foreground/60'>
-						History
+					<p className='px-4 pb-2 text-[10px] uppercase tracking-[0.18em] text-muted-foreground/55 font-semibold'>
+						{t('historySection')}
 					</p>
-					{historyItems.map(renderItem)}
+					<div className='space-y-1'>{historyItems.map(renderItem)}</div>
 				</div>
 			</nav>
 		</aside>

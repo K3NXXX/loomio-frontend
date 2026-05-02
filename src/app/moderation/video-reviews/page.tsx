@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	const t = await getTranslations('pages')
 
 	return {
-		title: `Loomio | ${t('moderationPanel')}`,
+		title: `Loomio | ${t('moderationVideoReviews')}`,
 		...NO_INDEX_PAGE,
 	}
 }

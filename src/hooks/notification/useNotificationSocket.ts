@@ -1,12 +1,12 @@
 'use client'
 
 import type { Notification } from '@/types/notification.types'
-import { useNotificationStore } from '@/zustand/store/notificationStore'
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { io, type Socket } from 'socket.io-client'
 
 export function useNotificationSocket(userId: string | undefined) {
-	const addNotification = useNotificationStore((s) => s.addNotification)
+	const queryClient = useQueryClient()
 
 	useEffect(() => {
 		if (!userId) return
@@ -16,8 +16,8 @@ export function useNotificationSocket(userId: string | undefined) {
 			transports: ['websocket'],
 		})
 
-		socket.on('notification', (payload: Notification) => {
-			addNotification(payload)
+		socket.on('notification', (_payload: Notification) => {
+			queryClient.invalidateQueries({ queryKey: ['getNotifications'] })
 		})
 
 		socket.on('disconnect', () => {})
@@ -25,5 +25,5 @@ export function useNotificationSocket(userId: string | undefined) {
 		return () => {
 			socket.disconnect()
 		}
-	}, [userId])
+	}, [userId, queryClient])
 }

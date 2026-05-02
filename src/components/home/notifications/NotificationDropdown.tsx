@@ -16,7 +16,10 @@ import { useDeletePersonalNotifications } from '@/hooks/notification/useDeletePe
 import { useGetNotifications } from '@/hooks/notification/useGetNotification'
 import { useMarkAllChannelRead } from '@/hooks/notification/useMarkAllChannelRead'
 import { useMarkAllPersonalRead } from '@/hooks/notification/useMarkAllPersonalRead'
-import { NotificationType } from '@/types/notification.types'
+import {
+	PERSONAL_ACTIVITY_NOTIFICATION_TYPES,
+	NotificationType,
+} from '@/types/notification.types'
 import { getInitials } from '@/utils/get-initials'
 import { useState } from 'react'
 import { BiCheckDouble } from 'react-icons/bi'
@@ -28,6 +31,7 @@ import { useTranslations } from 'next-intl'
 export function NotificationDropdown() {
 	const { userChannels = [] } = useGetUserChannels()
 	const { notifications = [], unreadCount } = useGetNotifications()
+
 	const unreadText = unreadCount > 9 ? '9+' : unreadCount
 	const { deleteChannelNotifications } = useDeleteChannelNotifications()
 	const { deletePersonalNotifications } = useDeletePersonalNotifications()
@@ -43,15 +47,13 @@ export function NotificationDropdown() {
 		? notifications.filter(
 				(n) =>
 					n.channel?.id === selectedChannel &&
-					n.type !== NotificationType.COMMENT_REPLY,
+					n.type !== NotificationType.COMMENT_REPLY &&
+					n.type !== NotificationType.LIKE_COMMENT,
 			)
 		: []
 
-	const personalNotifications = notifications.filter(
-		(n) =>
-			n.type === NotificationType.COMMENT_REPLY ||
-			n.type === NotificationType.VIDEO_PUBLISHED ||
-			n.type === NotificationType.COMMENT_REMOVED,
+	const personalNotifications = notifications.filter((n) =>
+		PERSONAL_ACTIVITY_NOTIFICATION_TYPES.includes(n.type),
 	)
 
 	const personalUnread = personalNotifications.filter((n) => !n.isRead).length

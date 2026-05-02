@@ -20,7 +20,7 @@ import { useTranslations } from 'next-intl'
 
 export function HomeUIConfiguratorMenu() {
 	const [activeColor, setActiveColor] = useState<THEME_COLORS>(
-		UIConfiguratorColors[0].color,
+		UIConfiguratorColors[3].color,
 	)
 	const { isThemesMenuOpened, toggleThemeMenuOpened } = useGlobalStore()
 const { changeColorTheme } = useChangeColorTheme()

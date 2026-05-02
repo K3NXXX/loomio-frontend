@@ -163,6 +163,12 @@
 		"creator": "Creator",
 		"workplace": "Робоче місце",
 		"moderationPanel": "Панель модерації",
+		"moderationDashboard": "Модерація — Панель",
+		"moderationVideoReports": "Модерація — Звіти про відео",
+		"moderationVideoReviews": "Модерація — Повторний огляд відео",
+		"moderationCommentReports": "Модерація — Звіти про коментарі",
+		"moderationVideoHistory": "Модерація — Історія відео",
+		"moderationCommentHistory": "Модерація — Історія коментарів",
 		"login": "Увійти",
 		"registration": "Реєстрація",
 		"oauthRegistration": "OAuth реєстрація",
@@ -189,10 +195,21 @@
 			"commentNew": "{author} прокоментував ваше відео",
 			"commentReply": "{author} відповів на ваш коментар",
 			"likeVideo": "{author} вподобав ваше відео",
+			"likeComment": "{author} вподобав ваш коментар",
 			"dislikeVideo": "{author} поставив дизлайк вашому відео",
 			"videoPublished": "Нове відео від {name}",
 			"channelNewFollower": "{author} підписався на ваш канал «{channelName}»",
-			"videoRestricted": "Ваше відео «{title}» обмежено через {reason}."
+			"videoRestricted": "Ваше відео «{title}» обмежено через {reason}.",
+			"videoRestrictedModeratorNote": "Коментар модератора: {note}",
+			"videoApproved": "Ваше відео «{title}» схвалено й знову доступне для всіх."
+		},
+		"restrictReason": {
+			"HATE_SPEECH": "Мова ненависті",
+			"HARASSMENT": "Домагання",
+			"SPAM": "Спам",
+			"SEXUAL_CONTENT": "Сексуальний контент",
+			"VIOLENCE": "Насильство",
+			"OTHER": "Інше"
 		}
 	},
 	"moderation": {
@@ -217,9 +234,9 @@
 			"reportsCount": "{count} звітів"
 		},
 		"videoReviews": {
-			"title": "Звіти про відео",
-			"loading": "Завантаження звітів про відео...",
-			"noReports": "Поки що немає звітів про відео.",
+			"title": "Повторний огляд відео",
+			"loading": "Завантаження черги повторного огляду...",
+			"noReports": "Наразі немає відео на повторному огляді.",
 			"video": "Відео",
 			"videoAuthor": "Автор відео",
 			"reporter": "Звітодавець",
@@ -228,7 +245,9 @@
 			"status": "Статус",
 			"date": "Дата",
 			"note": "Примітка:",
-			"unassigned": "Не призначено"
+			"unassigned": "Не призначено",
+			"toastApproveSuccess": "Відео схвалено — воно знову публічне.",
+			"toastApproveErrorFallback": "Не вдалося схвалити перевірку"
 		},
 		"videoReports": {
 			"title": "Звіти про відео",
@@ -262,6 +281,10 @@
 			"title": "Панель модерації",
 			"logout": "Вийти"
 		},
+		"layout": {
+			"settingsTooltip": "Оформлення та мова",
+			"loadingHint": "Завантаження…"
+		},
 		"sidebar": {
 			"panelTitle": "Панель модерації",
 			"reportsSection": "Звіти",
@@ -269,7 +292,7 @@
 			"dashboard": "Панель",
 			"reportsVideos": "Звіти: відео",
 			"reportsComments": "Звіти: коментарі",
-			"reportsReviews": "Звіти: оцінки",
+			"reportsReviews": "Звіти: повторний огляд",
 			"videoHistory": "Історія відео",
 			"commentHistory": "Історія коментарів"
 		},
@@ -300,6 +323,99 @@
 			"status": "Статус",
 			"date": "Дата",
 			"unassigned": "Не призначено"
+		},
+		"common": {
+			"unknownUser": "невідомо",
+			"userDeleted": "видалено",
+			"loadingEllipsis": "…",
+			"avatarAlt": "Аватар"
+		},
+		"enums": {
+			"reason": {
+				"HATE_SPEECH": "Мова ненависті",
+				"HARASSMENT": "Домагання",
+				"SPAM": "Спам",
+				"SEXUAL_CONTENT": "Сексуальний контент",
+				"VIOLENCE": "Насильство",
+				"OTHER": "Інше"
+			},
+			"status": {
+				"PENDING": "Очікує",
+				"IN_PROGRESS": "В процесі",
+				"IN_REVIEW": "На перевірці",
+				"RESOLVED": "Вирішено",
+				"REJECTED": "Відхилено"
+			}
+		},
+		"modals": {
+			"headers": {
+				"videoReport": "Деталі звіту",
+				"videoReview": "Деталі повторного огляду",
+				"commentReport": "Деталі звіту"
+			},
+			"assign": {
+				"assignToMe": "Призначити мені",
+				"unassign": "Зняти призначення",
+				"assignedToPrefix": "Призначено"
+			},
+			"labels": {
+				"video": "Відео",
+				"comment": "Коментар",
+				"reporterNote": "Примітка звітодавця",
+				"reason": "Причина",
+				"reportedAt": "Подано",
+				"assignedTo": "Призначено",
+				"videoAuthor": "Автор відео",
+				"commentAuthor": "Автор коментаря",
+				"reportedBy": "Звітує",
+				"moderatorRestrictionReason": "Причина обмеження (модератор)",
+				"moderatorComment": "Коментар модератора",
+				"priorRestrictionReason": "Причина обмеження",
+				"priorModeratorComment": "Коментар модератора",
+				"priorRestrictionHint": "Автор надіслав відео повторно після обмеження.",
+				"priorRestrictionCardTitle": "Попереднє обмеження",
+				"none": "Немає"
+			},
+			"restrictVideoForm": {
+				"title": "Обмежити відео",
+				"description": "Оберіть офіційну причину обмеження — її побачить автор у сповіщенні. За бажанням додайте коментар.",
+				"reasonLabel": "Причина обмеження",
+				"noteLabel": "Коментар для автора каналу (необов’язково)",
+				"notePlaceholder": "Додатковий контекст, який побачить власник каналу…",
+				"cancel": "Скасувати",
+				"submit": "Обмежити відео"
+			},
+			"commentDeleted": "Коментар видалено",
+			"confirm": "Підтвердити",
+			"cancel": "Скасувати",
+			"videoReport": {
+				"approve": "Схвалити",
+				"restrictVideo": "Обмежити відео",
+				"approveTitle": "Схвалити звіт?",
+				"approveDescription": "Звіт буде позначено як вирішений без змін до відео.",
+				"restrictTitle": "Обмежити відео?",
+				"restrictDescription": "Відео стане обмеженим, звіт буде позначено як вирішений.",
+				"confirmRestrict": "Обмежити відео"
+			},
+			"videoReview": {
+				"approve": "Схвалити",
+				"restrictVideo": "Обмежити відео",
+				"approveTitle": "Схвалити звіт?",
+				"approveDescription": "Після підтвердження звіт буде позначено як вирішений. Видимість, файли та статус відео залишаться без змін.",
+				"restrictTitle": "Обмежити відео?",
+				"restrictDescription": "Відео стане обмеженим, звіт буде позначено як вирішений.",
+				"confirmRestrict": "Обмежити відео"
+			},
+			"commentReport": {
+				"approve": "Схвалити",
+				"deleteComment": "Видалити коментар",
+				"approveTitle": "Схвалити звіт?",
+				"approveDescription": "Підтвердити схвалення звіту? Звіт буде позначено як вирішений.",
+				"deleteTitle": "Видалити коментар?",
+				"deleteDescription": "Цю дію не скасувати. Коментар буде видалено, звіт — позначено як вирішений.",
+				"yesApprove": "Так, схвалити",
+				"yesDelete": "Так, видалити"
+			}
 		}
 	},
 	"watch": {
@@ -467,11 +583,21 @@
 		"visibilityPublic": "Публічне",
 		"visibilityPrivate": "Приватне",
 		"visibilityRestricted": "Обмежено",
+		"visibilityPendingReview": "На розгляді",
+		"pendingReviewTooltipLine1": "Оновлене відео надіслано модераторам.",
+		"pendingReviewTooltipLine2": "Перевірка може тривати певний час. Ви отримаєте сповіщення про рішення.",
+		"pendingReviewTooltipLine3": "Відео залишається обмеженим до завершення модерації.",
+		"toastCannotEditPendingReview": "Це відео вже надіслано на перевірку. Дочекайтеся рішення модератора.",
 		"restrictedTooltipLine1": "⚠ Це відео обмежено через порушення правил контенту.",
 		"restrictedTooltipLine2": "Відредагуйте відео й подайте запит на перевірку, перш ніж знову публікувати.",
+		"restrictedTooltipReasonLabel": "Причина обмеження",
+		"restrictedTooltipModeratorNoteLabel": "Коментар модератора",
 		"audienceForChildren": "Для дітей",
 		"audienceAgeRestrictions": "Вікові обмеження",
 		"edit": "Редагувати",
+		"restrictedVideosTitle": "Обмежені відео",
+		"restrictedVideosHint": "Ці відео недоступні для перегляду публікою. Відредагуйте відео та подайте запит на перевірку, щоб відновити доступ.",
+		"restrictedVideosScheduledGroupTitle": "Обмежені — заплановані до публікації",
 		"scheduledVideosTitle": "Заплановані відео",
 		"menuDelete": "Видалити",
 		"deleteDialogTitle": "Видалити відео?",
@@ -575,6 +701,7 @@
 		"leave": "Вийти",
 		"toastStillUploading": "Відео ще завантажується",
 		"toastNoChannel": "Канал не обрано",
+		"toastUploadFailed": "Не вдалося завантажити відео. Спробуйте ще раз.",
 		"file": {
 			"dragDrop": "Перетягніть відео сюди",
 			"orClick": "або натисніть, щоб обрати файл",
@@ -631,9 +758,19 @@
 			"title": "Редагувати відео",
 			"loading": "Завантаження…",
 			"toastNoVideoSelected": "Не обрано відео для редагування",
+			"toastPickNewVideoFirst": "Спочатку завантажте новий відеофайл.",
+			"submitForReview": "Надіслати на перевірку модератору",
+			"reviewSubmittedTitle": "Відео надіслано на перевірку",
+			"reviewSubmittedDescription": "Оновлене відео передано команді модерації.\n\nПеревірка може зайняти певний час. Ви отримаєте сповіщення про рішення.",
+			"reviewSubmittedClose": "Зрозуміло",
 			"back": "Назад",
 			"next": "Далі",
 			"confirm": "Підтвердити"
+		},
+		"restrictFlow": {
+			"stepSecond": {
+				"thumbnailTitle": "Обкладинка (необов’язково)"
+			}
 		},
 		"restrictPreview": {
 			"thumbnailOverlayAlt": "Прев’ю мініатюри відео",

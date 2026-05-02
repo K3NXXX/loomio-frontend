@@ -5,7 +5,9 @@ import { WorkplaceSkeleton } from '@/components/skeletons/workplace/WorkplaceSke
 import { Button } from '@/components/ui/button'
 import WorkplaceHeader from '@/components/workplace/WorkplaceHeader'
 import { WorkplaceSidebar } from '@/components/workplace/WorkplaceSidebar'
+import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useGetChannel } from '@/hooks/channel/useGetChannel'
+import { useNotificationSocket } from '@/hooks/notification/useNotificationSocket'
 import { useChannelStore } from '@/zustand/store/channelStore'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 import { useParams } from 'next/navigation'
@@ -20,6 +22,8 @@ export default function WorkplaceLayout({
 	const { username } = useParams<{ username: string }>()
 	const cleanUsername = decodeURIComponent(username || '').replace(/^@/, '')
 	const { channel, isLoading } = useGetChannel(cleanUsername)
+	const { userData } = useGetMe()
+	useNotificationSocket(userData?.id)
 	const { setChannel, setLoading } = useChannelStore()
 
 	const { toggleThemeMenuOpened } = useGlobalStore()

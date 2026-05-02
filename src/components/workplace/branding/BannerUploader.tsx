@@ -73,7 +73,6 @@ export function BannerUploader({
 		setLocalUrl(croppedDataUrl)
 		onChange?.(file, croppedDataUrl)
 		setIsCropModalOpen(false)
-
 		URL.revokeObjectURL(tempImageUrl)
 		setTempImageUrl(null)
 	}

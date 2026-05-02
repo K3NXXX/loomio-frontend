@@ -41,11 +41,11 @@ export function WorkplaceSidebar({ channel }: WorkplaceSidebarProps) {
 			icon: MdFeaturedPlayList,
 			href: PAGES.WORKPLACE_PLAYLISTS(channel.username),
 		},
-		{
-			label: t('streams'),
-			icon: MdLiveTv,
-			href: PAGES.WORKPLACE_STREAMS(channel.username),
-		},
+		// {
+		// 	label: t('streams'),
+		// 	icon: MdLiveTv,
+		// 	href: PAGES.WORKPLACE_STREAMS(channel.username),
+		// },
 
 		{
 			label: t('dangerZone'),

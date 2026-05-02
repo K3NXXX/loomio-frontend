@@ -28,6 +28,9 @@ export interface IVideo {
 	title: string
 	audience: string
 	visibility: string
+	/** Moderator restriction reason (studio / restricted tooltip) */
+	restrictionModeratorReason?: string | null
+	restrictionModeratorNote?: string | null
 	description: string | null
 	thumbnailFile: string
 	publishType: string

@@ -1,5 +1,9 @@
 'use client'
 
+import {
+	moderationReportModalFooterClass,
+	moderationReportModalFooterGlowClass,
+} from '@/components/admin/moderation-report/moderationModalShell'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
@@ -19,6 +23,7 @@ import { useDeleteCommentReport } from '@/hooks/report/useDeleteCommentReport'
 
 import type { IGetUserData } from '@/types/auth.types'
 import type { IReportItem } from '@/types/report.types'
+import { useTranslations } from 'next-intl'
 
 interface IReportFooterProps {
 	userData?: IGetUserData
@@ -31,6 +36,7 @@ export function ReportFooter({
 	userData,
 	onOpenChange,
 }: IReportFooterProps) {
+	const t = useTranslations('moderation.modals')
 	const { approveReport, isPending: approving } = useApproveReport(report.id)
 	const { deleteCommentReport, isPending: deleting } = useDeleteCommentReport(
 		report.id,
@@ -66,23 +72,26 @@ export function ReportFooter({
 
 	return (
 		<>
-			<div className='px-8 py-5 border-t border-border/20 bg-muted/10 flex items-center justify-end gap-3'>
+			<div className={moderationReportModalFooterClass}>
+				<div className={moderationReportModalFooterGlowClass} aria-hidden />
 				{report.status !== 'RESOLVED' && (
 					<>
 						<Button
 							variant='outline'
+							className='h-10 rounded-xl shadow-sm'
 							disabled={!canModerate || approving || !report.comment}
 							onClick={() => setApproveDialogOpen(true)}
 						>
-							Approve
+							{t('commentReport.approve')}
 						</Button>
 
 						<Button
 							variant='destructive'
+							className='h-10 rounded-xl shadow-sm'
 							disabled={!canModerate || deleting || !report.comment}
 							onClick={() => setDeleteDialogOpen(true)}
 						>
-							Delete Comment
+							{t('commentReport.deleteComment')}
 						</Button>
 					</>
 				)}
@@ -91,17 +100,16 @@ export function ReportFooter({
 			<AlertDialog open={approveDialogOpen} onOpenChange={setApproveDialogOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Approve Report?</AlertDialogTitle>
+						<AlertDialogTitle>{t('commentReport.approveTitle')}</AlertDialogTitle>
 						<AlertDialogDescription>
-							Are you sure you want to approve this report? This will mark the
-							report as resolved.
+							{t('commentReport.approveDescription')}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
 						<AlertDialogAction onClick={confirmApprove}>
-							Yes, Approve
+							{t('commentReport.yesApprove')}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
@@ -110,17 +118,16 @@ export function ReportFooter({
 			<AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete Comment?</AlertDialogTitle>
+						<AlertDialogTitle>{t('commentReport.deleteTitle')}</AlertDialogTitle>
 						<AlertDialogDescription>
-							This action is permanent. The comment will be removed and the
-							report will be marked as resolved.
+							{t('commentReport.deleteDescription')}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
 						<AlertDialogAction onClick={confirmDelete}>
-							Yes, Delete
+							{t('commentReport.yesDelete')}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

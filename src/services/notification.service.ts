@@ -21,6 +21,13 @@ class NotificationService {
 		return data
 	}
 
+	async deleteNotification(notificationId: string): Promise<{ success: boolean }> {
+		const { data } = await axiosInstance.delete(
+			`${this.BASE_URL}/${notificationId}`,
+		)
+		return data
+	}
+
 	async markAllChannelRead(channelId: string): Promise<{ success: boolean }> {
 		const { data } = await axiosInstance.post(
 			`${this.BASE_URL}/read/channel/${channelId}`,

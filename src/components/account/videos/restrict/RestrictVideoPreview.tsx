@@ -10,22 +10,24 @@ interface IEditVideoPreviewProps {
 	previewUrl: string
 	fileName: string
 	video: IVideo
+	onVideoFileSelected: (file: File) => void
 }
 
 export function RestrictVideoPreview({
 	previewUrl,
 	video,
+	onVideoFileSelected,
 }: IEditVideoPreviewProps) {
 	const t = useTranslations('editVideo.restrictPreview')
-	const { thumbnailPreview, setVideoFile } = useVideoStore()
+	const { thumbnailPreview } = useVideoStore()
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
-	const [localVideoUrl, setLocalVideoUrl] = useState<string | null>(null)
 
-	// input ref for new video upload
 	const videoInputRef = useRef<HTMLInputElement>(null)
 
 	const handlePlay = () => setIsPlaying(true)
+
+	const activePreviewSrc = previewUrl || video.videoFile
 
 	useEffect(() => {
 		if (isPlaying && videoRef.current) {
@@ -44,28 +46,28 @@ export function RestrictVideoPreview({
 	const handleNewVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (!file) return
-
-		const url = URL.createObjectURL(file)
-
-		setLocalVideoUrl(url)
-		setVideoFile(file)
-
+		onVideoFileSelected(file)
 		setIsPlaying(true)
+		e.target.value = ''
 	}
+
+	const thumbSrc = thumbnailPreview ?? video.thumbnailFile ?? ''
+	const showThumbnailOverlay =
+		!isPlaying && Boolean(thumbSrc) && !previewUrl
 
 	return (
 		<div className='flex flex-col items-end pt-7 gap-4'>
-			{/* VIDEO PREVIEW */}
 			<div className='relative w-full max-w-[400px] rounded-xl overflow-hidden border border-neutral-800 shadow-lg'>
-				{!isPlaying && (thumbnailPreview || video.thumbnailFile) ? (
+				{showThumbnailOverlay ? (
 					<div
 						className='relative w-full aspect-video cursor-pointer group'
 						onClick={handlePlay}
 					>
 						<Image
-							src={thumbnailPreview || video.thumbnailFile}
+							src={thumbSrc}
 							alt={t('thumbnailOverlayAlt')}
 							fill
+							unoptimized
 							className='object-cover duration-300 group-hover:scale-105'
 						/>
 						<div className='absolute inset-0 flex items-center justify-center bg-black/40'>
@@ -83,7 +85,7 @@ export function RestrictVideoPreview({
 				) : (
 					<video
 						ref={videoRef}
-						src={localVideoUrl || previewUrl || video.videoFile}
+						src={activePreviewSrc}
 						controls
 						className='w-full h-[220px] object-cover bg-black'
 					/>

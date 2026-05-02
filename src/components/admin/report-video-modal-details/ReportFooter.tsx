@@ -1,5 +1,10 @@
 'use client'
 
+import { ModeratorRestrictVideoDialog } from '@/components/admin/ModeratorRestrictVideoDialog'
+import {
+	moderationReportModalFooterClass,
+	moderationReportModalFooterGlowClass,
+} from '@/components/admin/moderation-report/moderationModalShell'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
@@ -15,10 +20,10 @@ import {
 } from '@/components/ui/alert-dialog'
 
 import { useApproveReport } from '@/hooks/report/useApproveReport'
-import { useRestrictVideo } from '@/hooks/report/useRestrictVideo'
 
 import type { IGetUserData } from '@/types/auth.types'
 import type { IReportItem } from '@/types/report.types'
+import { useTranslations } from 'next-intl'
 
 interface IReportFooterProps {
 	userData?: IGetUserData
@@ -31,11 +36,11 @@ export function ReportFooter({
 	userData,
 	onOpenChange,
 }: IReportFooterProps) {
+	const t = useTranslations('moderation.modals')
 	const { approveReport, isPending: approving } = useApproveReport(report.id)
-	const { restrictVideo, isPending: restricting } = useRestrictVideo(report.id)
 
 	const [approveDialog, setApproveDialog] = useState(false)
-	const [restrictDialog, setRestrictDialog] = useState(false)
+	const [restrictDialogOpen, setRestrictDialogOpen] = useState(false)
 
 	const canModerate =
 		report.assignedToId !== null && report.assignedToId === userData?.id
@@ -49,72 +54,54 @@ export function ReportFooter({
 		})
 	}
 
-	const handleRestrict = () => {
-		restrictVideo(undefined, {
-			onSuccess: () => {
-				setRestrictDialog(false)
-				onOpenChange(false)
-			},
-		})
-	}
-
 	return (
 		<>
-			{/* FOOTER BAR */}
-			<div className='px-8 py-5 border-t border-border/20 bg-muted/10 flex items-center justify-end gap-3'>
+			<div className={moderationReportModalFooterClass}>
+				<div className={moderationReportModalFooterGlowClass} aria-hidden />
 				{report.status !== 'RESOLVED' && (
 					<>
 						<Button
 							variant='outline'
+							className='h-10 rounded-xl shadow-sm'
 							disabled={!canModerate || approving}
 							onClick={() => setApproveDialog(true)}
 						>
-							Approve
+							{t('videoReport.approve')}
 						</Button>
 
 						<Button
 							variant='destructive'
-							disabled={!canModerate || restricting}
-							onClick={() => setRestrictDialog(true)}
+							className='h-10 rounded-xl shadow-sm'
+							disabled={!canModerate}
+							onClick={() => setRestrictDialogOpen(true)}
 						>
-							Restrict Video
+							{t('videoReport.restrictVideo')}
 						</Button>
 					</>
 				)}
 			</div>
 
+			<ModeratorRestrictVideoDialog
+				reportId={report.id}
+				defaultReason={report.reason}
+				open={restrictDialogOpen}
+				onOpenChange={setRestrictDialogOpen}
+				onRestricted={() => onOpenChange(false)}
+			/>
+
 			<AlertDialog open={approveDialog} onOpenChange={setApproveDialog}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Approve Report?</AlertDialogTitle>
+						<AlertDialogTitle>{t('videoReport.approveTitle')}</AlertDialogTitle>
 						<AlertDialogDescription>
-							This will mark the report as resolved without affecting the video.
+							{t('videoReport.approveDescription')}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
 						<AlertDialogAction onClick={handleApprove}>
-							Confirm
-						</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
-
-			<AlertDialog open={restrictDialog} onOpenChange={setRestrictDialog}>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>Restrict Video?</AlertDialogTitle>
-						<AlertDialogDescription>
-							The video will become RESTRICTED and the report will be marked as
-							resolved.
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-
-					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={handleRestrict}>
-							Restrict Video
+							{t('confirm')}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

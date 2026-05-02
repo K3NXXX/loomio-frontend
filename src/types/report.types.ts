@@ -41,6 +41,8 @@ export interface IReportItem {
 	id: string
 	reason: string
 	message: string | null
+	moderatorRestrictionReason?: string | null
+	moderatorNote?: string | null
 	createdAt: string
 
 	status: 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'REJECTED' | 'IN_REVIEW'
@@ -62,6 +64,9 @@ export interface IReportItem {
 		id: string
 		title: string
 		thumbnailFile?: string
+		videoFile?: string
+		restrictionModeratorReason?: string | null
+		restrictionModeratorNote?: string | null
 		channel?: {
 			id: string
 			username: string

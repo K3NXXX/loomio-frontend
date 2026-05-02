@@ -11,12 +11,16 @@ const nextConfig = {
 		ignoreBuildErrors: true,
 	},
 	images: {
+		// `domains` kept for compatibility; pathname omitted on remotePatterns so Next uses default `**` (see match-remote-pattern).
+		domains: [
+			'imagedelivery.net',
+			'videodelivery.net',
+			'res.cloudinary.com',
+		],
 		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'imagedelivery.net',
-				pathname: '/**',
-			},
+			{ protocol: 'https', hostname: 'imagedelivery.net' },
+			{ protocol: 'https', hostname: 'videodelivery.net' },
+			{ protocol: 'https', hostname: 'res.cloudinary.com' },
 		],
 	},
 }

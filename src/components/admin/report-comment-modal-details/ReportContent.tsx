@@ -1,58 +1,48 @@
 'use client'
 
 import { Badge } from '@/components/ui/badge'
+import { ModerationReportPanel } from '@/components/admin/moderation-report/ModerationReportPanel'
+import { reportReasonBadgeClass } from '@/components/admin/moderation-report/reportReasonBadgeClass'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 import { RightSidebar } from './RightSidebar'
 
 export function ReportContent({ report }: any) {
+	const tLabels = useTranslations('moderation.modals.labels')
+	const tReason = useTranslations('moderation.enums.reason')
+	const tModals = useTranslations('moderation.modals')
+
 	const isDeleted = !report.comment || !report.comment.content
 
 	return (
-		<div className='grid grid-cols-[1fr_360px] h-full'>
-			<div className='p-8 space-y-8 overflow-y-auto'>
-				<div className='space-y-2'>
-					<div className='text-xs uppercase tracking-wide text-muted-foreground font-semibold'>
-						Comment
-					</div>
-
+		<div className='grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[1fr_340px] xl:grid-cols-[1fr_360px]'>
+			<div className='min-h-0 space-y-7 overflow-y-auto p-6 md:p-8'>
+				<ModerationReportPanel label={tLabels('comment')}>
 					<div
 						className={cn(
-							'bg-muted/10 p-4 rounded-lg border border-border/20 shadow-sm',
 							'text-[15px] leading-[1.7]',
-							'max-h-[220px] overflow-y-auto scrollbar-thin',
+							'max-h-[240px] overflow-y-auto pr-1 scrollbar-thin',
 							isDeleted ? 'text-muted-foreground italic' : 'text-foreground',
 						)}
 					>
-						{isDeleted ? 'Comment was deleted' : report.comment.content}
+						{isDeleted ? tModals('commentDeleted') : report.comment.content}
 					</div>
-				</div>
+				</ModerationReportPanel>
 
-				{report.message && (
-					<div className='space-y-2'>
-						<div className='text-xs uppercase tracking-wide text-muted-foreground font-semibold'>
-							Reporter Note
-						</div>
-						<div className='bg-muted/5 p-4 rounded-lg border border-border/20 text-[14px] leading-[1.6] text-muted-foreground'>
+				{report.message ? (
+					<ModerationReportPanel label={tLabels('reporterNote')}>
+						<p className='text-[14px] leading-relaxed text-muted-foreground whitespace-pre-wrap'>
 							{report.message}
-						</div>
-					</div>
-				)}
+						</p>
+					</ModerationReportPanel>
+				) : null}
 
-				<div className='space-y-2'>
-					<div className='text-xs uppercase tracking-wide text-muted-foreground font-semibold'>
-						Reason
+				<div className='space-y-3'>
+					<div className='text-[11px] uppercase tracking-wider text-muted-foreground font-semibold'>
+						{tLabels('reason')}
 					</div>
-
-					<Badge
-						variant='outline'
-						className={cn(
-							'px-3 py-1 rounded-full text-[12px] font-medium',
-							report.reason === 'HATE_SPEECH' &&
-								'border-red-400/60 text-red-400',
-							report.reason === 'SPAM' && 'border-blue-400/60 text-blue-400',
-						)}
-					>
-						{report.reason.replace('_', ' ')}
+					<Badge variant='outline' className={reportReasonBadgeClass(report.reason)}>
+						{tReason(report.reason)}
 					</Badge>
 				</div>
 			</div>

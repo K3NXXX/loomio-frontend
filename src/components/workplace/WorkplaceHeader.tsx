@@ -25,6 +25,7 @@ import {
 } from 'react-icons/fa'
 import { IoHome } from 'react-icons/io5'
 import { MdDangerous, MdLogout, MdOutlineVideoLibrary } from 'react-icons/md'
+import { NotificationDropdown } from '@/components/home/notifications/NotificationDropdown'
 import { UploadVideoModal } from '../account/videos/upload/UploadVideoModal'
 
 interface IWorkplaceHeaderProps {
@@ -90,6 +91,8 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 						<FaPlus className='mr-1.5 min-[400px]:mr-2 size-3 min-[400px]:size-4' />
 						{tHeader('upload')}
 					</Button>
+
+					<NotificationDropdown />
 
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>

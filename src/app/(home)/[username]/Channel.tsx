@@ -9,7 +9,9 @@ import { PAGES } from '@/constants/pages.constants'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useGetChannel } from '@/hooks/channel/useGetChannel'
 import { useToggleFollowUser } from '@/hooks/follows/useFollowUser'
+import { useIsChannelNotificationsEnabled } from '@/hooks/follows/useIsChannelNotificationsEnabled'
 import { useIsFollowing } from '@/hooks/follows/useIsFollowing'
+import { useToggleChannelNotifications } from '@/hooks/follows/useToggleChannelNotifications'
 import { useGetChannelPlaylists } from '@/hooks/playlists/useGetChannelPlaylists'
 import { getInitials } from '@/utils/get-initials'
 import { truncateName } from '@/utils/truncateName'
@@ -20,6 +22,7 @@ import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { FaBell } from 'react-icons/fa'
 
 type ChannelTab = 'videos' | 'playlists'
 
@@ -42,8 +45,23 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 
 	const [isInfoOpen, setIsInfoOpen] = useState(false)
 	const { toggleFollowUser } = useToggleFollowUser()
+	const { toggleChannelNotifications } = useToggleChannelNotifications()
+	const { isNotificationsEnabled } = useIsChannelNotificationsEnabled(
+		channel?.id ?? '',
+	)
 
 	const isThisMe = userData?.id === channel?.userId
+
+	const handleFollow = async () => {
+		if (!channel) return
+		const res = await toggleFollowUser(channel.id)
+
+		if (res?.following === true) {
+			toggleChannelNotifications(channel.id)
+		} else if (isNotificationsEnabled) {
+			toggleChannelNotifications(channel.id)
+		}
+	}
 
 	const activeTab: ChannelTab = pathname.endsWith('/playlists')
 		? 'playlists'
@@ -175,15 +193,39 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 											</Link>
 										</div>
 									) : (
-										<Button
-											onClick={() => toggleFollowUser(channel.id)}
-											variant={isFollowing ? 'outline' : 'default'}
-											className='font-semibold rounded-full px-5 min-[400px]:px-6 text-xs min-[400px]:text-sm mt-4 min-[400px]:mt-5'
-										>
-											{isFollowing
-												? t('channelPage.subscribed')
-												: t('channelPage.subscribe')}
-										</Button>
+										<div className='flex items-center gap-1 min-[400px]:gap-2 mt-4 min-[400px]:mt-5'>
+											<Button
+												onClick={() => handleFollow()}
+												variant={isFollowing ? 'outline' : 'default'}
+												className='font-semibold rounded-full px-5 min-[400px]:px-6 text-xs min-[400px]:text-sm h-8 min-[400px]:h-10'
+											>
+												{isFollowing
+													? t('channelPage.subscribed')
+													: t('channelPage.subscribe')}
+											</Button>
+
+											{isFollowing && (
+												<button
+													type='button'
+													onClick={() =>
+														toggleChannelNotifications(channel.id)
+													}
+													title={t('watchActions.notifications')}
+													className='flex items-center justify-center w-8 h-8 min-[400px]:w-10 min-[400px]:h-10 rounded-full
+													bg-neutral-200 dark:bg-neutral-800
+													hover:bg-neutral-300 dark:hover:bg-neutral-700
+													transition cursor-pointer shrink-0'
+												>
+													<FaBell
+														className={`w-4 h-4 min-[400px]:w-5 min-[400px]:h-5 ${
+															isNotificationsEnabled
+																? 'text-[var(--primary)]'
+																: 'text-neutral-700 dark:text-neutral-300'
+														}`}
+													/>
+												</button>
+											)}
+										</div>
 									)}
 								</div>
 							</div>
