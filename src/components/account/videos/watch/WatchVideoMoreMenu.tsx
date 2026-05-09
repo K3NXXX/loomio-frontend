@@ -10,11 +10,12 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ShareVideoModal } from '@/components/ui/custom/ShareVideoModal'
+import { useAuthGate } from '@/hooks/auth/useAuthGate'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import type { IVideo } from '@/types/video.types'
 import { MoreVertical, PlusCircle, Share, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { TbMessageReportFilled } from 'react-icons/tb'
 import { WatchReportVideoModal } from './WatchReportVideoModal'
 
@@ -45,9 +46,12 @@ export function WatchVideoMoreMenu({
 
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const { userData } = useGetMe()
+	const { requireAuth } = useAuthGate()
 
-	const handleOpenPlaylistModal = () => {
+	const handleAddToPlaylistClick = (e: MouseEvent) => {
+		e.stopPropagation()
 		setIsDropdownOpen(false)
+		if (!requireAuth()) return
 		setIsAddToPlaylistOpen(true)
 	}
 
@@ -72,10 +76,7 @@ export function WatchVideoMoreMenu({
 				</div>
 				<DropdownMenuContent align='start' className='w-48'>
 					<DropdownMenuItem
-						onClick={(e) => {
-							e.stopPropagation()
-							handleOpenPlaylistModal()
-						}}
+						onClick={handleAddToPlaylistClick}
 						className='flex items-center gap-2 cursor-pointer'
 					>
 						<PlusCircle className='size-4 text-muted-foreground' />
@@ -110,7 +111,7 @@ export function WatchVideoMoreMenu({
 							</DropdownMenuItem>
 						</>
 					) : null}
-					{!hideReport && userData?.id !== videoAuthorId ? (
+					{!hideReport && userData && userData.id !== videoAuthorId ? (
 						<>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem

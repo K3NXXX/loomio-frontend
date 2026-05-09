@@ -18,17 +18,14 @@ export default async function HomeLayout({
 	const cookieStore = await cookies()
 	const token = cookieStore.get('accessToken')?.value
 
-	if (!token) redirect(PAGES.LOGIN)
-
-	let payload
-	try {
-		payload = jwtDecode<JwtPayloadWithRole>(token)
-	} catch {
-		redirect(PAGES.LOGIN)
-	}
-
-	if (payload.role === 'ADMIN') {
-		redirect(PAGES.MODERATION_DASHBOARD)
+	if (token) {
+		try {
+			const payload = jwtDecode<JwtPayloadWithRole>(token)
+			if (payload.role === 'ADMIN') {
+				redirect(PAGES.MODERATION_DASHBOARD)
+			}
+		} catch {
+		}
 	}
 	return (
 		<SidebarProvider>

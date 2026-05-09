@@ -32,6 +32,10 @@ export function HomeUserMenu() {
 	const [isChannelsOpen, setIsChannelsOpen] = useState(false)
 	const t = useTranslations()
 
+	if (!userData) {
+		return null
+	}
+
 	return (
 		<>
 			<DropdownMenu>

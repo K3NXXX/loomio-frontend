@@ -6,6 +6,7 @@ import { ChannelSkeleton } from '@/components/skeletons/channels/ChannelSkeleton
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { PAGES } from '@/constants/pages.constants'
+import { useAuthGate } from '@/hooks/auth/useAuthGate'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useGetChannel } from '@/hooks/channel/useGetChannel'
 import { useToggleFollowUser } from '@/hooks/follows/useFollowUser'
@@ -38,6 +39,7 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 	const { channel, isLoading } = useGetChannel(cleanUsername)
 	const { setOpenUploadingVideo, setUploadChannelId } = useVideoStore()
 	const { userData } = useGetMe()
+	const { requireAuth } = useAuthGate()
 	const { isFollowing } = useIsFollowing(channel?.id ?? '')
 	const { channelPlaylists } = useGetChannelPlaylists(channel?.id)
 	const pathname = usePathname()
@@ -54,6 +56,7 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 
 	const handleFollow = async () => {
 		if (!channel) return
+		if (!requireAuth()) return
 		const res = await toggleFollowUser(channel.id)
 
 		if (res?.following === true) {
@@ -195,7 +198,7 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 									) : (
 										<div className='flex items-center gap-1 min-[400px]:gap-2 mt-4 min-[400px]:mt-5'>
 											<Button
-												onClick={() => handleFollow()}
+												onClick={() => void handleFollow()}
 												variant={isFollowing ? 'outline' : 'default'}
 												className='font-semibold rounded-full px-5 min-[400px]:px-6 text-xs min-[400px]:text-sm h-8 min-[400px]:h-10'
 											>

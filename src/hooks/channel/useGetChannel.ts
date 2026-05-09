@@ -8,8 +8,9 @@ export const useGetChannel = (username: string) => {
 		isError,
 		isLoading,
 	} = useQuery<IChannel>({
-		queryKey: ['getChannel'],
+		queryKey: ['getChannel', username],
 		queryFn: () => channelService.getChannel(username),
+		enabled: Boolean(username),
 	})
 
 	return { channel, isLoading, isError }

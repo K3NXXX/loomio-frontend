@@ -6,6 +6,7 @@ import { HomeHeader } from '@/components/home/home-header/HomeHeader'
 import { HomeSidebarCollapsed } from '@/components/home/home-sidebar/HomeSidebarCollapsed'
 import { HomeSidebarMenu } from '@/components/home/home-sidebar/HomeSidebarMenu'
 import { HomeUIConfiguratorMenu } from '@/components/home/HomeUIConfiguratorMenu'
+import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { Button } from '@/components/ui/button'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useNotificationSocket } from '@/hooks/notification/useNotificationSocket'
@@ -15,10 +16,10 @@ import { IoMdSettings } from 'react-icons/io'
 
 export function ClientHomeLayout({ children }: { children: ReactNode }) {
 	const { toggleThemeMenuOpened, isSidebarCollapsed } = useGlobalStore()
-	const { userData } = useGetMe()
+	const { userData, isLoading } = useGetMe()
 	useNotificationSocket(userData?.id)
 
-	if (!userData) {
+	if (isLoading) {
 		return (
 			<div className='w-full h-screen flex items-center justify-center text-white'>
 				<Lottie animationData={loader} loop className='absolute w-20 h-20' />
@@ -45,6 +46,7 @@ export function ClientHomeLayout({ children }: { children: ReactNode }) {
 			</Button>
 
 			<HomeUIConfiguratorMenu />
+			<AuthRequiredModal />
 		</div>
 	)
 }

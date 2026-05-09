@@ -3,6 +3,14 @@
 		"search": "Search...",
 		"upload": "Upload"
 	},
+	"guestAuth": {
+		"logIn": "Log in",
+		"signUp": "Sign up",
+		"modalTitle": "Sign in required",
+		"modalDescription": "You need an account to do this. Sign in or create one to continue.",
+		"signInToInteract": "Sign in to like, subscribe, and use playlists.",
+		"signInToComment": "Sign in to leave a comment."
+	},
 	"sidebar": {
 		"home": "Home",
 		"playlists": "Playlists",

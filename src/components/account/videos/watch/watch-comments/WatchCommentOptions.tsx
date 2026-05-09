@@ -50,6 +50,13 @@ export function WatchCommentOptions({
 		}, 50)
 	}
 
+	const canEdit = userData?.id === comment.user.id
+	const canReport = Boolean(userData && userData.id !== comment.user.id)
+
+	if (!canEdit && !canReport) {
+		return null
+	}
+
 	return (
 		<>
 			<DropdownMenu modal={false}>
@@ -60,7 +67,7 @@ export function WatchCommentOptions({
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent side='right'>
-					{userData?.id === comment.user.id && (
+					{canEdit && (
 						<>
 							<DropdownMenuItem
 								onClick={() => setIsCommentEditing(true)}
@@ -79,7 +86,7 @@ export function WatchCommentOptions({
 							</DropdownMenuItem>
 						</>
 					)}
-					{userData?.id !== comment.user.id && (
+					{canReport && (
 						<DropdownMenuItem
 							onClick={() => setIsReportOpen(true)}
 							className='flex items-center gap-2 cursor-pointer'

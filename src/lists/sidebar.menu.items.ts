@@ -2,13 +2,12 @@ import { FaUserFriends } from 'react-icons/fa'
 import { IoHome } from 'react-icons/io5'
 import { MdFeaturedPlayList } from 'react-icons/md'
 import { RiAccountPinCircleFill } from 'react-icons/ri'
-import { SiYoutubeshorts } from 'react-icons/si'
 
 import { PAGES } from '@/constants/pages.constants'
 
 import type { IconType } from 'react-icons'
 
-interface ISidebarMenu {
+export interface ISidebarMenu {
 	id: number
 	label: string
 	url: string
@@ -41,3 +40,11 @@ export const sidebarMenu: ISidebarMenu[] = [
 		icon: RiAccountPinCircleFill,
 	},
 ]
+
+/** Guests only see Home; authenticated users get the full menu. */
+export function getSidebarMenuItems(isAuthenticated: boolean): ISidebarMenu[] {
+	if (!isAuthenticated) {
+		return sidebarMenu.filter((item) => item.url === PAGES.HOME)
+	}
+	return sidebarMenu
+}

@@ -4,8 +4,9 @@ import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { HeaderSearch } from '../home-header/HeaderSearch'
-import { sidebarMenu } from '@/lists/sidebar.menu.items'
 import { Logo } from '@/components/ui/Logo'
+import { useGetMe } from '@/hooks/auth/useGetMe'
+import { getSidebarMenuItems } from '@/lists/sidebar.menu.items'
 
 interface Props {
 	isOpen: boolean
@@ -14,6 +15,8 @@ interface Props {
 
 export function MobileSidebar({ isOpen, onClose }: Props) {
 	const t = useTranslations()
+	const { isAuthenticated } = useGetMe()
+	const menuItems = getSidebarMenuItems(isAuthenticated)
 
 	return (
 		<>
@@ -39,7 +42,7 @@ export function MobileSidebar({ isOpen, onClose }: Props) {
 					</div>
 					<HeaderSearch className='mx-0' />
 					<div className='flex flex-col gap-2'>
-						{sidebarMenu.map((item) => {
+						{menuItems.map((item) => {
 							const Icon = item.icon
 
 							return (

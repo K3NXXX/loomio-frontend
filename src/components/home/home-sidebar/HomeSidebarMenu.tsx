@@ -1,6 +1,7 @@
 'use client'
 
-import { sidebarMenu } from '@/lists/sidebar.menu.items'
+import { useGetMe } from '@/hooks/auth/useGetMe'
+import { getSidebarMenuItems } from '@/lists/sidebar.menu.items'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
@@ -13,6 +14,8 @@ export function HomeSidebarMenu() {
 	const pathname = usePathname()
 	const ref = useRef<HTMLElement | null>(null)
 	const { closeSidebar } = useGlobalStore()
+	const { isAuthenticated } = useGetMe()
+	const menuItems = getSidebarMenuItems(isAuthenticated)
 	const t = useTranslations()
 
 	const handleClickOutside = (e: MouseEvent) => {
@@ -33,7 +36,7 @@ export function HomeSidebarMenu() {
 			>
 				<div className='flex-1 pr-5 py-6 overflow-y-auto custom-scrollbar'>
 					<ul className='space-y-1 px-2'>
-						{sidebarMenu.map((item) => {
+						{menuItems.map((item) => {
 							const isActive =
 								item.url === '/'
 									? pathname === '/'
@@ -71,14 +74,16 @@ export function HomeSidebarMenu() {
 					</ul>
 				</div>
 
-				<div className='pr-4 py-5 bg-background/70 backdrop-blur-md'>
-					<HomeUserMenu />
-				</div>
+				{isAuthenticated ? (
+					<div className='pr-4 py-5 bg-background/70 backdrop-blur-md'>
+						<HomeUserMenu />
+					</div>
+				) : null}
 			</aside>
 
 			<aside className='flex lg:hidden flex-col items-center min-w-[90px] max-w-[90px] bg-background  shadow-md py-4'>
 				<ul className='flex flex-col items-center gap-3 w-full'>
-					{sidebarMenu.map((item) => {
+					{menuItems.map((item) => {
 						const isActive =
 							item.url === '/'
 								? pathname === '/'
@@ -107,16 +112,18 @@ export function HomeSidebarMenu() {
 											},
 										)}
 									/>
-									<span className='mt-1'>{item.label}</span>
+									<span className='mt-1'>{t(item.label)}</span>
 								</a>
 							</li>
 						)
 					})}
 				</ul>
 
-				<div className='mt-auto pt-3  w-full flex justify-center'>
-					<HomeUserMenu />
-				</div>
+				{isAuthenticated ? (
+					<div className='mt-auto pt-3 w-full flex justify-center'>
+						<HomeUserMenu />
+					</div>
+				) : null}
 			</aside>
 		</>
 	)

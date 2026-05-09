@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { ShareVideoModal } from '@/components/ui/custom/ShareVideoModal'
 import { PAGES } from '@/constants/pages.constants'
+import { useAuthGate } from '@/hooks/auth/useAuthGate'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useToggleFollowUser } from '@/hooks/follows/useFollowUser'
 import { useIsChannelNotificationsEnabled } from '@/hooks/follows/useIsChannelNotificationsEnabled'
@@ -27,6 +28,7 @@ interface IWatchVideoActionsProps {
 export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const t = useTranslations()
 	const { userData } = useGetMe()
+	const { requireAuth } = useAuthGate()
 	const { toggleFollowUser } = useToggleFollowUser()
 	const { isFollowing } = useIsFollowing(video.channel.id)
 	const { toggleVideoLike } = useToggleVideoLike()
@@ -43,6 +45,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const isThatMe = userData?.id === video.channel.userId
 
 	const handleFollow = async () => {
+		if (!requireAuth()) return
 		const res = await toggleFollowUser(video.channel.id)
 
 		if (res?.following === true) {
@@ -95,7 +98,7 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 				) : (
 					<div className='flex items-center gap-1 min-[400px]:gap-2 shrink-0'>
 						<Button
-							onClick={() => handleFollow()}
+							onClick={() => void handleFollow()}
 							variant={isFollowing ? 'outline' : 'default'}
 							className='font-semibold rounded-full px-3 min-[400px]:px-5 text-xs min-[400px]:text-sm h-8 min-[400px]:h-10'
 						>
@@ -106,7 +109,10 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 
 						{isFollowing && (
 							<button
-								onClick={() => toggleChannelNotifications(video.channel.id)}
+								onClick={() => {
+									if (!requireAuth()) return
+									toggleChannelNotifications(video.channel.id)
+								}}
 								title={t('watchActions.notifications')}
 								className='flex items-center justify-center w-8 h-8 min-[400px]:w-10 min-[400px]:h-10 rounded-full
 								bg-neutral-200 dark:bg-neutral-800
@@ -128,7 +134,10 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 
 			<div className='flex flex-wrap items-center gap-2 min-[400px]:gap-3'>
 				<Button
-					onClick={() => toggleVideoLike(video.id)}
+					onClick={() => {
+						if (!requireAuth()) return
+						toggleVideoLike(video.id)
+					}}
 					variant='secondary'
 					size='sm'
 					className={`group rounded-full h-8 min-[400px]:h-10 px-3 min-[400px]:px-5 flex items-center gap-1.5 min-[400px]:gap-2 text-xs min-[400px]:text-sm font-semibold
@@ -144,7 +153,10 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 				</Button>
 
 				<Button
-					onClick={() => toggleVideoDislike(video.id)}
+					onClick={() => {
+						if (!requireAuth()) return
+						toggleVideoDislike(video.id)
+					}}
 					variant='secondary'
 					size='sm'
 					className={`group rounded-full h-8 min-[400px]:h-10 px-3 min-[400px]:px-5 flex items-center gap-1.5 min-[400px]:gap-2 text-xs min-[400px]:text-sm font-semibold

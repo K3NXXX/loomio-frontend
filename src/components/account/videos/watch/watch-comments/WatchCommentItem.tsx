@@ -3,6 +3,7 @@ import type { IVideoComment } from '@/types/comment.types'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { Button } from '@/components/ui/button'
+import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useEditComment } from '@/hooks/comment/useEditComment'
 import type { IVideo } from '@/types/video.types'
 import { formatDate } from '@/utils/formatDate'
@@ -28,6 +29,7 @@ export function WatchCommentItem({
 	isExpanded,
 }: IWatchCommentItemProps) {
 	const t = useTranslations()
+	const { userData } = useGetMe()
 	const [replyInput, setReplyInput] = useState<string | null>(null)
 	const channel = video?.channel
 
@@ -143,15 +145,18 @@ export function WatchCommentItem({
 								<div className='flex items-center gap-4 min-[400px]:gap-8 mt-2 text-xs min-[400px]:text-sm text-neutral-400'>
 									<WatchCommentReactions comment={comment} />
 
-									<button
-										className='flex items-center gap-1 py-1 rounded-md transition-colors cursor-pointer group'
-										onClick={() => toggleReplyInput(comment.id)}
-									>
-										<FaReply className='w-3.5 h-3.5 min-[400px]:w-4 min-[400px]:h-4 rotate-180 transition-colors group-hover:text-primary' />
-										<span className='transition-colors group-hover:text-primary'>
-											{t('watchComments.reply')}
-										</span>
-									</button>
+									{userData ? (
+										<button
+											type='button'
+											className='flex items-center gap-1 py-1 rounded-md transition-colors cursor-pointer group'
+											onClick={() => toggleReplyInput(comment.id)}
+										>
+											<FaReply className='w-3.5 h-3.5 min-[400px]:w-4 min-[400px]:h-4 rotate-180 transition-colors group-hover:text-primary' />
+											<span className='transition-colors group-hover:text-primary'>
+												{t('watchComments.reply')}
+											</span>
+										</button>
+									) : null}
 								</div>
 								<WatchCommentReplyInput
 									comment={comment}

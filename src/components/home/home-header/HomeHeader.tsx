@@ -24,8 +24,11 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { PAGES } from '@/constants/pages.constants'
+import { useGetMe } from '@/hooks/auth/useGetMe'
 import { getInitials } from '@/utils/get-initials'
 import { useState } from 'react'
+import Link from 'next/link'
 import { NotificationDropdown } from '../notifications/NotificationDropdown'
 import { HeaderSearch } from './HeaderSearch'
 import { MobileSidebar } from '../home-sidebar/MobileSidebar'
@@ -36,7 +39,10 @@ export function HomeHeader() {
 	const { toggleSidebarCollapsed } = useGlobalStore()
 	const { openUploadingVideo, setOpenUploadingVideo, setUploadChannelId } =
 		useVideoStore()
-	const { userChannels, isLoading } = useGetUserChannels()
+	const { userData } = useGetMe()
+	const { userChannels, isLoading } = useGetUserChannels({
+		enabled: Boolean(userData),
+	})
 
 	const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
 	const t = useTranslations()
@@ -71,19 +77,106 @@ export function HomeHeader() {
 						</Breadcrumb>
 						<HeaderSearch className='max-[1024px]:hidden' />
 						<div className='flex items-center gap-5'>
-							<div className='min-[1024px]:hidden flex'>
+							{userData ? (
+								<>
+									<div className='min-[1024px]:hidden flex'>
+										<DropdownMenu>
+											<DropdownMenuTrigger asChild>
+												<button className='cursor-pointer flex items-center justify-center w-9 h-9 rounded-full hover:bg-white/10 transition-colors'>
+													<FaPlus size={18} color='white' />
+												</button>
+											</DropdownMenuTrigger>
+
+											<DropdownMenuContent
+												align='start'
+												alignOffset={80}
+												className='w-[calc(100vw-2rem)] max-w-72 mx-4'
+											>
+												<DropdownMenuLabel>
+													{t('common.selectChannel')}
+												</DropdownMenuLabel>
+												<DropdownMenuSeparator />
+
+												{isLoading ? (
+													<div className='px-3 py-2 text-sm text-muted-foreground'>
+														{t('common.loading')}
+													</div>
+												) : !userChannels?.length ? (
+													<div className='px-3 py-2 text-sm text-muted-foreground'>
+														{t('common.noChannels')}{' '}
+														<span
+															onClick={() => setIsCreateFormOpen(true)}
+															className='text-primary font-bold cursor-pointer pl-1'
+														>
+															{t('common.createNew')}
+														</span>
+													</div>
+												) : (
+													<ScrollArea className='max-h-72'>
+														{userChannels.map((ch) => (
+															<DropdownMenuItem
+																key={ch.id}
+																onClick={() => handlePickChannel(ch.id)}
+																className='cursor-pointer gap-3 py-2.5'
+															>
+																<Avatar className='h-9 w-9 min-[400px]:h-10 min-[400px]:w-10 shrink-0'>
+																	<AvatarImage src={ch.avatarUrl ?? undefined} />
+																	<AvatarFallback>
+																		{getInitials(ch.name)}
+																	</AvatarFallback>
+																</Avatar>
+																<div className='flex flex-col leading-tight min-w-0'>
+																	<span className='text-sm font-medium truncate'>
+																		{ch.name}
+																	</span>
+																	<span className='text-xs text-muted-foreground truncate'>
+																		@{ch.username}
+																	</span>
+																</div>
+															</DropdownMenuItem>
+														))}
+													</ScrollArea>
+												)}
+											</DropdownMenuContent>
+										</DropdownMenu>
+									</div>
+									<NotificationDropdown />
+								</>
+							) : (
+								<div className='flex items-center gap-2 shrink-0'>
+									<Button variant='outline' size='sm' asChild className='rounded-full'>
+										<Link href={PAGES.LOGIN}>{t('guestAuth.logIn')}</Link>
+									</Button>
+									<Button size='sm' asChild className='rounded-full'>
+										<Link href={PAGES.SIGNUP}>{t('guestAuth.signUp')}</Link>
+									</Button>
+								</div>
+							)}
+							<div
+								onClick={() => setIsMobileSidebarOpen(true)}
+								className='min-[1024px]:hidden'
+							>
+								<IoMenu color='white' size={30} />
+							</div>
+							{userData ? (
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
-										<button className='cursor-pointer flex items-center justify-center w-9 h-9 rounded-full hover:bg-white/10 transition-colors'>
-											<FaPlus size={18} color='white' />
-										</button>
+										<Button
+											className='
+									max-[1024px]:hidden
+								flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
+								bg-[var(--primary)] text-white shadow-md
+								hover:bg-[var(--primary)]/90 hover:shadow-lg
+								active:scale-95 active:brightness-90
+								transition-all duration-300
+								'
+										>
+											<FaPlus />
+											{t('header.upload')}
+										</Button>
 									</DropdownMenuTrigger>
 
-									<DropdownMenuContent
-										align='start'
-										alignOffset={80}
-										className='w-[calc(100vw-2rem)] max-w-72 mx-4'
-									>
+									<DropdownMenuContent align='end' className='w-72'>
 										<DropdownMenuLabel>
 											{t('common.selectChannel')}
 										</DropdownMenuLabel>
@@ -109,19 +202,19 @@ export function HomeHeader() {
 													<DropdownMenuItem
 														key={ch.id}
 														onClick={() => handlePickChannel(ch.id)}
-														className='cursor-pointer gap-3 py-2.5'
+														className='cursor-pointer gap-3 py-2'
 													>
-														<Avatar className='h-9 w-9 min-[400px]:h-10 min-[400px]:w-10 shrink-0'>
+														<Avatar className='h-10 w-10'>
 															<AvatarImage src={ch.avatarUrl ?? undefined} />
 															<AvatarFallback>
 																{getInitials(ch.name)}
 															</AvatarFallback>
 														</Avatar>
-														<div className='flex flex-col leading-tight min-w-0'>
-															<span className='text-sm font-medium truncate'>
+														<div className='flex flex-col leading-tight'>
+															<span className='text-sm font-medium'>
 																{ch.name}
 															</span>
-															<span className='text-xs text-muted-foreground truncate'>
+															<span className='text-xs text-muted-foreground'>
 																@{ch.username}
 															</span>
 														</div>
@@ -131,79 +224,7 @@ export function HomeHeader() {
 										)}
 									</DropdownMenuContent>
 								</DropdownMenu>
-							</div>
-							<NotificationDropdown />
-							<div
-								onClick={() => setIsMobileSidebarOpen(true)}
-								className='min-[1024px]:hidden'
-							>
-								<IoMenu color='white' size={30} />
-							</div>
-							<DropdownMenu>
-								<DropdownMenuTrigger asChild>
-									<Button
-										className='
-									max-[1024px]:hidden
-								flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
-								bg-[var(--primary)] text-white shadow-md
-								hover:bg-[var(--primary)]/90 hover:shadow-lg
-								active:scale-95 active:brightness-90
-								transition-all duration-300
-								'
-									>
-										<FaPlus />
-										{t('header.upload')}
-									</Button>
-								</DropdownMenuTrigger>
-
-								<DropdownMenuContent align='end' className='w-72'>
-									<DropdownMenuLabel>
-										{t('common.selectChannel')}
-									</DropdownMenuLabel>
-									<DropdownMenuSeparator />
-
-									{isLoading ? (
-										<div className='px-3 py-2 text-sm text-muted-foreground'>
-											{t('common.loading')}
-										</div>
-									) : !userChannels?.length ? (
-										<div className='px-3 py-2 text-sm text-muted-foreground'>
-											{t('common.noChannels')}{' '}
-											<span
-												onClick={() => setIsCreateFormOpen(true)}
-												className='text-primary font-bold cursor-pointer pl-1'
-											>
-												{t('common.createNew')}
-											</span>
-										</div>
-									) : (
-										<ScrollArea className='max-h-72'>
-											{userChannels.map((ch) => (
-												<DropdownMenuItem
-													key={ch.id}
-													onClick={() => handlePickChannel(ch.id)}
-													className='cursor-pointer gap-3 py-2'
-												>
-													<Avatar className='h-10 w-10'>
-														<AvatarImage src={ch.avatarUrl ?? undefined} />
-														<AvatarFallback>
-															{getInitials(ch.name)}
-														</AvatarFallback>
-													</Avatar>
-													<div className='flex flex-col leading-tight'>
-														<span className='text-sm font-medium'>
-															{ch.name}
-														</span>
-														<span className='text-xs text-muted-foreground'>
-															@{ch.username}
-														</span>
-													</div>
-												</DropdownMenuItem>
-											))}
-										</ScrollArea>
-									)}
-								</DropdownMenuContent>
-							</DropdownMenu>
+							) : null}
 						</div>
 					</div>
 				</div>

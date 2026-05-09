@@ -1,6 +1,7 @@
 'use client'
 
-import { sidebarMenu } from '@/lists/sidebar.menu.items'
+import { useGetMe } from '@/hooks/auth/useGetMe'
+import { getSidebarMenuItems } from '@/lists/sidebar.menu.items'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import { HomeUserMenu } from './HomeUserMenu'
@@ -8,12 +9,14 @@ import { useTranslations } from 'next-intl'
 
 export function HomeSidebarCollapsed() {
 	const pathname = usePathname()
+	const { isAuthenticated } = useGetMe()
+	const menuItems = getSidebarMenuItems(isAuthenticated)
 	const t = useTranslations()
 
 	return (
 		<aside className=' sticky top-[76px] h-[calc(100vh-76px)] flex flex-col items-center w-[80px] bg-background/80 backdrop-blur-xl shadow-md py-4'>
 			<ul className='flex flex-col items-center gap-3 w-full'>
-				{sidebarMenu.map((item) => {
+				{menuItems.map((item) => {
 					const isActive =
 						item.url === '/' ? pathname === '/' : pathname.startsWith(item.url)
 
@@ -56,9 +59,11 @@ export function HomeSidebarCollapsed() {
 				})}
 			</ul>
 
-			<div className='mt-auto pt-3 pb-5 w-full flex justify-center'>
-				<HomeUserMenu />
-			</div>
+			{isAuthenticated ? (
+				<div className='mt-auto pt-3 pb-5 w-full flex justify-center'>
+					<HomeUserMenu />
+				</div>
+			) : null}
 		</aside>
 	)
 }

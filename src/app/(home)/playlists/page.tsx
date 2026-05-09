@@ -1,4 +1,5 @@
 import { SITE_NAME } from '@/constants/seo.constants'
+import { requireAuthCookie } from '@/lib/server-auth'
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { Playlists } from './Playlists'
@@ -12,6 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	}
 }
 
-export default function PlaylistsPage() {
+export default async function PlaylistsPage() {
+	await requireAuthCookie()
 	return <Playlists />
 }
