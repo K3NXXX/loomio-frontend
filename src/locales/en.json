@@ -437,6 +437,26 @@
 		"notifications": "Notifications",
 		"share": "Share"
 	},
+	"pwa": {
+		"offline": {
+			"title": "You're offline",
+			"description": "Check your internet connection, then try again.",
+			"retry": "Try again"
+		}
+	},
+	"shareVideoModal": {
+		"title": "Share video",
+		"whatsapp": "WhatsApp",
+		"facebook": "Facebook",
+		"twitter": "Twitter",
+		"telegram": "Telegram",
+		"gmail": "Gmail",
+		"copyLink": "Copy link",
+		"copied": "Copied",
+		"linkCopiedToast": "Link copied to clipboard!",
+		"emailSubject": "Check out this video: {title}",
+		"emailBody": "Watch it here: {url}"
+	},
 	"watchMoreMenu": {
 		"addToPlaylist": "Add to playlist",
 		"report": "Report"

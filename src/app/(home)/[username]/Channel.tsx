@@ -256,7 +256,10 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 
 				<div className='mt-6'>
 					{activeTab === 'videos' && (
-						<ChannelVideoList videos={channel.videos} />
+						<ChannelVideoList
+							videos={channel.videos}
+							channelOwnerUserId={channel.userId}
+						/>
 					)}
 					{activeTab === 'playlists' && children}
 				</div>

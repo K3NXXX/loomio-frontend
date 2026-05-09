@@ -437,6 +437,26 @@
 		"notifications": "Сповіщення",
 		"share": "Поділитися"
 	},
+	"pwa": {
+		"offline": {
+			"title": "Немає зв’язку",
+			"description": "Перевірте підключення до інтернету й спробуйте ще раз.",
+			"retry": "Спробувати знову"
+		}
+	},
+	"shareVideoModal": {
+		"title": "Поділитися відео",
+		"whatsapp": "WhatsApp",
+		"facebook": "Facebook",
+		"twitter": "Twitter",
+		"telegram": "Telegram",
+		"gmail": "Gmail",
+		"copyLink": "Скопіювати посилання",
+		"copied": "Скопійовано",
+		"linkCopiedToast": "Посилання скопійовано до буфера обміну!",
+		"emailSubject": "Подивіться це відео: {title}",
+		"emailBody": "Переглянути тут: {url}"
+	},
 	"watchMoreMenu": {
 		"addToPlaylist": "Додати до плейлиста",
 		"report": "Поскаржитися"

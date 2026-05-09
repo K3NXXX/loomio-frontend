@@ -2,6 +2,7 @@
 
 import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideoMoreMenu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDuration'
 import { PAGES } from '@/constants/pages.constants'
 import type { IVideo } from '@/types/video.types'
 import { formatDate } from '@/utils/formatDate'
@@ -35,6 +36,7 @@ export default function VideoItem({ video }: IVideoItemProps) {
 								<IoMdPlay className='h-12 w-12 max-[900px]:h-9 max-[900px]:w-9 text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]' />
 							</div>
 						</div>
+						<VideoThumbnailDuration seconds={video.durationSeconds} />
 					</div>
 				</Link>
 
@@ -86,6 +88,7 @@ export default function VideoItem({ video }: IVideoItemProps) {
 							<WatchVideoMoreMenu
 								videoId={video.id}
 								videoAuthorId={video.channel.userId}
+								video={video}
 							/>
 						</div>
 					</div>

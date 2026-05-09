@@ -1,4 +1,4 @@
-import withPWA from 'next-pwa'
+import withPWAInit from 'next-pwa'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin()
@@ -25,10 +25,18 @@ const nextConfig = {
 	},
 }
 
-export default withNextIntl(
-	withPWA({
-		...nextConfig,
-		dest: 'public',
-		disable: true,
-	}),
-)
+const withPWA = withPWAInit({
+	dest: 'public',
+	disable:
+		process.env.NODE_ENV === 'development' ||
+		process.env.DISABLE_PWA === 'true',
+	register: true,
+	skipWaiting: true,
+	clientsClaim: true,
+	scope: '/',
+	fallbacks: {
+		document: '/offline',
+	},
+})
+
+export default withNextIntl(withPWA(nextConfig))

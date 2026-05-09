@@ -1,25 +1,20 @@
 'use client'
 
+import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideoMoreMenu'
 import { PlaylistActionsDropdown } from '@/components/home/playlists/PlaylistActionsDropdown'
 import { PlaylistPageSkeleton } from '@/components/skeletons/playlists/PlaylistPageSkeleton'
 import { Button } from '@/components/ui/button'
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDuration'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetOneUserPlaylist } from '@/hooks/playlists/useGetOneUserPlaylist'
 import { useRemoveVideoFromPlaylist } from '@/hooks/videos/useRemoveVideoFromPlaylist'
 import { formatDate } from '@/utils/formatDate'
 import { truncateName } from '@/utils/truncateName'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Play, Trash2 } from 'lucide-react'
+import { ArrowLeft, Play } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { TbDotsVertical } from 'react-icons/tb'
 
 export default function Playlist() {
 	const t = useTranslations()
@@ -84,78 +79,79 @@ export default function Playlist() {
 					</p>
 				) : (
 					<div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-						{playlist.videos.map((video, index) => (
-							<motion.div
-								key={video.id}
-								initial={{ opacity: 0, y: 20 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								viewport={{ once: true }}
-								transition={{ duration: 0.3, delay: index * 0.05 }}
-								className='rounded-2xl border border-border/40 bg-background/60 shadow-sm hover:shadow-md transition-all overflow-hidden'
-							>
-								<Link href={PAGES.WATCH(video.id)} className='block'>
-									<div className='group relative w-full aspect-video overflow-hidden'>
-										<img
-											src={video.thumbnailFile}
-											alt={video.title}
-											className='w-full h-full object-cover object-center'
-										/>
+						{playlist.videos.map((video, index) => {
+							const videoAuthorId = video.channel?.userId
+							return (
+								<motion.div
+									key={video.id}
+									initial={{ opacity: 0, y: 20 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									viewport={{ once: true }}
+									transition={{ duration: 0.3, delay: index * 0.05 }}
+									className='relative rounded-2xl border border-border/40 bg-background/60 shadow-sm hover:shadow-md transition-all overflow-hidden'
+								>
+									<Link href={PAGES.WATCH(video.id)} className='block'>
+										<div className='group relative w-full aspect-video overflow-hidden'>
+											<img
+												src={video.thumbnailFile}
+												alt={video.title}
+												className='w-full h-full object-cover object-center'
+											/>
 
-										<div className='pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors' />
+											<div className='pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors' />
 
-										<div className='pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity'>
-											<div className='rounded-full bg-black/60 p-3 backdrop-blur'>
-												<Play className='h-5 w-5 text-white' />
+											<div className='pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity'>
+												<div className='rounded-full bg-black/60 p-3 backdrop-blur'>
+													<Play className='h-5 w-5 text-white' />
+												</div>
 											</div>
+											<VideoThumbnailDuration
+												seconds={video.durationSeconds}
+												size='default'
+											/>
+										</div>
+									</Link>
+
+									<div className='p-4 flex flex-col gap-1'>
+										<div className='flex items-start justify-between gap-2'>
+											<Link
+												href={PAGES.WATCH(video.id)}
+												className='font-semibold line-clamp-2 transition-colors flex-1 min-w-0 hover:text-primary'
+											>
+												{truncateName(video.title, 40)}
+											</Link>
+
+											{videoAuthorId ? (
+												<div
+													className='shrink-0'
+													onClick={(e) => e.stopPropagation()}
+												>
+													<WatchVideoMoreMenu
+														videoId={video.id}
+														videoAuthorId={videoAuthorId}
+														video={video}
+														removeFromPlaylist={{
+															onRemove: () =>
+																handleRemove(video.id, playlist.id),
+														}}
+													/>
+												</div>
+											) : null}
+										</div>
+
+										<div className='flex items-center gap-1 text-gray-400 text-sm'>
+											<span>
+												{t('videoItem.viewsCount', {
+													count: video._count?.views,
+												})}
+											</span>
+											<span>•</span>
+											<span>{formatDate(video.createdAt)}</span>
 										</div>
 									</div>
-								</Link>
-
-								<div className='p-4 flex flex-col gap-1'>
-									<div className='flex items-start justify-between'>
-										<h3 className='font-semibold line-clamp-2 transition-colors flex-1 pr-2'>
-											{truncateName(video.title, 40)}
-										</h3>
-
-										<DropdownMenu modal={false}>
-											<DropdownMenuTrigger asChild>
-												<Button
-													variant='ghost'
-													size='icon'
-													onClick={(e) => e.stopPropagation()}
-													className='h-8 w-8 rounded-full hover:bg-muted/40 flex-shrink-0'
-												>
-													<TbDotsVertical className='h-4 w-4 text-white' />
-												</Button>
-											</DropdownMenuTrigger>
-
-											<DropdownMenuContent
-												align='end'
-												className='w-48 z-[9999]'
-											>
-												<DropdownMenuItem
-													onClick={() => handleRemove(video.id, playlist.id)}
-													className='flex items-center gap-2 text-destructive hover:text-destructive cursor-pointer'
-												>
-													<Trash2 className='w-4 h-4' />
-													{t('playlists.removeFromPlaylist')}
-												</DropdownMenuItem>
-											</DropdownMenuContent>
-										</DropdownMenu>
-									</div>
-
-									<div className='flex items-center gap-1 text-gray-400 text-sm'>
-										<span>
-											{t('videoItem.viewsCount', {
-												count: video._count?.views,
-											})}
-										</span>
-										<span>•</span>
-										<span>{formatDate(video.createdAt)}</span>
-									</div>
-								</div>
-							</motion.div>
-						))}
+								</motion.div>
+							)
+						})}
 					</div>
 				)}
 			</motion.div>

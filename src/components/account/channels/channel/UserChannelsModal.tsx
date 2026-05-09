@@ -9,7 +9,7 @@ import {
 import { Input } from '@/components/ui/input'
 import UserChannelsList from '../UserChannelsList'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { X } from 'lucide-react'
 import CreateChannelModal from '@/components/account/channels/CreateChannelModal'
 
@@ -22,6 +22,7 @@ export function UserChannelsModal({ open, onOpenChange }: Props) {
 	const t = useTranslations()
 	const [search, setSearch] = useState('')
 	const [isCreateOpen, setIsCreateOpen] = useState(false)
+	const dropdownPortalRef = useRef<HTMLDivElement>(null)
 
 	return (
 		<>
@@ -58,8 +59,15 @@ export function UserChannelsModal({ open, onOpenChange }: Props) {
 						)}
 					</div>
 
-					<div className='mt-4 min-h-[150px]'>
-						<UserChannelsList onOpenChange={onOpenChange} search={search} />
+					<div
+						ref={dropdownPortalRef}
+						className='mt-4 min-h-[150px] relative isolate z-0'
+					>
+						<UserChannelsList
+							onOpenChange={onOpenChange}
+							search={search}
+							dropdownPortalRef={dropdownPortalRef}
+						/>
 					</div>
 				</DialogContent>
 			</Dialog>

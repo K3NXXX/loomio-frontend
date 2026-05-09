@@ -15,6 +15,7 @@ import { Loader2, PlusCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { FaCheckCircle } from 'react-icons/fa'
+import { MdPlaylistPlay } from 'react-icons/md'
 import { CreatePlaylistModal } from './CreatePlaylistModal'
 
 interface AddToPlaylistModalProps {
@@ -116,8 +117,8 @@ export function AddToPlaylistModal({
 													className='w-full h-full object-cover'
 												/>
 											) : (
-												<div className='w-full h-full flex items-center justify-center text-xs text-muted-foreground'>
-													🎵
+												<div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-900'>
+													<MdPlaylistPlay className='text-[26px] text-neutral-600 shrink-0' />
 												</div>
 											)}
 										</div>

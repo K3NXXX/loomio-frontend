@@ -2,6 +2,7 @@
 
 import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideoMoreMenu'
 import { SearchVideoSkeletonList } from '@/components/skeletons/search/SearchVideoSkeletonList'
+import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDuration'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetSearchData } from '@/hooks/search/useGetSearchData'
@@ -104,6 +105,10 @@ export function Search({ query }: SearchProps) {
 												height={270}
 												className='object-cover rounded-xl border border-border/40 w-[480px] h-[270px]'
 											/>
+											<VideoThumbnailDuration
+												seconds={v.durationSeconds}
+												size='prominent'
+											/>
 										</div>
 
 										<div className='flex flex-1 justify-between gap-3 items-start'>
@@ -143,6 +148,7 @@ export function Search({ query }: SearchProps) {
 										<WatchVideoMoreMenu
 											videoId={v.id}
 											videoAuthorId={v.channel.userId}
+											video={v}
 										/>
 									</div>
 								</div>

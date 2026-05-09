@@ -37,6 +37,7 @@ export interface IVideo {
 	publishDate: Date
 	videoFile: string
 	createdAt: string
+	durationSeconds?: number | null
 	videoPublicId: string
 	likesCount: number
 	dislikesCount: number

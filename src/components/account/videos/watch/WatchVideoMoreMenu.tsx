@@ -6,10 +6,13 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { ShareVideoModal } from '@/components/ui/custom/ShareVideoModal'
 import { useGetMe } from '@/hooks/auth/useGetMe'
-import { MoreHorizontal, MoreVertical, PlusCircle } from 'lucide-react'
+import type { IVideo } from '@/types/video.types'
+import { MoreVertical, PlusCircle, Share, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { TbMessageReportFilled } from 'react-icons/tb'
@@ -18,14 +21,26 @@ import { WatchReportVideoModal } from './WatchReportVideoModal'
 interface IWatchVideoMoreMenuProps {
 	videoId: string
 	videoAuthorId: string
+	/** When set (e.g. from video cards), shows Share and opens ShareVideoModal */
+	video?: IVideo | null
+	/** Hide "Report" (e.g. recommended sidebar on watch) */
+	hideReport?: boolean
+	/** Playlist detail pages: remove this video from the current playlist */
+	removeFromPlaylist?: {
+		onRemove: () => void
+	}
 }
 
 export function WatchVideoMoreMenu({
 	videoId,
 	videoAuthorId,
+	video,
+	hideReport = false,
+	removeFromPlaylist,
 }: IWatchVideoMoreMenuProps) {
 	const t = useTranslations()
 	const [isAddToPlaylistOpen, setIsAddToPlaylistOpen] = useState(false)
+	const [isShareOpen, setIsShareOpen] = useState(false)
 	const [isReportOpen, setIsReportOpen] = useState(false)
 
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -34,6 +49,11 @@ export function WatchVideoMoreMenu({
 	const handleOpenPlaylistModal = () => {
 		setIsDropdownOpen(false)
 		setIsAddToPlaylistOpen(true)
+	}
+
+	const handleOpenShare = () => {
+		setIsDropdownOpen(false)
+		setIsShareOpen(true)
 	}
 
 	return (
@@ -61,19 +81,51 @@ export function WatchVideoMoreMenu({
 						<PlusCircle className='size-4 text-muted-foreground' />
 						{t('watchMoreMenu.addToPlaylist')}
 					</DropdownMenuItem>
-					{userData?.id !== videoAuthorId && (
+					{video ? (
 						<DropdownMenuItem
 							onClick={(e) => {
 								e.stopPropagation()
-								setIsDropdownOpen(false)
-								setIsReportOpen(true)
+								handleOpenShare()
 							}}
 							className='flex items-center gap-2 cursor-pointer'
 						>
-							<TbMessageReportFilled className='w-4 h-4' />
-							{t('watchMoreMenu.report')}
+							<Share className='size-4 text-muted-foreground' />
+							{t('watchActions.share')}
 						</DropdownMenuItem>
-					)}
+					) : null}
+					{removeFromPlaylist ? (
+						<>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem
+								variant='destructive'
+								onClick={(e) => {
+									e.stopPropagation()
+									setIsDropdownOpen(false)
+									removeFromPlaylist.onRemove()
+								}}
+								className='flex items-center gap-2 cursor-pointer'
+							>
+								<Trash2 className='size-4' />
+								{t('playlists.removeFromPlaylist')}
+							</DropdownMenuItem>
+						</>
+					) : null}
+					{!hideReport && userData?.id !== videoAuthorId ? (
+						<>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem
+								onClick={(e) => {
+									e.stopPropagation()
+									setIsDropdownOpen(false)
+									setIsReportOpen(true)
+								}}
+								className='flex items-center gap-2 cursor-pointer'
+							>
+								<TbMessageReportFilled className='w-4 h-4' />
+								{t('watchMoreMenu.report')}
+							</DropdownMenuItem>
+						</>
+					) : null}
 				</DropdownMenuContent>
 			</DropdownMenu>
 
@@ -83,11 +135,21 @@ export function WatchVideoMoreMenu({
 				onClose={() => setIsAddToPlaylistOpen(false)}
 			/>
 
-			<WatchReportVideoModal
-				open={isReportOpen}
-				onOpenChange={setIsReportOpen}
-				videoId={videoId}
-			/>
+			{!hideReport ? (
+				<WatchReportVideoModal
+					open={isReportOpen}
+					onOpenChange={setIsReportOpen}
+					videoId={videoId}
+				/>
+			) : null}
+
+			{video ? (
+				<ShareVideoModal
+					video={video}
+					open={isShareOpen}
+					onClose={() => setIsShareOpen(false)}
+				/>
+			) : null}
 		</>
 	)
 }

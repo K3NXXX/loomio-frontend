@@ -4,14 +4,19 @@ import { UserChannelsSkeleton } from '@/components/skeletons/channels/UserChanne
 import { useGetUserChannels } from '@/hooks/channel/useGetUserChannels'
 import { useTranslations } from 'next-intl'
 import { UserChannelItem } from './UserChannelItem'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, type RefObject } from 'react'
 
 interface Props {
 	search?: string
 	onOpenChange?: (v: boolean) => void
+	dropdownPortalRef?: RefObject<HTMLElement | null>
 }
 
-export default function UserChannelsList({ search = '', onOpenChange }: Props) {
+export default function UserChannelsList({
+	search = '',
+	onOpenChange,
+	dropdownPortalRef,
+}: Props) {
 	const { userChannels, isError, isLoading } = useGetUserChannels()
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 	const t = useTranslations('common')
@@ -52,6 +57,7 @@ export default function UserChannelsList({ search = '', onOpenChange }: Props) {
 					activeDropdown={activeDropdown}
 					setActiveDropdown={setActiveDropdown}
 					onOpenChange={onOpenChange}
+					dropdownPortalRef={dropdownPortalRef}
 				/>
 			))}
 		</ul>

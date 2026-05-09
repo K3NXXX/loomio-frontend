@@ -13,6 +13,7 @@ import type { IChannel } from '@/types/channel.types'
 import { getInitials } from '@/utils/get-initials'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import type { RefObject } from 'react'
 import { FiExternalLink, FiSettings } from 'react-icons/fi'
 import { HiOutlineViewGrid } from 'react-icons/hi'
 
@@ -22,6 +23,7 @@ interface IUserChannelItemProps {
 	activeDropdown: string | null
 	setActiveDropdown: (id: string | null) => void
 	onOpenChange?: (v: boolean) => void
+	dropdownPortalRef?: RefObject<HTMLElement | null>
 }
 
 export function UserChannelItem({
@@ -30,6 +32,7 @@ export function UserChannelItem({
 	activeDropdown,
 	setActiveDropdown,
 	onOpenChange,
+	dropdownPortalRef,
 }: IUserChannelItemProps) {
 	const t = useTranslations()
 
@@ -71,6 +74,7 @@ export function UserChannelItem({
 			</Link>
 
 			<DropdownMenu
+				modal={false}
 				open={activeDropdown === channel.id}
 				onOpenChange={(open) => setActiveDropdown(open ? channel.id : null)}
 			>
@@ -91,6 +95,7 @@ export function UserChannelItem({
 					side='right'
 					sideOffset={6}
 					className='w-48'
+					portalContainer={dropdownPortalRef?.current ?? undefined}
 				>
 					<DropdownMenuItem asChild>
 						<Link
