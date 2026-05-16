@@ -3,6 +3,24 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin()
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const nextPwaDefaultCache = require('next-pwa/cache') as Array<{
+	handler: string
+	options?: { cacheName?: string; [k: string]: unknown }
+	urlPattern: RegExp | ((ctx: { url: URL }) => boolean)
+}>
+
+const runtimeCaching = nextPwaDefaultCache.map((entry) => {
+	if (entry.options?.cacheName === 'static-video-assets') {
+		return {
+			urlPattern: /\.(?:mp4)$/i,
+			handler: 'NetworkOnly' as const,
+			options: {},
+		}
+	}
+	return entry
+})
+
 const nextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true,
@@ -16,11 +34,13 @@ const nextConfig = {
 			'imagedelivery.net',
 			'videodelivery.net',
 			'res.cloudinary.com',
+			'picsum.photos',
 		],
 		remotePatterns: [
 			{ protocol: 'https', hostname: 'imagedelivery.net' },
 			{ protocol: 'https', hostname: 'videodelivery.net' },
 			{ protocol: 'https', hostname: 'res.cloudinary.com' },
+			{ protocol: 'https', hostname: 'picsum.photos' },
 		],
 	},
 }
@@ -37,6 +57,7 @@ const withPWA = withPWAInit({
 	fallbacks: {
 		document: '/offline',
 	},
+	runtimeCaching,
 })
 
 export default withNextIntl(withPWA(nextConfig))

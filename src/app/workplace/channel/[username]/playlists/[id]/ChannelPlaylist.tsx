@@ -9,6 +9,7 @@ import { AddChannelVideosToPlaylist } from '@/components/workplace/playlists/Add
 import { RemoveChannelVideosFromPlaylist } from '@/components/workplace/playlists/RemoveChannelVideosFromPlaylist'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetOneChannelPlaylist } from '@/hooks/playlists/useGetOneChannelPlaylist'
+import { useViewsCountLabel } from '@/hooks/useCompactNumberFormat'
 import { useRemoveVideoFromPlaylist } from '@/hooks/videos/useRemoveVideoFromPlaylist'
 import { formatDate } from '@/utils/formatDate'
 import { truncateName } from '@/utils/truncateName'
@@ -22,6 +23,7 @@ import { useState } from 'react'
 
 export default function ChannelPlaylist() {
 	const t = useTranslations()
+	const viewsCountLabel = useViewsCountLabel()
 	const { id } = useParams<{ id: string }>()
 	const { playlist, isLoading, isError } = useGetOneChannelPlaylist(id)
 	const { removeVideoFromPlaylist } = useRemoveVideoFromPlaylist()
@@ -170,9 +172,7 @@ export default function ChannelPlaylist() {
 
 									<div className='flex items-center gap-1 text-gray-400 text-sm'>
 										<span>
-											{t('videoItem.viewsCount', {
-												count: video._count?.views,
-											})}
+											{viewsCountLabel(video._count?.views ?? 0)}
 										</span>
 										<span>•</span>
 										<span>{formatDate(video.createdAt)}</span>

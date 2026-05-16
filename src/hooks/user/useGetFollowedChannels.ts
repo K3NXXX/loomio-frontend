@@ -1,5 +1,5 @@
 import { userService } from '@/services/user.service'
-import type { IChannel } from '@/types/channel.types'
+import type { IFollowedChannel } from '@/types/channel.types'
 import { useQuery } from '@tanstack/react-query'
 
 export const useGetFollowedChannels = () => {
@@ -7,7 +7,7 @@ export const useGetFollowedChannels = () => {
 		data: followedChannels,
 		isLoading,
 		isError,
-	} = useQuery<IChannel[]>({
+	} = useQuery<IFollowedChannel[]>({
 		queryKey: ['getFollowedChannels'],
 		queryFn: () => userService.getFollowedChannels(),
 	})

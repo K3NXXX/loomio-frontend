@@ -4,6 +4,7 @@ import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideo
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDuration'
 import { PAGES } from '@/constants/pages.constants'
+import { useViewsCountLabel } from '@/hooks/useCompactNumberFormat'
 import type { IVideo } from '@/types/video.types'
 import { formatDate } from '@/utils/formatDate'
 import { getInitials } from '@/utils/get-initials'
@@ -18,6 +19,7 @@ interface IVideoItemProps {
 
 export default function VideoItem({ video }: IVideoItemProps) {
 	const t = useTranslations()
+	const viewsCountLabel = useViewsCountLabel()
 
 	return (
 		<li className='group rounded-xl bg-card text-card-foreground shadow-md border border-border/70 relative'>
@@ -75,7 +77,7 @@ export default function VideoItem({ video }: IVideoItemProps) {
 								</p>
 								<span className='text-muted-foreground/70 max-[900px]:shrink-0'>•</span>
 								<p className='text-muted-foreground min-w-0 max-[900px]:break-words'>
-									{t('videoItem.viewsCount', { count: video?._count.views })}
+									{viewsCountLabel(video?._count.views ?? 0)}
 								</p>
 							</div>
 						</Link>

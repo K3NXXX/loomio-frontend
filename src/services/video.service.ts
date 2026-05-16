@@ -1,5 +1,5 @@
 import axiosInstance from '@/lib/axios'
-import type { IVideo } from '@/types/video.types'
+import type { IPublicVideosPage, IVideo } from '@/types/video.types'
 
 class VideoService {
 	private BASE_URL = `${process.env.NEXT_PUBLIC_API_URL!}/videos`
@@ -9,9 +9,13 @@ class VideoService {
 		return data
 	}
 
-	async getAllVideos(): Promise<IVideo[]> {
-		const { data } = await axiosInstance.get<IVideo[]>(
+	async getAllVideos(
+		page = 1,
+		limit = 24,
+	): Promise<IPublicVideosPage> {
+		const { data } = await axiosInstance.get<IPublicVideosPage>(
 			`${this.BASE_URL}/public`,
+			{ params: { page, limit } },
 		)
 		return data
 	}

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { IVideo } from '@/types/video.types'
 import { truncateName } from '@/utils/truncateName'
+import { formatCompactCount } from '@/utils/format-compact-count'
 import { useChannelStore } from '@/zustand/store/channelStore'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import Image from 'next/image'
@@ -309,7 +310,9 @@ export function WorkplaceChannelVideosList({
 
 				{!isScheduled && (
 					<>
-						<div className='text-center'>{v._count?.views ?? 0}</div>
+						<div className='text-center' title={String(v._count?.views ?? 0)}>
+							{formatCompactCount(v._count?.views ?? 0, locale)}
+						</div>
 						<div className='text-center'>{v._count?.comments ?? 0}</div>
 					</>
 				)}
@@ -389,8 +392,8 @@ export function WorkplaceChannelVideosList({
 					{!isScheduled && (
 						<>
 							<span>·</span>
-							<span>
-								{v._count?.views ?? 0} {t('colViews')}
+							<span title={String(v._count?.views ?? 0)}>
+								{formatCompactCount(v._count?.views ?? 0, locale)} {t('colViews')}
 							</span>
 							<span>·</span>
 							<span>

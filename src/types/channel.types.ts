@@ -25,3 +25,20 @@ export interface IChannel {
 		videos: number
 	}
 }
+
+/** Payload of `GET /user/following` — subscriptions list (no `videos` array). */
+export interface IFollowedChannel {
+	id: string
+	name: string
+	username: string
+	description: string | null
+	avatarUrl: string | null
+	bannerUrl: string | null
+	avatarFrameColor?: string | null
+	avatarFrameThickness?: string | null
+	avatarFrameStyle?: string | null
+	_count: {
+		followers: number
+		videos: number
+	}
+}

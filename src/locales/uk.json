@@ -219,6 +219,7 @@
 	},
 	"videoItem": {
 		"viewsCount": "{count, plural, one {# перегляд} few {# перегляди} many {# переглядів} other {# перегляду}}",
+		"viewsCountDisplay": "{formatted} {count, plural, one {перегляд} few {перегляди} many {переглядів} other {перегляду}}",
 		"userAvatarAlt": "аватар користувача"
 	},
 	"notifications": {
@@ -769,7 +770,11 @@
 	"followings": {
 		"title": "Канали, на які ви підписані",
 		"description": "Досліджуйте канали, на які ви підписані",
-		"emptyState": "Ви ще не підписалися на жоден канал."
+		"emptyState": "Ви ще не підписалися на жоден канал.",
+		"searchPlaceholder": "Пошук за назвою, @нікнеймом або описом...",
+		"noResults": "Немає каналів за цим запитом.",
+		"channelsCount": "{count, plural, one {# канал} few {# канали} many {# каналів} other {# каналу}}",
+		"showingFiltered": "Показано {filtered} з {total}"
 	},
 	"channelPage": {
 		"notFoundTitle": "Канал не знайдено",

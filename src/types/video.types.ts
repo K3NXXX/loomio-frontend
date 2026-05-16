@@ -61,6 +61,13 @@ export interface IVideo {
 	comments: IComment[]
 }
 
+export interface IPublicVideosPage {
+	items: IVideo[]
+	page: number
+	limit: number
+	hasMore: boolean
+}
+
 export interface IComment {
 	id: string
 	text: string

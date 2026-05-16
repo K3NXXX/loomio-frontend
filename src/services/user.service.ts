@@ -9,6 +9,7 @@ import type {
 	ChangeThemeResponse,
 	THEME_COLORS,
 } from '@/types/colors.types'
+import type { IFollowedChannel } from '@/types/channel.types'
 import type { IUpdateAccountRequest } from '@/types/user.types'
 
 class UserService {
@@ -68,8 +69,10 @@ class UserService {
 		return data
 	}
 
-	async getFollowedChannels() {
-		const { data } = await axiosInstance.get(`${this.BASE_URL}/following`)
+	async getFollowedChannels(): Promise<IFollowedChannel[]> {
+		const { data } = await axiosInstance.get<IFollowedChannel[]>(
+			`${this.BASE_URL}/following`,
+		)
 		return data
 	}
 }

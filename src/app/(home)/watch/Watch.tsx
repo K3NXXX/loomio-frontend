@@ -11,6 +11,7 @@ import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useGetChannel } from '@/hooks/channel/useGetChannel'
 import { useGetOnePublicVideo } from '@/hooks/videos/useGetOnePublicVideo'
 import { useGetPublicVideos } from '@/hooks/videos/useGetPublicVideos'
+import { useViewsCountLabel } from '@/hooks/useCompactNumberFormat'
 import { formatDate } from '@/utils/formatDate'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -21,6 +22,7 @@ import { WatchPlaylistSidebar } from '@/components/account/videos/watch/WatchPla
 
 export default function Watch() {
 	const t = useTranslations()
+	const viewsCountLabel = useViewsCountLabel()
 	const searchParams = useSearchParams()
 	const videoId = searchParams.get('v')
 	const { video, isLoading, isError } = useGetOnePublicVideo(videoId ?? '')
@@ -125,7 +127,7 @@ export default function Watch() {
 
 				<div className='mt-3 min-[400px]:mt-4 bg-neutral-100/60 dark:bg-neutral-800/60 rounded-xl p-3 min-[400px]:p-4'>
 					<div className='mb-2 flex flex-wrap gap-1.5 min-[400px]:gap-3 items-center text-xs min-[400px]:text-sm text-neutral-600 dark:text-neutral-400 font-medium'>
-						{t('videoItem.viewsCount', { count: video._count.views })} •{' '}
+						{viewsCountLabel(video._count.views)} •{' '}
 						{formatDate(video.createdAt)}
 						<p>{video.tags}</p>
 					</div>

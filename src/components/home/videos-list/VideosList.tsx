@@ -4,12 +4,43 @@ import { VideoSkeleton } from '@/components/skeletons/VideoSkeleton'
 import { useGetPublicVideos } from '@/hooks/videos/useGetPublicVideos'
 import { homeVideosGridClassName } from '@/lib/home-videos-grid-preference'
 import { useGlobalStore } from '@/zustand/store/globalStore'
+import { useEffect, useRef } from 'react'
 import VideoItem from './VideoItem'
 
 export default function VideosList() {
-	const { videos, isError, isLoading } = useGetPublicVideos()
+	const {
+		videos,
+		isError,
+		isLoading,
+		isFetchingNextPage,
+		hasNextPage,
+		fetchNextPage,
+	} = useGetPublicVideos()
 	const homeVideoColumns = useGlobalStore((s) => s.homeVideoColumns)
 	const gridClass = homeVideosGridClassName(homeVideoColumns)
+	const sentinelRef = useRef<HTMLDivElement | null>(null)
+
+	useEffect(() => {
+		const el = sentinelRef.current
+		if (!el || !hasNextPage) return
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const first = entries[0]
+				if (
+					first?.isIntersecting &&
+					hasNextPage &&
+					!isFetchingNextPage
+				) {
+					void fetchNextPage()
+				}
+			},
+			{ root: null, rootMargin: '320px 0px', threshold: 0 },
+		)
+
+		observer.observe(el)
+		return () => observer.disconnect()
+	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
 	if (isLoading) {
 		return (
@@ -40,10 +71,20 @@ export default function VideosList() {
 	}
 
 	return (
-		<ul className={gridClass}>
-			{videos?.map((video) => (
-				<VideoItem key={video.id} video={video} />
-			))}
-		</ul>
+		<>
+			<ul className={gridClass}>
+				{videos?.map((video) => (
+					<VideoItem key={video.id} video={video} />
+				))}
+			</ul>
+			<div ref={sentinelRef} className='h-4 w-full shrink-0' aria-hidden />
+			{isFetchingNextPage && (
+				<ul className={gridClass}>
+					{Array.from({ length: 3 }).map((_, index) => (
+						<VideoSkeleton key={`more-${index}`} />
+					))}
+				</ul>
+			)}
+		</>
 	)
 }

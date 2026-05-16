@@ -219,6 +219,7 @@
 	},
 	"videoItem": {
 		"viewsCount": "{count, plural, one {# view} other {# views}}",
+		"viewsCountDisplay": "{formatted} {count, plural, one {view} other {views}}",
 		"userAvatarAlt": "user avatar"
 	},
 	"notifications": {
@@ -768,7 +769,11 @@
 	"followings": {
 		"title": "Followed Channels",
 		"description": "Explore channels you've subscribed to",
-		"emptyState": "You haven't followed any channels yet."
+		"emptyState": "You haven't followed any channels yet.",
+		"searchPlaceholder": "Search by name, @username, or description...",
+		"noResults": "No channels match your search.",
+		"channelsCount": "{count, plural, one {# channel} other {# channels}}",
+		"showingFiltered": "Showing {filtered} of {total}"
 	},
 	"channelPage": {
 		"notFoundTitle": "Channel not found",

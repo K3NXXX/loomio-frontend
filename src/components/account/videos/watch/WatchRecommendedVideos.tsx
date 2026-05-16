@@ -4,6 +4,7 @@ import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideo
 import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDuration'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetRecommendedVideos } from '@/hooks/videos/useGetRecommendedVideos'
+import { useViewsCountLabel } from '@/hooks/useCompactNumberFormat'
 import { formatDate } from '@/utils/formatDate'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -18,6 +19,7 @@ export function WatchRecommendedVideos({
 	playlistId,
 }: IWatchRecommendedVideosProps) {
 	const t = useTranslations()
+	const viewsCountLabel = useViewsCountLabel()
 	const { recommendedVideos } = useGetRecommendedVideos(videoId)
 
 	return (
@@ -57,7 +59,7 @@ export function WatchRecommendedVideos({
 									{vid.channel?.name}
 								</p>
 								<p className='text-xs text-neutral-400 dark:text-neutral-500 mt-0.5'>
-									{t('videoItem.viewsCount', { count: vid._count.views })} ·{' '}
+									{viewsCountLabel(vid._count.views ?? 0)} ·{' '}
 									{formatDate(vid.createdAt)}
 								</p>
 							</div>

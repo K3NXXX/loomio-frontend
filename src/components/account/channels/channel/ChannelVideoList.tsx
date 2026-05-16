@@ -4,6 +4,7 @@ import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideo
 import { Badge } from '@/components/ui/badge'
 import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDuration'
 import { PAGES } from '@/constants/pages.constants'
+import { useViewsCountLabel } from '@/hooks/useCompactNumberFormat'
 import { cn } from '@/lib/utils'
 import type { IVideo } from '@/types/video.types'
 import { formatDate } from '@/utils/formatDate'
@@ -27,7 +28,7 @@ export function ChannelVideoList({
 	channelOwnerUserId,
 }: ChannelVideoListProps) {
 	const t = useTranslations('accountPage.channelVideoList')
-	const tVideoItem = useTranslations('videoItem')
+	const viewsCountLabel = useViewsCountLabel()
 
 	if (!videos?.length) {
 		return (
@@ -86,9 +87,7 @@ export function ChannelVideoList({
 
 							<div className='mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground'>
 								<span>
-									{tVideoItem('viewsCount', {
-										count: v._count?.views ?? 0,
-									})}
+									{viewsCountLabel(v._count?.views ?? 0)}
 								</span>
 								<span>•</span>
 								<span>{formatDate(v.createdAt)}</span>

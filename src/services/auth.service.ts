@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+import { refreshAccessTokenSilently } from '@/lib/auth-refresh'
 import axiosInstance from '@/lib/axios'
 
 import type {
@@ -10,7 +11,6 @@ import type {
 	ILogInRequest,
 	ILoginSuccessResponse,
 	ILogoutResponse,
-	IRefreshTokenResponse,
 	IResendCodeRequest,
 	IResendCodeResponse,
 	IResetPasswordRequest,
@@ -79,11 +79,8 @@ class AuthService {
 		await axiosInstance.get(`${this.BASE_URL}${provider}/callback`)
 	}
 
-	async refreshToken(): Promise<IRefreshTokenResponse> {
-		const { data } = await axiosInstance.post<IRefreshTokenResponse>(
-			`${this.BASE_URL}/refresh`,
-		)
-		return data
+	async refreshToken(): Promise<void> {
+		await refreshAccessTokenSilently()
 	}
 
 	async logout(): Promise<ILogoutResponse> {

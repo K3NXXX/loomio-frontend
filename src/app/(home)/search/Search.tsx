@@ -6,6 +6,7 @@ import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDur
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetSearchData } from '@/hooks/search/useGetSearchData'
+import { useViewsCountLabel } from '@/hooks/useCompactNumberFormat'
 import { formatDate } from '@/utils/formatDate'
 import { getInitials } from '@/utils/get-initials'
 import { useTranslations } from 'next-intl'
@@ -19,6 +20,7 @@ interface SearchProps {
 export function Search({ query }: SearchProps) {
 	const { videos, channels, isLoading, isError } = useGetSearchData(query)
 	const t = useTranslations()
+	const viewsCountLabel = useViewsCountLabel()
 
 
 	if (!query.trim())
@@ -133,9 +135,7 @@ export function Search({ query }: SearchProps) {
 
 												<div className='text-sm text-muted-foreground mt-3 flex items-center gap-2'>
 													<span>
-														{t('videoItem.viewsCount', {
-															count: v?._count.views,
-														})}
+														{viewsCountLabel(v?._count.views ?? 0)}
 													</span>
 													<span>•</span>
 													<span>{formatDate(v.createdAt)}</span>

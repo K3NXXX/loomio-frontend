@@ -1,5 +1,6 @@
 import { useAddCommentReaction } from '@/hooks/comment/useAddCommentReaction'
 import { useGetMe } from '@/hooks/auth/useGetMe'
+import { useFormatCompactCount } from '@/hooks/useCompactNumberFormat'
 import { type IVideoComment, ReactionType } from '@/types/comment.types'
 import { useAuthPromptStore } from '@/zustand/store/authPromptStore'
 import { useTranslations } from 'next-intl'
@@ -11,6 +12,7 @@ interface IWatchCommentReactions {
 
 export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 	const t = useTranslations()
+	const formatCompact = useFormatCompactCount()
 	const { userData } = useGetMe()
 	const openAuthPrompt = useAuthPromptStore((s) => s.openAuthPrompt)
 	const { addReaction } = useAddCommentReaction()
@@ -34,7 +36,7 @@ export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 					title={t('watchComments.like')}
 				>
 					<FaThumbsUp className='w-4 h-4 mr-1 opacity-70' />
-					{comment.likes}
+					<span title={String(comment.likes)}>{formatCompact(comment.likes)}</span>
 				</button>
 				<button
 					type='button'
@@ -43,7 +45,9 @@ export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 					title={t('watchComments.dislike')}
 				>
 					<FaThumbsDown className='w-4 h-4 mr-1 opacity-70' />
-					{comment.dislikes}
+					<span title={String(comment.dislikes)}>
+						{formatCompact(comment.dislikes)}
+					</span>
 				</button>
 			</div>
 		)
@@ -61,7 +65,7 @@ export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 				`}
 			>
 				<FaThumbsUp className='w-4 h-4 transition-colors mr-1' />
-				<span>{comment.likes}</span>
+				<span title={String(comment.likes)}>{formatCompact(comment.likes)}</span>
 			</button>
 
 			<button
@@ -74,7 +78,9 @@ export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 			`}
 			>
 				<FaThumbsDown className='w-4 h-4 transition-colors mr-1' />
-				<span>{comment.dislikes}</span>
+				<span title={String(comment.dislikes)}>
+					{formatCompact(comment.dislikes)}
+				</span>
 			</button>
 		</div>
 	)

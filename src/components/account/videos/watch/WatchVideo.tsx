@@ -11,7 +11,6 @@ const PREMIUM_SPEED_THRESHOLD = 3
 const MAX_FREE_PLAYBACK_RATE = 2
 const PREMIUM_SPEED_LOCK_ATTR = 'data-premium-speed-lock'
 const PREMIUM_SPEED_CROWN_CLASS = 'plyr-speed-premium-crown'
-/** Lucide Crown paths — injected into Plyr DOM (no React root). */
 const PREMIUM_SPEED_CROWN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#facc15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>`
 
 interface IWatchVideoProps {
@@ -151,7 +150,6 @@ export function WatchVideo({
 		return () => clearInterval(id)
 	}, [canUseBoostSpeed, videoId, videoSrc, videoTitle, isHls])
 
-	/** Фінальний знімок лише при повному розмонтуванні WatchVideo (не при зміні v у межах /watch). */
 	useEffect(() => {
 		return () => {
 			const m = snapshotMetaRef.current
@@ -172,7 +170,7 @@ export function WatchVideo({
 		}
 	}, [])
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		setIsReady(false)
 		setIsLoading(true)
 		setIsPlyrReady(false)
@@ -181,24 +179,38 @@ export function WatchVideo({
 			clearTimeout(viewTimer.current)
 			viewTimer.current = null
 		}
-	}, [videoSrc])
 
-	useLayoutEffect(() => {
 		const video = videoRef.current
 		if (!video) return
 
 		function handleMetadata() {
-			if (video) {
+			if (video.videoWidth > 0 && video.videoHeight > 0) {
 				setAspectRatio(video.videoWidth / video.videoHeight)
 			}
 			if (!isHls) setIsReady(true)
 		}
 
-		if (video.readyState >= 1) {
-			handleMetadata()
-		} else {
-			video.addEventListener('loadedmetadata', handleMetadata, { once: true })
+		if (!isHls) {
+			video.load()
+			if (video.readyState >= 1) {
+				handleMetadata()
+			} else {
+				video.addEventListener('loadedmetadata', handleMetadata, { once: true })
+			}
 		}
+	}, [videoSrc, isHls])
+
+	useEffect(() => {
+		const video = videoRef.current
+		if (!video || isHls) return
+
+		function onError() {
+			setIsReady(true)
+			setIsLoading(false)
+		}
+
+		video.addEventListener('error', onError)
+		return () => video.removeEventListener('error', onError)
 	}, [videoSrc, isHls])
 
 	useEffect(() => {
@@ -251,6 +263,7 @@ export function WatchVideo({
 		}
 
 		let destroyed = false
+		let plyrInstance: any = null
 		let timeInterval: NodeJS.Timeout | null = null
 		let handleBeforeUnload: (() => void) | null = null
 
@@ -259,87 +272,93 @@ export function WatchVideo({
 			if (!videoRef.current || destroyed) return
 
 			const hls = hlsRef.current
+			const hasHlsQualities = Boolean(hls?.levels?.length)
 
-			let qualityOptions: number[] = [360, 480, 720, 1080]
-			let defaultQuality = 720
+			const controls = [
+				'play-large',
+				'play',
+				'progress',
+				'current-time',
+				'mute',
+				'volume',
+				'settings',
+				'fullscreen',
+			] as const
 
-			if (hls && hls.levels?.length) {
-				qualityOptions = hls.levels.map((l: any) => l.height)
-				defaultQuality =
-					hls.levels[hls.currentLevel]?.height ??
-					qualityOptions[qualityOptions.length - 1]
+			const speed = {
+				selected: 1,
+				options: [0.5, 0.75, 1, 1.25, 1.5, 2, 3, 4],
 			}
 
-			playerRef.current = new Plyr(videoRef.current, {
-				controls: [
-					'play-large',
-					'play',
-					'progress',
-					'current-time',
-					'mute',
-					'volume',
-					'settings',
-					'fullscreen',
-				],
-				settings: ['quality', 'speed'],
-				speed: {
-					selected: 1,
-					options: [0.5, 0.75, 1, 1.25, 1.5, 2, 3, 4],
-				},
-				quality: {
-					default: defaultQuality,
-					options: qualityOptions,
-					forced: true,
-					onChange: (newQuality: number) => {
-						if (!hls) return
-						if (newQuality === 0) {
-							hls.currentLevel = -1
-						} else {
-							const levelIndex = hls.levels.findIndex(
-								(l: any) => l.height === newQuality,
-							)
-							if (levelIndex !== -1) {
-								hls.currentLevel = levelIndex
-							}
+			const quality =
+				hasHlsQualities && hls
+					? {
+							default:
+								hls.levels[hls.currentLevel]?.height ??
+								(hls.levels.map((l: any) => l.height).at(-1) as number),
+							options: hls.levels.map((l: any) => l.height),
+							forced: true as const,
+							onChange: (newQuality: number) => {
+								if (newQuality === 0) {
+									hls.currentLevel = -1
+								} else {
+									const levelIndex = hls.levels.findIndex(
+										(l: any) => l.height === newQuality,
+									)
+									if (levelIndex !== -1) {
+										hls.currentLevel = levelIndex
+									}
+								}
+							},
 						}
-					},
-				},
-			})
+					: undefined
 
-			playerRef.current.on('ready', () => {
-				playerRef.current.volume = getSavedVolume()
+			if (destroyed || !videoRef.current) return
+
+			plyrInstance = new Plyr(videoRef.current, {
+				controls: [...controls],
+				settings: hasHlsQualities
+					? (['quality', 'speed'] as const)
+					: (['speed'] as const),
+				speed,
+				...(quality ? { quality } : {}),
+			})
+			playerRef.current = plyrInstance
+
+			plyrInstance.on('ready', () => {
+				plyrInstance.volume = getSavedVolume()
 
 				setIsPlyrReady(true)
 			})
 
-			playerRef.current.on('canplay', () => {
+			plyrInstance.on('canplay', () => {
 				const savedTime = getSavedTime(videoId)
-				if (savedTime > 0 && playerRef.current.currentTime < 1) {
-					playerRef.current.currentTime = savedTime
+				if (savedTime > 0 && plyrInstance.currentTime < 1) {
+					plyrInstance.currentTime = savedTime
 				}
 			})
 
 			timeInterval = setInterval(() => {
-				if (playerRef.current && !playerRef.current.paused) {
-					setSavedTime(videoId, playerRef.current.currentTime)
+				if (plyrInstance && !plyrInstance.paused) {
+					setSavedTime(videoId, plyrInstance.currentTime)
 				}
 			}, 5000)
 
-			playerRef.current.on('volumechange', () => {
-				localStorage.setItem('video_volume', String(playerRef.current.volume))
+			plyrInstance.on('volumechange', () => {
+				localStorage.setItem('video_volume', String(plyrInstance.volume))
 			})
 
-			playerRef.current.on('ended', () => {
+			plyrInstance.on('ended', () => {
 				removeSavedTime(videoId)
 			})
 
-			playerRef.current.on('pause', () => {
-				setSavedTime(videoId, playerRef.current.currentTime)
+			plyrInstance.on('pause', () => {
+				setSavedTime(videoId, plyrInstance.currentTime)
 			})
 
 			handleBeforeUnload = () => {
-				if (playerRef.current) {
-					setSavedTime(videoId, playerRef.current.currentTime)
+				if (plyrInstance) {
+					setSavedTime(videoId, plyrInstance.currentTime)
 				}
 			}
 			window.addEventListener('beforeunload', handleBeforeUnload)
@@ -352,14 +371,19 @@ export function WatchVideo({
 			if (timeInterval) clearInterval(timeInterval)
 			if (handleBeforeUnload)
 				window.removeEventListener('beforeunload', handleBeforeUnload)
-			setTimeout(() => {
-				if (playerRef.current) {
-					playerRef.current.destroy()
-					playerRef.current = null
+			const p = plyrInstance
+			plyrInstance = null
+			if (p) {
+				try {
+					p.destroy()
+				} catch {
 				}
-			}, 0)
+			}
+			if (playerRef.current === p) {
+				playerRef.current = null
+			}
 		}
-	}, [isReady, isHls, videoId])
+	}, [isReady, isHls, videoId, videoSrc])
 
 	useEffect(() => {
 		const wrap = plyrWrapperRef.current
@@ -475,7 +499,6 @@ export function WatchVideo({
 		}
 	}, [videoId, addView])
 
-	// Keyboard shortcuts
 	useEffect(() => {
 		function isTypingInEditable(e: KeyboardEvent) {
 			const t = e.target as HTMLElement | null
@@ -527,7 +550,6 @@ export function WatchVideo({
 		return () => document.removeEventListener('keydown', handleKeyDown)
 	}, [])
 
-	// On video ended → next
 	useEffect(() => {
 		const video = videoRef.current
 		if (!video) return
@@ -601,6 +623,7 @@ export function WatchVideo({
 				</div>
 
 				<video
+					key={videoSrc}
 					ref={videoRef}
 					src={isHls ? undefined : videoSrc}
 					className='w-full h-full object-contain'
@@ -610,6 +633,7 @@ export function WatchVideo({
 					controls
 					autoPlay
 					muted
+					playsInline
 					preload='auto'
 				/>
 			</div>

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDuration'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetOneUserPlaylist } from '@/hooks/playlists/useGetOneUserPlaylist'
+import { useViewsCountLabel } from '@/hooks/useCompactNumberFormat'
 import { useRemoveVideoFromPlaylist } from '@/hooks/videos/useRemoveVideoFromPlaylist'
 import { formatDate } from '@/utils/formatDate'
 import { truncateName } from '@/utils/truncateName'
@@ -18,6 +19,7 @@ import { useParams } from 'next/navigation'
 
 export default function Playlist() {
 	const t = useTranslations()
+	const viewsCountLabel = useViewsCountLabel()
 	const { id } = useParams<{ id: string }>()
 	const { playlist, isLoading, isError } = useGetOneUserPlaylist(id)
 	const { removeVideoFromPlaylist } = useRemoveVideoFromPlaylist()
@@ -141,9 +143,7 @@ export default function Playlist() {
 
 										<div className='flex items-center gap-1 text-gray-400 text-sm'>
 											<span>
-												{t('videoItem.viewsCount', {
-													count: video._count?.views,
-												})}
+												{viewsCountLabel(video._count?.views ?? 0)}
 											</span>
 											<span>•</span>
 											<span>{formatDate(video.createdAt)}</span>

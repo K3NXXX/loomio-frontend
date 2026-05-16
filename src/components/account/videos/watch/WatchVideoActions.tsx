@@ -11,6 +11,7 @@ import { useToggleChannelNotifications } from '@/hooks/follows/useToggleChannelN
 import { useHasVideoDisliked } from '@/hooks/like/useHasVideoDisliked'
 import { useHasVideoLiked } from '@/hooks/like/useHasVideoLiked'
 import { useToggleVideoDislike } from '@/hooks/like/useToggleVideoDislike'
+import { useFormatCompactCount } from '@/hooks/useCompactNumberFormat'
 import { useToggleVideoLike } from '@/hooks/like/useToggleVideoLike'
 import type { IVideo } from '@/types/video.types'
 import { getInitials } from '@/utils/get-initials'
@@ -27,6 +28,7 @@ interface IWatchVideoActionsProps {
 
 export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const t = useTranslations()
+	const formatCompact = useFormatCompactCount()
 	const { userData } = useGetMe()
 	const { requireAuth } = useAuthGate()
 	const { toggleFollowUser } = useToggleFollowUser()
@@ -149,7 +151,9 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					}`}
 				>
 					<ThumbsUp className='size-3.5 min-[400px]:size-4 group-hover:scale-110 transition-transform' />
-					{video.likesCount}
+					<span title={String(video.likesCount)}>
+						{formatCompact(video.likesCount)}
+					</span>
 				</Button>
 
 				<Button
@@ -168,7 +172,9 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					}`}
 				>
 					<ThumbsDown className='size-3.5 min-[400px]:size-4 group-hover:scale-110 transition-transform' />
-					{video.dislikesCount}
+					<span title={String(video.dislikesCount)}>
+						{formatCompact(video.dislikesCount)}
+					</span>
 				</Button>
 
 				<Button
