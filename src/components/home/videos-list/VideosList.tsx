@@ -2,15 +2,18 @@
 
 import { VideoSkeleton } from '@/components/skeletons/VideoSkeleton'
 import { useGetPublicVideos } from '@/hooks/videos/useGetPublicVideos'
+import { homeVideosGridClassName } from '@/lib/home-videos-grid-preference'
+import { useGlobalStore } from '@/zustand/store/globalStore'
 import VideoItem from './VideoItem'
 
 export default function VideosList() {
 	const { videos, isError, isLoading } = useGetPublicVideos()
-
+	const homeVideoColumns = useGlobalStore((s) => s.homeVideoColumns)
+	const gridClass = homeVideosGridClassName(homeVideoColumns)
 
 	if (isLoading) {
 		return (
-			<ul className='grid grid-cols-3 gap-6 max-[600px]:grid-cols-1 max-[1420px]:grid-cols-2'>
+			<ul className={gridClass}>
 				{Array.from({ length: 6 }).map((_, index) => (
 					<VideoSkeleton key={index} />
 				))}
@@ -37,7 +40,7 @@ export default function VideosList() {
 	}
 
 	return (
-		<ul className='grid grid-cols-3 gap-6 max-[600px]:grid-cols-1 max-[1420px]:grid-cols-2'>
+		<ul className={gridClass}>
 			{videos?.map((video) => (
 				<VideoItem key={video.id} video={video} />
 			))}

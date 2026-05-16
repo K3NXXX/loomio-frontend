@@ -20,7 +20,7 @@ export function ModerationVideoReportMainColumn({ report }: { report: any }) {
 		<div className='space-y-7'>
 			<ModerationReportPanel label={tLabels('video')} contentClassName='p-3 md:p-4'>
 				<div className='space-y-4'>
-					<div className='overflow-hidden rounded-xl border border-border/40 bg-black/5 dark:bg-black/20 shadow-inner'>
+					<div className='overflow-hidden rounded-xl border border-border/40 bg-muted/25 dark:bg-black/20 shadow-inner'>
 						{!isPlaying ? (
 							<div className='relative aspect-video w-full max-w-[800px]'>
 								<Image

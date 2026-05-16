@@ -129,10 +129,9 @@ export function VideoReports() {
 			{/* --- REPORT AUTHOR --- */}
 			<div className='text-center'>{renderUser(r.author)}</div>
 
-			{/* --- ASSIGNED MODERATOR --- */}
 			<div className='text-center'>
 				{r.assignedTo ? (
-					<div className='text-xs text-emerald-500 font-medium'>
+					<div className='text-xs text-emerald-700 dark:text-emerald-400 font-medium'>
 						@{r.assignedTo.username}
 					</div>
 				) : (
@@ -150,15 +149,15 @@ export function VideoReports() {
 				</Badge>
 			</div>
 
-			{/* --- STATUS --- */}
 			<div className='text-center text-[12px] font-medium'>
 				<span
 					className={cn(
 						'px-2 py-0.5 rounded-md',
-						r.status === 'PENDING' && 'text-yellow-400',
-						r.status === 'IN_PROGRESS' && 'text-blue-400',
-						r.status === 'RESOLVED' && 'text-emerald-400',
-						r.status === 'REJECTED' && 'text-red-400',
+						r.status === 'PENDING' && 'text-amber-700 dark:text-amber-400',
+						r.status === 'IN_PROGRESS' && 'text-blue-700 dark:text-blue-400',
+						r.status === 'IN_REVIEW' && 'text-violet-700 dark:text-violet-400',
+						r.status === 'RESOLVED' && 'text-emerald-700 dark:text-emerald-400',
+						r.status === 'REJECTED' && 'text-red-700 dark:text-red-400',
 					)}
 				>
 					{tStatus(r.status)}
@@ -174,7 +173,7 @@ export function VideoReports() {
 
 	return (
 		<ModerationPageShell title={t('title')}>
-			<div className='rounded-2xl border border-border/45 bg-card/25 backdrop-blur-md p-4 md:p-6 shadow-xl ring-1 ring-white/[0.04]'>
+			<div className='rounded-2xl border border-border/45 bg-card/25 backdrop-blur-md p-4 md:p-6 shadow-xl ring-1 ring-border/40'>
 				<div className='relative w-full space-y-3'>
 					{renderHeader()}
 					<div className='space-y-3'>

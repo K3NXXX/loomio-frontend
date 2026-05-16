@@ -9,6 +9,12 @@ interface UploadVideoStepFirstProps {
 	fileName: string
 }
 
+const fieldClass =
+	'h-14 text-base bg-background border border-border rounded-xl text-foreground placeholder:text-muted-foreground px-4 focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary transition-colors'
+
+const textareaClass =
+	'h-[140px] overflow-y-auto text-base bg-background border border-border rounded-xl text-foreground placeholder:text-muted-foreground px-4 py-3 focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary resize-none transition-colors'
+
 export function UploadVideoStepFirst({
 	register,
 	fileName,
@@ -21,7 +27,7 @@ export function UploadVideoStepFirst({
 				<div className='space-y-2'>
 					<label
 						htmlFor='title'
-						className='block text-sm font-medium text-gray-300 mb-2'
+						className='block text-sm font-medium text-muted-foreground mb-2'
 					>
 						{t('uploadVideoModal.stepFirst.titleLabel')}
 					</label>
@@ -31,17 +37,14 @@ export function UploadVideoStepFirst({
 						defaultValue={fileName}
 						placeholder={t('uploadVideoModal.stepFirst.titlePlaceholder')}
 						{...register('title')}
-						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
-						text-white placeholder-gray-500 px-4 
-						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
-						transition-colors'
+						className={fieldClass}
 					/>
 				</div>
 
 				<div className='space-y-2'>
 					<label
 						htmlFor='description'
-						className='block text-sm font-medium text-gray-300 mb-2'
+						className='block text-sm font-medium text-muted-foreground mb-2'
 					>
 						{t('uploadVideoModal.stepFirst.descriptionLabel')}
 					</label>
@@ -52,17 +55,14 @@ export function UploadVideoStepFirst({
 							'uploadVideoModal.stepFirst.descriptionPlaceholder',
 						)}
 						{...register('description')}
-						className='h-[140px] overflow-y-auto text-base bg-neutral-800/80 border border-neutral-700 
-						rounded-xl text-white placeholder-gray-500 px-4 py-3 
-						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
-						resize-none transition-colors'
+						className={textareaClass}
 					/>
 				</div>
 
 				<div className='space-y-2'>
 					<label
 						htmlFor='tags'
-						className='block text-sm font-medium text-gray-300 mb-2'
+						className='block text-sm font-medium text-muted-foreground mb-2'
 					>
 						{t('uploadVideoModal.stepFirst.tagsLabel')}
 					</label>
@@ -71,12 +71,9 @@ export function UploadVideoStepFirst({
 						type='text'
 						placeholder={t('uploadVideoModal.stepFirst.tagsPlaceholder')}
 						{...register('tags')}
-						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
-						text-white placeholder-gray-500 px-4 
-						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
-						transition-colors'
+						className={fieldClass}
 					/>
-					<p className='text-xs text-gray-500'>
+					<p className='text-xs text-muted-foreground'>
 						{t('uploadVideoModal.stepFirst.tagsFormatPrefix')}{' '}
 						<span className='text-primary'>
 							{t('uploadVideoModal.stepFirst.tagsFormatExample')}

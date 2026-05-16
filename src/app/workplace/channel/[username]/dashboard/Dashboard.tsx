@@ -1,5 +1,6 @@
 'use client'
 
+import { ChannelAvatarFrame } from '@/components/account/channels/channel/ChannelAvatarFrame'
 import { UploadVideoModal } from '@/components/account/videos/upload/UploadVideoModal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -57,13 +58,20 @@ export function Dashboard() {
 
 				<div className='w-full min-[980px]:flex-1 min-[980px]:min-w-[280px] min-[980px]:max-w-[420px] rounded-2xl border border-border/40 bg-background/60 p-4 min-[500px]:p-6 shadow-sm hover:shadow-md transition-all'>
 					<div className='flex items-center gap-3 min-[500px]:gap-4 mb-4 min-[980px]:mb-6'>
-						<Avatar className='size-10 min-[500px]:size-14 ring-1 ring-border shrink-0'>
-							<AvatarImage
-								src={channel.avatarUrl || undefined}
-								alt={channel.name}
-							/>
-							<AvatarFallback>{getInitials(channel.username)}</AvatarFallback>
-						</Avatar>
+						<ChannelAvatarFrame
+							variant='compact'
+							frameColor={channel.avatarFrameColor ?? undefined}
+							frameThickness={channel.avatarFrameThickness ?? undefined}
+							frameStyle={channel.avatarFrameStyle ?? undefined}
+						>
+							<Avatar className='size-10 min-[500px]:size-14 shrink-0'>
+								<AvatarImage
+									src={channel.avatarUrl || undefined}
+									alt={channel.name}
+								/>
+								<AvatarFallback>{getInitials(channel.username)}</AvatarFallback>
+							</Avatar>
+						</ChannelAvatarFrame>
 						<div>
 							<h2 className='text-base min-[500px]:text-lg font-semibold leading-tight'>
 								{channel.name}
@@ -103,15 +111,13 @@ export function Dashboard() {
 				</div>
 			</div>
 
-			{openUploadingVideo && (
-				<UploadVideoModal
-					open={openUploadingVideo}
-					onOpenChange={(open) => {
-						if (!open) setUploadChannelId(null)
-						setOpenUploadingVideo(open)
-					}}
-				/>
-			)}
+			<UploadVideoModal
+				open={openUploadingVideo}
+				onOpenChange={(open) => {
+					if (!open) setUploadChannelId(null)
+					setOpenUploadingVideo(open)
+				}}
+			/>
 		</div>
 	)
 }

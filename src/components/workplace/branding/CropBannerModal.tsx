@@ -37,9 +37,11 @@ export function CropBannerModal({
 	const t = useTranslations('workplaceBranding')
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='min-w-[900px] min-h-[700px] bg-neutral-900 text-white'>
+			<DialogContent className='min-w-[900px] min-h-[700px] border-border bg-card text-card-foreground'>
 				<DialogHeader>
-					<DialogTitle>{tBanner('adjustTitle')}</DialogTitle>
+					<DialogTitle className='text-foreground'>
+						{tBanner('adjustTitle')}
+					</DialogTitle>
 				</DialogHeader>
 
 				<div className='relative w-full h-[450px] bg-black rounded-lg overflow-hidden'>
@@ -54,7 +56,7 @@ export function CropBannerModal({
 							cropShape='rect'
 							showGrid={false}
 							objectFit='cover'
-					aspect={20 / 5}
+							aspect={20 / 5}
 						/>
 					)}
 				</div>

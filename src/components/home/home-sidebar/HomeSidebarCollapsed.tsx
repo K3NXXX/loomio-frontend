@@ -14,7 +14,7 @@ export function HomeSidebarCollapsed() {
 	const t = useTranslations()
 
 	return (
-		<aside className=' sticky top-[76px] h-[calc(100vh-76px)] flex flex-col items-center w-[80px] bg-background/80 backdrop-blur-xl shadow-md py-4'>
+		<aside className='sticky top-[76px] h-[calc(100vh-76px)] flex flex-col items-center w-[80px] border-r border-border bg-sidebar/90 backdrop-blur-xl shadow-sm py-4 dark:border-transparent dark:bg-background/80'>
 			<ul className='flex flex-col items-center gap-3 w-full'>
 				{menuItems.map((item) => {
 					const isActive =
@@ -48,7 +48,7 @@ export function HomeSidebarCollapsed() {
 								<span
 									className={clsx(
 										'leading-3 text-[11px] font-medium transition-colors duration-200',
-										'text-white group-hover:text-primary',
+										'text-foreground group-hover:text-primary',
 									)}
 								>
 									<span>{t(item.label)}</span>

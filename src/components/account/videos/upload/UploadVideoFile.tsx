@@ -55,19 +55,19 @@ export function UploadVideoFile({
 					cursor-pointer transition-all duration-300 ease-in-out
 					${
 						isDragging
-							? 'border-primary bg-neutral-800/60 scale-[1.02]'
-							: 'border-neutral-700 hover:border-primary hover:bg-neutral-800/50'
+							? 'border-primary bg-primary/10 scale-[1.02]'
+							: 'border-border hover:border-primary hover:bg-muted/50'
 					}
 				`}
 			>
-				<div className='mb-3 min-[500px]:mb-5 bg-neutral-800 p-4 min-[500px]:p-5 min-[700px]:p-6 rounded-full'>
+				<div className='mb-3 min-[500px]:mb-5 bg-muted p-4 min-[500px]:p-5 min-[700px]:p-6 rounded-full'>
 					<FaCloudUploadAlt className='text-primary text-4xl min-[400px]:text-5xl min-[700px]:text-7xl' />
 				</div>
 
-				<p className='text-gray-300 text-sm min-[400px]:text-base min-[700px]:text-lg font-medium'>
+				<p className='text-muted-foreground text-sm min-[400px]:text-base min-[700px]:text-lg font-medium'>
 					{t('uploadVideoModal.file.dragDrop')}
 				</p>
-				<p className='text-gray-500 text-xs min-[400px]:text-sm mt-1'>
+				<p className='text-muted-foreground text-xs min-[400px]:text-sm mt-1'>
 					{t('uploadVideoModal.file.orClick')}
 				</p>
 
@@ -75,22 +75,25 @@ export function UploadVideoFile({
 					type='file'
 					id='file'
 					accept='video/*'
-					{...register('file')}
 					className='hidden'
-					onChange={handleFileChange}
+					{...register('file', {
+						onChange: (e) => {
+							void handleFileChange(e)
+						},
+					})}
 				/>
 			</label>
 
-			<p className='text-gray-400 text-xs min-[400px]:text-sm mt-3 min-[500px]:mt-4'>
+			<p className='text-muted-foreground text-xs min-[400px]:text-sm mt-3 min-[500px]:mt-4'>
 				{t('uploadVideoModal.file.supportedPrefix')}{' '}
-				<span className='text-white'>
+				<span className='text-foreground'>
 					{t('uploadVideoModal.file.formatsList')}
 				</span>{' '}
 				• {t('uploadVideoModal.file.maxSize')}
 			</p>
 
 			{errorMessage && (
-				<p className='text-red-400 text-xs min-[400px]:text-sm mt-1'>
+				<p className='text-destructive text-xs min-[400px]:text-sm mt-1'>
 					{errorMessage}
 				</p>
 			)}

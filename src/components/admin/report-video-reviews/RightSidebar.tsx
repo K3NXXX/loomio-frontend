@@ -19,9 +19,7 @@ export function RightSidebar({ report }: any) {
 				min-h-0 space-y-5 overflow-y-auto border-l border-border/50 
 				bg-gradient-to-b from-muted/25 via-muted/10 to-background/90 
 				p-6 md:p-8 
-				backdrop-blur-md 
-				shadow-[inset_1px_0_0_rgba(255,255,255,0.05)] 
-				dark:shadow-[inset_1px_0_0_rgba(255,255,255,0.03)]
+				backdrop-blur-md
 			'
 		>
 			<ModerationSidebarUserBlock

@@ -22,7 +22,7 @@ export function AuthSocialButtons() {
 					onClick={() => handleOAuthLogin(provider.url, provider.name)}
 					className='w-full cursor-pointer flex justify-center items-center'
 				>
-					<Card className='bg-neutral-900 py-5 px-5 flex justify-center items-center w-full'>
+					<Card className='border border-border bg-card py-5 px-5 flex justify-center items-center w-full shadow-sm hover:bg-muted/40 transition-colors'>
 						<provider.icon color={provider.color} />
 					</Card>
 				</button>

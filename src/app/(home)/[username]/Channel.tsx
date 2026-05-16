@@ -1,5 +1,6 @@
 'use client'
 
+import { ChannelAvatarFrame } from '@/components/account/channels/channel/ChannelAvatarFrame'
 import { ChannelMoreInfoModal } from '@/components/account/channels/channel/ChannelMoreInfoModal'
 import { ChannelVideoList } from '@/components/account/channels/channel/ChannelVideoList'
 import { ChannelSkeleton } from '@/components/skeletons/channels/ChannelSkeleton'
@@ -121,6 +122,7 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 							src={channel.bannerUrl}
 							alt={t('channelPage.bannerAlt')}
 							className='w-full h-full object-cover object-[center_5%]'
+							decoding='async'
 						/>
 					</div>
 				)}
@@ -136,19 +138,26 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 						<div className='absolute left-0 top-0 h-full w-[4px] bg-gradient-to-b from-primary via-primary/60 to-transparent blur-[1px]' />
 
 						<div className='p-4 min-[400px]:p-6 flex flex-col sm:flex-row sm:items-center gap-4 min-[400px]:gap-6 max-[640px]:items-center max-[640px]:text-center'>
-							<Avatar className='w-24 h-24 min-[400px]:w-32 min-[400px]:h-32 sm:w-[160px] sm:h-[160px] ring-2 ring-primary/30 shadow-sm shrink-0'>
-								<AvatarImage src={channel.avatarUrl || undefined} />
-								<AvatarFallback className='text-xl min-[400px]:text-2xl font-semibold'>
-									{getInitials(channel.username)}
-								</AvatarFallback>
-							</Avatar>
+						<ChannelAvatarFrame
+							variant='hero'
+							frameColor={channel.avatarFrameColor ?? undefined}
+							frameThickness={channel.avatarFrameThickness ?? undefined}
+							frameStyle={channel.avatarFrameStyle ?? undefined}
+						>
+								<Avatar className='w-24 h-24 min-[400px]:w-32 min-[400px]:h-32 sm:w-[160px] sm:h-[160px]'>
+									<AvatarImage src={channel.avatarUrl || undefined} />
+									<AvatarFallback className='text-xl min-[400px]:text-2xl font-semibold'>
+										{getInitials(channel.username)}
+									</AvatarFallback>
+								</Avatar>
+							</ChannelAvatarFrame>
 
 							<div className='flex-1 max-[640px]:flex max-[640px]:flex-col max-[640px]:items-center'>
 								<h1 className='text-xl min-[400px]:text-2xl sm:text-3xl font-bold tracking-tight'>
 									{channel.name}
 								</h1>
 								<p className='text-muted-foreground mt-1 text-xs min-[400px]:text-sm'>
-									<span className='font-bold text-white'>
+									<span className='font-bold text-foreground'>
 										@{channel.username}
 									</span>{' '}
 									·{' '}

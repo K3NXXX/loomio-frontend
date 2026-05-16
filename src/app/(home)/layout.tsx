@@ -7,7 +7,6 @@ import { ClientHomeLayout } from './ClientHomeLayout'
 
 type JwtPayloadWithRole = {
 	role: string
-
 }
 
 export default async function HomeLayout({
@@ -24,8 +23,7 @@ export default async function HomeLayout({
 			if (payload.role === 'ADMIN') {
 				redirect(PAGES.MODERATION_DASHBOARD)
 			}
-		} catch {
-		}
+		} catch {}
 	}
 	return (
 		<SidebarProvider>

@@ -16,14 +16,14 @@ export function SetPasswordField({ register, isSubmitting }: Props) {
 	const [isEditing, setIsEditing] = useState(false)
 
 	return (
-		<div className='flex flex-col min-[500px]:flex-row min-[500px]:items-end justify-between gap-3 rounded-xl bg-white/5 border border-white/10 px-3 min-[400px]:px-4 py-3 transition-colors'>
+		<div className='flex flex-col min-[500px]:flex-row min-[500px]:items-end justify-between gap-3 rounded-xl bg-muted/40 border border-border px-3 min-[400px]:px-4 py-3 transition-colors dark:bg-white/5 dark:border-white/10'>
 			<div className='flex flex-col gap-1 w-full max-w-xl'>
-				<span className='text-xs min-[400px]:text-sm text-white/50'>
+				<span className='text-xs min-[400px]:text-sm text-muted-foreground'>
 					{t('accountPage.editAccount.setPassword.label')}
 				</span>
 
 				{!isEditing ? (
-					<span className='text-white text-sm min-[400px]:text-base h-9 min-[400px]:h-11 flex items-center'>
+					<span className='text-foreground text-sm min-[400px]:text-base h-9 min-[400px]:h-11 flex items-center'>
 						{t('accountPage.editAccount.setPassword.emptyValue')}
 					</span>
 				) : (
@@ -39,7 +39,7 @@ export function SetPasswordField({ register, isSubmitting }: Props) {
 									'accountPage.editAccount.setPassword.newPasswordPlaceholder',
 								)}
 								{...register('newPassword')}
-								className='h-9 min-[400px]:h-11 text-sm min-[400px]:text-base bg-white/10 border-white/20 focus:border-primary'
+								className='h-9 min-[400px]:h-11 text-sm min-[400px]:text-base bg-background border-border dark:bg-white/10 dark:border-white/20 focus:border-primary'
 							/>
 
 							<Input
@@ -48,7 +48,7 @@ export function SetPasswordField({ register, isSubmitting }: Props) {
 									'accountPage.editAccount.setPassword.confirmPasswordPlaceholder',
 								)}
 								{...register('confirmPassword')}
-								className='h-9 min-[400px]:h-11 text-sm min-[400px]:text-base bg-white/10 border-white/20 focus:border-primary'
+								className='h-9 min-[400px]:h-11 text-sm min-[400px]:text-base bg-background border-border dark:bg-white/10 dark:border-white/20 focus:border-primary'
 							/>
 						</div>
 					</motion.div>
@@ -60,7 +60,7 @@ export function SetPasswordField({ register, isSubmitting }: Props) {
 					<Button
 						type='button'
 						variant='outline'
-						className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm border-white/10 bg-white/5 hover:bg-white/10'
+						className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm border-border bg-background hover:bg-muted dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10'
 						onClick={() => setIsEditing(true)}
 					>
 						{t('accountPage.editAccount.setPassword.editButton')}
@@ -70,7 +70,7 @@ export function SetPasswordField({ register, isSubmitting }: Props) {
 						<Button
 							type='button'
 							variant='outline'
-							className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm border-white/10 bg-white/5 hover:bg-white/10'
+							className='rounded-full px-3 min-[400px]:px-4 h-8 min-[400px]:h-10 text-xs min-[400px]:text-sm border-border bg-background hover:bg-muted dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10'
 							onClick={() => setIsEditing(false)}
 						>
 							{t('accountPage.editAccount.setPassword.cancelButton')}

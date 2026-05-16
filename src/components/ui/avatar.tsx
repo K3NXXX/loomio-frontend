@@ -27,15 +27,17 @@ function AvatarImage({
 	src,
 	...props
 }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
-	if (src == null || (typeof src === 'string' && src.trim() === '')) {
-		return null
-	}
+	/** Must always mount `AvatarPrimitive.Image` so Radix can set loading status to `error` when the src is cleared. Early-return `null` leaves context stuck at `loaded` and hides `AvatarFallback`. */
+	const resolvedSrc =
+		src != null && typeof src === 'string' && src.trim() !== ''
+			? src
+			: undefined
 
 	return (
 		<AvatarPrimitive.Image
 			data-slot='avatar-image'
 			className={cn('aspect-square size-full', className)}
-			src={src}
+			src={resolvedSrc}
 			{...props}
 		/>
 	)

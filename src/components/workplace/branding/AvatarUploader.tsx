@@ -190,9 +190,11 @@ export function AvatarUploader({
 			</p>
 
 			{isCropOpen && (
-				<div className='fixed inset-0 z-[100] grid place-items-center bg-black/70'>
-					<div className='w-[520px] rounded-xl bg-neutral-900 text-white p-4 shadow-2xl'>
-						<h3 className='text-lg font-semibold mb-3'>{t('adjustTitle')}</h3>
+				<div className='fixed inset-0 z-[100] grid place-items-center bg-black/50 backdrop-blur-[2px] supports-[backdrop-filter]:bg-black/40'>
+					<div className='w-[520px] max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-card text-card-foreground p-4 shadow-2xl'>
+						<h3 className='text-lg font-semibold mb-3 text-foreground'>
+							{t('adjustTitle')}
+						</h3>
 						<div className='relative w-full h-[360px] bg-black rounded-lg overflow-hidden'>
 							{tempImageUrl && (
 								<Cropper

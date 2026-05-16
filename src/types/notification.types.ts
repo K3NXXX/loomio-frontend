@@ -56,7 +56,6 @@ export enum NotificationType {
 	VIDEO_APPROVED = 'VIDEO_APPROVED',
 }
 
-/** Same set as «Personal activity» in NotificationDropdown — backend bulk-delete may omit some rows */
 export const PERSONAL_ACTIVITY_NOTIFICATION_TYPES: NotificationType[] = [
 	NotificationType.COMMENT_REPLY,
 	NotificationType.VIDEO_PUBLISHED,

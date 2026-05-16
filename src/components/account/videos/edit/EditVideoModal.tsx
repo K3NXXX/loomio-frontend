@@ -190,16 +190,15 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 					min-w-[960px] min-h-[800px]
 					max-h-[90vh] overflow-y-auto
 					rounded-2xl
-					border border-neutral-800
-					bg-gradient-to-br from-neutral-900 via-neutral-950 to-black
-					text-white
+					border border-border
+					bg-card text-card-foreground
 					shadow-2xl
 					backdrop-blur-xl
 					p-0
 				`}
 			>
-				<DialogHeader className='px-6 pt-6 pb-4 border-b border-neutral-800'>
-					<DialogTitle className='flex items-center gap-2 text-lg font-semibold'>
+				<DialogHeader className='px-6 pt-6 pb-4 border-b border-border'>
+					<DialogTitle className='flex items-center gap-2 text-lg font-semibold text-foreground'>
 						<>
 							<MdEdit className='text-primary' size={20} />
 							{t('title')}
@@ -250,8 +249,9 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 									<Button
 										onClick={() => handleBack()}
 										type='button'
+										variant='secondary'
 										disabled={isLoading}
-										className='bg-secondary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
+										className='font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 									>
 										{t('back')}
 									</Button>
@@ -271,7 +271,7 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 												: 'button'
 										}
 										disabled={isLoading}
-										className='bg-primary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
+										className='font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 									>
 										{isLoading ? (
 											<Lottie

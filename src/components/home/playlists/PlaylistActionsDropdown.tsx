@@ -55,7 +55,7 @@ export function PlaylistActionsDropdown({
 				<DropdownMenuTrigger asChild>
 					<div
 						onClickCapture={(e) => e.stopPropagation()}
-						className='p-1 rounded-md cursor-pointer transition-colors hover:text-primary'
+						className='p-1 rounded-md cursor-pointer transition-colors text-muted-foreground hover:text-primary'
 					>
 						<TbDotsVertical className='w-5 h-5' />
 					</div>
@@ -70,7 +70,7 @@ export function PlaylistActionsDropdown({
 						onSelect={(e) => {
 							e.preventDefault()
 						}}
-						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors cursor-pointer'
+						className='flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer'
 					>
 						<MdEdit className='w-4 h-4' />
 						{t('playlists.edit')}
@@ -84,7 +84,7 @@ export function PlaylistActionsDropdown({
 						onSelect={(e) => {
 							e.preventDefault()
 						}}
-						className='flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors cursor-pointer'
+						className='flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer'
 					>
 						<MdDelete className='w-4 h-4 ' />
 						{t('playlists.delete')}

@@ -35,13 +35,13 @@ export function UploadVideoStepThird({
 	return (
 		<div className='flex flex-col gap-6 h-[476px]'>
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>{t('title')}</h3>
-				<p className='text-sm text-gray-400 mb-3'>{t('description')}</p>
+				<h3 className='text-lg font-semibold mb-3 text-foreground'>{t('title')}</h3>
+				<p className='text-sm text-muted-foreground mb-3'>{t('description')}</p>
 
 				<div className='flex gap-4'>
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full
-							${publishType === 'now' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
+							${publishType === 'now' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'}
 						`}
 					>
 						<input
@@ -56,8 +56,8 @@ export function UploadVideoStepThird({
 						/>
 						<Clock className='w-5 h-5 text-primary shrink-0' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>{t('publishNow')}</span>
-							<span className='text-xs text-gray-400'>
+							<span className='text-foreground font-medium'>{t('publishNow')}</span>
+							<span className='text-xs text-muted-foreground'>
 								{t('publishNowHint')}
 							</span>
 						</div>
@@ -65,7 +65,7 @@ export function UploadVideoStepThird({
 
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[220px]
-							${publishType === 'scheduled' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}
+							${publishType === 'scheduled' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'}
 						`}
 					>
 						<input
@@ -82,17 +82,17 @@ export function UploadVideoStepThird({
 						/>
 						<Calendar className='w-5 h-5 text-primary shrink-0' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>
+							<span className='text-foreground font-medium'>
 								{t('scheduleOption')}
 							</span>
-							<span className='text-xs text-gray-400'>{t('scheduleHint')}</span>
+							<span className='text-xs text-muted-foreground'>{t('scheduleHint')}</span>
 						</div>
 					</label>
 				</div>
 
 				{publishType === 'scheduled' && (
 					<div className='mt-4 max-w-[300px] flex flex-col gap-2'>
-						<label className='text-sm text-gray-300'>
+						<label className='text-sm text-muted-foreground'>
 							{t('publishDateTimeLabel')}
 						</label>
 
@@ -100,9 +100,9 @@ export function UploadVideoStepThird({
 							<PopoverTrigger asChild>
 								<Button
 									variant='outline'
-									className='justify-start text-left font-normal bg-neutral-800 border-neutral-700 hover:bg-neutral-700'
+									className='justify-start text-left font-normal bg-background border-border hover:bg-muted text-foreground'
 								>
-									<Calendar className='mr-2 h-4 w-4 text-white/50' />
+									<Calendar className='mr-2 h-4 w-4 text-muted-foreground' />
 									{selectedDate
 										? format(selectedDate, 'PPP HH:mm', {
 												locale: dateFnsLocale,
@@ -111,7 +111,7 @@ export function UploadVideoStepThird({
 								</Button>
 							</PopoverTrigger>
 
-							<PopoverContent className='w-auto p-0 bg-neutral-900 border-neutral-700'>
+							<PopoverContent className='w-auto p-0 bg-popover border-border text-popover-foreground'>
 								<div className='p-3'>
 									<CalendarPicker
 										mode='single'
@@ -139,7 +139,7 @@ export function UploadVideoStepThird({
 									<div className='mt-3'>
 										<input
 											type='time'
-											className='w-full bg-neutral-800 border border-neutral-700 rounded-md px-2 py-1 text-sm text-white'
+											className='w-full bg-background border border-border rounded-md px-2 py-1 text-sm text-foreground'
 											value={
 												selectedDate
 													? `${String(selectedDate.getHours()).padStart(2, '0')}:${String(selectedDate.getMinutes()).padStart(2, '0')}`

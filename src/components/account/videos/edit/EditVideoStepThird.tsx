@@ -24,8 +24,8 @@ export function EditVideoStepThird({
 	return (
 		<div className='flex flex-col gap-6 h-[476px]'>
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>Schedule</h3>
-				<p className='text-sm text-gray-400 mb-3'>
+				<h3 className='text-lg font-semibold mb-3 text-foreground'>Schedule</h3>
+				<p className='text-sm text-muted-foreground mb-3'>
 					Choose when you want your video to go live.
 				</p>
 
@@ -35,7 +35,7 @@ export function EditVideoStepThird({
 							${
 								publishType === 'now'
 									? 'border-primary bg-primary/10'
-									: 'border-neutral-700 hover:border-primary/50'
+									: 'border-border hover:border-primary/50'
 							}
 						`}
 					>
@@ -51,8 +51,8 @@ export function EditVideoStepThird({
 						/>
 						<Clock className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Publish now</span>
-							<span className='text-xs text-gray-400'>
+							<span className='text-foreground font-medium'>Publish now</span>
+							<span className='text-xs text-muted-foreground'>
 								Video will be visible right away
 							</span>
 						</div>
@@ -63,7 +63,7 @@ export function EditVideoStepThird({
 							${
 								publishType === 'scheduled'
 									? 'border-primary bg-primary/10'
-									: 'border-neutral-700 hover:border-primary/50'
+									: 'border-border hover:border-primary/50'
 							}
 						`}
 					>
@@ -79,8 +79,8 @@ export function EditVideoStepThird({
 						/>
 						<Calendar className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>Schedule</span>
-							<span className='text-xs text-gray-400'>
+							<span className='text-foreground font-medium'>Schedule</span>
+							<span className='text-xs text-muted-foreground'>
 								Choose a specific date & time
 							</span>
 						</div>
@@ -91,7 +91,7 @@ export function EditVideoStepThird({
 					<div className='mt-4 max-w-[300px]'>
 						<label
 							htmlFor='publish-date'
-							className='block text-sm text-gray-300 mb-1'
+							className='block text-sm text-muted-foreground mb-1'
 						>
 							Publish Date & Time
 						</label>
@@ -105,7 +105,7 @@ export function EditVideoStepThird({
 									shouldValidate: true,
 								})
 							}
-							className='w-full rounded-md border border-neutral-700 bg-neutral-800 text-white px-3 py-2 text-sm outline-none focus:border-primary transition'
+							className='w-full rounded-md border border-border bg-background text-foreground px-3 py-2 text-sm outline-none focus:border-primary transition'
 						/>
 					</div>
 				)}

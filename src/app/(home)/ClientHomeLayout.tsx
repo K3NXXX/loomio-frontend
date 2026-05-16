@@ -1,7 +1,11 @@
 'use client'
-import { type ReactNode } from 'react'
+import { type ReactNode, useEffect } from 'react'
+
+import Cookies from 'js-cookie'
 
 import loader from '@/assets/animations/loader.json'
+import { STICKY_HEADER_COOKIE_KEY } from '@/lib/header-sticky-preference'
+import { cn } from '@/lib/utils'
 import { HomeHeader } from '@/components/home/home-header/HomeHeader'
 import { HomeSidebarCollapsed } from '@/components/home/home-sidebar/HomeSidebarCollapsed'
 import { HomeSidebarMenu } from '@/components/home/home-sidebar/HomeSidebarMenu'
@@ -15,22 +19,38 @@ import Lottie from 'lottie-react'
 import { IoMdSettings } from 'react-icons/io'
 
 export function ClientHomeLayout({ children }: { children: ReactNode }) {
-	const { toggleThemeMenuOpened, isSidebarCollapsed } = useGlobalStore()
+	const {
+		toggleThemeMenuOpened,
+		isSidebarCollapsed,
+		setHeaderSticky,
+		homeSidebarDockSide,
+	} = useGlobalStore()
 	const { userData, isLoading } = useGetMe()
 	useNotificationSocket(userData?.id)
 
+	useEffect(() => {
+		const v = Cookies.get(STICKY_HEADER_COOKIE_KEY)
+		if (v === 'false') setHeaderSticky(false)
+		else if (v === 'true') setHeaderSticky(true)
+	}, [setHeaderSticky])
+
 	if (isLoading) {
 		return (
-			<div className='w-full h-screen flex items-center justify-center text-white'>
+			<div className='w-full h-screen flex items-center justify-center text-foreground'>
 				<Lottie animationData={loader} loop className='absolute w-20 h-20' />
 			</div>
 		)
 	}
 
 	return (
-		<div className='relative w-full min-h-screen flex flex-col bg-gradient-to-br from-black via-neutral-800 to-black'>
+		<div className='relative w-full min-h-screen flex flex-col bg-gradient-to-br from-background via-muted/35 to-background text-foreground'>
 			<HomeHeader />
-			<div className='flex flex-1'>
+			<div
+				className={cn(
+					'flex flex-1',
+					homeSidebarDockSide === 'right' && 'flex-row-reverse',
+				)}
+			>
 				<div className='w-[80px] max-[1024px]:hidden'>
 					{isSidebarCollapsed ? <HomeSidebarCollapsed /> : <HomeSidebarMenu />}
 				</div>
@@ -40,7 +60,10 @@ export function ClientHomeLayout({ children }: { children: ReactNode }) {
 
 			<Button
 				onClick={toggleThemeMenuOpened}
-				className='w-[45px] h-[45px] p-0 fixed right-6 bottom-6 rounded-lg'
+				className={cn(
+					'w-[45px] h-[45px] p-0 fixed bottom-6 rounded-lg',
+					homeSidebarDockSide === 'right' ? 'left-6' : 'right-6',
+				)}
 			>
 				<IoMdSettings size={100} className='size-[25px]' />
 			</Button>

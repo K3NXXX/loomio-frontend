@@ -124,7 +124,7 @@ export function WatchReportCommentModal({
 								<textarea
 									{...register('message')}
 									placeholder={t('watchComments.reportReasonPlaceholder')}
-									className='w-full bg-neutral-900 border border-neutral-700 rounded-lg p-3 resize-none text-neutral-100 focus:border-primary focus:outline-none'
+									className='w-full bg-muted border border-border rounded-lg p-3 resize-none text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none'
 									rows={3}
 								/>
 								{errors.message && (
@@ -140,17 +140,12 @@ export function WatchReportCommentModal({
 						<Button
 							type='button'
 							variant='outline'
-							className='bg-neutral-800 text-neutral-200 border-neutral-700 hover:bg-neutral-700'
 							onClick={() => onOpenChange(false)}
 						>
 							{t('common.cancel')}
 						</Button>
 
-						<Button
-							type='submit'
-							disabled={isPending}
-							className='bg-primary text-white hover:brightness-90'
-						>
+						<Button type='submit' disabled={isPending}>
 							{t('common.sendReport')}
 						</Button>
 					</div>

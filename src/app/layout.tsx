@@ -4,8 +4,10 @@ import { Toaster } from 'sonner'
 
 import ClientProviders from '@/components/providers/ClientProviders'
 import { SITE_NAME } from '@/constants/seo.constants'
+import { CUSTOM_THEME_COOKIE_NAME, buildCustomThemeCssVariablesRecord } from '@/lib/custom-theme-vars'
 import { NextIntlClientProvider } from 'next-intl'
 import type { Metadata, Viewport } from 'next'
+import type { CSSProperties } from 'react'
 import './globals.css'
 
 const montserratSans = Montserrat({
@@ -43,9 +45,30 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const isDarkMode = true
 	const cookiesList = await cookies()
+	const rawAppearance = cookiesList.get('appearance')?.value?.toLowerCase() ?? 'dark'
+	const isDarkMode = rawAppearance !== 'light'
 	const theme = cookiesList.get('theme')?.value || 'BLUE'
+	let customThemeStyle: CSSProperties | undefined
+	if (theme === 'CUSTOM') {
+		const raw = cookiesList.get(CUSTOM_THEME_COOKIE_NAME)?.value
+		if (raw) {
+			try {
+				const parsed = JSON.parse(raw) as {
+					background?: string
+					primary?: string
+				}
+				if (parsed.background && parsed.primary) {
+					customThemeStyle = buildCustomThemeCssVariablesRecord(
+						parsed.background,
+						parsed.primary,
+					) as CSSProperties
+				}
+			} catch {
+				customThemeStyle = undefined
+			}
+		}
+	}
 	const locale = (cookiesList.get('locale')?.value || 'uk') as 'uk' | 'en'
 
 	const messages = (await import(`@/locales/${locale}.json`)).default
@@ -53,6 +76,7 @@ export default async function RootLayout({
 		<html
 			lang={locale === 'uk' ? 'uk' : 'en'}
 			className={`theme-${theme.toLowerCase()} ${isDarkMode ? 'dark' : ''}`}
+			style={customThemeStyle}
 		>
 			<body className={`${montserratSans.variable}  antialiased`}>
 				<NextIntlClientProvider locale={locale} messages={messages}>

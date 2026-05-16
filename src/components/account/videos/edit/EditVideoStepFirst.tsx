@@ -25,7 +25,7 @@ export function EditVideoStepFirst({
 				<div className='space-y-2'>
 					<label
 						htmlFor='title'
-						className='block text-sm font-medium text-gray-300 mb-2'
+						className='block text-sm font-medium text-muted-foreground mb-2'
 					>
 						{t('titleLabel')}
 					</label>
@@ -35,8 +35,8 @@ export function EditVideoStepFirst({
 						defaultValue={video.title}
 						placeholder={t('titlePlaceholder')}
 						{...register('title')}
-						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
-						text-white placeholder-gray-500 px-4 
+						className='h-14 text-base bg-background border border-border rounded-xl 
+						text-foreground placeholder:text-muted-foreground px-4 
 						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
 						transition-colors'
 					/>
@@ -45,7 +45,7 @@ export function EditVideoStepFirst({
 				<div className='space-y-2'>
 					<label
 						htmlFor='description'
-						className='block text-sm font-medium text-gray-300 mb-2'
+						className='block text-sm font-medium text-muted-foreground mb-2'
 					>
 						{t('descriptionLabel')}
 					</label>
@@ -55,8 +55,8 @@ export function EditVideoStepFirst({
 						defaultValue={video.description ? video.description : ''}
 						placeholder={t('descriptionPlaceholder')}
 						{...register('description')}
-						className='h-[140px] overflow-y-auto text-base bg-neutral-800/80 border border-neutral-700 
-						rounded-xl text-white placeholder-gray-500 px-4 py-3 
+						className='h-[140px] overflow-y-auto text-base bg-background border border-border 
+						rounded-xl text-foreground placeholder:text-muted-foreground px-4 py-3 
 						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
 						resize-none transition-colors'
 					/>
@@ -65,7 +65,7 @@ export function EditVideoStepFirst({
 				<div className='space-y-2'>
 					<label
 						htmlFor='tags'
-						className='block text-sm font-medium text-gray-300 mb-2'
+						className='block text-sm font-medium text-muted-foreground mb-2'
 					>
 						{t('tagsLabel')}
 					</label>
@@ -75,12 +75,12 @@ export function EditVideoStepFirst({
 						placeholder={t('tagsPlaceholder')}
 						defaultValue={video.tags ? video.tags : ''}
 						{...register('tags')}
-						className='h-14 text-base bg-neutral-800/80 border border-neutral-700 rounded-xl 
-						text-white placeholder-gray-500 px-4 
+						className='h-14 text-base bg-background border border-border rounded-xl 
+						text-foreground placeholder:text-muted-foreground px-4 
 						focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary 
 						transition-colors'
 					/>
-					<p className='text-xs text-gray-500'>
+					<p className='text-xs text-muted-foreground'>
 						{t('tagsFormatPrefix')}{' '}
 						<span className='text-primary'>{t('tagsFormatExample')}</span>
 					</p>

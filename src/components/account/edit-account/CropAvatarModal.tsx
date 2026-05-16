@@ -37,16 +37,16 @@ export function CropAvatarModal({
 	const t = useTranslations()
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='max-w-[380px] p-0 overflow-hidden border-white/10 bg-neutral-950 text-white rounded-2xl'>
-				<div className='px-5 pt-5 pb-3 bg-gradient-to-b from-white/5 to-transparent'>
+			<DialogContent className='max-w-[380px] p-0 overflow-hidden border-border bg-card text-card-foreground rounded-2xl'>
+				<div className='px-5 pt-5 pb-3 border-b border-border'>
 					<DialogHeader>
-						<DialogTitle className='text-sm font-semibold tracking-wide uppercase text-white/50'>
+						<DialogTitle className='text-sm font-semibold tracking-wide uppercase text-muted-foreground'>
 							{t('common.cropAvatar')}
 						</DialogTitle>
 					</DialogHeader>
 				</div>
 
-				<div className='relative mx-5 aspect-square rounded-xl overflow-hidden ring-1 ring-white/10'>
+				<div className='relative mx-5 aspect-square rounded-xl overflow-hidden ring-1 ring-border bg-black'>
 					{imageUrl && (
 						<Cropper
 							image={imageUrl}
@@ -64,7 +64,7 @@ export function CropAvatarModal({
 				</div>
 
 				<div className='flex items-center gap-3 px-5 py-3'>
-					<ZoomIn className='size-4 text-white/30 shrink-0' />
+					<ZoomIn className='size-4 text-muted-foreground shrink-0' />
 					<input
 						type='range'
 						min={1}
@@ -74,17 +74,17 @@ export function CropAvatarModal({
 						onChange={(e) => onZoomChange(Number(e.target.value))}
 						className='w-full accent-primary cursor-pointer'
 					/>
-					<span className='text-xs text-white/30 tabular-nums w-6 text-right'>
+					<span className='text-xs text-muted-foreground tabular-nums w-6 text-right'>
 						{zoom.toFixed(1)}x
 					</span>
 				</div>
 
-				<div className='flex items-center justify-end gap-2 px-5 py-4 border-t border-white/5'>
+				<div className='flex items-center justify-end gap-2 px-5 py-4 border-t border-border'>
 					<Button
 						type='button'
 						variant='ghost'
 						size='sm'
-						className='text-white/50 hover:text-white hover:bg-white/8 rounded-lg'
+						className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg'
 						onClick={() => onOpenChange(false)}
 					>
 						{t('common.cancel')}
@@ -92,7 +92,7 @@ export function CropAvatarModal({
 					<Button
 						type='button'
 						size='sm'
-						className='bg-primary hover:bg-primary/90 text-white rounded-lg px-6 shadow-md shadow-primary/20'
+						className='rounded-lg px-6 shadow-md shadow-primary/20'
 						onClick={onSave}
 					>
 						{t('common.save')}

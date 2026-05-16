@@ -130,10 +130,10 @@ export function CreatePlaylistModal({
 			<Dialog open={open} onOpenChange={onOpenChange}>
 				<DialogContent
 					onInteractOutside={(e) => e.preventDefault()}
-					className='w-[calc(100%-1rem)] max-w-md rounded-2xl border border-neutral-800 bg-neutral-950/95 text-white shadow-2xl backdrop-blur-xl p-0'
+					className='w-[calc(100%-1rem)] max-w-md rounded-2xl border border-border bg-card text-card-foreground shadow-2xl backdrop-blur-xl p-0'
 				>
-					<DialogHeader className='px-5 pt-5 pb-3 border-b border-neutral-800'>
-						<DialogTitle className='text-base font-semibold'>
+					<DialogHeader className='px-5 pt-5 pb-3 border-b border-border'>
+						<DialogTitle className='text-base font-semibold text-foreground'>
 							{t('playlists.createModalTitle')}
 						</DialogTitle>
 					</DialogHeader>
@@ -144,7 +144,7 @@ export function CreatePlaylistModal({
 						className='p-5 flex flex-col gap-5'
 					>
 						<div className='flex flex-col gap-2'>
-							<Label className='text-sm text-neutral-300'>
+							<Label className='text-sm text-muted-foreground'>
 								{t('playlists.coverLabel')}
 							</Label>
 
@@ -200,18 +200,18 @@ export function CreatePlaylistModal({
 										p-6 cursor-pointer transition-all duration-300
 										${
 											isDragging
-												? 'border-primary bg-neutral-800/60 scale-[1.02]'
-												: 'border-neutral-700 hover:border-primary hover:bg-neutral-800/50'
+												? 'border-primary bg-primary/10 scale-[1.02]'
+												: 'border-border hover:border-primary hover:bg-muted/50'
 										}
 									`}
 								>
-									<div className='mb-4 bg-neutral-800 p-5 rounded-full'>
+									<div className='mb-4 bg-muted p-5 rounded-full'>
 										<FaCloudUploadAlt className='text-primary text-5xl' />
 									</div>
-									<p className='text-gray-300 text-sm font-medium'>
+									<p className='text-muted-foreground text-sm font-medium'>
 										{t('playlists.cover.dragDrop')}
 									</p>
-									<p className='text-gray-500 text-xs mt-1'>
+									<p className='text-muted-foreground text-xs mt-1'>
 										{t('playlists.cover.orClick')}
 									</p>
 									<input
@@ -228,14 +228,14 @@ export function CreatePlaylistModal({
 						<div className='space-y-2'>
 							<Label
 								htmlFor='playlist-name'
-								className='text-sm text-neutral-300'
+								className='text-sm text-muted-foreground'
 							>
 								{t('playlists.nameLabel')}
 							</Label>
 							<Input
 								id='playlist-name'
 								placeholder={t('playlists.namePlaceholder')}
-								className='bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary'
+								className='bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary'
 								{...register('name')}
 							/>
 						</div>
@@ -243,14 +243,14 @@ export function CreatePlaylistModal({
 						<div className='space-y-2'>
 							<Label
 								htmlFor='playlist-description'
-								className='text-sm text-neutral-300'
+								className='text-sm text-muted-foreground'
 							>
 								{t('playlists.descriptionLabel')}
 							</Label>
 							<Textarea
 								id='playlist-description'
 								placeholder={t('playlists.descriptionPlaceholder')}
-								className='bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary resize-none min-h-[80px]'
+								className='bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary resize-none min-h-[80px]'
 								{...register('description')}
 							/>
 						</div>
@@ -259,7 +259,7 @@ export function CreatePlaylistModal({
 							<Button
 								type='button'
 								variant='secondary'
-								className='bg-neutral-800/70 text-white hover:bg-neutral-800 rounded-xl px-6 py-2.5'
+								className='rounded-xl px-6 py-2.5'
 								onClick={() => {
 									onOpenChange(false)
 									reset()

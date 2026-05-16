@@ -1,11 +1,13 @@
 'use client'
 
+import { WatchMiniPlayerLeaveBridge } from '@/components/account/videos/watch/WatchMiniPlayerLeaveBridge'
 import { WatchVideo } from '@/components/account/videos/watch/WatchVideo'
 import WatchVideoActions from '@/components/account/videos/watch/WatchVideoActions'
 import { WatchRecommendedVideosSkeleton } from '@/components/skeletons/videos/WatchRecommendedVideosSkeleton'
 import { WatchVideoActionsSkeleton } from '@/components/skeletons/videos/WatchVideoActionsSkeleton'
 import { WatchVideoSkeleton } from '@/components/skeletons/videos/WatchVideoSkeleton'
 import { PAGES } from '@/constants/pages.constants'
+import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useGetChannel } from '@/hooks/channel/useGetChannel'
 import { useGetOnePublicVideo } from '@/hooks/videos/useGetOnePublicVideo'
 import { useGetPublicVideos } from '@/hooks/videos/useGetPublicVideos'
@@ -22,6 +24,8 @@ export default function Watch() {
 	const searchParams = useSearchParams()
 	const videoId = searchParams.get('v')
 	const { video, isLoading, isError } = useGetOnePublicVideo(videoId ?? '')
+	const { userData } = useGetMe()
+	const canUseBoostSpeed = Boolean(userData?.isPremium)
 	const commentId = searchParams.get('commentId')
 	const { videos: allVideos } = useGetPublicVideos()
 	const { channel } = useGetChannel(video?.channel.username ?? '')
@@ -100,15 +104,19 @@ export default function Watch() {
 	return (
 		<div className='flex max-[1500px]:flex-col gap-6 pb-30'>
 			<div className='flex-1 max-w-[73%] max-[1500px]:max-w-full'>
-				<WatchVideo
-					videoId={video.id}
-					videoSrc={video.videoFile}
-					publicId={video.videoPublicId}
-					onNext={() => {
-						if (!nextVideo) return
-						router.push(PAGES.WATCH(nextVideo.id))
-					}}
-				/>
+				<WatchMiniPlayerLeaveBridge premium={canUseBoostSpeed}>
+					<WatchVideo
+						videoId={video.id}
+						videoSrc={video.videoFile}
+						publicId={video.videoPublicId}
+						videoTitle={video.title}
+						canUseBoostSpeed={canUseBoostSpeed}
+						onNext={() => {
+							if (!nextVideo) return
+							router.push(PAGES.WATCH(nextVideo.id))
+						}}
+					/>
+				</WatchMiniPlayerLeaveBridge>
 				<h1 className='mt-3 min-[400px]:mt-4 text-lg min-[400px]:text-xl min-[600px]:text-2xl font-bold leading-snug'>
 					{video.title}
 				</h1>

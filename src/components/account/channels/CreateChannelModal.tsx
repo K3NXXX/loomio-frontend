@@ -11,7 +11,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useCreateChannelFormErrors } from '@/hooks/account/useCreateChannelsFormErrors'
-import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useCreateChannel } from '@/hooks/channel/useCreateChannel'
 import {
 	type CreateChannelSchema,
@@ -36,7 +35,6 @@ export default function CreateChannelModal({
 	onOpenChange,
 }: CreateChannelModalProps) {
 	const t = useTranslations()
-	const { userData } = useGetMe()
 
 	const {
 		register,
@@ -133,15 +131,15 @@ export default function CreateChannelModal({
 		>
 			<DialogContent
 				onInteractOutside={(e) => e.preventDefault()}
-				className='fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[960px] min-h-[600px] max-h-[90vh] overflow-y-auto rounded-2xl border border-neutral-800 bg-gradient-to-br from-neutral-900 via-neutral-950 to-black text-white shadow-2xl backdrop-blur-xl p-0'
+				className='fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[960px] min-h-[600px] max-h-[90vh] overflow-y-auto rounded-2xl border border-border bg-card text-card-foreground shadow-2xl backdrop-blur-xl p-0'
 			>
-				<DialogHeader className='px-6 pt-6 pb-4 border-b border-neutral-800'>
-					<DialogTitle className='text-lg font-semibold flex items-center justify-between'>
+				<DialogHeader className='px-6 pt-6 pb-4 border-b border-border'>
+					<DialogTitle className='text-lg font-semibold flex items-center justify-between text-foreground'>
 						<span className='flex items-center gap-2'>
 							{t('accountPage.createChannelModal.title')}
 						</span>
 					</DialogTitle>
-					<p className='text-sm text-neutral-400 mt-1'>
+					<p className='text-sm text-muted-foreground mt-1'>
 						{t('accountPage.createChannelModal.subtitle')}
 					</p>
 				</DialogHeader>
@@ -152,7 +150,7 @@ export default function CreateChannelModal({
 				>
 					<div className='flex flex-col gap-6'>
 						<div>
-							<Label className='block mb-2 text-sm text-neutral-300'>
+							<Label className='block mb-2 text-sm text-muted-foreground'>
 								{t('accountPage.createChannelModal.avatarLabel')}
 							</Label>
 							<AvatarUploader
@@ -168,14 +166,14 @@ export default function CreateChannelModal({
 						<div className='space-y-2'>
 							<Label
 								htmlFor='channel-name'
-								className='text-sm text-neutral-300'
+								className='text-sm text-muted-foreground'
 							>
 								{t('accountPage.createChannelModal.nameLabel')}
 							</Label>
 							<Input
 								id='channel-name'
 								placeholder={t('accountPage.createChannelModal.namePlaceholder')}
-								className='bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary'
+								className='bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary'
 								{...register('name')}
 							/>
 						</div>
@@ -183,12 +181,12 @@ export default function CreateChannelModal({
 						<div className='space-y-2'>
 							<Label
 								htmlFor='channel-username'
-								className='text-sm text-neutral-300'
+								className='text-sm text-muted-foreground'
 							>
 								{t('accountPage.createChannelModal.usernameLabel')}
 							</Label>
 							<div className='relative'>
-								<span className='absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500'>
+								<span className='absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground'>
 									@
 								</span>
 								<Input
@@ -196,7 +194,7 @@ export default function CreateChannelModal({
 									placeholder={t(
 										'accountPage.createChannelModal.usernamePlaceholder',
 									)}
-									className='pl-7 bg-neutral-900/60 border-neutral-800 focus-visible:ring-primary'
+									className='pl-7 bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary'
 									{...register('username', {
 										setValueAs: (v) =>
 											typeof v === 'string' ? v.toLowerCase().trim() : v,
@@ -207,27 +205,27 @@ export default function CreateChannelModal({
 					</div>
 
 					<div className='flex flex-col'>
-						<div className='rounded-2xl border border-neutral-800 bg-neutral-900/40 shadow-lg overflow-hidden transition-all'>
+						<div className='rounded-2xl border border-border bg-muted/30 shadow-lg overflow-hidden transition-all'>
 							<div className='h-24 bg-gradient-to-r from-primary/30 via-primary/10 to-transparent' />
 							<div className='p-6 flex items-center gap-4'>
-								<div className='w-16 h-16 rounded-full overflow-hidden ring-2 ring-primary/30 flex items-center justify-center bg-neutral-800'>
+								<div className='w-16 h-16 rounded-full overflow-hidden ring-2 ring-primary/30 flex items-center justify-center bg-muted'>
 									<Avatar className='w-full h-full'>
 										<AvatarImage src={avatarPreview || undefined} />
-										<AvatarFallback className='flex items-center justify-center w-full h-full text-lg font-medium'>
+										<AvatarFallback className='flex items-center justify-center w-full h-full text-lg font-medium bg-muted text-foreground'>
 											{getInitials(previewName)}
 										</AvatarFallback>
 									</Avatar>
 								</div>
 								<div className='flex flex-col'>
-									<p className='text-base font-semibold text-white tracking-tight'>
+									<p className='text-base font-semibold text-foreground tracking-tight'>
 										{truncateName(previewName, 25)}
 									</p>
-									<p className='text-sm text-neutral-400'>
+									<p className='text-sm text-muted-foreground'>
 										{truncateName(previewUsername, 25)}
 									</p>
 								</div>
 							</div>
-							<div className='px-6 py-3 text-sm text-neutral-400 border-t border-neutral-800/70'>
+							<div className='px-6 py-3 text-sm text-muted-foreground border-t border-border'>
 								{t('accountPage.createChannelModal.previewHint')}
 							</div>
 						</div>
@@ -238,7 +236,7 @@ export default function CreateChannelModal({
 							<Button
 								type='button'
 								variant='secondary'
-								className='bg-neutral-800/70 text-white hover:bg-neutral-800 rounded-xl px-6 py-2.5'
+								className='rounded-xl px-6 py-2.5'
 								onClick={() => {
 									onOpenChange(false)
 									reset()
@@ -252,7 +250,7 @@ export default function CreateChannelModal({
 							<Button
 								type='submit'
 								disabled={!isValid || channelCreatingLoading}
-								className='bg-primary text-primary-foreground font-semibold rounded-xl px-6 py-2.5 hover:bg-primary/90 disabled:opacity-50 disabled:pointer-events-none w-[142px]'
+								className='font-semibold rounded-xl px-6 py-2.5 hover:bg-primary/90 disabled:opacity-50 disabled:pointer-events-none w-[142px]'
 							>
 								{channelCreatingLoading ? (
 									<Lottie

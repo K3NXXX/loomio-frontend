@@ -52,12 +52,11 @@ export function RestrictVideoPreview({
 	}
 
 	const thumbSrc = thumbnailPreview ?? video.thumbnailFile ?? ''
-	const showThumbnailOverlay =
-		!isPlaying && Boolean(thumbSrc) && !previewUrl
+	const showThumbnailOverlay = !isPlaying && Boolean(thumbSrc) && !previewUrl
 
 	return (
 		<div className='flex flex-col items-end pt-7 gap-4'>
-			<div className='relative w-full max-w-[400px] rounded-xl overflow-hidden border border-neutral-800 shadow-lg'>
+			<div className='relative w-full max-w-[400px] rounded-xl overflow-hidden border border-border shadow-lg'>
 				{showThumbnailOverlay ? (
 					<div
 						className='relative w-full aspect-video cursor-pointer group'
@@ -97,7 +96,7 @@ export function RestrictVideoPreview({
 					<button
 						type='button'
 						onClick={() => videoInputRef.current?.click()}
-						className='px-6 py-2 text-sm rounded-lg bg-primary text-white font-semibold hover:bg-primary/80 transition cursor-pointer'
+						className='px-6 py-2 text-sm rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition cursor-pointer'
 					>
 						{t('uploadNewVideo')}
 					</button>

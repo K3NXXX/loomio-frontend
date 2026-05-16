@@ -17,14 +17,14 @@ export function EditablePasswordField({ register, isSubmitting }: Props) {
 	const t = useTranslations()
 
 	return (
-		<div className='flex items-end justify-between gap-4 rounded-xl bg-white/5 border border-white/10 px-4 py-3 transition-colors'>
+		<div className='flex items-end justify-between gap-4 rounded-xl bg-muted/40 border border-border px-4 py-3 transition-colors dark:bg-white/5 dark:border-white/10'>
 			<div className='flex flex-col gap-1 w-full max-w-xl'>
-				<span className='text-sm text-white/50'>
+				<span className='text-sm text-muted-foreground'>
 					{t('accountPage.editAccount.setPassword.label')}
 				</span>
 
 				{!isEditing ? (
-					<span className='text-white text-base h-11 flex items-center'>
+					<span className='text-foreground text-base h-11 flex items-center'>
 						••••••••
 					</span>
 				) : (
@@ -37,7 +37,7 @@ export function EditablePasswordField({ register, isSubmitting }: Props) {
 							type='password'
 							placeholder={t('validation.account.currentPasswordRequired')}
 							{...register('currentPassword')}
-							className='h-11 text-base bg-white/10 border-white/20 focus:border-primary'
+							className='h-11 text-base bg-background border-border dark:bg-white/10 dark:border-white/20 focus:border-primary'
 						/>
 
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
@@ -47,7 +47,7 @@ export function EditablePasswordField({ register, isSubmitting }: Props) {
 									'accountPage.editAccount.setPassword.newPasswordPlaceholder',
 								)}
 								{...register('newPassword')}
-								className='h-11 text-base bg-white/10 border-white/20 focus:border-primary'
+								className='h-11 text-base bg-background border-border dark:bg-white/10 dark:border-white/20 focus:border-primary'
 							/>
 
 							<Input
@@ -56,7 +56,7 @@ export function EditablePasswordField({ register, isSubmitting }: Props) {
 									'accountPage.editAccount.setPassword.confirmPasswordPlaceholder',
 								)}
 								{...register('confirmPassword')}
-								className='h-11 text-base bg-white/10 border-white/20 focus:border-primary'
+								className='h-11 text-base bg-background border-border dark:bg-white/10 dark:border-white/20 focus:border-primary'
 							/>
 						</div>
 					</motion.div>
@@ -68,7 +68,7 @@ export function EditablePasswordField({ register, isSubmitting }: Props) {
 					<Button
 						type='button'
 						variant='outline'
-						className='rounded-full px-4 border-white/10 bg-white/5 hover:bg-white/10'
+						className='rounded-full px-4 border-border bg-background hover:bg-muted dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10'
 						onClick={() => setIsEditing(true)}
 					>
 						{t('common.edit')}
@@ -78,7 +78,7 @@ export function EditablePasswordField({ register, isSubmitting }: Props) {
 						<Button
 							type='button'
 							variant='outline'
-							className='rounded-full px-4 border-white/10 bg-white/5 hover:bg-white/10'
+							className='rounded-full px-4 border-border bg-background hover:bg-muted dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10'
 							onClick={() => setIsEditing(false)}
 						>
 							{t('common.cancel')}

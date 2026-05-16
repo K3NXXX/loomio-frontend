@@ -69,7 +69,7 @@ export function EmailVerificationForm({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent>
+			<DialogContent className='border-border bg-card text-card-foreground sm:max-w-md'>
 				<DialogHeader className='flex-col gap-3 text-start'>
 					<DialogTitle>{t('emailVerification.title')}</DialogTitle>
 					<DialogDescription>
@@ -81,7 +81,7 @@ export function EmailVerificationForm({
 							setCode(e.target.value)
 						}
 						placeholder={t('emailVerification.codePlaceholder')}
-						className='uppercase placeholder:normal-case'
+						className='uppercase placeholder:normal-case bg-background border-border text-foreground placeholder:text-muted-foreground'
 					/>
 					<div className='flex gap-3 justify-between items-center'>
 						<div className='flex gap-3 items-center max-[430px]:flex-col w-full'>

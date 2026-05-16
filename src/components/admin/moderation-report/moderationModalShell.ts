@@ -6,7 +6,7 @@ export const moderationReportModalContentClass = cn(
 	'flex flex-col',
 	'rounded-2xl border border-border/60',
 	'shadow-[0_24px_64px_-16px_rgba(0,0,0,0.28)] dark:shadow-[0_24px_72px_-12px_rgba(0,0,0,0.65)]',
-	'ring-1 ring-black/[0.04] dark:ring-white/[0.08]',
+	'ring-1 ring-border/50',
 	'bg-gradient-to-br from-card via-background to-muted/25',
 )
 

@@ -113,7 +113,7 @@ export function ModerationSidebar({ user }: { user: IGetUserData }) {
 			className='
 				w-[260px] md:w-64 shrink-0 border-r border-border/45
 				bg-card/45 backdrop-blur-xl
-				flex flex-col shadow-[inset_-1px_0_0_0_rgba(255,255,255,0.03)]
+				flex flex-col dark:shadow-[inset_-1px_0_0_0_rgba(255,255,255,0.06)]
 			'
 		>
 			<div className='flex flex-col items-center px-4 pt-7 pb-5 border-b border-border/35'>

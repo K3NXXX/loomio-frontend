@@ -8,6 +8,7 @@ import type {
 	IForgotPasswordRequest,
 	IForgotPasswordResponse,
 	ILogInRequest,
+	ILoginSuccessResponse,
 	ILogoutResponse,
 	IRefreshTokenResponse,
 	IResendCodeRequest,
@@ -28,8 +29,8 @@ class AuthService {
 		)
 		return data
 	}
-	async login(logInData: ILogInRequest): Promise<IEmailVerificationResponse> {
-		const { data } = await axiosInstance.post<IEmailVerificationResponse>(
+	async login(logInData: ILogInRequest): Promise<ILoginSuccessResponse> {
+		const { data } = await axiosInstance.post<ILoginSuccessResponse>(
 			`${this.BASE_URL}/login`,
 			logInData,
 		)

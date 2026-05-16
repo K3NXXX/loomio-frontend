@@ -1,23 +1,25 @@
+import {
+	AVATAR_FRAME_STYLE_VALUES,
+	AVATAR_FRAME_THICKNESS_VALUES,
+} from '@/constants/avatar-frame.constants'
 import { z } from 'zod'
 
-const imageMime = z
-	.string()
-	.regex(/^image\//, { message: 'File must be an image' })
-
-const fileBase = z.custom<File>((v) => v instanceof File, {
-	message: 'File is required',
-})
-
-const imageFile = fileBase.refine((f) => imageMime.safeParse(f.type).success, {
-	message: 'File must be an image',
-})
-
-const fileMaxMB = (mb: number) =>
-	imageFile.refine((f) => f.size <= mb * 1024 * 1024, {
-		message: `File size must be ≤ ${mb} MB`,
+const bannerFileSchema = z
+	.custom<File>((v) => v instanceof File, { message: 'Invalid file' })
+	.superRefine((f, ctx) => {
+		if (!f.type.startsWith('image/')) {
+			ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'File must be an image' })
+			return
+		}
+		const isGif = f.type === 'image/gif' || f.name.toLowerCase().endsWith('.gif')
+		const maxMb = isGif ? 12 : 6
+		if (f.size > maxMb * 1024 * 1024) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: `File size must be ≤ ${maxMb} MB`,
+			})
+		}
 	})
-
-const bannerFileSchema = fileMaxMB(6)
 
 export const editingChannelSchema = z.object({
 	name: z
@@ -36,12 +38,42 @@ export const editingChannelSchema = z.object({
 		.optional(),
 
 	avatarFile: z.instanceof(File).optional(),
-	bannerFile: bannerFileSchema.optional(),
+	bannerFile: bannerFileSchema.optional().or(z.undefined()),
 
 	bannerUrl: z.string().optional(),
 
 	removeAvatar: z.boolean().optional().default(false),
 	removeBanner: z.boolean().optional().default(false),
+
+	avatarFrameColor: z
+		.string()
+		.optional()
+		.refine(
+			(v) => v === undefined || v === '' || /^#[0-9A-Fa-f]{6}$/.test(v),
+			{ message: 'Invalid frame color' },
+		),
+
+	avatarFrameThickness: z
+		.string()
+		.optional()
+		.refine(
+			(v) =>
+				v === undefined ||
+				v === '' ||
+				(AVATAR_FRAME_THICKNESS_VALUES as readonly string[]).includes(v),
+			{ message: 'Invalid frame thickness' },
+		),
+
+	avatarFrameStyle: z
+		.string()
+		.optional()
+		.refine(
+			(v) =>
+				v === undefined ||
+				v === '' ||
+				(AVATAR_FRAME_STYLE_VALUES as readonly string[]).includes(v),
+			{ message: 'Invalid frame style' },
+		),
 })
 
 export type TEditingChannelSchema = z.infer<typeof editingChannelSchema>

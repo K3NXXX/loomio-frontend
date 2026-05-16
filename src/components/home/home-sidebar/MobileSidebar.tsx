@@ -31,7 +31,8 @@ export function MobileSidebar({ isOpen, onClose }: Props) {
 			<div
 				className={cn(
 					'fixed top-0 left-0 h-full w-[280px] z-50',
-					'bg-[oklch(0.19_0_0)]',
+					'border-r border-border bg-sidebar text-foreground',
+					'dark:border-transparent dark:bg-[oklch(0.19_0_0)]',
 					'transition-transform duration-300',
 					isOpen ? 'translate-x-0' : '-translate-x-full',
 				)}
@@ -52,7 +53,7 @@ export function MobileSidebar({ isOpen, onClose }: Props) {
 									onClick={onClose}
 									className='
 										flex items-center gap-3 px-3 py-2 rounded-lg
-										hover:bg-white/10 transition
+										hover:bg-muted transition text-foreground
 									'
 								>
 									<Icon size={22} />

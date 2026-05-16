@@ -117,8 +117,8 @@ export function AddToPlaylistModal({
 													className='w-full h-full object-cover'
 												/>
 											) : (
-												<div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-900'>
-													<MdPlaylistPlay className='text-[26px] text-neutral-600 shrink-0' />
+												<div className='w-full h-full flex items-center justify-center bg-muted'>
+													<MdPlaylistPlay className='text-[26px] text-muted-foreground shrink-0' />
 												</div>
 											)}
 										</div>

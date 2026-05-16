@@ -105,9 +105,7 @@ export function RestrictVideoModal({
 		if (open) setReviewSentDialogOpen(false)
 	}, [open])
 
-	useVideoProcessing(reviewTempVideoId, (s) =>
-		setStatus(s as UploadFlowStatus),
-	)
+	useVideoProcessing(reviewTempVideoId, (s) => setStatus(s as UploadFlowStatus))
 
 	const isUploadFinished = status === 'ready'
 
@@ -369,16 +367,15 @@ export function RestrictVideoModal({
 					min-w-[960px] min-h-[800px]
 					max-h-[90vh] overflow-y-auto
 					rounded-2xl
-					border border-neutral-800
-					bg-gradient-to-br from-neutral-900 via-neutral-950 to-black
-					text-white
+					border border-border
+					bg-card text-card-foreground
 					shadow-2xl
 					backdrop-blur-xl
 					p-0
 				`}
 					>
-						<DialogHeader className='px-6 pt-6 pb-4 border-b border-neutral-800'>
-							<DialogTitle className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-lg font-semibold'>
+						<DialogHeader className='px-6 pt-6 pb-4 border-b border-border'>
+							<DialogTitle className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-lg font-semibold text-foreground'>
 								<div className='flex items-center gap-2 min-w-0'>
 									{fileName ? (
 										<>
@@ -403,7 +400,7 @@ export function RestrictVideoModal({
 											{status === 'ready' && tUpload('statusReady')}
 										</span>
 
-										<div className='flex-1 h-[4px] bg-neutral-800 rounded-full overflow-hidden'>
+										<div className='flex-1 h-[4px] bg-muted rounded-full overflow-hidden'>
 											<div
 												className='h-full bg-primary transition-all duration-300 ease-out'
 												style={{ width: `${displayProgress}%` }}
@@ -468,8 +465,9 @@ export function RestrictVideoModal({
 											<Button
 												onClick={() => handleBack()}
 												type='button'
+												variant='secondary'
 												disabled={isLoading}
-												className='bg-secondary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
+												className='font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 											>
 												{t('back')}
 											</Button>
@@ -479,10 +477,9 @@ export function RestrictVideoModal({
 												}}
 												type={isFinalStep ? 'submit' : 'button'}
 												disabled={
-													isLoading ||
-													(isFinalStep && !isUploadFinished)
+													isLoading || (isFinalStep && !isUploadFinished)
 												}
-												className='bg-primary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
+												className='font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 											>
 												{isLoading ? (
 													<Lottie
@@ -503,7 +500,7 @@ export function RestrictVideoModal({
 						</form>
 					</DialogContent>
 				) : open ? (
-					<DialogContent className='border-border'>
+					<DialogContent className='border-border bg-card text-card-foreground'>
 						<div className='flex items-center justify-center p-8 text-sm text-muted-foreground'>
 							{t('loading')}
 						</div>

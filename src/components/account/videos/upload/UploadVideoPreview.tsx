@@ -42,7 +42,7 @@ export function UploadVideoPreview({
 
 	return (
 		<div className='flex flex-col items-end pt-7'>
-			<div className='relative w-full max-w-[400px] rounded-xl overflow-hidden border border-neutral-800 shadow-lg'>
+			<div className='relative w-full max-w-[400px] rounded-xl overflow-hidden border border-border shadow-lg'>
 				{!isPlaying && thumbnailPreview ? (
 					<div
 						className='relative w-full aspect-video cursor-pointer group'
@@ -77,7 +77,7 @@ export function UploadVideoPreview({
 				)}
 			</div>
 
-			<p className='font-medium pt-3 pr-2 text-gray-400 truncate'>
+			<p className='font-medium pt-3 pr-2 text-muted-foreground truncate'>
 				{t('filenameLabel', { name: truncateName(fileName, 30) })}
 			</p>
 		</div>

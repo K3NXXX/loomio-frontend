@@ -47,7 +47,7 @@ export function Dashboard() {
 					/>
 				</div>
 
-				<div className='rounded-2xl border border-border/45 bg-card/20 backdrop-blur-md p-5 md:p-7 shadow-lg ring-1 ring-white/[0.04]'>
+				<div className='rounded-2xl border border-border/45 bg-card/20 backdrop-blur-md p-5 md:p-7 shadow-lg ring-1 ring-border/40'>
 					<SectionTitle>{t('reportsTypeBreakdown')}</SectionTitle>
 
 					<div className='grid grid-cols-2 md:max-w-md gap-4'>
@@ -134,7 +134,7 @@ const StatCard = ({
 	loading?: boolean
 	loadingText: string
 }) => (
-	<div className='group rounded-2xl border border-border/45 bg-gradient-to-br from-card/80 via-card/50 to-card/30 backdrop-blur-md p-4 md:p-5 shadow-md ring-1 ring-white/[0.04] transition-all hover:border-primary/25 hover:shadow-lg'>
+	<div className='group rounded-2xl border border-border/45 bg-gradient-to-br from-card/80 via-card/50 to-card/30 backdrop-blur-md p-4 md:p-5 shadow-md ring-1 ring-border/40 transition-all hover:border-primary/25 hover:shadow-lg'>
 		<div className='flex items-center gap-3 text-muted-foreground text-[13px]'>
 			<span className='flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-inner'>
 				{icon}
@@ -155,7 +155,7 @@ const TypeCard = ({ title, value }: any) => (
 )
 
 const ListPanel = ({ children }: any) => (
-	<div className='rounded-2xl border border-border/45 divide-y divide-border/35 overflow-hidden shadow-lg bg-card/35 backdrop-blur-md ring-1 ring-white/[0.04]'>
+	<div className='rounded-2xl border border-border/45 divide-y divide-border/35 overflow-hidden shadow-lg bg-card/35 backdrop-blur-md ring-1 ring-border/40'>
 		{children}
 	</div>
 )

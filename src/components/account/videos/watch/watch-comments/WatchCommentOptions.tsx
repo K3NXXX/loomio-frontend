@@ -99,12 +99,12 @@ export function WatchCommentOptions({
 			</DropdownMenu>
 
 			<AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
-				<AlertDialogContent className='bg-neutral-900 border border-neutral-700 rounded-xl'>
+				<AlertDialogContent className='rounded-xl border border-border bg-card text-card-foreground'>
 					<AlertDialogHeader>
-						<AlertDialogTitle className='text-neutral-100'>
+						<AlertDialogTitle className='text-foreground'>
 							{t('watchComments.deleteCommentTitle')}
 						</AlertDialogTitle>
-						<AlertDialogDescription className='text-neutral-400'>
+						<AlertDialogDescription className='text-muted-foreground'>
 							{t('watchComments.deleteCommentDescription')}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
@@ -112,14 +112,14 @@ export function WatchCommentOptions({
 					<AlertDialogFooter>
 						<AlertDialogCancel
 							onClick={() => setIsConfirmOpen(false)}
-							className='bg-neutral-700 text-neutral-200 hover:bg-neutral-600'
+							className='border-border'
 						>
 							{t('watchComments.cancel')}
 						</AlertDialogCancel>
 
 						<AlertDialogAction
 							onClick={() => handleDelete()}
-							className='bg-primary text-white'
+							className='bg-primary text-primary-foreground hover:bg-primary/90'
 						>
 							{t('watchComments.delete')}
 						</AlertDialogAction>

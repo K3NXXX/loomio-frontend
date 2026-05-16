@@ -44,7 +44,10 @@ export function SignUpFormFields() {
 					/>
 				</div> */}
 				<div className='flex flex-col flex-1'>
-					<label htmlFor='signup-username' className='text-white mb-2'>
+					<label
+						htmlFor='signup-username'
+						className='text-foreground mb-2 text-sm font-medium'
+					>
 						{t('auth.signup.fields.usernameLabel')}
 					</label>
 					<div className='relative'>
@@ -54,75 +57,80 @@ export function SignUpFormFields() {
 						<Input
 							id='signup-username'
 							placeholder={t('auth.signup.fields.usernamePlaceholder')}
-							className='w-full text-white py-6 pl-7'
+							className='w-full py-6 pl-7 bg-background border-border text-foreground placeholder:text-muted-foreground'
 							{...register('username')}
 						/>
 					</div>
 				</div>
 			</div>
 			<div className='flex flex-col'>
-				<label htmlFor='signup-email' className='text-white mb-2'>
+				<label
+					htmlFor='signup-email'
+					className='text-foreground mb-2 text-sm font-medium'
+				>
 					{t('auth.signup.fields.emailLabel')}
 				</label>
 				<Input
 					type='email'
 					id='signup-email'
 					placeholder={t('auth.signup.fields.emailPlaceholder')}
-					className='text-white py-6'
+					className='py-6 bg-background border-border text-foreground placeholder:text-muted-foreground'
 					{...register('email')}
 				/>
 			</div>
 			<div className='flex gap-3 max-[540px]:flex-col'>
 				<div className='flex flex-col'>
-					<label htmlFor='signup-password' className='text-white mb-2'>
+					<label
+						htmlFor='signup-password'
+						className='text-foreground mb-2 text-sm font-medium'
+					>
 						{t('auth.signup.fields.passwordLabel')}
 					</label>
 					<div className='relative'>
 						{showPassword ? (
 							<HiEye
 								onClick={handleClickShowPassword}
-								className='absolute top-[17px] right-[15px] cursor-pointer'
-								color='white'
+								className='absolute top-[17px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 							/>
 						) : (
 							<BsFillEyeSlashFill
 								onClick={handleClickShowPassword}
-								className='absolute top-[17px] right-[15px] cursor-pointer'
-								color='white'
+								className='absolute top-[17px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 							/>
 						)}
 						<Input
 							id='signup-password'
 							type={showPassword ? 'text' : 'password'}
 							placeholder={t('auth.signup.fields.passwordPlaceholder')}
-							className='text-white py-6 pr-10'
+							className='py-6 pr-10 bg-background border-border text-foreground placeholder:text-muted-foreground'
 							{...register('password')}
 						/>
 					</div>
 				</div>
 				<div className='flex flex-col'>
-					<label htmlFor='signup-confirm-password' className='text-white mb-2'>
+					<label
+						htmlFor='signup-confirm-password'
+						className='text-foreground mb-2 text-sm font-medium'
+					>
 						{t('auth.signup.fields.confirmPasswordLabel')}
 					</label>
 					<div className='relative'>
 						{showConfirmPassword ? (
 							<HiEye
 								onClick={handleClickShowConfirmPassword}
-								className='absolute top-[17px] right-[15px] cursor-pointer'
-								color='white'
+								className='absolute top-[17px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 							/>
 						) : (
 							<BsFillEyeSlashFill
 								onClick={handleClickShowConfirmPassword}
-								className='absolute top-[17px] right-[15px] cursor-pointer'
-								color='white'
+								className='absolute top-[17px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 							/>
 						)}
 						<Input
 							id='signup-confirm-password'
 							type={showConfirmPassword ? 'text' : 'password'}
 							placeholder={t('auth.signup.fields.confirmPasswordPlaceholder')}
-							className='text-white py-6 pr-10'
+							className='py-6 pr-10 bg-background border-border text-foreground placeholder:text-muted-foreground'
 							{...register('passwordConfirm')}
 						/>
 					</div>
@@ -145,7 +153,10 @@ export function SignUpFormFields() {
 						</div>
 					)}
 				/>
-			<label htmlFor='signup-terms-checkbox' className='text-white/70 text-sm leading-snug'>
+			<label
+				htmlFor='signup-terms-checkbox'
+				className='text-muted-foreground text-sm leading-snug'
+			>
 				{t('auth.signup.fields.termsLabelPrefix')}{' '}
 				<Link
 					href={PAGES.TERMS}

@@ -34,14 +34,14 @@ export function WatchCommentsHeader({
 
 	return (
 		<>
-			<h2 className='text-base min-[400px]:text-lg font-semibold mb-3 min-[400px]:mb-5 text-neutral-100'>
+			<h2 className='text-base min-[400px]:text-lg font-semibold mb-3 min-[400px]:mb-5 text-foreground'>
 				{t('watchComments.header', { count: allComments?.data.length ?? 0 })}
 			</h2>
 
 			{userData ? (
 				<div className='mb-5 min-[400px]:mb-7'>
 					<textarea
-						className='w-full p-2.5 min-[400px]:p-3 rounded-2xl border border-neutral-700 bg-neutral-900 text-xs min-[400px]:text-sm text-neutral-100 resize-none focus:ring-2 focus:ring-primary outline-none transition'
+						className='w-full p-2.5 min-[400px]:p-3 rounded-2xl border border-border bg-muted text-xs min-[400px]:text-sm text-foreground placeholder:text-muted-foreground resize-none focus:ring-2 focus:ring-primary outline-none transition'
 						rows={3}
 						placeholder={t('watchComments.addCommentPlaceholder')}
 						value={newCommentContent}
@@ -49,7 +49,7 @@ export function WatchCommentsHeader({
 					/>
 					<div className='flex justify-end mt-2'>
 						<Button
-							className='px-3 min-[400px]:px-4 py-1.5 min-[400px]:py-2 bg-primary text-white rounded-2xl font-semibold hover:brightness-90 transition text-xs min-[400px]:text-sm'
+							className='px-3 min-[400px]:px-4 py-1.5 min-[400px]:py-2 rounded-2xl font-semibold text-xs min-[400px]:text-sm'
 							onClick={addNewComment}
 						>
 							{t('watchComments.addCommentButton')}
@@ -57,7 +57,7 @@ export function WatchCommentsHeader({
 					</div>
 				</div>
 			) : (
-				<p className='mb-5 min-[400px]:mb-7 text-sm text-neutral-400'>
+				<p className='mb-5 min-[400px]:mb-7 text-sm text-muted-foreground'>
 					{t('guestAuth.signInToComment')}{' '}
 					<button
 						type='button'

@@ -1,5 +1,6 @@
 'use client'
 
+import { ChannelAvatarFrame } from '@/components/account/channels/channel/ChannelAvatarFrame'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { PAGES } from '@/constants/pages.constants'
 import { cn } from '@/lib/utils'
@@ -66,15 +67,22 @@ export function WorkplaceSidebar({ channel }: WorkplaceSidebarProps) {
 			'
 		>
 			<div className='flex flex-col items-center px-4 pt-6 pb-4'>
-				<Avatar className='size-30'>
-					<AvatarImage
-						src={channel?.avatarUrl || undefined}
-						alt={t('avatarAlt')}
-					/>
-					<AvatarFallback className='text-lg font-semibold'>
-						{getInitials(channel?.username || '')}
-					</AvatarFallback>
-				</Avatar>
+				<ChannelAvatarFrame
+					variant='compact'
+					frameColor={channel?.avatarFrameColor ?? undefined}
+					frameThickness={channel?.avatarFrameThickness ?? undefined}
+					frameStyle={channel?.avatarFrameStyle ?? undefined}
+				>
+					<Avatar className='size-30'>
+						<AvatarImage
+							src={channel?.avatarUrl || undefined}
+							alt={t('avatarAlt')}
+						/>
+						<AvatarFallback className='text-lg font-semibold'>
+							{getInitials(channel?.username || '')}
+						</AvatarFallback>
+					</Avatar>
+				</ChannelAvatarFrame>
 
 				<div className='mt-3 text-center'>
 					<h2 className='font-bold text-lg leading-tight'>

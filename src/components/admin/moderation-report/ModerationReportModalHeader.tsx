@@ -119,7 +119,7 @@ export function ModerationReportModalHeader({ kind, report, userData }: Props) {
 				{report.status !== 'RESOLVED' && isFree && (
 					<Button
 						onClick={() => assignReport()}
-						className='rounded-xl bg-emerald-600 px-4 shadow-sm hover:bg-emerald-700 h-10 text-white'
+						className='rounded-xl bg-emerald-600 px-4 shadow-sm hover:bg-emerald-700 h-10 text-emerald-50'
 					>
 						{t('assign.assignToMe')}
 					</Button>

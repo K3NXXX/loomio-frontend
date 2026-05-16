@@ -20,7 +20,7 @@ export function ModerationReportPanel({
 			<div
 				className={cn(
 					'rounded-2xl border border-border/50 bg-card/55 p-4 md:p-5 shadow-sm',
-					'ring-1 ring-black/[0.03] dark:ring-white/[0.06]',
+					'ring-1 ring-border/40',
 					contentClassName,
 				)}
 			>

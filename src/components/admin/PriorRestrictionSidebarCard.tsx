@@ -20,7 +20,7 @@ export function PriorRestrictionSidebarCard({
 	if (!priorReason && !priorNote) return null
 
 	return (
-		<div className='rounded-2xl border border-amber-500/20 bg-gradient-to-b from-amber-500/[0.07] to-transparent p-4 shadow-[0_0_0_1px_rgba(0,0,0,0.03)_inset] space-y-4'>
+				<div className='rounded-2xl border border-amber-500/25 bg-gradient-to-b from-amber-500/[0.08] to-transparent p-4 ring-1 ring-border/30 space-y-4'>
 			<div className='flex gap-2.5'>
 				<div className='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-1 ring-amber-500/20'>
 					<HiOutlineShieldExclamation className='size-5' aria-hidden />

@@ -30,7 +30,7 @@ export function EditVideoSteps({
 					<div className='flex flex-col items-center gap-1'>
 						<div
 							className={`relative flex items-center justify-center w-10 h-10 rounded-full font-semibold shadow-md transition
-								${currentStep === step.number ? 'bg-primary text-white' : 'bg-neutral-800 text-gray-300 border border-neutral-700'}
+								${currentStep === step.number ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground border border-border'}
 							`}
 						>
 							<span>{step.number}</span>
@@ -40,7 +40,7 @@ export function EditVideoSteps({
 						</div>
 						<span
 							className={`text-sm font-medium mt-1 transition
-								${currentStep === step.number ? 'text-white' : 'text-gray-400'}
+								${currentStep === step.number ? 'text-foreground' : 'text-muted-foreground'}
 							`}
 						>
 							{t(step.labelKey)}
@@ -50,7 +50,7 @@ export function EditVideoSteps({
 					{index < steps.length - 1 && (
 						<div
 							className={`h-[2px] w-20 rounded-full transition
-								${currentStep >= step.number + 1 ? 'bg-gradient-to-r from-primary to-primary/60' : 'bg-neutral-700'}
+								${currentStep >= step.number + 1 ? 'bg-gradient-to-r from-primary to-primary/60' : 'bg-border'}
 							`}
 						/>
 					)}

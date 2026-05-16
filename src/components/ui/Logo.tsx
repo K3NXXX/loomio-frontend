@@ -20,7 +20,7 @@ export function Logo() {
 			</div>
 
 			<span
-				className={`${montserrat.className} text-white font-extrabold text-[20px] tracking-tight transition-colors duration-300 group-hover:text-primary`}
+				className={`${montserrat.className} text-foreground font-extrabold text-[20px] tracking-tight transition-colors duration-300 group-hover:text-primary`}
 			>
 				Loomio
 			</span>

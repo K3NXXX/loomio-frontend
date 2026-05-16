@@ -21,14 +21,11 @@ export interface ILogInRequest {
 	password: string
 }
 
-export interface ILogInResponse {
-	id: string
-	fullName: string
-	username: string
-	email: string
-	password: string | null
-	avatarUrl: string | null
-	avatarPublicId: string | null
+/** Response body from POST /auth/login (cookies set by server; includes user.role). */
+export interface ILoginSuccessResponse {
+	success: boolean
+	message: string
+	user: IUser
 }
 
 export interface IResetPasswordFormData {
@@ -98,6 +95,9 @@ export interface IGetUserData {
 	hasPassword: string
 	authProviders: string[]
 	isPremium: boolean
+	theme?: string
+	customTheme?: { background: string; primary: string } | null
+	appearance?: string
 }
 
 interface AxiosErrorResponse {

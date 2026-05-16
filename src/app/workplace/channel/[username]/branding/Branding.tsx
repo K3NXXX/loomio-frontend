@@ -5,7 +5,11 @@ import { WorkplaceBrandingAvatar } from '@/components/workplace/branding/Workpla
 import { WorkplaceBrandingBanner } from '@/components/workplace/branding/WorkplaceBrandingBanner'
 import { WorkplaceBrandingFields } from '@/components/workplace/branding/WorkplaceBrandingFields'
 import { PAGES } from '@/constants/pages.constants'
+import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useEditChannel } from '@/hooks/channel/useEditChannel'
+import { cn } from '@/lib/utils'
+import Lottie from 'lottie-react'
+import loader from '@/assets/animations/loader.json'
 import {
 	editingChannelSchema,
 	TEditingChannelSchema,
@@ -19,7 +23,10 @@ import { useForm } from 'react-hook-form'
 
 export function Branding() {
 	const { channel } = useChannelStore()
-	const { editChannel } = useEditChannel()
+	const { userData } = useGetMe()
+	const isPremium = Boolean(userData?.isPremium)
+	const allowAnimatedBanner = isPremium
+	const { editChannel, isPending } = useEditChannel()
 	const t = useTranslations('workplaceBranding')
 
 	const [avatarTouched, setAvatarTouched] = useState(false)
@@ -34,6 +41,9 @@ export function Branding() {
 			bannerFile: undefined,
 			removeAvatar: false,
 			removeBanner: false,
+			avatarFrameColor: channel?.avatarFrameColor ?? '',
+			avatarFrameThickness: channel?.avatarFrameThickness ?? '',
+			avatarFrameStyle: channel?.avatarFrameStyle ?? '',
 		}),
 		[channel],
 	)
@@ -46,15 +56,12 @@ export function Branding() {
 		setValue,
 		getValues,
 		trigger,
-		formState: { errors, isDirty, isSubmitting },
+		formState: { errors, isDirty },
 	} = useForm<TEditingChannelSchema>({
 		// @ts-ignore
 		resolver: zodResolver(editingChannelSchema),
 		mode: 'onChange',
-		defaultValues: {
-			removeAvatar: false,
-			removeBanner: false,
-		},
+		defaultValues,
 	})
 
 	useEffect(() => {
@@ -62,6 +69,9 @@ export function Branding() {
 		register('bannerFile')
 		register('removeAvatar')
 		register('removeBanner')
+		register('avatarFrameColor')
+		register('avatarFrameThickness')
+		register('avatarFrameStyle')
 	}, [register])
 
 	const watchedUsername = watch('username')
@@ -118,6 +128,9 @@ export function Branding() {
 
 		fd.append('removeAvatar', String(data.removeAvatar ?? false))
 		fd.append('removeBanner', String(data.removeBanner ?? false))
+		fd.append('avatarFrameColor', data.avatarFrameColor ?? '')
+		fd.append('avatarFrameThickness', data.avatarFrameThickness ?? '')
+		fd.append('avatarFrameStyle', data.avatarFrameStyle ?? '')
 
 		if (!channel?.id) {
 			return
@@ -135,7 +148,7 @@ export function Branding() {
 	}, [defaultValues, reset])
 
 	const hasAnyChanges = isDirty || avatarTouched || bannerTouched
-	const isPublishDisabled = isSubmitting || !hasAnyChanges
+	const isPublishDisabled = isPending || !hasAnyChanges
 
 	return (
 		<form
@@ -170,9 +183,33 @@ export function Branding() {
 						<Button
 							type='submit'
 							disabled={isPublishDisabled}
-							className='rounded-full px-3 min-[400px]:px-4 text-xs min-[400px]:text-sm font-medium h-8 min-[400px]:h-9'
+							aria-busy={isPending}
+							className={cn(
+								'rounded-full px-3 min-[400px]:px-4 text-xs min-[400px]:text-sm font-medium h-8 min-[400px]:h-9 relative',
+								isPending && 'disabled:opacity-100',
+							)}
 						>
-							{t('publish')}
+							<span
+								className={cn(
+									isPending && 'invisible',
+									'inline-block min-w-[7.25rem] min-[400px]:min-w-[8.25rem] text-center',
+								)}
+								aria-hidden={isPending}
+							>
+								{t('publish')}
+							</span>
+							{isPending && (
+								<span
+									className='absolute inset-0 flex items-center justify-center pointer-events-none'
+									aria-hidden
+								>
+									<Lottie
+										animationData={loader}
+										loop
+										className='size-7 min-[400px]:size-8'
+									/>
+								</span>
+							)}
 						</Button>
 					</div>
 				</div>
@@ -183,12 +220,16 @@ export function Branding() {
 				watch={watch}
 				setValue={setValue}
 				channel={channel}
+				allowAnimatedBanner={allowAnimatedBanner}
 			/>
 
 			<WorkplaceBrandingAvatar
 				onSelectAvatar={onSelectAvatar}
 				watch={watch}
+				setValue={setValue}
 				channel={channel}
+				isPremium={isPremium}
+				errors={errors}
 			/>
 
 			<WorkplaceBrandingFields

@@ -189,15 +189,13 @@ export default function WorkplaceHeader({ channel }: IWorkplaceHeaderProps) {
 				</div>
 			</div>
 
-			{openUploadingVideo && (
-				<UploadVideoModal
-					open={openUploadingVideo}
-					onOpenChange={(open) => {
-						if (!open) setUploadChannelId(null)
-						setOpenUploadingVideo(open)
-					}}
-				/>
-			)}
+			<UploadVideoModal
+				open={openUploadingVideo}
+				onOpenChange={(open) => {
+					if (!open) setUploadChannelId(null)
+					setOpenUploadingVideo(open)
+				}}
+			/>
 		</div>
 	)
 }

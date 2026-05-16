@@ -34,7 +34,7 @@ export function UserPlaylistsList() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.3, delay: i * 0.05 }}
 					onClick={() => router.push(PAGES.ONE_USER_PLAYLIST(playlist.id))}
-					className='group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 shadow-lg '
+					className='group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 shadow-lg border border-border bg-card'
 				>
 					<div className='relative w-full aspect-video overflow-hidden'>
 						{playlist.coverUrl ? (
@@ -44,8 +44,8 @@ export function UserPlaylistsList() {
 								className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 brightness-90 group-hover:brightness-100'
 							/>
 						) : (
-							<div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-900'>
-								<MdPlaylistPlay className='text-neutral-600 text-7xl group-hover:text-primary/50 transition-colors duration-300' />
+							<div className='w-full h-full flex items-center justify-center bg-muted'>
+								<MdPlaylistPlay className='text-muted-foreground text-7xl group-hover:text-primary/70 transition-colors duration-300' />
 							</div>
 						)}
 
@@ -64,12 +64,12 @@ export function UserPlaylistsList() {
 						</div>
 					</div>
 
-					<div className='bg-neutral-900/95 px-4 py-3 flex items-center justify-between gap-3'>
+					<div className='bg-card border-t border-border px-4 py-3 flex items-center justify-between gap-3'>
 						<div className='min-w-0'>
-							<p className='text-xs text-neutral-400 line-clamp-1'>
+							<p className='text-xs text-muted-foreground line-clamp-1'>
 								{playlist.description || t('playlists.noDescription')}
 							</p>
-							<p className='text-[11px] font-bold text-neutral-600 mt-0.5'>
+							<p className='text-[11px] font-semibold text-muted-foreground/80 mt-0.5'>
 								{formatDate(playlist.createdAt)}
 							</p>
 						</div>

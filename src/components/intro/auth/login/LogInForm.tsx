@@ -41,73 +41,77 @@ export function LogInForm() {
 	}
 
 	return (
-		<div className='relative min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-black via-neutral-900 to-black'>
-			<div className='absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-primary/20 blur-3xl rounded-full'></div>
-			<div className='absolute bottom-0 right-1/2 translate-x-1/2 w-[300px] h-[300px] bg-purple-500/10 blur-3xl rounded-full'></div>
+		<div className='relative min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-background via-muted/35 to-background text-foreground dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950'>
+			<div className='pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-primary/15 dark:bg-primary/20 blur-3xl rounded-full' />
+			<div className='pointer-events-none absolute bottom-0 right-1/2 translate-x-1/2 w-[300px] h-[300px] bg-purple-500/10 blur-3xl rounded-full' />
 
 			<motion.div
 				initial={{ opacity: 0, scale: 0.95 }}
 				animate={{ opacity: 1, scale: 1 }}
 				transition={{ duration: 0.4 }}
-				className='w-full max-w-md bg-neutral-900/80 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-neutral-800'
+				className='w-full max-w-md rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-xl text-card-foreground'
 			>
 				<div className='flex flex-col items-center mb-6'>
 					<div className='w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-md'>
 						<FaRecordVinyl className='text-primary-foreground' />
 					</div>
-					<h1 className='text-white text-2xl font-bold mt-4'>
+					<h1 className='text-foreground text-2xl font-bold mt-4'>
 						{t('auth.login.title')}
 					</h1>
-					<p className='text-gray-400 text-sm mt-1 text-center'>
+					<p className='text-muted-foreground text-sm mt-1 text-center'>
 						{t('auth.login.subtitle')}
 					</p>
 				</div>
 
 				<AuthSocialButtons />
 				<div className='flex items-center gap-3 my-5'>
-					<div className='h-[1px] bg-neutral-700 flex-1'></div>
-					<p className='text-gray-400 text-xs uppercase'>
+					<div className='h-px bg-border flex-1' />
+					<p className='text-muted-foreground text-xs uppercase'>
 						{t('auth.login.orDivider')}
 					</p>
-					<div className='h-[1px] bg-neutral-700 flex-1'></div>
+					<div className='h-px bg-border flex-1' />
 				</div>
 
 				<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
 					<div className='flex flex-col'>
-						<label htmlFor='login-identifier' className='text-white mb-2'>
+						<label
+							htmlFor='login-identifier'
+							className='text-foreground mb-2 text-sm font-medium'
+						>
 							{t('auth.login.identifierLabel')}
 						</label>
 						<Input
 							id='login-identifier'
 							placeholder={t('auth.login.identifierPlaceholder')}
-							className='w-full text-white py-6'
+							className='w-full py-6 bg-background border-border text-foreground placeholder:text-muted-foreground'
 							{...register('identifier')}
 						/>
 					</div>
 
 					<div className='flex flex-col'>
-						<label htmlFor='login-password' className='text-white mb-2'>
+						<label
+							htmlFor='login-password'
+							className='text-foreground mb-2 text-sm font-medium'
+						>
 							{t('auth.login.passwordLabel')}
 						</label>
 						<div className='relative'>
 							{showPassword ? (
 								<HiEye
 									onClick={() => setShowPassword(!showPassword)}
-									className='absolute top-[17px] right-[15px] cursor-pointer'
-									color='white'
+									className='absolute top-[17px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 								/>
 							) : (
 								<BsFillEyeSlashFill
 									onClick={() => setShowPassword(!showPassword)}
-									className='absolute top-[17px] right-[15px] cursor-pointer'
-									color='white'
+									className='absolute top-[17px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 								/>
 							)}
 							<Input
 								id='login-password'
 								type={showPassword ? 'text' : 'password'}
 								placeholder={t('auth.login.passwordPlaceholder')}
-								className='text-white py-6 pr-10'
+								className='py-6 pr-10 bg-background border-border text-foreground placeholder:text-muted-foreground'
 								{...register('password')}
 							/>
 						</div>
@@ -135,7 +139,7 @@ export function LogInForm() {
 						{t('auth.login.submit')}
 					</Button>
 
-					<p className='text-gray-400 text-sm text-center mt-3'>
+					<p className='text-muted-foreground text-sm text-center mt-3'>
 						{t('auth.login.noAccount')}{' '}
 						<Link
 							href={PAGES.SIGNUP}

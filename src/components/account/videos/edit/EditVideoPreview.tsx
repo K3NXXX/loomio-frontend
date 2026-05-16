@@ -41,7 +41,7 @@ export function EditVideoPreview({
 
 	return (
 		<div className='flex flex-col items-end pt-7'>
-			<div className='relative w-full max-w-[400px] rounded-xl overflow-hidden border border-neutral-800 shadow-lg'>
+			<div className='relative w-full max-w-[400px] rounded-xl overflow-hidden border border-border shadow-lg'>
 				{!isPlaying && (thumbnailPreview || video.thumbnailFile) ? (
 					<div
 						className='relative w-full aspect-video cursor-pointer group'

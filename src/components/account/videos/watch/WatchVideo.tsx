@@ -1,17 +1,57 @@
 'use client'
 
 import { useAddView } from '@/hooks/view/useAddView'
+import { watchMiniSnapshotRef } from '@/lib/watch-mini-player-snapshot'
 import { useTranslations } from 'next-intl'
-import { usePathname } from 'next/navigation'
 import 'plyr/dist/plyr.css'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+
+const PREMIUM_SPEED_THRESHOLD = 3
+const MAX_FREE_PLAYBACK_RATE = 2
+const PREMIUM_SPEED_LOCK_ATTR = 'data-premium-speed-lock'
+const PREMIUM_SPEED_CROWN_CLASS = 'plyr-speed-premium-crown'
+/** Lucide Crown paths — injected into Plyr DOM (no React root). */
+const PREMIUM_SPEED_CROWN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#facc15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>`
 
 interface IWatchVideoProps {
 	videoSrc: string
 	videoId: string
 	publicId: string
+	videoTitle?: string
+	canUseBoostSpeed?: boolean
 	onNext?: () => void
+}
+
+function getBoostSpeedMenuButton(
+	target: EventTarget | null,
+	root: HTMLElement,
+): HTMLButtonElement | null {
+	const el = target as HTMLElement | null
+	if (!el?.closest) return null
+	const btn = el.closest(
+		'button[role="menuitemradio"]',
+	) as HTMLButtonElement | null
+	if (!btn || !root.contains(btn)) return null
+	if (!btn.closest('[id^="plyr-settings-"][id$="-speed"]')) return null
+	const val = Number.parseFloat(String(btn.value ?? ''))
+	if (!Number.isFinite(val) || val < PREMIUM_SPEED_THRESHOLD) return null
+	return btn
+}
+
+function syncPremiumSpeedCrown(btn: HTMLButtonElement, show: boolean) {
+	const existing = btn.querySelector(`:scope > .${PREMIUM_SPEED_CROWN_CLASS}`)
+	if (!show) {
+		existing?.remove()
+		return
+	}
+	if (existing) return
+
+	const wrap = document.createElement('span')
+	wrap.className = PREMIUM_SPEED_CROWN_CLASS
+	wrap.setAttribute('aria-hidden', 'true')
+	wrap.innerHTML = PREMIUM_SPEED_CROWN_SVG
+	btn.appendChild(wrap)
 }
 
 function getSavedTime(videoId: string): number {
@@ -47,7 +87,14 @@ function getSavedVolume(): number {
 	}
 }
 
-export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
+export function WatchVideo({
+	videoSrc,
+	videoId,
+	videoTitle,
+	canUseBoostSpeed = false,
+	onNext,
+}: IWatchVideoProps) {
+	const isHls = videoSrc.includes('.m3u8')
 	const t = useTranslations()
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
@@ -61,10 +108,69 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 	const hlsRef = useRef<any>(null)
 	const hasSentView = useRef(false)
 	const viewTimer = useRef<NodeJS.Timeout | null>(null)
+	const lastKnownPlayingRef = useRef(false)
+	const snapshotMetaRef = useRef({
+		canUseBoostSpeed,
+		videoId,
+		videoSrc,
+		videoTitle,
+		isHls,
+	})
+	snapshotMetaRef.current = {
+		canUseBoostSpeed,
+		videoId,
+		videoSrc,
+		videoTitle,
+		isHls,
+	}
 
 	const { addView } = useAddView()
 
-	const isHls = videoSrc.includes('.m3u8')
+	useEffect(() => {
+		if (!canUseBoostSpeed || !videoTitle) return
+
+		function tick() {
+			const el = videoRef.current
+			if (!el) return
+			lastKnownPlayingRef.current = !el.paused
+			watchMiniSnapshotRef.current = {
+				videoId,
+				videoSrc,
+				title: videoTitle,
+				currentTime: el.currentTime,
+				paused: el.paused,
+				playbackRate: el.playbackRate,
+				volume: el.volume,
+				muted: el.muted,
+				isHls,
+			}
+		}
+
+		tick()
+		const id = setInterval(tick, 300)
+		return () => clearInterval(id)
+	}, [canUseBoostSpeed, videoId, videoSrc, videoTitle, isHls])
+
+	/** Фінальний знімок лише при повному розмонтуванні WatchVideo (не при зміні v у межах /watch). */
+	useEffect(() => {
+		return () => {
+			const m = snapshotMetaRef.current
+			if (!m.canUseBoostSpeed || !m.videoTitle) return
+			const el = videoRef.current
+			const prevSnap = watchMiniSnapshotRef.current
+			watchMiniSnapshotRef.current = {
+				videoId: m.videoId,
+				videoSrc: m.videoSrc,
+				title: m.videoTitle,
+				currentTime: el?.currentTime ?? prevSnap?.currentTime ?? 0,
+				paused: el ? el.paused : !lastKnownPlayingRef.current,
+				playbackRate: el?.playbackRate ?? prevSnap?.playbackRate ?? 1,
+				volume: el?.volume ?? prevSnap?.volume ?? 1,
+				muted: el?.muted ?? prevSnap?.muted ?? false,
+				isHls: m.isHls,
+			}
+		}
+	}, [])
 
 	useEffect(() => {
 		setIsReady(false)
@@ -178,7 +284,7 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 				settings: ['quality', 'speed'],
 				speed: {
 					selected: 1,
-					options: [0.5, 0.75, 1, 1.25, 1.5, 2],
+					options: [0.5, 0.75, 1, 1.25, 1.5, 2, 3, 4],
 				},
 				quality: {
 					default: defaultQuality,
@@ -254,6 +360,89 @@ export function WatchVideo({ videoSrc, videoId, onNext }: IWatchVideoProps) {
 			}, 0)
 		}
 	}, [isReady, isHls, videoId])
+
+	useEffect(() => {
+		const wrap = plyrWrapperRef.current
+		if (!wrap || !isPlyrReady) return
+
+		const lockedHint = t('watchVideo.premiumSpeedTooltip')
+
+		function applyPremiumVisualLock() {
+			const panel = wrap.querySelector('[id^="plyr-settings-"][id$="-speed"]')
+			if (!panel) return
+
+			panel
+				.querySelectorAll('button[role="menuitemradio"]')
+				.forEach((node) => {
+					const btn = node as HTMLButtonElement
+					const val = Number.parseFloat(String(btn.value ?? ''))
+					const isBoost =
+						Number.isFinite(val) && val >= PREMIUM_SPEED_THRESHOLD
+					if (!isBoost) return
+
+					if (!canUseBoostSpeed) {
+						btn.classList.add('plyr-speed-premium-locked')
+						btn.setAttribute('aria-disabled', 'true')
+						btn.setAttribute(PREMIUM_SPEED_LOCK_ATTR, '')
+						btn.title = lockedHint
+						syncPremiumSpeedCrown(btn, true)
+					} else {
+						btn.classList.remove('plyr-speed-premium-locked')
+						btn.removeAttribute('aria-disabled')
+						syncPremiumSpeedCrown(btn, false)
+						if (btn.hasAttribute(PREMIUM_SPEED_LOCK_ATTR)) {
+							btn.removeAttribute(PREMIUM_SPEED_LOCK_ATTR)
+							btn.removeAttribute('title')
+						}
+					}
+				})
+		}
+
+		function blockBoostSpeedInteraction(ev: Event) {
+			if (canUseBoostSpeed) return
+			if (ev instanceof KeyboardEvent) {
+				if (ev.key !== 'Enter' && ev.key !== ' ') return
+			}
+			if (!getBoostSpeedMenuButton(ev.target, wrap)) return
+			ev.preventDefault()
+			ev.stopPropagation()
+			ev.stopImmediatePropagation()
+		}
+
+		applyPremiumVisualLock()
+
+		const mo = new MutationObserver(() => applyPremiumVisualLock())
+		mo.observe(wrap, { subtree: true, childList: true })
+
+		wrap.addEventListener('click', blockBoostSpeedInteraction, true)
+		wrap.addEventListener('keyup', blockBoostSpeedInteraction, true)
+		wrap.addEventListener('keydown', blockBoostSpeedInteraction, true)
+
+		return () => {
+			mo.disconnect()
+			wrap.removeEventListener('click', blockBoostSpeedInteraction, true)
+			wrap.removeEventListener('keyup', blockBoostSpeedInteraction, true)
+			wrap.removeEventListener('keydown', blockBoostSpeedInteraction, true)
+		}
+	}, [isPlyrReady, canUseBoostSpeed, videoId, t])
+
+	useEffect(() => {
+		const video = videoRef.current
+		if (!video || !isPlyrReady || canUseBoostSpeed) return
+
+		function clampPlaybackRate() {
+			const p = playerRef.current
+			if (!video || !p) return
+			if (video.playbackRate > MAX_FREE_PLAYBACK_RATE + 0.01) {
+				video.playbackRate = MAX_FREE_PLAYBACK_RATE
+				p.speed = MAX_FREE_PLAYBACK_RATE
+			}
+		}
+
+		clampPlaybackRate()
+		video.addEventListener('ratechange', clampPlaybackRate)
+		return () => video.removeEventListener('ratechange', clampPlaybackRate)
+	}, [isPlyrReady, canUseBoostSpeed, videoId])
 
 	useEffect(() => {
 		const video = videoRef.current

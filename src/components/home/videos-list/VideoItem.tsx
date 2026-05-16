@@ -20,7 +20,7 @@ export default function VideoItem({ video }: IVideoItemProps) {
 	const t = useTranslations()
 
 	return (
-		<li className='group rounded-xl bg-white shadow-md dark:bg-neutral-900 relative'>
+		<li className='group rounded-xl bg-card text-card-foreground shadow-md border border-border/70 relative'>
 			<div className='[transform-style:preserve-3d] transition-all duration-500 hover:-translate-y-2 hover:rotate-x-3 hover:rotate-y-1 hover:shadow-2xl max-[900px]:hover:-translate-y-1 rounded-xl overflow-hidden'>
 				<Link href={PAGES.WATCH(video.id)} className='block'>
 					<div className='relative aspect-video w-full overflow-hidden rounded-t-xl max-[900px]:rounded-t-lg'>
@@ -40,7 +40,7 @@ export default function VideoItem({ video }: IVideoItemProps) {
 					</div>
 				</Link>
 
-				<div className='flex gap-3 rounded-b-xl p-3 max-[900px]:gap-2 max-[900px]:p-2.5 transition-colors duration-300 group-hover:bg-neutral-50 dark:group-hover:bg-neutral-800'>
+				<div className='flex gap-3 rounded-b-xl p-3 max-[900px]:gap-2 max-[900px]:p-2.5 transition-colors duration-300 group-hover:bg-muted/60'>
 					<Link
 						href={PAGES.CHANNEL(video.channel.username)}
 						className='shrink-0'
@@ -66,15 +66,15 @@ export default function VideoItem({ video }: IVideoItemProps) {
 							</h3>
 
 							<div className='mt-1 max-[900px]:mt-0.5 flex flex-wrap items-center gap-2 max-[900px]:gap-1 text-sm max-[900px]:text-[11px] max-[900px]:leading-snug'>
-								<p className='min-w-0 font-medium text-neutral-800 dark:text-neutral-300 max-[900px]:line-clamp-1 max-[900px]:break-words'>
+								<p className='min-w-0 font-medium text-muted-foreground max-[900px]:line-clamp-1 max-[900px]:break-words'>
 									{video?.channel.name}
 								</p>
-								<span className='text-neutral-400 max-[900px]:shrink-0'>•</span>
-								<p className='text-neutral-500 dark:text-neutral-400 max-[900px]:shrink-0'>
+								<span className='text-muted-foreground/70 max-[900px]:shrink-0'>•</span>
+								<p className='text-muted-foreground max-[900px]:shrink-0'>
 									{formatDate(video?.createdAt)}
 								</p>
-								<span className='text-neutral-400 max-[900px]:shrink-0'>•</span>
-								<p className='text-neutral-500 dark:text-neutral-400 min-w-0 max-[900px]:break-words'>
+								<span className='text-muted-foreground/70 max-[900px]:shrink-0'>•</span>
+								<p className='text-muted-foreground min-w-0 max-[900px]:break-words'>
 									{t('videoItem.viewsCount', { count: video?._count.views })}
 								</p>
 							</div>

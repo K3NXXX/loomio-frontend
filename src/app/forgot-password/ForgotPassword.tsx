@@ -1,4 +1,5 @@
 'use client'
+import { AuthThemeConfiguratorFab } from '@/components/auth/AuthThemeConfiguratorFab'
 import { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -51,20 +52,15 @@ export function ForgotPassword() {
 	}, [errors.email, t])
 
 	return (
-		<div
-			style={{
-				background: 'linear-gradient(250deg, #202020 0%, transparent 50%)',
-			}}
-			className='w-full'
-		>
-			<div className='min-h-screen mx-auto max-w-[1200px] px-5 pb-10'>
+		<div className='w-full min-h-screen bg-gradient-to-br from-background via-muted/30 to-background text-foreground'>
+			<div className='mx-auto max-w-[1200px] px-5 pb-10'>
 				<div className='flex justify-center py-10'>
 					{step === FORGOT_PASSWORD_STEPS.FIRST && (
 						<div className='flex flex-col'>
-							<p className='font-bold text-[24px] max-[450px]:text-[20px]'>
+							<p className='font-bold text-[24px] max-[450px]:text-[20px] text-foreground'>
 								{t('auth.forgotPassword.step1.title')}
 							</p>
-							<p className=' text-neutral-400 text-[14px] max-w-[400px] mb-5'>
+							<p className='text-muted-foreground text-[14px] max-w-[400px] mb-5'>
 								{t('auth.forgotPassword.step1.description')}
 							</p>
 							<form
@@ -74,13 +70,14 @@ export function ForgotPassword() {
 								<Input
 									autoFocus
 									placeholder={t('auth.forgotPassword.step1.emailPlaceholder')}
-									className='text-white py-5'
+									className='py-5 bg-background border-border text-foreground placeholder:text-muted-foreground'
 									aria-label='email'
 									{...register('email')}
 								/>
 								<div className='flex justify-between items-center  pt-2'>
 									<div className='flex gap-3'>
 										<Button
+											type='submit'
 											disabled={isResendDisabled}
 											className='mt-1 font-bold text-[14px] py-2 px-5 w-[120px]'
 										>
@@ -95,7 +92,11 @@ export function ForgotPassword() {
 											)}
 										</Button>
 										<Link href={PAGES.LOGIN}>
-											<Button className='bg-neutral-700 mt-1 font-bold text-[14px] py-3'>
+											<Button
+												type='button'
+												variant='secondary'
+												className='mt-1 font-bold text-[14px] py-3'
+											>
 												{t('auth.forgotPassword.step1.return')}
 											</Button>
 										</Link>
@@ -117,21 +118,26 @@ export function ForgotPassword() {
 					)}
 					{step === FORGOT_PASSWORD_STEPS.SECOND && (
 						<div className='flex flex-col'>
-							<p className='font-bold text-[24px]  max-[450px]:text-[20px]'>
+							<p className='font-bold text-[24px] max-[450px]:text-[20px] text-foreground'>
 								{t('auth.forgotPassword.step2.title')}
 							</p>
-							<p className='text-neutral-400 text-[14px] max-w-[400px] mb-5'>
+							<p className='text-muted-foreground text-[14px] max-w-[400px] mb-5'>
 								{t('auth.forgotPassword.step2.description')}
 							</p>
 							<div className='flex gap-3'>
 								<Link href={PAGES.LOGIN}>
-									<Button className='mt-1 font-bold text-[14px] py-3 max-w-[100px]'>
+									<Button
+										type='button'
+										className='mt-1 font-bold text-[14px] py-3 max-w-[100px]'
+									>
 										{t('auth.forgotPassword.step2.close')}
 									</Button>
 								</Link>
 								<Button
+									type='button'
+									variant='secondary'
 									onClick={() => setStep(FORGOT_PASSWORD_STEPS.FIRST)}
-									className='bg-neutral-700 mt-1 font-bold text-[14px] py-3 w-[150px]'
+									className='mt-1 font-bold text-[14px] py-3 w-[150px]'
 								>
 									{t('auth.forgotPassword.step2.startOver')}
 								</Button>
@@ -140,6 +146,7 @@ export function ForgotPassword() {
 					)}
 				</div>
 			</div>
+			<AuthThemeConfiguratorFab />
 		</div>
 	)
 }

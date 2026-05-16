@@ -71,12 +71,12 @@ export function WatchCommentItem({
 			key={comment.id}
 			className='comment-wrapper'
 		>
-			<div className='comment-inner relative flex flex-col gap-2 p-3 min-[400px]:p-5 rounded-2xl shadow-sm hover:shadow-md transition-all bg-neutral-900'>
+			<div className='comment-inner relative flex flex-col gap-2 p-3 min-[400px]:p-5 rounded-2xl border border-border shadow-sm hover:shadow-md transition-all bg-card text-card-foreground'>
 				<div className='absolute top-0 right-0 w-5 h-5 border-t-3 border-r-3 border-primary rounded-tr-xl'></div>
 
 				<div className='flex gap-2 min-[400px]:gap-3 justify-between items-center'>
 					<div className='flex gap-2 min-[400px]:gap-3 items-start min-w-0 flex-1'>
-						<Avatar className='w-8 h-8 min-[400px]:w-11 min-[400px]:h-11 ring-1 ring-neutral-900 shrink-0'>
+						<Avatar className='w-8 h-8 min-[400px]:w-11 min-[400px]:h-11 ring-1 ring-border shrink-0'>
 							<AvatarImage src={displayAvatar || undefined} alt={displayName} />
 							<AvatarFallback>{displayInitials}</AvatarFallback>
 						</Avatar>
@@ -91,21 +91,26 @@ export function WatchCommentItem({
 										textarea.style.height = textarea.scrollHeight + 'px'
 										setEditingText(textarea.value)
 									}}
-									className='w-full bg-transparent border-b border-neutral-600 focus:border-primary focus:outline-none text-xs min-[400px]:text-sm text-neutral-100 placeholder:text-neutral-500 transition-colors resize-none overflow-hidden px-0 py-1'
+									className='w-full bg-transparent border-b border-border focus:border-primary focus:outline-none text-xs min-[400px]:text-sm text-foreground placeholder:text-muted-foreground transition-colors resize-none overflow-hidden px-0 py-1'
 									placeholder={t('watchComments.editYourComment')}
 									rows={1}
 								/>
 
 								<div className='flex gap-2 justify-end'>
 									<Button
+										type='button'
+										variant='outline'
+										size='sm'
 										onClick={() => setIsCommentEditing(false)}
-										className='px-2.5 min-[400px]:px-3 py-1 bg-neutral-700 text-white rounded-lg hover:brightness-90 transition cursor-pointer text-xs min-[400px]:text-sm'
+										className='rounded-lg text-xs min-[400px]:text-sm'
 									>
 										{t('watchComments.cancel')}
 									</Button>
 									<Button
+										type='button'
+										size='sm'
 										onClick={() => handleEditComment()}
-										className='px-2.5 min-[400px]:px-3 py-1 bg-primary text-white rounded-lg hover:brightness-90 transition cursor-pointer text-xs min-[400px]:text-sm'
+										className='rounded-lg text-xs min-[400px]:text-sm'
 									>
 										{t('watchComments.save')}
 									</Button>
@@ -115,15 +120,15 @@ export function WatchCommentItem({
 							<div className='flex-1 min-w-0'>
 								<div className='flex flex-wrap items-center gap-1.5 min-[400px]:gap-2'>
 									<p
-										className={`font-semibold text-xs min-[400px]:text-sm text-neutral-100 ${
+										className={`font-semibold text-xs min-[400px]:text-sm ${
 											isAuthorChannelOwner
-												? 'bg-primary rounded-md px-1.5 min-[400px]:px-2 py-0.5 min-[400px]:py-1'
-												: ''
+												? 'bg-primary text-primary-foreground rounded-md px-1.5 min-[400px]:px-2 py-0.5 min-[400px]:py-1'
+												: 'text-foreground'
 										}`}
 									>
 										@{displayName}
 									</p>
-									<p className='text-[10px] min-[400px]:text-xs text-neutral-400'>
+									<p className='text-[10px] min-[400px]:text-xs text-muted-foreground'>
 										{formatDate(comment.createdAt)}
 									</p>
 									{comment.parent && comment.parent.user && (
@@ -139,10 +144,10 @@ export function WatchCommentItem({
 										</p>
 									)}
 								</div>
-								<p className='text-xs min-[400px]:text-[15px] max-w-full mt-1 text-neutral-200 leading-relaxed break-words'>
+								<p className='text-xs min-[400px]:text-[15px] max-w-full mt-1 text-foreground leading-relaxed break-words'>
 									{comment.content}
 								</p>
-								<div className='flex items-center gap-4 min-[400px]:gap-8 mt-2 text-xs min-[400px]:text-sm text-neutral-400'>
+								<div className='flex items-center gap-4 min-[400px]:gap-8 mt-2 text-xs min-[400px]:text-sm text-muted-foreground'>
 									<WatchCommentReactions comment={comment} />
 
 									{userData ? (
@@ -168,7 +173,7 @@ export function WatchCommentItem({
 									<div className='flex flex-col gap-2 pt-2'>
 										<button
 											onClick={() => toggleReplies(comment.id)}
-											className='text-[10px] min-[400px]:text-xs font-medium text-neutral-400 flex items-center gap-1 hover:text-primary transition-colors cursor-pointer'
+											className='text-[10px] min-[400px]:text-xs font-medium text-muted-foreground flex items-center gap-1 hover:text-primary transition-colors cursor-pointer'
 										>
 											{isExpanded ? <FaChevronDown /> : <FaChevronRight />}
 											<span>

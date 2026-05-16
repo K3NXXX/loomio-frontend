@@ -32,7 +32,8 @@ export function HomeSidebarMenu() {
 			<aside
 				ref={ref}
 				className='hidden lg:flex flex-col min-w-[240px] max-w-[240px]
-				fixed z-20 top-[76px] h-[calc(100vh-76px)] bg-[oklch(0.19_0_0/0.7)] backdrop-blur-lg'
+				fixed z-20 top-[76px] h-[calc(100vh-76px)] border-r border-border bg-sidebar/95 backdrop-blur-lg
+				dark:border-transparent dark:bg-[oklch(0.19_0_0/0.7)]'
 			>
 				<div className='flex-1 pr-5 py-6 overflow-y-auto custom-scrollbar'>
 					<ul className='space-y-1 px-2'>

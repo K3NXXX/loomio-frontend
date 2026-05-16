@@ -14,6 +14,9 @@ export interface IChannel {
 	username: string
 	bannerUrl: string | null
 	avatarUrl: string | null
+	avatarFrameColor?: string | null
+	avatarFrameThickness?: string | null
+	avatarFrameStyle?: string | null
 	createdAt: Date
 	updatedAt: Date
 	videos: IVideo[]

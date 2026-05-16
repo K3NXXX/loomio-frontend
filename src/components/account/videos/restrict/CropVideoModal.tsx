@@ -34,9 +34,9 @@ export function CropRestrictVideoModal({
 }: RestrictVideoModalProps) {
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='max-w-[700px] bg-neutral-900 text-white'>
+			<DialogContent className='max-w-[700px] border-border bg-card text-card-foreground'>
 				<DialogHeader>
-					<DialogTitle>Adjust Thumbnail</DialogTitle>
+					<DialogTitle className='text-foreground'>Adjust Thumbnail</DialogTitle>
 				</DialogHeader>
 
 				<div className='relative w-full h-[400px] bg-black rounded-lg overflow-hidden'>

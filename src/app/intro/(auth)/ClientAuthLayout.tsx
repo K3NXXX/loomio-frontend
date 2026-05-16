@@ -7,7 +7,7 @@ import Lottie from 'lottie-react'
 import animationData from '@/assets/animations/planet.json'
 
 import type { LottieRefCurrentProps } from 'lottie-react'
-import { HomeUIConfiguratorMenu } from '@/components/home/HomeUIConfiguratorMenu'
+import { AuthThemeConfiguratorFab } from '@/components/auth/AuthThemeConfiguratorFab'
 
 export function ClientAuthLayout({ children }: { children: ReactNode }) {
 	const [isReady, setIsReady] = useState(false)
@@ -46,7 +46,7 @@ export function ClientAuthLayout({ children }: { children: ReactNode }) {
 					</div>
 				)}
 			</div>
-			<HomeUIConfiguratorMenu />
+			<AuthThemeConfiguratorFab />
 		</div>
 	)
 }

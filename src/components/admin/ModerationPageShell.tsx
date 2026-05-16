@@ -15,7 +15,7 @@ export function ModerationPageShell({
 }: ModerationPageShellProps) {
 	return (
 		<div className='mx-auto max-w-[1600px] w-full space-y-6 pb-16'>
-			<header className='relative rounded-2xl border border-border/45 bg-gradient-to-br from-card/95 via-card/55 to-card/25 px-6 py-7 md:px-10 md:py-8 shadow-lg ring-1 ring-white/[0.06]'>
+			<header className='relative rounded-2xl border border-border/45 bg-gradient-to-br from-card/95 via-card/55 to-card/25 px-6 py-7 md:px-10 md:py-8 shadow-lg ring-1 ring-border/50'>
 				<div
 					className='pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/45 to-transparent'
 					aria-hidden

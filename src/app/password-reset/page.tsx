@@ -20,7 +20,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function PasswordResetPage() {
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
+		<Suspense
+			fallback={
+				<div className='min-h-[40vh] flex items-center justify-center text-muted-foreground text-sm'>
+					Loading...
+				</div>
+			}
+		>
 			<PasswordReset />
 		</Suspense>
 	)

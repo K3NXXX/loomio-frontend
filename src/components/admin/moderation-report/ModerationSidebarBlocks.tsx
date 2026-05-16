@@ -15,7 +15,7 @@ export function ModerationSidebarUserBlock({
 	noneText: string
 }) {
 	return (
-		<div className='rounded-xl border border-border/45 bg-card/55 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]'>
+		<div className='rounded-xl border border-border/45 bg-card/55 p-4 shadow-sm ring-1 ring-border/40'>
 			<div className='text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-3'>
 				{label}
 			</div>
@@ -46,7 +46,7 @@ export function ModerationSidebarMetaBlock({
 	value: string
 }) {
 	return (
-		<div className='rounded-xl border border-border/45 bg-card/55 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]'>
+		<div className='rounded-xl border border-border/45 bg-card/55 p-4 shadow-sm ring-1 ring-border/40'>
 			<div className='text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-2'>
 				{label}
 			</div>

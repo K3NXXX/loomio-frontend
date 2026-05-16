@@ -11,6 +11,7 @@ interface IWorkplaceBrandingBanner {
 	setValue: UseFormSetValue<TEditingChannelSchema>
 	onSelectBanner: (e: React.ChangeEvent<HTMLInputElement>) => void
 	channel: IChannel | null
+	allowAnimatedBanner?: boolean
 }
 
 export function WorkplaceBrandingBanner({
@@ -18,6 +19,7 @@ export function WorkplaceBrandingBanner({
 	setValue,
 	onSelectBanner,
 	channel,
+	allowAnimatedBanner = false,
 }: IWorkplaceBrandingBanner) {
 	const t = useTranslations('workplaceBranding.banner')
 	const [previewUrl, setPreviewUrl] = useState<string | undefined>(
@@ -69,6 +71,7 @@ export function WorkplaceBrandingBanner({
 
 			<BannerUploader
 				initialUrl={previewUrl}
+				allowAnimatedBanner={allowAnimatedBanner}
 				onChange={(file) => {
 					if (file) {
 						const fakeEvent = {

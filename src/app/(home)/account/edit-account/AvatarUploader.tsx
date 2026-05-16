@@ -81,7 +81,7 @@ export function AvatarUploader({
 					<label
 						htmlFor={inputId}
 						className='relative w-32 h-32 shrink-0 rounded-full overflow-hidden 
-						ring-2 ring-white/10 shadow-2xl cursor-pointer group 
+						ring-2 ring-border shadow-lg cursor-pointer group 
 						hover:scale-105 transition-transform'
 					>
 						<div className='absolute inset-0 bg-primary/20 blur-2xl scale-110 rounded-full' />
@@ -96,7 +96,7 @@ export function AvatarUploader({
 							)}
 
 							{!isLoading && (
-								<AvatarFallback className='text-[25px] bg-neutral-800'>
+								<AvatarFallback className='text-[25px] bg-muted text-foreground'>
 									{getInitials(fallbackName)}
 								</AvatarFallback>
 							)}
@@ -112,7 +112,7 @@ export function AvatarUploader({
 							type='button'
 							onClick={handleRemoveAvatar}
 							className='cursor-pointer absolute right-2 -bottom-5 -translate-y-1/2 
-							bg-primary hover:bg-primary/80 text-white p-2 rounded-full shadow-md transition'
+							bg-primary hover:bg-primary/80 text-primary-foreground p-2 rounded-full shadow-md transition'
 							title='Remove avatar'
 						>
 							<FiTrash2 className='w-4 h-4' />

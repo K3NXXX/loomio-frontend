@@ -30,7 +30,7 @@ export function AuthProviderCard({
 			transition={{ duration: 0.4 }}
 			className='max-w-6xl mx-auto mt-4 min-[400px]:mt-6 px-2 min-[400px]:px-4 min-[600px]:px-0'
 		>
-			<div className='relative rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3 min-[400px]:p-5 min-[600px]:p-6 overflow-hidden'>
+			<div className='relative rounded-xl border border-border bg-card backdrop-blur p-3 min-[400px]:p-5 min-[600px]:p-6 overflow-hidden dark:border-white/10 dark:bg-white/5'>
 				<div className='absolute left-0 top-0 h-full w-[4px] bg-gradient-to-b from-primary via-primary/60 to-transparent blur-[1px]' />
 
 				<div className='flex flex-col min-[500px]:flex-row min-[500px]:items-center justify-between gap-3 min-[500px]:gap-4'>
@@ -40,16 +40,16 @@ export function AuthProviderCard({
 						</div>
 
 						<div>
-							<p className='text-xs min-[400px]:text-sm text-white/60'>
+							<p className='text-xs min-[400px]:text-sm text-muted-foreground'>
 								{t(
 									'accountPage.editAccount.authProvider.connectedAccountLabel',
 								)}
 							</p>
-							<p className='text-base min-[400px]:text-lg font-semibold capitalize'>
+							<p className='text-base min-[400px]:text-lg font-semibold capitalize text-foreground'>
 								{provider}
 							</p>
 							{description && (
-								<p className='text-[10px] min-[400px]:text-xs text-white/40 mt-1'>
+								<p className='text-[10px] min-[400px]:text-xs text-muted-foreground mt-1'>
 									{description}
 								</p>
 							)}

@@ -17,9 +17,15 @@ class ChannelService {
 		return data
 	}
 
-	async getChannel(username: string): Promise<IChannel> {
+	async getChannel(
+		username: string,
+		opts?: { scope?: 'studio' },
+	): Promise<IChannel> {
+		const params =
+			opts?.scope === 'studio' ? { scope: 'studio' as const } : undefined
 		const { data } = await axiosInstance.get<IChannel>(
 			`${this.BASE_URL}/${username}`,
+			{ params },
 		)
 		return data
 	}

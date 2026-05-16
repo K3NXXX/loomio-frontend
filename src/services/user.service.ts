@@ -1,7 +1,14 @@
 import axiosInstance from '@/lib/axios'
 import type { IGetUserData } from '@/types/auth.types'
 
-import type { ChangeThemeResponse, THEME_COLORS } from '@/types/colors.types'
+import type { CustomThemePayload } from '@/lib/custom-theme-vars'
+import type {
+	AppearanceApiMode,
+	ChangeAppearanceResponse,
+	ChangeCustomThemeResponse,
+	ChangeThemeResponse,
+	THEME_COLORS,
+} from '@/types/colors.types'
 import type { IUpdateAccountRequest } from '@/types/user.types'
 
 class UserService {
@@ -13,6 +20,26 @@ class UserService {
 			{
 				theme: color,
 			},
+		)
+		return data
+	}
+
+	async changeCustomTheme(
+		payload: CustomThemePayload,
+	): Promise<ChangeCustomThemeResponse> {
+		const { data } = await axiosInstance.patch<ChangeCustomThemeResponse>(
+			`${this.BASE_URL}/custom-theme`,
+			payload,
+		)
+		return data
+	}
+
+	async changeAppearance(
+		appearance: AppearanceApiMode,
+	): Promise<ChangeAppearanceResponse> {
+		const { data } = await axiosInstance.patch<ChangeAppearanceResponse>(
+			`${this.BASE_URL}/appearance`,
+			{ appearance },
 		)
 		return data
 	}

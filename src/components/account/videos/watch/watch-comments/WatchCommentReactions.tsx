@@ -26,7 +26,7 @@ export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 
 	if (!userData) {
 		return (
-			<div className='flex gap-5 items-center text-gray-500 text-sm'>
+			<div className='flex gap-5 items-center text-muted-foreground text-sm'>
 				<button
 					type='button'
 					onClick={openAuthPrompt}
@@ -57,7 +57,7 @@ export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 				title={t('watchComments.like')}
 				aria-label={t('watchComments.like')}
 				className={`flex items-center gap-1 py-1 rounded-md transition-colors cursor-pointer group
-				${comment.userReaction === ReactionType.LIKE ? 'text-primary font-bold' : 'text-gray-500'}
+				${comment.userReaction === ReactionType.LIKE ? 'text-primary font-bold' : 'text-muted-foreground'}
 				`}
 			>
 				<FaThumbsUp className='w-4 h-4 transition-colors mr-1' />
@@ -70,7 +70,7 @@ export function WatchCommentReactions({ comment }: IWatchCommentReactions) {
 				title={t('watchComments.dislike')}
 				aria-label={t('watchComments.dislike')}
 				className={`flex items-center gap-1 py-1 rounded-md transition-colors cursor-pointer group relative top-[1px]
-				${comment.userReaction === ReactionType.DISLIKE ? 'text-primary font-bold' : 'text-gray-500'}
+				${comment.userReaction === ReactionType.DISLIKE ? 'text-primary font-bold' : 'text-muted-foreground'}
 			`}
 			>
 				<FaThumbsDown className='w-4 h-4 transition-colors mr-1' />

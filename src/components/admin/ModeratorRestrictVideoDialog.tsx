@@ -74,7 +74,7 @@ export function ModeratorRestrictVideoDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className='sm:max-w-lg gap-4'>
+			<DialogContent className='sm:max-w-lg gap-4 border-border bg-card text-card-foreground'>
 				<DialogHeader>
 					<DialogTitle>{t('title')}</DialogTitle>
 					<DialogDescription>{t('description')}</DialogDescription>
@@ -115,7 +115,7 @@ export function ModeratorRestrictVideoDialog({
 						placeholder={t('notePlaceholder')}
 						maxLength={2000}
 						rows={4}
-						className='resize-y min-h-[100px]'
+						className='resize-y min-h-[100px] bg-background border-border text-foreground placeholder:text-muted-foreground'
 					/>
 				</div>
 

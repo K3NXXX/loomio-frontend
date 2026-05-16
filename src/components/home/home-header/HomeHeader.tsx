@@ -36,7 +36,7 @@ import { useTranslations } from 'next-intl'
 
 export function HomeHeader() {
 	const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
-	const { toggleSidebarCollapsed } = useGlobalStore()
+	const { toggleSidebarCollapsed, headerSticky } = useGlobalStore()
 	const { openUploadingVideo, setOpenUploadingVideo, setUploadChannelId } =
 		useVideoStore()
 	const { userData } = useGetMe()
@@ -56,9 +56,10 @@ export function HomeHeader() {
 		<>
 			<header
 				className={cn(
-					'sticky top-0 left-0 right-0 z-50',
-					'bg-[oklch(0.19_0_0/0.7)] backdrop-blur-lg',
-					'shadow-[0_4px_15px_rgba(0,0,0,0.3)]',
+					'left-0 right-0 z-50',
+					headerSticky ? 'sticky top-0' : 'relative',
+					'border-b border-border/90 bg-background/90 backdrop-blur-lg shadow-sm',
+					'dark:border-transparent dark:bg-[oklch(0.19_0_0/0.7)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.3)]',
 				)}
 			>
 				<div className='flex flex-col pb-5'>
@@ -67,7 +68,7 @@ export function HomeHeader() {
 							<IoMenu
 								onClick={() => toggleSidebarCollapsed()}
 								size={30}
-								className='cursor-pointer burger-toggle max-[1024px]:hidden'
+								className='cursor-pointer burger-toggle max-[1024px]:hidden text-foreground'
 							/>
 							<Separator
 								className='max-[1024px]:hidden'
@@ -82,8 +83,8 @@ export function HomeHeader() {
 									<div className='min-[1024px]:hidden flex'>
 										<DropdownMenu>
 											<DropdownMenuTrigger asChild>
-												<button className='cursor-pointer flex items-center justify-center w-9 h-9 rounded-full hover:bg-white/10 transition-colors'>
-													<FaPlus size={18} color='white' />
+												<button className='cursor-pointer flex items-center justify-center w-9 h-9 rounded-full hover:bg-muted transition-colors'>
+													<FaPlus size={18} className='text-foreground' />
 												</button>
 											</DropdownMenuTrigger>
 
@@ -156,7 +157,7 @@ export function HomeHeader() {
 								onClick={() => setIsMobileSidebarOpen(true)}
 								className='min-[1024px]:hidden'
 							>
-								<IoMenu color='white' size={30} />
+								<IoMenu size={30} className='text-foreground cursor-pointer' />
 							</div>
 							{userData ? (
 								<DropdownMenu>
@@ -165,8 +166,8 @@ export function HomeHeader() {
 											className='
 									max-[1024px]:hidden
 								flex items-center gap-3 px-8 py-3 font-semibold rounded-full text-[16px]
-								bg-[var(--primary)] text-white shadow-md
-								hover:bg-[var(--primary)]/90 hover:shadow-lg
+								bg-primary text-primary-foreground shadow-md
+								hover:bg-primary/90 hover:shadow-lg
 								active:scale-95 active:brightness-90
 								transition-all duration-300
 								'
@@ -229,15 +230,13 @@ export function HomeHeader() {
 					</div>
 				</div>
 
-				{openUploadingVideo && (
-					<UploadVideoModal
-						open={openUploadingVideo}
-						onOpenChange={(open) => {
-							if (!open) setUploadChannelId(null)
-							setOpenUploadingVideo(open)
-						}}
-					/>
-				)}
+				<UploadVideoModal
+					open={openUploadingVideo}
+					onOpenChange={(open) => {
+						if (!open) setUploadChannelId(null)
+						setOpenUploadingVideo(open)
+					}}
+				/>
 
 				<CreateChannelModal
 					open={isCreateFormOpen}

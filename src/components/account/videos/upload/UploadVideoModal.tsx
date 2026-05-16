@@ -32,7 +32,7 @@ import { useVideoStore } from '@/zustand/store/videoStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Lottie from 'lottie-react'
 import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { FaUpload } from 'react-icons/fa6'
 import { toast } from 'sonner'
@@ -121,7 +121,8 @@ export function UploadVideoModal({
 		const file = e.target.files?.[0]
 		if (!file) return
 
-		const cleanName = file.name.split('.').slice(0, -1).join('.')
+		const dot = file.name.lastIndexOf('.')
+		const cleanName = dot > 0 ? file.name.slice(0, dot) : file.name
 		setFileName(cleanName)
 		setValue('file', [file])
 		setPreviewUrl(URL.createObjectURL(file))
@@ -161,7 +162,10 @@ export function UploadVideoModal({
 			setSteps((prev: number) => prev - 1)
 		} else {
 			setFileName('')
-			setPreviewUrl(null)
+			setPreviewUrl((prev) => {
+				if (prev?.startsWith('blob:')) URL.revokeObjectURL(prev)
+				return null
+			})
 			reset()
 		}
 	}
@@ -295,12 +299,31 @@ export function UploadVideoModal({
 		}
 	}
 
+	const prevOpenRef = useRef(open)
+
 	useEffect(() => {
-		if (!open) {
-			reset()
-			setFileName('')
-		}
-	}, [open, reset])
+		const wasOpen = prevOpenRef.current
+		prevOpenRef.current = open
+
+		if (!wasOpen || open) return
+
+		reset()
+		setFileName('')
+		setPreviewUrl((prev) => {
+			if (prev?.startsWith('blob:')) URL.revokeObjectURL(prev)
+			return null
+		})
+		setSteps(1)
+		setVideoId(null)
+		setProgress(0)
+		setDisplayProgress(0)
+		setStatus('idle')
+		setAbortController(null)
+		setIsConfirmOpen(false)
+		setPendingOpen(null)
+		setThumbnailFile(null)
+		setThumbnailPreview(null)
+	}, [open, reset, setThumbnailFile, setThumbnailPreview])
 
 	useEffect(() => {
 		if (status === 'uploading') {
@@ -338,16 +361,14 @@ export function UploadVideoModal({
 					min-w-[960px] min-h-[800px]
 					max-h-[90vh] overflow-y-auto
 					rounded-2xl
-					border border-neutral-800
-					bg-gradient-to-br from-neutral-900 via-neutral-950 to-black
-					text-white
+					border border-border bg-card text-card-foreground
 					shadow-2xl
 					backdrop-blur-xl
 					p-0
 					[&>button]:hidden
 				`}
 				>
-					<DialogTitle className='flex items-center justify-between gap-4 text-lg font-semibold  px-10'>
+					<DialogTitle className='flex items-center justify-between gap-4 text-lg font-semibold text-foreground px-10'>
 						<div className='flex items-center gap-2'>
 							{fileName ? (
 								<span className='max-w-[320px] truncate'>
@@ -371,7 +392,7 @@ export function UploadVideoModal({
 									{status === 'ready' && t('uploadVideoModal.statusReady')}
 								</span>
 
-								<div className='flex-1 h-[4px] bg-neutral-800 rounded-full overflow-hidden'>
+								<div className='flex-1 h-[4px] bg-muted rounded-full overflow-hidden'>
 									<div
 										className='h-full bg-primary transition-all duration-300 ease-out'
 										style={{ width: `${displayProgress}%` }}
@@ -425,7 +446,7 @@ export function UploadVideoModal({
 												onClick={() => handleBack()}
 												type='button'
 												disabled={isLoading}
-												className='bg-secondary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
+												className='bg-secondary text-secondary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 											>
 												{t('uploadVideoModal.back')}
 											</Button>

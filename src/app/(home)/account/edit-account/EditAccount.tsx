@@ -72,7 +72,7 @@ export default function EditAccount() {
 				transition={{ duration: 0.4 }}
 				className='max-w-6xl mx-auto'
 			>
-				<h1 className='text-xl min-[400px]:text-2xl min-[600px]:text-3xl font-bold tracking-tight text-center'>
+				<h1 className='text-xl min-[400px]:text-2xl min-[600px]:text-3xl font-bold tracking-tight text-center text-foreground'>
 					{t('accountPage.editAccount.title')}
 				</h1>
 				<p className='text-sm min-[400px]:text-base text-muted-foreground mt-1 text-center pb-5'>
@@ -85,19 +85,19 @@ export default function EditAccount() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.4 }}
-						className='relative rounded-xl border shadow-sm hover:shadow-md transition-shadow overflow-hidden mb-10'
+						className='relative rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow overflow-hidden mb-10'
 					>
 						<div className='absolute left-0 top-0 h-full w-[4px] bg-gradient-to-b from-primary via-primary/60 to-transparent blur-[1px]' />
 
 						<div className='p-6'>
 							<div className='flex items-center gap-2 mb-6'>
 								<User className='size-5 text-primary' />
-								<h2 className='text-lg font-semibold'>
+								<h2 className='text-lg font-semibold text-foreground'>
 									{t('accountPage.editAccount.profileSectionTitle')}
 								</h2>
 							</div>
 
-							<div className='divide-y divide-white/10'>
+							<div className='divide-y divide-border'>
 
 								<div className='py-4'>
 					<EditableField
@@ -133,19 +133,19 @@ export default function EditAccount() {
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.4, delay: 0.1 }}
-							className='relative rounded-xl border shadow-sm hover:shadow-md transition-shadow overflow-hidden'
+							className='relative rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow overflow-hidden'
 						>
 							<div className='absolute left-0 top-0 h-full w-[4px] bg-gradient-to-b from-primary via-primary/60 to-transparent blur-[1px]' />
 
 							<div className='p-6'>
 								<div className='flex items-center gap-2 mb-6'>
 									<Lock className='size-5 text-primary' />
-									<h2 className='text-lg font-semibold'>
+									<h2 className='text-lg font-semibold text-foreground'>
 										{t('accountPage.editAccount.securitySectionTitle')}
 									</h2>
 								</div>
 
-								<div className='divide-y divide-white/10'>
+								<div className='divide-y divide-border'>
 									<div className='py-4'>
 										<SetPasswordField
 											register={register}
@@ -161,19 +161,19 @@ export default function EditAccount() {
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.4, delay: 0.1 }}
-							className='relative rounded-xl border shadow-sm hover:shadow-md transition-shadow overflow-hidden'
+							className='relative rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow overflow-hidden'
 						>
 							<div className='absolute left-0 top-0 h-full w-[4px] bg-gradient-to-b from-primary via-primary/60 to-transparent blur-[1px]' />
 
 							<div className='p-6'>
 								<div className='flex items-center gap-2 mb-6'>
 									<Lock className='size-5 text-primary' />
-									<h2 className='text-lg font-semibold'>
+									<h2 className='text-lg font-semibold text-foreground'>
 										{t('accountPage.editAccount.securitySectionTitle')}
 									</h2>
 								</div>
 
-								<div className='divide-y divide-white/10'>
+								<div className='divide-y divide-border'>
 									<div className='py-4'>
 										<EditablePasswordField
 											register={register}

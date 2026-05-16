@@ -1,4 +1,5 @@
 'use client'
+import { AuthThemeConfiguratorFab } from '@/components/auth/AuthThemeConfiguratorFab'
 import { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -70,19 +71,14 @@ export default function PasswordReset() {
 	}, [errors.password, errors.confirmPassword, t])
 
 	return (
-		<div
-			style={{
-				background: 'linear-gradient(250deg, #202020 0%, transparent 50%)',
-			}}
-			className='w-full'
-		>
-			<div className='min-h-screen mx-auto max-w-[1200px] px-5 pb-10'>
+		<div className='w-full min-h-screen bg-gradient-to-br from-background via-muted/30 to-background text-foreground'>
+			<div className='mx-auto max-w-[1200px] px-5 pb-10'>
 				<div className='flex justify-center py-10'>
 					<div className='flex flex-col'>
-						<p className='font-bold text-[24px]  max-[450px]:text-[20px]'>
+						<p className='font-bold text-[24px] max-[450px]:text-[20px] text-foreground'>
 							{t('auth.passwordReset.title')}
 						</p>
-						<p className='text-neutral-400 text-[14px] max-w-[400px] mb-5'>
+						<p className='text-muted-foreground text-[14px] max-w-[400px] mb-5'>
 							{t('auth.passwordReset.description')}
 						</p>
 						<form
@@ -90,28 +86,29 @@ export default function PasswordReset() {
 							onSubmit={handleSubmit(onSubmit)}
 						>
 							<div className='flex flex-col'>
-								<label htmlFor='reset-password' className='text-white mb-2'>
+								<label
+									htmlFor='reset-password'
+									className='text-foreground mb-2 text-sm font-medium'
+								>
 									{t('auth.passwordReset.passwordLabel')}
 								</label>
 								<div className='relative'>
 									{showPassword ? (
 										<HiEye
 											onClick={handleClickShowPassword}
-											className='absolute top-[13px] right-[15px] cursor-pointer'
-											color='white'
+											className='absolute top-[13px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 										/>
 									) : (
 										<BsFillEyeSlashFill
 											onClick={handleClickShowPassword}
-											className='absolute top-[13px] right-[15px] cursor-pointer'
-											color='white'
+											className='absolute top-[13px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 										/>
 									)}
 									<Input
 										id='reset-password'
 										type={showPassword ? 'text' : 'password'}
 										placeholder={t('auth.passwordReset.passwordPlaceholder')}
-										className='text-white py-5 pr-10'
+										className='py-5 pr-10 bg-background border-border text-foreground placeholder:text-muted-foreground'
 										{...register('password')}
 									/>
 								</div>
@@ -119,7 +116,7 @@ export default function PasswordReset() {
 							<div className='flex flex-col'>
 								<label
 									htmlFor='reset-password-confirm'
-									className='text-white mb-2'
+									className='text-foreground mb-2 text-sm font-medium'
 								>
 									{t('auth.passwordReset.confirmPasswordLabel')}
 								</label>
@@ -127,14 +124,12 @@ export default function PasswordReset() {
 									{showConfirmPassword ? (
 										<HiEye
 											onClick={handleClickShowConfirmPassword}
-											className='absolute top-[13px] right-[15px] cursor-pointer'
-											color='white'
+											className='absolute top-[13px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 										/>
 									) : (
 										<BsFillEyeSlashFill
 											onClick={handleClickShowConfirmPassword}
-											className='absolute top-[13px] right-[15px] cursor-pointer'
-											color='white'
+											className='absolute top-[13px] right-[15px] cursor-pointer size-5 text-muted-foreground'
 										/>
 									)}
 									<Input
@@ -143,17 +138,24 @@ export default function PasswordReset() {
 										placeholder={t(
 											'auth.passwordReset.confirmPasswordPlaceholder',
 										)}
-										className='text-white py-5 pr-10'
+										className='py-5 pr-10 bg-background border-border text-foreground placeholder:text-muted-foreground'
 										{...register('confirmPassword')}
 									/>
 								</div>
 							</div>
 							<div className='flex gap-3 pt-2'>
-								<Button className='mt-1 font-bold text-[14px] py-3 w-[120px] bg-primary '>
+								<Button
+									type='submit'
+									className='mt-1 font-bold text-[14px] py-3 w-[120px]'
+								>
 									{t('auth.passwordReset.confirm')}
 								</Button>
 								<Link href={PAGES.FORGOT_PASSWORD}>
-									<Button className='bg-neutral-700 mt-1 font-bold text-[14px] py-3'>
+									<Button
+										type='button'
+										variant='secondary'
+										className='mt-1 font-bold text-[14px] py-3'
+									>
 										{t('auth.passwordReset.return')}
 									</Button>
 								</Link>
@@ -162,6 +164,7 @@ export default function PasswordReset() {
 					</div>
 				</div>
 			</div>
+			<AuthThemeConfiguratorFab />
 		</div>
 	)
 }

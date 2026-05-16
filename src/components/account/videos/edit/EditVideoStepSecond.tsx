@@ -86,7 +86,7 @@ export function EditVideoStepSecond({
 	return (
 		<div className='flex flex-col h-[700px] gap-8'>
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>
+				<h3 className='text-lg font-semibold mb-3 text-foreground'>
 					{t('editVideo.stepSecond.thumbnailTitle')}
 				</h3>
 
@@ -129,12 +129,12 @@ export function EditVideoStepSecond({
 				) : (
 					<label
 						htmlFor='thumbnail'
-						className='border-2 border-dashed border-neutral-700 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition w-full max-w-[250px] aspect-video text-gray-400'
+						className='border-2 border-dashed border-border rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition w-full max-w-[250px] aspect-video text-muted-foreground'
 					>
 						<span className='mb-2'>
 							{t('editVideo.stepSecond.clickUploadThumbnail')}
 						</span>
-						<span className='text-xs text-gray-500'>
+						<span className='text-xs text-muted-foreground'>
 							{t('editVideo.stepSecond.imageFormats')}
 						</span>
 						<input
@@ -149,13 +149,13 @@ export function EditVideoStepSecond({
 			</div>
 
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>
+				<h3 className='text-lg font-semibold mb-3 text-foreground'>
 					{t('editVideo.stepSecond.visibilityTitle')}
 				</h3>
 				<div className='flex gap-4'>
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
-						${visibility === 'public' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}`}
+						${visibility === 'public' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'}`}
 					>
 						<input
 							type='radio'
@@ -170,10 +170,10 @@ export function EditVideoStepSecond({
 						/>
 						<Globe className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>
+							<span className='text-foreground font-medium'>
 								{t('editVideo.stepSecond.public')}
 							</span>
-							<span className='text-xs text-gray-400'>
+							<span className='text-xs text-muted-foreground'>
 								{t('editVideo.stepSecond.publicHint')}
 							</span>
 						</div>
@@ -181,7 +181,7 @@ export function EditVideoStepSecond({
 
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
-						${visibility === 'private' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}`}
+						${visibility === 'private' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'}`}
 					>
 						<input
 							type='radio'
@@ -196,10 +196,10 @@ export function EditVideoStepSecond({
 						/>
 						<Lock className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>
+							<span className='text-foreground font-medium'>
 								{t('editVideo.stepSecond.private')}
 							</span>
-							<span className='text-xs text-gray-400'>
+							<span className='text-xs text-muted-foreground'>
 								{t('editVideo.stepSecond.privateHint')}
 							</span>
 						</div>
@@ -208,16 +208,16 @@ export function EditVideoStepSecond({
 			</div>
 
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-white'>
+				<h3 className='text-lg font-semibold mb-3 text-foreground'>
 					{t('editVideo.stepSecond.audienceTitle')}
 				</h3>
-				<p className='text-sm text-gray-400 mb-3'>
+				<p className='text-sm text-muted-foreground mb-3'>
 					{t('editVideo.stepSecond.audienceQuestion')}
 				</p>
 				<div className='flex gap-4'>
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
-						${isForKids === 'yes' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}`}
+						${isForKids === 'yes' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'}`}
 					>
 						<input
 							type='radio'
@@ -232,10 +232,10 @@ export function EditVideoStepSecond({
 						/>
 						<Users className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>
+							<span className='text-foreground font-medium'>
 								{t('editVideo.stepSecond.yes')}
 							</span>
-							<span className='text-xs text-gray-400'>
+							<span className='text-xs text-muted-foreground'>
 								{t('editVideo.stepSecond.yesHint')}
 							</span>
 						</div>
@@ -243,7 +243,7 @@ export function EditVideoStepSecond({
 
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
-						${isForKids === 'no' ? 'border-primary bg-primary/10' : 'border-neutral-700 hover:border-primary/50'}`}
+						${isForKids === 'no' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'}`}
 					>
 						<input
 							type='radio'
@@ -258,10 +258,10 @@ export function EditVideoStepSecond({
 						/>
 						<Lock className='w-5 h-5 text-primary' />
 						<div className='flex flex-col'>
-							<span className='text-white font-medium'>
+							<span className='text-foreground font-medium'>
 								{t('editVideo.stepSecond.no')}
 							</span>
-							<span className='text-xs text-gray-400'>
+							<span className='text-xs text-muted-foreground'>
 								{t('editVideo.stepSecond.noHint')}
 							</span>
 						</div>
