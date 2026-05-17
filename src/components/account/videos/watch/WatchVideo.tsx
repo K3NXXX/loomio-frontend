@@ -101,6 +101,9 @@ export function WatchVideo({
 	const [aspectRatio, setAspectRatio] = useState<number | null>(null)
 	const [isReady, setIsReady] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
+	/** After first canplay/playing we ignore `waiting` for the full-screen spinner (HLS rebuffers fire waiting often). */
+	const [hasFirstFrame, setHasFirstFrame] = useState(false)
+	const hasFirstFrameRef = useRef(false)
 	const [isPlyrReady, setIsPlyrReady] = useState(false)
 	const [isPlyrMenuOpen, setIsPlyrMenuOpen] = useState(false)
 	const playerRef = useRef<any>(null)
@@ -173,6 +176,8 @@ export function WatchVideo({
 	useLayoutEffect(() => {
 		setIsReady(false)
 		setIsLoading(true)
+		setHasFirstFrame(false)
+		hasFirstFrameRef.current = false
 		setIsPlyrReady(false)
 		hasSentView.current = false
 		if (viewTimer.current) {
@@ -488,7 +493,7 @@ export function WatchVideo({
 		}
 
 		video.addEventListener('play', handlePlay)
-		video.addEventListener('pause', handlePlay)
+		video.addEventListener('pause', handlePause)
 		video.addEventListener('ended', handlePause)
 
 		return () => {
@@ -562,6 +567,8 @@ export function WatchVideo({
 		return () => video.removeEventListener('ended', handleEnded)
 	}, [onNext])
 
+	const showInitialLoader = !isPlyrReady || (isLoading && !hasFirstFrame)
+
 	return (
 		<div
 			ref={containerRef}
@@ -572,7 +579,7 @@ export function WatchVideo({
 					: { aspectRatio: '16/9' }
 			}
 		>
-			{(isLoading || !isPlyrReady) && (
+			{showInitialLoader && (
 				<div className='absolute inset-0 z-10 flex items-center justify-center bg-black pointer-events-none'>
 					<div className='w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin' />
 				</div>
@@ -627,9 +634,19 @@ export function WatchVideo({
 					ref={videoRef}
 					src={isHls ? undefined : videoSrc}
 					className='w-full h-full object-contain'
-					onCanPlay={() => setIsLoading(false)}
-					onWaiting={() => setIsLoading(true)}
-					onPlaying={() => setIsLoading(false)}
+					onCanPlay={() => {
+						setIsLoading(false)
+						hasFirstFrameRef.current = true
+						setHasFirstFrame(true)
+					}}
+					onWaiting={() => {
+						if (!hasFirstFrameRef.current) setIsLoading(true)
+					}}
+					onPlaying={() => {
+						setIsLoading(false)
+						hasFirstFrameRef.current = true
+						setHasFirstFrame(true)
+					}}
 					controls
 					autoPlay
 					muted

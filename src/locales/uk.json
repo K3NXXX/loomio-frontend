@@ -1,7 +1,15 @@
 {
 	"header": {
 		"search": "Пошук...",
-		"upload": "Завантажити"
+		"upload": "Завантажити",
+		"searchSuggestions": {
+			"panelTitle": "Підказки",
+			"loading": "Шукаємо…",
+			"empty": "Немає підказок",
+			"kindVideo": "Відео",
+			"kindChannel": "Канал",
+			"kindTag": "Тег"
+		}
 	},
 	"guestAuth": {
 		"logIn": "Увійти",
@@ -144,7 +152,8 @@
 				"name": "Ім’я",
 				"username": "Юзернейм",
 				"email": "Електронна пошта"
-			}
+			},
+			"emailVerifySent": "Ми надіслали код підтвердження на нову адресу. Введіть його у вікні, щоб завершити зміну email."
 		},
 		"channelVideoList": {
 			"emptyState": "Поки що немає відео. Завантажте перше відео, щоб почати.",
@@ -975,18 +984,23 @@
 		"description": "Ми надіслали код підтвердження на вашу електронну адресу. Перевірте вхідні та введіть код, щоб продовжити.",
 		"codePlaceholder": "Ваш код підтвердження",
 		"completeButton": "Завершити реєстрацію",
-		"resendButton": "Надіслати знову"
+		"resendButton": "Надіслати знову",
+		"emailChangeTitle": "Підтвердіть нову пошту",
+		"emailChangeDescription": "Ми надіслали код на вашу нову адресу електронної пошти. Введіть його нижче, щоб зберегти зміни.",
+		"emailChangeConfirmButton": "Підтвердити нову пошту"
 	},
 	"OauthLoading": "Триває авторизація, будь ласка, зачекайте...",
 	"errors": {
 		"auth": {
 			"invalidCredentials": "Невірний email або пароль",
 			"userInactive": "Акаунт не активний",
-			"waitBeforeResend": "Зачекайте {waitTime} секунд перед повторним запитом коду"
+			"waitBeforeResend": "Зачекайте {waitTime} секунд перед повторним запитом коду",
+			"invalidVerificationCode": "Невірний або прострочений код. Спробуйте ще раз або запросіть новий."
 		}
 	},
 	"success": {
-		"registrationCompleted": "Реєстрацію завершено!"
+		"registrationCompleted": "Реєстрацію завершено!",
+		"emailUpdated": "Електронну пошту успішно оновлено."
 	},
 	"tabs": {
 		"videos": "Відео",

@@ -55,6 +55,33 @@ class AuthService {
 		return data
 	}
 
+	async requestEmailChange(email: string): Promise<ISignUpResponse> {
+		const { data } = await axiosInstance.post<ISignUpResponse>(
+			`${this.BASE_URL}/email-change/request`,
+			{ email },
+		)
+		return data
+	}
+
+	async verifyEmailChange(body: {
+		email: string
+		code: string
+	}): Promise<{ success: boolean; message: string }> {
+		const { data } = await axiosInstance.post<{ success: boolean; message: string }>(
+			`${this.BASE_URL}/email-change/verify`,
+			body,
+		)
+		return data
+	}
+
+	async resendEmailChange(email: string): Promise<IResendCodeResponse> {
+		const { data } = await axiosInstance.post<IResendCodeResponse>(
+			`${this.BASE_URL}/email-change/resend`,
+			{ email },
+		)
+		return data
+	}
+
 	async forgotPassword(
 		email: IForgotPasswordRequest,
 	): Promise<IForgotPasswordResponse> {

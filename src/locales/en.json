@@ -1,7 +1,15 @@
 {
 	"header": {
 		"search": "Search...",
-		"upload": "Upload"
+		"upload": "Upload",
+		"searchSuggestions": {
+			"panelTitle": "Suggestions",
+			"loading": "Searching…",
+			"empty": "No suggestions yet",
+			"kindVideo": "Video",
+			"kindChannel": "Channel",
+			"kindTag": "Tag"
+		}
 	},
 	"guestAuth": {
 		"logIn": "Log in",
@@ -144,7 +152,8 @@
 				"name": "Name",
 				"username": "Username",
 				"email": "Email"
-			}
+			},
+			"emailVerifySent": "We sent a verification code to the new address. Enter it in the window to finish updating your email."
 		},
 		"channelVideoList": {
 			"emptyState": "No videos yet. Upload your first video to get started.",
@@ -974,18 +983,23 @@
 		"description": "We have sent a verification code to your email address. Please check your inbox and enter the code to continue.",
 		"codePlaceholder": "Your verification code",
 		"completeButton": "Complete registration",
-		"resendButton": "Resend code"
+		"resendButton": "Resend code",
+		"emailChangeTitle": "Confirm your new email",
+		"emailChangeDescription": "We’ve sent a code to your new email address. Enter it below to save this change.",
+		"emailChangeConfirmButton": "Confirm email change"
 	},
 	"OauthLoading": "Authorization in progress, please wait...",
 	"errors": {
 		"auth": {
 			"invalidCredentials": "Invalid email or password",
 			"userInactive": "User account is inactive",
-			"waitBeforeResend": "Please wait {waitTime} seconds before requesting a new code"
+			"waitBeforeResend": "Please wait {waitTime} seconds before requesting a new code",
+			"invalidVerificationCode": "Invalid or expired code. Try again or request a new one."
 		}
 	},
 	"success": {
-		"registrationCompleted": "Registration completed!"
+		"registrationCompleted": "Registration completed!",
+		"emailUpdated": "Email updated successfully."
 	},
 	"premium": {
 		"title": "Loomio Premium",
