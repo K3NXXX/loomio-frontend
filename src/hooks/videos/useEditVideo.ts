@@ -1,6 +1,5 @@
 import { videoService } from '@/services/video.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
 
 export const useEditVideo = () => {
 	const queryClient = useQueryClient()
@@ -8,9 +7,12 @@ export const useEditVideo = () => {
 		mutationKey: ['editVideo'],
 		mutationFn: ({ videoId, data }: { videoId: string; data: FormData }) =>
 			videoService.editVideo(videoId, data),
-		onSuccess: () => {
+		onSuccess: (_data, variables) => {
 			queryClient.invalidateQueries({ queryKey: ['getPublicVideos'] })
 			queryClient.invalidateQueries({ queryKey: ['channelStudioVideos'] })
+			queryClient.invalidateQueries({
+				queryKey: ['getOnePublicVideo', variables.videoId],
+			})
 		},
 	})
 

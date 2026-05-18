@@ -1,10 +1,14 @@
 import { z } from 'zod'
-import { uploadVideoSchema } from './upload-video.schema'
+import { uploadVideoSchema, videoChaptersSchema } from './upload-video.schema'
 
 export const editVideoSchema = uploadVideoSchema
-	.omit({ file: true })
+	.omit({ file: true, chapters: true, thumbnail: true })
+	.extend({
+		chapters: videoChaptersSchema,
+		/** Empty array / omitted = keep server thumbnail; new file replaces it. */
+		thumbnail: z.array(z.instanceof(File)).max(1).optional(),
+	})
 	.partial({
-		thumbnail: true,
 		publishType: true,
 		publishDate: true,
 	})

@@ -472,7 +472,14 @@
 	"watch": {
 		"notFound": "Відео не знайдено",
 		"showLess": "Показати менше",
-		"showMore": "Показати більше"
+		"showMore": "Показати більше",
+		"chapters": {
+			"title": "Розділи",
+			"close": "Сховати",
+			"hint": "Переглянути та перейти до розділу збоку від відео.",
+			"show": "Показати розділи",
+			"showCompact": "Розділи"
+		}
 	},
 	"watchVideo": {
 		"skipSeconds": "{count} сек",
@@ -556,7 +563,8 @@
 		"steps": {
 			"general": "Загальне",
 			"additional": "Деталі",
-			"schedule": "Публікація"
+			"schedule": "Публікація",
+			"chapters": "Таймкоди"
 		}
 	},
 	"workplaceHeader": {
@@ -867,6 +875,20 @@
 			"scheduleHint": "Оберіть дату й час",
 			"publishDateTimeLabel": "Дата й час публікації",
 			"pickDate": "Оберіть дату"
+		},
+		"stepFourth": {
+			"title": "Таймкоди та розділи",
+			"description": "Допоможіть глядачам переходити до важливих моментів. Для кожного фрагмента вкажіть час і коротку назву.",
+			"hintFormat": "Формат: m:ss, mm:ss або h:mm:ss",
+			"emptyState": "Таймкодів ще немає. Додайте перший, щоб структурувати відео.",
+			"addFirst": "Додати розділ",
+			"addAnother": "Ще один розділ",
+			"timeLabel": "Час",
+			"timePlaceholder": "0:00",
+			"titleLabel": "Назва",
+			"titlePlaceholder": "Наприклад: Вступ, Фінальний бій",
+			"removeAria": "Видалити розділ",
+			"validationToast": "Перевірте рядки: час і назва мають бути заповнені, час — у форматі mm:ss."
 		}
 	},
 	"editVideo": {
@@ -967,7 +989,11 @@
 			"visibilityRequired": "Потрібно вказати видимість",
 			"audienceRequired": "Потрібно вказати, чи призначено контент для дітей",
 			"publishTypeRequired": "Потрібно вибрати час публікації",
-			"publishDateRequired": "Потрібно вказати дату публікації для запланованого відео"
+			"publishDateRequired": "Потрібно вказати дату публікації для запланованого відео",
+			"chapterTitleRequired": "Для кожного розпочатого рядка вкажіть назву розділу",
+			"chapterTimecodeRequired": "Для кожного розпочатого рядка вкажіть час",
+			"chapterTimeInvalid": "Формат mm:ss або h:mm:ss; хвилини та секунди — 00–59",
+			"chapterTitleMax120": "Назва розділу — не більше 120 символів"
 		},
 		"report": {
 			"reasonRequired": "Оберіть причину",

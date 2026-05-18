@@ -1,3 +1,8 @@
+export interface IVideoChapter {
+	title: string
+	timecode: string
+}
+
 export interface IAddVideoRequest {
 	title: string
 	description?: string
@@ -9,6 +14,7 @@ export interface IAddVideoRequest {
 	videoPublicId: string
 	publishType: 'now' | 'scheduled'
 	publishDate?: string
+	chapters?: IVideoChapter[]
 }
 
 export interface IEditVideoRequest {
@@ -39,6 +45,8 @@ export interface IVideo {
 	createdAt: string
 	durationSeconds?: number | null
 	videoPublicId: string
+	/** Saved chapter markers — shape `{ title, timecode }[]` from API */
+	chapters?: IVideoChapter[] | null
 	likesCount: number
 	dislikesCount: number
 	tags?: string | null

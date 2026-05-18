@@ -1,6 +1,7 @@
 import { channelService } from '@/services/channel.service'
 import type { IChannel } from '@/types/channel.types'
 import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 
 export type GetChannelScope = 'full' | 'studio'
 
@@ -20,10 +21,16 @@ export const useGetChannel = (
 		staleTime: scope === 'studio' ? 60_000 : 0,
 	})
 
+	const status = axios.isAxiosError(query.error)
+		? query.error.response?.status
+		: undefined
+
 	return {
 		channel: query.data,
 		isLoading: query.isPending,
 		isError: query.isError,
+		isForbidden: query.isError && status === 403,
+		isUnauthorized: query.isError && status === 401,
 		refetch: query.refetch,
 	}
 }

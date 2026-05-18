@@ -13,7 +13,7 @@ import { useChannelStore } from '@/zustand/store/channelStore'
 import { cn } from '@/lib/utils'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import React, { useEffect } from 'react'
 import { IoMdSettings } from 'react-icons/io'
@@ -24,12 +24,17 @@ export default function WorkplaceLayout({
 	children: React.ReactNode
 }) {
 	const tLayout = useTranslations('workplaceChannelLayout')
+	const router = useRouter()
 	const { username } = useParams<{ username: string }>()
 	const cleanUsername = decodeURIComponent(username || '').replace(/^@/, '')
-	const { channel, isLoading, isError, refetch } = useGetChannel(
-		cleanUsername,
-		{ scope: 'studio' },
-	)
+	const {
+		channel,
+		isLoading,
+		isError,
+		isForbidden,
+		isUnauthorized,
+		refetch,
+	} = useGetChannel(cleanUsername, { scope: 'studio' })
 	const { userData } = useGetMe()
 	useNotificationSocket(userData?.id)
 	const { setChannel, setLoading } = useChannelStore()
@@ -37,9 +42,35 @@ export default function WorkplaceLayout({
 	const { toggleThemeMenuOpened, homeSidebarDockSide } = useGlobalStore()
 
 	useEffect(() => {
+		setChannel(null)
+	}, [cleanUsername, setChannel])
+
+	useEffect(() => {
 		setLoading(isLoading)
+		if (isForbidden || isUnauthorized || isError) {
+			setChannel(null)
+			return
+		}
 		if (channel) setChannel(channel)
-	}, [channel, isLoading, setChannel, setLoading])
+	}, [
+		channel,
+		isLoading,
+		isForbidden,
+		isUnauthorized,
+		isError,
+		setChannel,
+		setLoading,
+	])
+
+	useEffect(() => {
+		if (isForbidden || isUnauthorized) {
+			router.replace(PAGES.HOME)
+		}
+	}, [isForbidden, isUnauthorized, router])
+
+	if (isForbidden || isUnauthorized) {
+		return <WorkplaceSkeleton />
+	}
 
 	if (isError) {
 		return (

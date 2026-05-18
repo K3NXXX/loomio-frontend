@@ -24,5 +24,6 @@ export function getAccessRefreshIntervalMs(): number {
 	if (raw != null && raw !== '' && !Number.isNaN(Number(raw))) {
 		return Math.max(10_000, Number(raw))
 	}
-	return process.env.NODE_ENV === 'development' ? 60_000 : 14 * 60_000
+	/** Default: every 10 minutes (override with NEXT_PUBLIC_ACCESS_REFRESH_INTERVAL_MS). */
+	return 10 * 60_000
 }

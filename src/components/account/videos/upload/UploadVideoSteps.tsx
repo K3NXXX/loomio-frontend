@@ -10,15 +10,16 @@ const stepDefs = [
 	{ number: 1, labelKey: 'general' as const },
 	{ number: 2, labelKey: 'additional' as const },
 	{ number: 3, labelKey: 'schedule' as const },
+	{ number: 4, labelKey: 'chapters' as const },
 ]
 
 export function UploadVideoSteps({ currentStep }: UploadVideoStepsProps) {
 	const t = useTranslations('videoWizard.steps')
 
 	return (
-		<div className='flex items-center justify-center gap-10'>
+		<div className='flex items-center justify-center gap-6 max-[640px]:gap-4 flex-wrap'>
 			{stepDefs.map((step, index) => (
-				<div key={step.number} className='flex items-center gap-10'>
+				<div key={step.number} className='flex items-center gap-6 max-[640px]:gap-4'>
 					<div className='flex flex-col items-center gap-1'>
 						<div
 							className={`relative flex items-center justify-center w-10 h-10 rounded-full font-semibold shadow-md transition
@@ -41,7 +42,7 @@ export function UploadVideoSteps({ currentStep }: UploadVideoStepsProps) {
 
 					{index < stepDefs.length - 1 && (
 						<div
-							className={`h-[2px] w-20 rounded-full transition
+							className={`h-[2px] w-12 max-[640px]:w-8 rounded-full transition
 								${currentStep >= step.number + 1 ? 'bg-gradient-to-r from-primary to-primary/60' : 'bg-border'}
 							`}
 						/>

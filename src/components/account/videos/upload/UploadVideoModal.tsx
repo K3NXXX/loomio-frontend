@@ -42,7 +42,7 @@ import { UploadVideoStepFirst } from './UploadVideoStepFirst'
 import { UploadVideoSteps } from './UploadVideoSteps'
 import { UploadVideoStepSecond } from './UploadVideoStepSecond'
 import { UploadVideoStepThird } from './UploadVideoStepThird'
-import { useDeleteVideo } from '@/hooks/videos/useDeleteVideo'
+import { UploadVideoStepFourth } from './UploadVideoStepFourth'
 import { useDeleteTempVideo } from '@/hooks/videos/useDeleteTempVideo'
 import { useVideoProcessing } from '@/hooks/videos/useVideoProccessing'
 import { useUploadVideo } from '@/hooks/videos/useUploadVideo'
@@ -66,6 +66,7 @@ export function UploadVideoModal({
 		trigger,
 		watch,
 		getFieldState,
+		control,
 		formState: { errors, isDirty },
 	} = useForm<TUploadVideoSchema>({
 		resolver: zodResolver(uploadVideoSchema),
@@ -76,6 +77,7 @@ export function UploadVideoModal({
 			visibility: 'public',
 			publishType: 'now',
 			tags: '',
+			chapters: [],
 		},
 	})
 
@@ -233,6 +235,16 @@ export function UploadVideoModal({
 				if (dateErr) toast.error(getValidationMessage(dateErr, t))
 				return
 			}
+			setSteps((prev) => prev + 1)
+			return
+		}
+
+		if (steps === 4) {
+			const isValid = await trigger(['chapters'])
+			if (!isValid) {
+				toast.error(t('uploadVideoModal.stepFourth.validationToast'))
+				return
+			}
 			if (!videoId) {
 				toast.error(t('uploadVideoModal.toastStillUploading'))
 				return
@@ -250,6 +262,13 @@ export function UploadVideoModal({
 		try {
 			const formData = new FormData()
 
+			const chaptersPayload = data.chapters
+				.map((c) => ({
+					title: c.title.trim(),
+					timecode: c.timecode.trim(),
+				}))
+				.filter((c) => c.title.length > 0 && c.timecode.length > 0)
+
 			const payload: IAddVideoRequest = {
 				title: data.title,
 				description: data.description || '',
@@ -262,6 +281,7 @@ export function UploadVideoModal({
 				thumbnail: data.thumbnail?.[0],
 				channelId: uploadChannelId,
 				videoPublicId: videoId!,
+				chapters: chaptersPayload.length > 0 ? chaptersPayload : undefined,
 			}
 
 			formData.append('title', payload.title)
@@ -278,6 +298,9 @@ export function UploadVideoModal({
 			if (payload.publishDate)
 				formData.append('publishDate', payload.publishDate)
 			if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail)
+			if (payload.chapters?.length) {
+				formData.append('chapters', JSON.stringify(payload.chapters))
+			}
 
 			addVideo(formData, {
 				onSuccess: () => {
@@ -422,7 +445,13 @@ export function UploadVideoModal({
 							<>
 								<UploadVideoSteps currentStep={steps} />
 								<div className='grid grid-cols-2 gap-8 px-5'>
-									<div className='h-[500px] flex flex-col justify-between'>
+									<div
+										className={
+											steps === 4
+												? 'h-[min(54vh,520px)] min-h-[440px] flex flex-col'
+												: 'h-[500px] flex flex-col justify-between'
+										}
+									>
 										{steps === 1 && (
 											<UploadVideoStepFirst
 												register={register}
@@ -434,6 +463,9 @@ export function UploadVideoModal({
 										)}
 										{steps === 3 && (
 											<UploadVideoStepThird watch={watch} setValue={setValue} />
+										)}
+										{steps === 4 && (
+											<UploadVideoStepFourth control={control} register={register} />
 										)}
 									</div>
 									<div className='flex flex-col justify-between'>
@@ -454,7 +486,7 @@ export function UploadVideoModal({
 												onClick={handleNextStep}
 												type='button'
 												disabled={
-													isLoading || (steps === 3 && !isUploadFinished)
+													isLoading || (steps === 4 && !isUploadFinished)
 												}
 												className='bg-primary text-primary-foreground font-semibold py-3 px-8 rounded-xl flex justify-center min-w-[140px]'
 											>
@@ -464,7 +496,7 @@ export function UploadVideoModal({
 														loop
 														className='w-15 h-15'
 													/>
-												) : steps === 3 ? (
+												) : steps === 4 ? (
 													t('uploadVideoModal.confirm')
 												) : (
 													t('uploadVideoModal.next')

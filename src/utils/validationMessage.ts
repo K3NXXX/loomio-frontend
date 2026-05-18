@@ -55,6 +55,11 @@ const VALIDATION_KEY_BY_MESSAGE: Record<string, string> = {
 	'Publish date is required when scheduling': 'validation.video.publishDateRequired',
 	'Publish date is required when scheduling a video':
 		'validation.video.publishDateRequired',
+	'Chapter title required': 'validation.video.chapterTitleRequired',
+	'Timecode required': 'validation.video.chapterTimecodeRequired',
+	'Invalid chapter time': 'validation.video.chapterTimeInvalid',
+	'Chapter title must be at most 120 characters':
+		'validation.video.chapterTitleMax120',
 	'Select a reason': 'validation.report.reasonRequired',
 	'Please provide more details': 'validation.report.messageRequired',
 	'File must be an image': 'validation.file.imageOnly',

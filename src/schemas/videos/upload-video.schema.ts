@@ -1,5 +1,48 @@
 import { z } from 'zod'
 
+import { isValidChapterTimecode } from '@/utils/chapterTimecode'
+
+/** Shared chapter rows validation (upload wraps with optional + default([])). */
+export const videoChaptersSchema = z
+	.array(
+		z.object({
+			title: z
+				.string()
+				.max(120, { message: 'Chapter title must be at most 120 characters' }),
+			timecode: z.string().max(9),
+		}),
+	)
+	.max(40)
+	.superRefine((rows, ctx) => {
+		for (let i = 0; i < rows.length; i++) {
+			const title = rows[i].title.trim()
+			const tc = rows[i].timecode.trim()
+			if (!title && !tc) continue
+			if (!title) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Chapter title required',
+					path: [i, 'title'],
+				})
+			}
+			if (!tc) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Timecode required',
+					path: [i, 'timecode'],
+				})
+				continue
+			}
+			if (!isValidChapterTimecode(tc)) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Invalid chapter time',
+					path: [i, 'timecode'],
+				})
+			}
+		}
+	})
+
 export const uploadVideoSchema = z.object({
 	title: z
 		.string()
@@ -55,6 +98,7 @@ export const uploadVideoSchema = z.object({
 				})
 			}
 		}),
+	chapters: videoChaptersSchema.optional().default([]),
 })
 
 export type TUploadVideoSchema = z.infer<typeof uploadVideoSchema>

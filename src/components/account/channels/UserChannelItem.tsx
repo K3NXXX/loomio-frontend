@@ -14,7 +14,8 @@ import { getInitials } from '@/utils/get-initials'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import type { RefObject } from 'react'
-import { FiExternalLink, FiSettings } from 'react-icons/fi'
+import { FaThLarge } from 'react-icons/fa'
+import { FiSettings } from 'react-icons/fi'
 import { HiOutlineViewGrid } from 'react-icons/hi'
 
 interface IUserChannelItemProps {
@@ -110,15 +111,13 @@ export function UserChannelItem({
 					<DropdownMenuSeparator />
 
 					<DropdownMenuItem asChild>
-						<a
+						<Link
 							href={PAGES.WORKPLACE_DASHBOARD(channel.username)}
-							target='_blank'
-							rel='noopener noreferrer'
 							className='flex items-center gap-2 cursor-pointer'
 						>
-							<FiExternalLink className='w-4 h-4 text-neutral-400' />
+							<FaThLarge className='w-4 h-4 text-neutral-400' />
 							<span>{t('accountPage.userChannelItem.menuWorkplace')}</span>
-						</a>
+						</Link>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

@@ -436,6 +436,87 @@
 	flex-shrink: 0;
 }
 
+/* Watch page: chapter segments — theme colors, fine gaps (YouTube-like) */
+.watch-video-root .plyr__progress {
+	position: relative;
+}
+
+/* Уникаємо подвійної підказки: при глахах вимикаємо Plyr seek tooltip (див. tooltips.seek у WatchVideo) */
+.watch-video-root--chapters .plyr__progress .plyr__tooltip,
+.watch-video-root--chapters .plyr__progress__container .plyr__tooltip {
+	display: none !important;
+	opacity: 0 !important;
+	visibility: hidden !important;
+	pointer-events: none !important;
+}
+.watch-video-root--chapters .plyr__progress .plyr__tooltip--visible {
+	display: none !important;
+}
+
+.watch-video-root .loomio-chapter-layer {
+	z-index: 0;
+	pointer-events: none;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 50%;
+	bottom: auto;
+	height: 5px;
+	transform: translateY(-50%);
+	gap: 2px;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+.watch-video-root .loomio-chapter-seg-track {
+	min-width: 0;
+	position: relative;
+	overflow: hidden;
+	height: 5px;
+	border-radius: 3px;
+	background: color-mix(in oklch, var(--foreground) 22%, transparent);
+	box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent);
+}
+
+.watch-video-root .loomio-chapter-seg-fill {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 0%;
+	border-radius: inherit;
+	background: var(--primary);
+	box-shadow: none;
+	pointer-events: none;
+}
+
+.watch-video-root .plyr__progress input[type='range'] {
+	position: relative;
+	z-index: 1;
+	background: transparent !important;
+	--plyr-range-fill-background: transparent;
+}
+
+.watch-video-root .plyr__progress input[type='range']::-webkit-slider-runnable-track {
+	background: transparent !important;
+	box-shadow: none !important;
+}
+
+.watch-video-root .plyr__progress input[type='range']::-moz-range-track {
+	background: transparent !important;
+}
+
+.watch-video-root .plyr__progress input[type='range']::-moz-range-progress {
+	background: transparent !important;
+}
+
+.watch-video-root .plyr__progress .plyr__progress__buffer {
+	opacity: 0 !important;
+}
+
 /* Premium mini floating player — compact Plyr bar */
 .premium-mini-player .plyr {
 	border-radius: 0;

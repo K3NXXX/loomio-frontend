@@ -193,8 +193,6 @@ export function ChannelLayout({ children }: ChannelLayoutProps) {
 											</Button>
 											<Link
 												href={PAGES.WORKPLACE_DASHBOARD(channel.username)}
-												target='_blank'
-												rel='noopener noreferrer'
 											>
 												<Button
 													variant='outline'

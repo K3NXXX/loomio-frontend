@@ -53,6 +53,7 @@ export function RestrictVideoModal({
 	onOpenChange,
 }: IEditVideoModalProps) {
 	const t = useTranslations('editVideo.modal')
+	const tRoot = useTranslations()
 	const tUpload = useTranslations('uploadVideoModal')
 	const {
 		register,
@@ -191,10 +192,10 @@ export function RestrictVideoModal({
 			if (!isValid) {
 				const titleState = getFieldState('title')
 				if (titleState.error)
-					toast.error(getValidationMessage(titleState.error.message, t))
+					toast.error(getValidationMessage(titleState.error.message, tRoot))
 				const tagsState = getFieldState('tags')
 				if (tagsState.error?.message)
-					toast.error(getValidationMessage(tagsState.error.message, t))
+					toast.error(getValidationMessage(tagsState.error.message, tRoot))
 				return
 			}
 			if (!fileName) {
@@ -211,7 +212,7 @@ export function RestrictVideoModal({
 				const thumbErr = getFieldState('thumbnail').error?.message
 
 				const audErr = getFieldState('audience').error?.message
-				toast.error(getValidationMessage(thumbErr || audErr, t))
+				toast.error(getValidationMessage(thumbErr || audErr, tRoot))
 				return
 			}
 
