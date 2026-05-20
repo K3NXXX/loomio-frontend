@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import {
 	Check,
 	Crown,
+	Download,
 	Gauge,
 	LayoutTemplate,
 	Paintbrush,
@@ -116,10 +117,25 @@ export const Premium = () => {
 		{ icon: Paintbrush, titleKey: 'benefitChannelTitle', bodyKey: 'benefitChannelBody' },
 		{ icon: Gauge, titleKey: 'benefitSpeedTitle', bodyKey: 'benefitSpeedBody' },
 		{ icon: PictureInPicture, titleKey: 'benefitMiniPlayerTitle', bodyKey: 'benefitMiniPlayerBody' },
+		{ icon: Download, titleKey: 'benefitDownloadTitle', bodyKey: 'benefitDownloadBody' },
 	]
 
-	const standardKeys = ['planFreeF1', 'planFreeF2', 'planFreeF3', 'planFreeF4', 'planFreeF5'] as const
-	const premiumKeys = ['planPremiumP1', 'planPremiumP2', 'planPremiumP3', 'planPremiumP4', 'planPremiumP5'] as const
+	const standardKeys = [
+		'planFreeF1',
+		'planFreeF2',
+		'planFreeF3',
+		'planFreeF4',
+		'planFreeF5',
+		'planFreeF6',
+	] as const
+	const premiumKeys = [
+		'planPremiumP1',
+		'planPremiumP2',
+		'planPremiumP3',
+		'planPremiumP4',
+		'planPremiumP5',
+		'planPremiumP6',
+	] as const
 
 	return (
 		<div className='max-w-5xl mx-auto px-4 py-10 pb-16'>

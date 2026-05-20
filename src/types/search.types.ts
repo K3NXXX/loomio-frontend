@@ -12,4 +12,8 @@ export interface ISearchSuggestion {
 export interface ISearchResponse {
 	videos: IVideo[]
 	channels: IChannel[]
+	page: number
+	limit: number
+	totalVideos: number
+	hasMore: boolean
 }

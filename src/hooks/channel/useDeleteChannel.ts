@@ -1,9 +1,11 @@
 import { channelService } from '@/services/channel.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 export const useDeleteChannel = (onDone?: () => void) => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 
 	const { mutate: deleteChannel, isPending: deleteChannelLoading } =
 		useMutation({
@@ -17,7 +19,7 @@ export const useDeleteChannel = (onDone?: () => void) => {
 			},
 
 			onError: () => {
-				toast.error('Failed to delete channel. Try again later.')
+				toast.error(t('deleteChannelFailed'))
 			},
 		})
 

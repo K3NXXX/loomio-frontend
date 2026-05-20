@@ -96,7 +96,7 @@ export function HomeUserMenu() {
 				) : (
 					<DropdownMenuItem className='cursor-pointer'>
 						<Link
-							href={PAGES.PREMIUM_INFO}
+							href={`/${PAGES.PREMIUM_INFO}`}
 							className='flex items-center gap-2 w-full cursor-pointer'
 						>
 							<LuCrown />

@@ -1,14 +1,16 @@
 'use client'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { Card } from '@/components/ui/card'
 import { providers } from '@/lists/auth.providers.list'
 
 export function AuthSocialButtons() {
+	const t = useTranslations('toast')
 	const handleOAuthLogin = (url: string | undefined, name: string) => {
 		if (!url) {
 			console.error(`OAuth URL for ${name} is not configured.`)
-			toast.error('Authorization failed: OAuth URL is not configured.')
+			toast.error(t('oauthNotConfigured'))
 			return
 		}
 		window.location.href = url

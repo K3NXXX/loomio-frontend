@@ -98,7 +98,6 @@ export default function EditAccount() {
 			return updateAccount({
 				currentPassword: data.currentPassword,
 				newPassword: data.newPassword,
-				hasPassword: Boolean(userData?.hasPassword),
 			})
 		}
 
@@ -114,10 +113,7 @@ export default function EditAccount() {
 			if (data.name) profileOnly.name = data.name
 			if (data.username) profileOnly.username = data.username
 			if (Object.keys(profileOnly).length > 0) {
-				updateAccount({
-					...profileOnly,
-					hasPassword: Boolean(userData?.hasPassword),
-				})
+				updateAccount(profileOnly)
 			}
 			requestEmailChangeMut(newEmail)
 			return
@@ -129,7 +125,7 @@ export default function EditAccount() {
 
 		if (Object.keys(payload).length === 0) return
 
-		updateAccount({ ...payload, hasPassword: Boolean(userData?.hasPassword) })
+		updateAccount(payload)
 	}
 
 	return (

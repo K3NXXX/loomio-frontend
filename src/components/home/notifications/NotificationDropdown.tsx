@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useGetUserChannels } from '@/hooks/channel/useGetUserChannels'
 import { useDeleteChannelNotifications } from '@/hooks/notification/useDeleteChannelNotifications'
 import { useDeletePersonalNotifications } from '@/hooks/notification/useDeletePersonalNotifications'
@@ -29,7 +30,10 @@ import { NotificationItem } from './NotificationItem'
 import { useTranslations } from 'next-intl'
 
 export function NotificationDropdown() {
-	const { userChannels = [] } = useGetUserChannels()
+	const { userData } = useGetMe()
+	const { userChannels = [] } = useGetUserChannels({
+		enabled: Boolean(userData),
+	})
 	const { notifications = [], unreadCount } = useGetNotifications()
 
 	const unreadText = unreadCount > 9 ? '9+' : unreadCount

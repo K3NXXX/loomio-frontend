@@ -196,10 +196,8 @@ export function WorkplaceChannelVideosList({
 		}
 	}
 
-	const gridColsPublished =
-		'[grid-template-columns:20px_minmax(340px,1fr)_110px_150px_110px_80px_100px_120px_20px]'
-	const gridColsScheduled =
-		'[grid-template-columns:20px_minmax(340px,1fr)_110px_150px_140px_120px]'
+	const gridCols =
+		'[grid-template-columns:20px_minmax(280px,1fr)_110px_150px_110px_80px_100px_120px_20px]'
 
 	const restrictedVideos = videos.filter(isStudioModerationVisibility)
 
@@ -223,7 +221,7 @@ export function WorkplaceChannelVideosList({
 				'border-b border-border/40 rounded-t-xl',
 				'px-3 py-2',
 				'hidden min-[1500px]:grid items-center gap-4 text-[11px] font-medium uppercase text-muted-foreground',
-				isScheduled ? gridColsScheduled : gridColsPublished,
+				gridCols,
 			)}
 		>
 			<div />
@@ -233,12 +231,12 @@ export function WorkplaceChannelVideosList({
 			<div className='text-center'>
 				{isScheduled ? t('colScheduledFor') : t('colDate')}
 			</div>
-			{!isScheduled && (
-				<>
-					<div className='text-center'>{t('colViews')}</div>
-					<div className='text-center'>{t('colComments')}</div>
-				</>
-			)}
+			<div className='text-center'>
+				{!isScheduled ? t('colViews') : null}
+			</div>
+			<div className='text-center'>
+				{!isScheduled ? t('colComments') : null}
+			</div>
 			<div />
 		</div>
 	)
@@ -251,7 +249,7 @@ export function WorkplaceChannelVideosList({
 					'rounded-xl border border-border/40 bg-background/60',
 					'px-3 py-3 hover:bg-muted/10 transition-colors',
 					isScheduled && 'opacity-75',
-					isScheduled ? gridColsScheduled : gridColsPublished,
+					gridCols,
 				)}
 			>
 				<div />
@@ -273,17 +271,7 @@ export function WorkplaceChannelVideosList({
 						)}
 					</div>
 					<div className='min-w-0'>
-						<div className='flex items-center gap-2'>
-							<div className='font-medium truncate'>{v.title}</div>
-							{isScheduled && (
-								<Badge
-									variant='outline'
-									className='border-amber-400/50 text-amber-400 text-[10px] rounded-full px-2 py-0.5'
-								>
-									{t('badgeScheduled')}
-								</Badge>
-							)}
-						</div>
+						<div className='font-medium truncate'>{v.title}</div>
 						<div className='text-xs text-muted-foreground truncate'>
 							{truncateName(v.description ?? '', 40) || t('addDescription')}
 						</div>
@@ -308,12 +296,17 @@ export function WorkplaceChannelVideosList({
 						: new Date(v.createdAt).toLocaleDateString(dateLocaleTag)}
 				</div>
 
-				{!isScheduled && (
+				{!isScheduled ? (
 					<>
 						<div className='text-center' title={String(v._count?.views ?? 0)}>
 							{formatCompactCount(v._count?.views ?? 0, locale)}
 						</div>
 						<div className='text-center'>{v._count?.comments ?? 0}</div>
+					</>
+				) : (
+					<>
+						<div />
+						<div />
 					</>
 				)}
 
@@ -328,6 +321,7 @@ export function WorkplaceChannelVideosList({
 					</Button>
 					<VideoItemActions videoId={v.id} />
 				</div>
+				<div />
 			</div>
 
 			<div
@@ -354,21 +348,11 @@ export function WorkplaceChannelVideosList({
 						)}
 					</div>
 					<div className='flex-1 min-w-0'>
-						<div className='flex items-start justify-between gap-2'>
-							<div className='min-w-0'>
-								<div className='font-medium text-sm truncate'>{v.title}</div>
-								<div className='text-xs text-muted-foreground truncate mt-0.5'>
-									{truncateName(v.description ?? '', 40) || t('addDescription')}
-								</div>
+						<div className='min-w-0'>
+							<div className='font-medium text-sm truncate'>{v.title}</div>
+							<div className='text-xs text-muted-foreground truncate mt-0.5'>
+								{truncateName(v.description ?? '', 40) || t('addDescription')}
 							</div>
-							{isScheduled && (
-								<Badge
-									variant='outline'
-									className='border-amber-400/50 text-amber-400 text-[10px] rounded-full px-2 py-0.5 shrink-0'
-								>
-									{t('badgeScheduled')}
-								</Badge>
-							)}
 						</div>
 					</div>
 				</div>

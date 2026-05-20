@@ -30,8 +30,8 @@ class ChannelService {
 		return data
 	}
 
-	async editChannel(channelId: string, fd: FormData) {
-		const { data } = await axiosInstance.patch(
+	async editChannel(channelId: string, fd: FormData): Promise<IChannel> {
+		const { data } = await axiosInstance.patch<IChannel>(
 			`${this.BASE_URL}/${channelId}`,
 			fd,
 		)

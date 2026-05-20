@@ -17,7 +17,9 @@ export default function UserChannelsList({
 	onOpenChange,
 	dropdownPortalRef,
 }: Props) {
-	const { userChannels, isError, isLoading } = useGetUserChannels()
+	const { userChannels, isError, isLoading } = useGetUserChannels({
+		enabled: true,
+	})
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 	const t = useTranslations('common')
 

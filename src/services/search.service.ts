@@ -13,9 +13,13 @@ class SearchService {
 		return data
 	}
 
-	async getSearchData(searchQuery: string): Promise<ISearchResponse> {
+	async getSearchData(
+		searchQuery: string,
+		page = 1,
+		limit = 20,
+	): Promise<ISearchResponse> {
 		const { data } = await axiosInstance.get<ISearchResponse>(
-			`${this.BASE_URL}/?q=${encodeURIComponent(searchQuery)}`,
+			`${this.BASE_URL}/?q=${encodeURIComponent(searchQuery)}&page=${page}&limit=${limit}`,
 		)
 		return data
 	}

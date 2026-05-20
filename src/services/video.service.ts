@@ -1,8 +1,17 @@
 import axiosInstance from '@/lib/axios'
+import type { PublicVideoFeed } from '@/types/public-video-feed.types'
 import type { IPublicVideosPage, IVideo } from '@/types/video.types'
 
 class VideoService {
-	private BASE_URL = `${process.env.NEXT_PUBLIC_API_URL!}/videos`
+	private BASE_URL = `${process.env.NEXT_PUBLIC_API_URL!.replace(/\/$/, '')}/videos`
+
+	/**
+	 * Direct URL so the browser’s download manager streams the attachment (XHR/blob would buffer first).
+	 * Requires auth cookies accepted on navigations (SameSite/session as API).
+	 */
+	premiumVideoAttachmentUrl(videoId: string): string {
+		return `${this.BASE_URL}/${videoId}/download`
+	}
 
 	async addVideo(videoData: FormData) {
 		const { data } = await axiosInstance.post(this.BASE_URL, videoData)
@@ -12,10 +21,11 @@ class VideoService {
 	async getAllVideos(
 		page = 1,
 		limit = 24,
+		feed: PublicVideoFeed = 'home',
 	): Promise<IPublicVideosPage> {
 		const { data } = await axiosInstance.get<IPublicVideosPage>(
 			`${this.BASE_URL}/public`,
-			{ params: { page, limit } },
+			{ params: { page, limit, feed } },
 		)
 		return data
 	}

@@ -2,21 +2,49 @@
 
 import { useGetAllComments } from '@/hooks/comment/useGetAllComments'
 import type { IVideo } from '@/types/video.types'
+import type { IVideoComment } from '@/types/comment.types'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { WatchCommentItem } from './WatchCommentItem'
 import { WatchCommentsHeader } from './WatchCommentsHeader'
-import { IVideoComment } from '@/types/comment.types'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface IWatchCommentsProps {
 	video: IVideo
 }
 
+function findCommentInRoots(
+	roots: IVideoComment[],
+	id: string,
+): IVideoComment | null {
+	for (const root of roots) {
+		if (root.id === id) return root
+		const reply = root.replies?.find((r) => r.id === id)
+		if (reply) return reply
+	}
+	return null
+}
+
+function getRootId(roots: IVideoComment[], id: string | null): string | null {
+	if (!id) return null
+	const hit = findCommentInRoots(roots, id)
+	if (!hit) return null
+	return hit.parentId ?? hit.id
+}
+
 export function WatchCommentsList({ video }: IWatchCommentsProps) {
-	const { allComments } = useGetAllComments(video.id)
+	const {
+		allComments,
+		rootComments,
+		total,
+		isFetchingNextPage,
+		hasNextPage,
+		fetchNextPage,
+	} = useGetAllComments(video.id)
 
 	const searchParams = useSearchParams()
 	const commentId = searchParams.get('commentId')
+	const sentinelRef = useRef<HTMLDivElement | null>(null)
 
 	const [expandedReplies, setExpandedReplies] = useState<
 		Record<string, boolean>
@@ -25,64 +53,41 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 	const toggleReplies = (id: string) =>
 		setExpandedReplies((prev) => ({ ...prev, [id]: !prev[id] }))
 
-	const commentTree = useMemo(() => {
-		if (!allComments?.data) return []
+	useEffect(() => {
+		const el = sentinelRef.current
+		if (!el || !hasNextPage) return
 
-		const sorted = [...allComments.data].sort(
-			(a, b) =>
-				new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const first = entries[0]
+				if (first?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+					void fetchNextPage()
+				}
+			},
+			{ root: null, rootMargin: '240px 0px', threshold: 0 },
 		)
 
-		const map: Record<string, any> = {}
-		sorted.forEach((c) => (map[c.id] = { ...c, replies: [] }))
+		observer.observe(el)
+		return () => observer.disconnect()
+	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-		const roots = sorted.filter((c) => !c.parentId).map((c) => map[c.id])
-
-		const findRoot = (item: any) => {
-			while (item.parentId) {
-				item = map[item.parentId]
-			}
-			return item
-		}
-
-		sorted.forEach((c) => {
-			if (c.parentId) {
-				const realRoot = findRoot(c)
-				if (realRoot.id !== c.id) {
-					realRoot.replies.push(map[c.id])
-				}
-			}
-		})
-
-		return roots
-	}, [allComments?.data])
-
-	const getRootId = (id: string | null) => {
-		if (!id || !allComments?.data) return null
-
-		const raw = allComments.data
-		let current = raw.find((c) => c.id === id)
-		if (!current) return null
-
-		while (current.parentId) {
-			current = raw.find((c) => c.id === current?.parentId)!
-			if (!current) return null
-		}
-
-		return current.id
-	}
+	useEffect(() => {
+		if (!commentId || !hasNextPage || isFetchingNextPage) return
+		if (findCommentInRoots(rootComments, commentId)) return
+		void fetchNextPage()
+	}, [commentId, rootComments, hasNextPage, isFetchingNextPage, fetchNextPage])
 
 	useEffect(() => {
 		if (!commentId) return
 
-		const rootId = getRootId(commentId)
+		const rootId = getRootId(rootComments, commentId)
 		if (!rootId) return
 
 		setExpandedReplies((prev) => ({
 			...prev,
 			[rootId]: true,
 		}))
-	}, [commentId, allComments?.data])
+	}, [commentId, rootComments])
 
 	useEffect(() => {
 		if (!commentId) return
@@ -107,14 +112,18 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 		}, 150)
 
 		return () => clearInterval(interval)
-	}, [commentId, expandedReplies])
+	}, [commentId, expandedReplies, rootComments])
 
 	return (
 		<div className='mt-8'>
-			<WatchCommentsHeader video={video} allComments={allComments} />
+			<WatchCommentsHeader
+				video={video}
+				allComments={allComments}
+				totalComments={total}
+			/>
 
 			<div className='flex flex-col gap-5'>
-				{commentTree.map((comment) => (
+				{rootComments.map((comment) => (
 					<div key={comment.id} className='flex flex-col gap-2'>
 						<WatchCommentItem
 							comment={comment}
@@ -125,7 +134,7 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 
 						{expandedReplies[comment.id] && comment.replies.length > 0 && (
 							<div className='flex flex-col gap-2 ml-10 mt-3'>
-								{(comment.replies as IVideoComment[]).map((reply) => (
+								{comment.replies.map((reply) => (
 									<WatchCommentItem
 										key={reply.id}
 										comment={reply}
@@ -139,6 +148,21 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 					</div>
 				))}
 			</div>
+
+			<div ref={sentinelRef} className='h-4 w-full shrink-0' aria-hidden />
+			{isFetchingNextPage && (
+				<div className='flex flex-col gap-4 mt-4'>
+					{Array.from({ length: 2 }).map((_, i) => (
+						<div key={i} className='flex gap-3'>
+							<Skeleton className='h-10 w-10 rounded-full shrink-0' />
+							<div className='flex flex-col gap-2 flex-1'>
+								<Skeleton className='h-4 w-32' />
+								<Skeleton className='h-12 w-full rounded-xl' />
+							</div>
+						</div>
+					))}
+				</div>
+			)}
 		</div>
 	)
 }

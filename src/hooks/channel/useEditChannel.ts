@@ -1,35 +1,37 @@
 import { channelService } from '@/services/channel.service'
-import axios from 'axios'
+import type { IChannel } from '@/types/channel.types'
+import {
+	extractApiErrorMessage,
+	getToastApiMessage,
+} from '@/utils/toastMessage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
-
-function axiosErrorMessage(error: unknown, fallback: string): string {
-	if (!axios.isAxiosError(error)) return fallback
-	const data = error.response?.data as { message?: string | string[] } | undefined
-	const m = data?.message
-	if (Array.isArray(m) && m[0]) return m[0]
-	if (typeof m === 'string' && m) return m
-	return fallback
-}
 
 type EditArgs = { channelId: string; fd: FormData }
 
 export const useEditChannel = () => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 
 	const { mutate: editChannel, isPending } = useMutation({
 		mutationKey: ['editChannel'],
 		mutationFn: ({ channelId, fd }: EditArgs) =>
 			channelService.editChannel(channelId, fd),
 
-		onSuccess: () => {
+		onSuccess: (data: IChannel) => {
+			queryClient.setQueryData(['getChannel', data.username, 'studio'], data)
 			queryClient.invalidateQueries({ queryKey: ['getChannel'] })
 			queryClient.invalidateQueries({ queryKey: ['getUserChannels'] })
-			toast.success('Канал успішно оновлено')
+			toast.success(t('channelUpdated'))
 		},
-		onError: (error) => {
+		onError: (error: unknown) => {
 			toast.error(
-				axiosErrorMessage(error, 'Something went wrong. Try later'),
+				getToastApiMessage(
+					extractApiErrorMessage(error),
+					t,
+					'genericErrorLater',
+				),
 			)
 		},
 	})

@@ -1,9 +1,11 @@
 import { likeService } from '@/services/like.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 export const useToggleVideoLike = () => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 	const { mutate: toggleVideoLike } = useMutation({
 		mutationKey: ['toggleLike'],
 		mutationFn: (videoId: string) => likeService.toggleVideoLike(videoId),
@@ -13,7 +15,7 @@ export const useToggleVideoLike = () => {
 			queryClient.invalidateQueries({ queryKey: ['hasVideoDisliked'] })
 		},
 		onError: () => {
-			toast.error('Something went wrong. Try later')
+			toast.error(t('genericErrorLater'))
 		},
 	})
 

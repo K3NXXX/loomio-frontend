@@ -1,9 +1,11 @@
 import { playlistService } from '@/services/playlist.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 export const useRemoveVideosFromPlaylist = () => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 
 	const { mutateAsync: removeVideosFromPlaylist, isPending } = useMutation({
 		mutationFn: ({
@@ -20,7 +22,7 @@ export const useRemoveVideosFromPlaylist = () => {
 			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
 		},
 		onError: () => {
-			toast.error('Failed to remove videos')
+			toast.error(t('removeVideosFromPlaylistFailed'))
 		},
 	})
 

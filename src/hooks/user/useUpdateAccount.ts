@@ -1,10 +1,12 @@
 import { userService } from '@/services/user.service'
 import type { IUpdateAccountRequest } from '@/types/user.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 export const useUpdateAccount = () => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 
 	const { mutate: updateAccount, isSuccess } = useMutation({
 		mutationKey: ['updateAccount'],
@@ -16,8 +18,8 @@ export const useUpdateAccount = () => {
 
 			const previousUser = queryClient.getQueryData(['getMe'])
 
-			queryClient.setQueryData(['getMe'], (old: any) => ({
-				...old,
+			queryClient.setQueryData(['getMe'], (old: unknown) => ({
+				...(old as object),
 				...newData,
 			}))
 
@@ -28,11 +30,11 @@ export const useUpdateAccount = () => {
 			if (context?.previousUser) {
 				queryClient.setQueryData(['getMe'], context.previousUser)
 			}
-			toast.error('Something went wrong. Try again')
+			toast.error(t('genericError'))
 		},
 
 		onSuccess: () => {
-			toast.success('Account successfully updated')
+			toast.success(t('accountUpdated'))
 		},
 
 		onSettled: () => {

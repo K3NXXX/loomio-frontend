@@ -5,5 +5,4 @@ export interface IUpdateAccountRequest {
 	bio?: string
 	newPassword?: string
 	currentPassword?: string
-	hasPassword: boolean
 }

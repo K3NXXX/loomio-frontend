@@ -3,7 +3,7 @@ import type { IChannel } from '@/types/channel.types'
 import { useQuery } from '@tanstack/react-query'
 
 export const useGetUserChannels = (options?: { enabled?: boolean }) => {
-	const enabled = options?.enabled ?? true
+	const enabled = options?.enabled ?? false
 
 	const {
 		data: userChannels,

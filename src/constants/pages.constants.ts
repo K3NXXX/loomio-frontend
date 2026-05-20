@@ -1,5 +1,6 @@
 export const PAGES = {
 	HOME: '/',
+	KIDS: '/kids',
 	SIGNUP: '/signup',
 	LOGIN: '/login',
 	FORGOT_PASSWORD: 'forgot-password',
@@ -38,6 +39,6 @@ export const PAGES = {
 	MODERATION_VIDEO_HISTORY: '/moderation/video-history',
 	MODERATION_VIDEO_REVIEWS: '/moderation/video-reviews',
 	PREMIUM_INFO: 'account/premium',
-	PREMIUM_SUCCESS: 'account/premium/success',
+	PREMIUM_SUCCESS: '/account/premium/success',
 	TERMS: '/terms',
 }

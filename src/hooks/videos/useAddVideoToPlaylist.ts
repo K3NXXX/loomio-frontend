@@ -1,10 +1,12 @@
 import { playlistService } from '@/services/playlist.service'
 import { videoService } from '@/services/video.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 export const useAddVideoToPlaylist = () => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 
 	const { mutate: addVideoToPlaylist, isPending } = useMutation({
 		mutationKey: ['addVideoToPlaylist'],
@@ -19,7 +21,7 @@ export const useAddVideoToPlaylist = () => {
 			queryClient.invalidateQueries({ queryKey: ['getMyPlaylists'] })
 		},
 		onError: () => {
-			toast.error('Failed to add video. Try again later.')
+			toast.error(t('addVideoToPlaylistFailed'))
 		},
 	})
 

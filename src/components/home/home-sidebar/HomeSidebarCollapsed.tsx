@@ -1,9 +1,11 @@
 'use client'
 
 import { useGetMe } from '@/hooks/auth/useGetMe'
+import { isSidebarItemActive } from '@/lib/sidebar-active'
 import { getSidebarMenuItems } from '@/lists/sidebar.menu.items'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { HomeUserMenu } from './HomeUserMenu'
 import { useTranslations } from 'next-intl'
 
@@ -17,15 +19,14 @@ export function HomeSidebarCollapsed() {
 		<aside className='sticky top-[76px] h-[calc(100vh-76px)] flex flex-col items-center w-[80px] border-r border-border bg-sidebar/90 backdrop-blur-xl shadow-sm py-4 dark:border-transparent dark:bg-background/80'>
 			<ul className='flex flex-col items-center gap-3 w-full'>
 				{menuItems.map((item) => {
-					const isActive =
-						item.url === '/' ? pathname === '/' : pathname.startsWith(item.url)
+					const isActive = isSidebarItemActive(pathname, item.url)
 
 					return (
 						<li
 							key={item.id}
 							className='w-full flex justify-center cursor-pointer'
 						>
-							<a
+							<Link
 								href={item.url}
 								className={clsx(
 									'group flex flex-col items-center justify-center w-14 h-16 rounded-xl transition-all duration-200 text-center',
@@ -53,7 +54,7 @@ export function HomeSidebarCollapsed() {
 								>
 									<span>{t(item.label)}</span>
 								</span>
-							</a>
+							</Link>
 						</li>
 					)
 				})}

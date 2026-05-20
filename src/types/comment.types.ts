@@ -41,6 +41,7 @@ export interface IVideoCommentsResponse {
 	page: number
 	take: number
 	totalPages: number
+	hasMore: boolean
 }
 
 export interface IEditCommentRequest {

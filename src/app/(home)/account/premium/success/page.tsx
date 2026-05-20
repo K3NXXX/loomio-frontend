@@ -2,6 +2,7 @@ import { SITE_NAME } from '@/constants/seo.constants'
 
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
+import { Suspense } from 'react'
 import PremiumSuccess from './PremiumSuccess'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -14,5 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function AccountPage() {
-	return <PremiumSuccess />
+	return (
+		<Suspense fallback={null}>
+			<PremiumSuccess />
+		</Suspense>
+	)
 }

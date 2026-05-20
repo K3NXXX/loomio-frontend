@@ -1,9 +1,11 @@
 import { notificationService } from '@/services/notification.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 export const useMarkAllPersonalRead = (onDone?: () => void) => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 
 	const { mutate: markAllPersonalRead } = useMutation({
 		mutationKey: ['markAllPersonalRead'],
@@ -15,7 +17,7 @@ export const useMarkAllPersonalRead = (onDone?: () => void) => {
 		},
 
 		onError: () => {
-			toast.error('Something went wrong. Try again later')
+			toast.error(t('genericErrorLater'))
 		},
 	})
 

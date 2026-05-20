@@ -1,20 +1,8 @@
-import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios'
+import axios, { type AxiosError } from 'axios'
 
-import { PAGES } from '@/constants/pages.constants'
 import { refreshAccessTokenSilently } from '@/lib/auth-refresh'
-
-type ConfigWithRetry = InternalAxiosRequestConfig & { _retry?: boolean }
-
-function isUnauthenticatedMeProbe(config: ConfigWithRetry): boolean {
-	if (config.method?.toLowerCase() !== 'get') return false
-	const raw = String(config.url ?? '')
-	try {
-		const path = raw.includes('://') ? new URL(raw).pathname : raw.split('?')[0] ?? ''
-		return /^\/user\/?$/.test(path || '/')
-	} catch {
-		return /^\/user\/?$/.test(raw.split('?')[0] ?? '')
-	}
-}
+import { shouldAttemptAuthRefresh } from '@/lib/axios-request-path'
+import type { AxiosConfigWithAuth } from '@/lib/axios.types'
 
 const axiosInstance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -24,9 +12,17 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
 	(response) => response,
 	async (error: AxiosError) => {
-		const originalRequest = error.config as ConfigWithRetry | undefined
+		const originalRequest = error.config as AxiosConfigWithAuth | undefined
 
 		if (!originalRequest || !error.response) {
+			return Promise.reject(error)
+		}
+
+		if (error.response.status !== 401) {
+			return Promise.reject(error)
+		}
+
+		if (!shouldAttemptAuthRefresh(originalRequest)) {
 			return Promise.reject(error)
 		}
 
@@ -37,28 +33,17 @@ axiosInstance.interceptors.response.use(
 			url.includes('/auth/register') ||
 			url.includes('/auth/password-reset')
 
-		if (
-			error.response.status === 401 &&
-			!originalRequest._retry &&
-			!isRefreshCall &&
-			!isAuthFailureExempt
-		) {
-			originalRequest._retry = true
-			try {
-				await refreshAccessTokenSilently()
-				return axiosInstance(originalRequest)
-			} catch {
-				if (isUnauthenticatedMeProbe(originalRequest)) {
-					return Promise.reject(error)
-				}
-				if (typeof window !== 'undefined') {
-					window.location.href = PAGES.LOGIN
-				}
-				return Promise.reject(error)
-			}
+		if (originalRequest._retry || isRefreshCall || isAuthFailureExempt) {
+			return Promise.reject(error)
 		}
 
-		return Promise.reject(error)
+		originalRequest._retry = true
+		try {
+			await refreshAccessTokenSilently()
+			return axiosInstance(originalRequest)
+		} catch {
+			return Promise.reject(error)
+		}
 	},
 )
 

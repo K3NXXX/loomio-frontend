@@ -1,9 +1,11 @@
 import { followService } from '@/services/follow.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 export const useToggleFollowUser = () => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 	const { mutateAsync: toggleFollowUser } = useMutation({
 		mutationKey: ['followUser'],
 		mutationFn: (followerId: string) => followService.followUser(followerId),
@@ -19,7 +21,7 @@ export const useToggleFollowUser = () => {
 			})
 		},
 		onError: () => {
-			toast.error('Something went wrong. Try later')
+			toast.error(t('genericErrorLater'))
 		},
 	})
 

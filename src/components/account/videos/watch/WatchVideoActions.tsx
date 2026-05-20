@@ -1,6 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { ShareVideoModal } from '@/components/ui/custom/ShareVideoModal'
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { PAGES } from '@/constants/pages.constants'
 import { useAuthGate } from '@/hooks/auth/useAuthGate'
 import { useGetMe } from '@/hooks/auth/useGetMe'
@@ -13,9 +18,10 @@ import { useHasVideoLiked } from '@/hooks/like/useHasVideoLiked'
 import { useToggleVideoDislike } from '@/hooks/like/useToggleVideoDislike'
 import { useFormatCompactCount } from '@/hooks/useCompactNumberFormat'
 import { useToggleVideoLike } from '@/hooks/like/useToggleVideoLike'
+import { videoService } from '@/services/video.service'
 import type { IVideo } from '@/types/video.types'
 import { getInitials } from '@/utils/get-initials'
-import { Share, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { Download, Loader2, Share, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -29,7 +35,7 @@ interface IWatchVideoActionsProps {
 export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	const t = useTranslations()
 	const formatCompact = useFormatCompactCount()
-	const { userData } = useGetMe()
+	const { userData, authReady } = useGetMe()
 	const { requireAuth } = useAuthGate()
 	const { toggleFollowUser } = useToggleFollowUser()
 	const { isFollowing } = useIsFollowing(video.channel.id)
@@ -43,8 +49,34 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 	)
 
 	const [isShareOpen, setIsShareOpen] = useState(false)
+	const [browserDownloadStarting, setBrowserDownloadStarting] = useState(false)
 
 	const isThatMe = userData?.id === video.channel.userId
+
+	const hasPremiumDownload = Boolean(userData?.isPremium)
+	const showPremiumLockedDownloadHint = authReady && !hasPremiumDownload
+	const downloadButtonDisabled = !authReady || !hasPremiumDownload
+
+	const handlePremiumDownload = () => {
+		if (!requireAuth()) return
+		if (!hasPremiumDownload || !authReady) return
+
+		const url = videoService.premiumVideoAttachmentUrl(video.id)
+		setBrowserDownloadStarting(true)
+
+		const popup = window.open(url, '_blank', 'noopener,noreferrer')
+		if (!popup) {
+			const a = document.createElement('a')
+			a.href = url
+			a.target = '_blank'
+			a.rel = 'noopener noreferrer'
+			document.body.appendChild(a)
+			a.click()
+			a.remove()
+		}
+
+		window.setTimeout(() => setBrowserDownloadStarting(false), 800)
+	}
 
 	const handleFollow = async () => {
 		if (!requireAuth()) return
@@ -58,6 +90,9 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 			}
 		}
 	}
+
+	const isPremiumDownloadBusy = browserDownloadStarting
+	const downloadBusyDisabled = downloadButtonDisabled || isPremiumDownloadBusy
 
 	return (
 		<div className='mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3'>
@@ -189,6 +224,56 @@ export default function WatchVideoActions({ video }: IWatchVideoActionsProps) {
 					<Share className='size-3.5 min-[400px]:size-4 group-hover:scale-110 transition-transform' />
 					{t('watchActions.share')}
 				</Button>
+
+				{showPremiumLockedDownloadHint ? (
+					<Tooltip delayDuration={150}>
+						<TooltipTrigger asChild>
+							<span className='inline-flex rounded-full'>
+								<Button
+									type='button'
+									variant='secondary'
+									size='sm'
+									disabled
+									className='group rounded-full h-8 min-[400px]:h-10 px-3 min-[400px]:px-5 cursor-not-allowed flex items-center gap-1.5 min-[400px]:gap-2 text-xs min-[400px]:text-sm font-semibold
+									bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur opacity-70'
+								>
+									<Download className='size-3.5 min-[400px]:size-4' />
+									{t('watchActions.download')}
+								</Button>
+							</span>
+						</TooltipTrigger>
+						<TooltipContent
+							side='bottom'
+							className='max-w-[272px] text-xs leading-snug'
+						>
+							{t('watchActions.downloadPremiumOnly')}
+						</TooltipContent>
+					</Tooltip>
+				) : (
+					<Button
+						type='button'
+						onClick={handlePremiumDownload}
+						variant='secondary'
+						size='sm'
+						disabled={downloadBusyDisabled}
+						className={
+							downloadBusyDisabled
+								? `group rounded-full h-8 min-[400px]:h-10 px-3 min-[400px]:px-5 flex items-center gap-1.5 min-[400px]:gap-2 text-xs min-[400px]:text-sm font-semibold
+									bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur opacity-60 cursor-not-allowed`
+								: `group rounded-full h-8 min-[400px]:h-10 px-3 min-[400px]:px-5 flex items-center gap-1.5 min-[400px]:gap-2 text-xs min-[400px]:text-sm font-semibold
+									bg-neutral-100/60 dark:bg-neutral-800/60 backdrop-blur
+									hover:bg-neutral-200 dark:hover:bg-neutral-700
+									hover:shadow-md active:scale-95 transition-all`
+						}
+					>
+						{isPremiumDownloadBusy ? (
+							<Loader2 className='size-3.5 min-[400px]:size-4 animate-spin' />
+						) : (
+							<Download className='size-3.5 min-[400px]:size-4 group-hover:scale-110 transition-transform' />
+						)}
+						{t('watchActions.download')}
+					</Button>
+				)}
 
 				<WatchVideoMoreMenu
 					videoId={video.id}

@@ -114,18 +114,17 @@ export default function Terms() {
 							</p>
 						</Section>
 
-						<Section icon={CreditCard} title='4. Преміум підписка'>
+						<Section icon={CreditCard} title='4. Loomio Premium'>
 							<p>
-								Підписка Loomio Premium коштує{' '}
-								<span className='text-foreground font-medium'>$10 на місяць</span> і
-								надає доступ до розширених можливостей платформи.
+								Loomio Premium коштує{' '}
+								<span className='text-foreground font-medium'>$10 (одноразово)</span>{' '}
+								і надає постійний доступ до розширених можливостей платформи.
 							</p>
 							<p>
 								Оплата здійснюється через{' '}
 								<span className='text-foreground'>Stripe</span> — захищений
-								платіжний сервіс. Підписку можна скасувати в будь-який момент через
-								налаштування акаунту. Повернення коштів за поточний період не
-								передбачено.
+								платіжний сервіс. Повторна оплата не потрібна. У разі повного
+								повернення коштів через Stripe доступ до Premium може бути скасований.
 							</p>
 						</Section>
 

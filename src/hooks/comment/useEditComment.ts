@@ -1,10 +1,12 @@
 import { commentService } from '@/services/comment.service'
 import type { IEditCommentRequest } from '@/types/comment.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 export const useEditComment = (videoId: string) => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 	const { mutate: editComment } = useMutation({
 		mutationKey: ['editComment'],
 		mutationFn: (data: IEditCommentRequest) => commentService.editComment(data),
@@ -12,7 +14,7 @@ export const useEditComment = (videoId: string) => {
 			queryClient.invalidateQueries({ queryKey: ['getAllComments', videoId] })
 		},
 		onError: () => {
-			toast.error('Something went wrong. Try later')
+			toast.error(t('genericErrorLater'))
 		},
 	})
 

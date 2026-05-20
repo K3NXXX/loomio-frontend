@@ -2,13 +2,44 @@
 
 import { Button } from '@/components/ui/button'
 import { PAGES } from '@/constants/pages.constants'
+import { paymentsService } from '@/services/payment.service'
+import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { Crown, Sparkles } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function PremiumSuccess() {
 	const t = useTranslations('premium.premiumSuccess')
+	const searchParams = useSearchParams()
+	const queryClient = useQueryClient()
+	const sessionId = searchParams.get('session_id')
+
+	useEffect(() => {
+		if (!sessionId) return
+
+		let cancelled = false
+
+		void (async () => {
+			try {
+				await paymentsService.confirmCheckout(sessionId)
+				if (!cancelled) {
+					await queryClient.invalidateQueries({ queryKey: ['getMe'] })
+				}
+			} catch {
+				// Webhook may have already activated premium; profile refetch still helps.
+				if (!cancelled) {
+					await queryClient.invalidateQueries({ queryKey: ['getMe'] })
+				}
+			}
+		})()
+
+		return () => {
+			cancelled = true
+		}
+	}, [sessionId, queryClient])
 
 	return (
 		<div className='min-h-[80vh] flex flex-col items-center justify-center gap-6 text-center px-4'>

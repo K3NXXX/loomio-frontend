@@ -9,5 +9,13 @@ class PaymentService {
 		)
 		return data
 	}
+
+	async confirmCheckout(sessionId: string): Promise<{ isPremium: boolean }> {
+		const { data } = await axiosInstance.post<{ isPremium: boolean }>(
+			`${this.BASE_URL}/confirm-checkout`,
+			{ sessionId },
+		)
+		return data
+	}
 }
 export const paymentsService = new PaymentService()

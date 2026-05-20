@@ -1,13 +1,18 @@
 import { PAGES } from '@/constants/pages.constants'
 import { channelService } from '@/services/channel.service'
-import type { ICreateChannelRequest } from '@/types/channel.types'
+import {
+	extractApiErrorMessage,
+	getToastApiMessage,
+} from '@/utils/toastMessage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 export const useCreateChannel = () => {
 	const queryClient = useQueryClient()
 	const router = useRouter()
+	const t = useTranslations('toast')
 	const { mutate: createChannel, isPending: channelCreatingLoading } =
 		useMutation({
 			mutationKey: ['createChannel'],
@@ -20,8 +25,10 @@ export const useCreateChannel = () => {
 				router.push(PAGES.CHANNEL(channel.username))
 			},
 
-			onError: (error: any) => {
-				toast.error(error.response.data.message)
+			onError: (error: unknown) => {
+				toast.error(
+					getToastApiMessage(extractApiErrorMessage(error), t),
+				)
 			},
 		})
 

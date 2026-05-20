@@ -46,7 +46,8 @@ export default function Watch() {
 	const { userData } = useGetMe()
 	const canUseBoostSpeed = Boolean(userData?.isPremium)
 	const commentId = searchParams.get('commentId')
-	const { videos: allVideos } = useGetPublicVideos()
+	const feed = video?.audience === 'yes' ? 'kids' : 'home'
+	const { videos: allVideos } = useGetPublicVideos(feed)
 	const { channel } = useGetChannel(video?.channel.username ?? '')
 	const channelVideos = channel?.videos || []
 	const publicVideos = allVideos || []

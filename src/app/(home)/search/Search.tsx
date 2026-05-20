@@ -3,25 +3,67 @@
 import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideoMoreMenu'
 import { SearchVideoSkeletonList } from '@/components/skeletons/search/SearchVideoSkeletonList'
 import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDuration'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { PAGES } from '@/constants/pages.constants'
 import { useGetSearchData } from '@/hooks/search/useGetSearchData'
 import { useViewsCountLabel } from '@/hooks/useCompactNumberFormat'
 import { formatDate } from '@/utils/formatDate'
 import { getInitials } from '@/utils/get-initials'
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 
 interface SearchProps {
 	query: string
 }
 
-export function Search({ query }: SearchProps) {
-	const { videos, channels, isLoading, isError } = useGetSearchData(query)
-	const t = useTranslations()
-	const viewsCountLabel = useViewsCountLabel()
+function SearchVideoSkeletonRow() {
+	return (
+		<div className='flex gap-5 rounded-xl p-3 items-start bg-muted/10 animate-pulse'>
+			<Skeleton className='w-[480px] h-[270px] rounded-xl shrink-0' />
+			<div className='flex flex-1 flex-col gap-3 w-full'>
+				<Skeleton className='h-6 w-[70%] rounded-md' />
+				<div className='flex items-center gap-2'>
+					<Skeleton className='h-7 w-7 rounded-full' />
+					<Skeleton className='h-4 w-[120px] rounded-md' />
+				</div>
+				<Skeleton className='h-4 w-[200px] rounded-md' />
+			</div>
+		</div>
+	)
+}
 
+export function Search({ query }: SearchProps) {
+	const {
+		videos,
+		channels,
+		isLoading,
+		isError,
+		isFetchingNextPage,
+		hasNextPage,
+		fetchNextPage,
+	} = useGetSearchData(query)
+	const viewsCountLabel = useViewsCountLabel()
+	const sentinelRef = useRef<HTMLDivElement | null>(null)
+
+	useEffect(() => {
+		const el = sentinelRef.current
+		if (!el || !hasNextPage) return
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const first = entries[0]
+				if (first?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+					void fetchNextPage()
+				}
+			},
+			{ root: null, rootMargin: '320px 0px', threshold: 0 },
+		)
+
+		observer.observe(el)
+		return () => observer.disconnect()
+	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
 	if (!query.trim())
 		return (
@@ -154,6 +196,15 @@ export function Search({ query }: SearchProps) {
 								</div>
 							))}
 						</div>
+
+						<div ref={sentinelRef} className='h-4 w-full shrink-0' aria-hidden />
+						{isFetchingNextPage && (
+							<div className='space-y-5 mt-5'>
+								{Array.from({ length: 2 }).map((_, i) => (
+									<SearchVideoSkeletonRow key={`more-${i}`} />
+								))}
+							</div>
+						)}
 					</section>
 				)}
 

@@ -1,9 +1,11 @@
 import { notificationService } from '@/services/notification.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 export const useMarkNotificationRead = () => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 
 	const { mutate: markRead, isPending: loading } = useMutation({
 		mutationKey: ['markOneNotificationRead'],
@@ -14,7 +16,7 @@ export const useMarkNotificationRead = () => {
 		},
 
 		onError: () => {
-			toast.error('Failed to mark notification as read')
+			toast.error(t('markNotificationReadFailed'))
 		},
 	})
 

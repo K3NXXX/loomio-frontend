@@ -46,7 +46,9 @@ class UserService {
 	}
 
 	async getMe() {
-		const { data } = await axiosInstance.get<IGetUserData>(`${this.BASE_URL}`)
+		const { data } = await axiosInstance.get<IGetUserData>(`${this.BASE_URL}`, {
+			skipAuthRefresh: true,
+		})
 		return data
 	}
 

@@ -1,10 +1,12 @@
 'use client'
 
 import { useGetMe } from '@/hooks/auth/useGetMe'
+import { isSidebarItemActive } from '@/lib/sidebar-active'
 import { getSidebarMenuItems } from '@/lists/sidebar.menu.items'
 import { useGlobalStore } from '@/zustand/store/globalStore'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { useRef } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import { HomeUserMenu } from './HomeUserMenu'
@@ -38,14 +40,11 @@ export function HomeSidebarMenu() {
 				<div className='flex-1 pr-5 py-6 overflow-y-auto custom-scrollbar'>
 					<ul className='space-y-1 px-2'>
 						{menuItems.map((item) => {
-							const isActive =
-								item.url === '/'
-									? pathname === '/'
-									: pathname.startsWith(item.url)
+							const isActive = isSidebarItemActive(pathname, item.url)
 
 							return (
 								<li className='cursor-pointer' key={item.id}>
-									<a
+									<Link
 										href={item.url}
 										className={clsx(
 											'group relative flex items-center gap-3 px-6 py-[10px] rounded-xl transition-all duration-200 ease-in-out text-[16px] font-medium',
@@ -68,7 +67,7 @@ export function HomeSidebarMenu() {
 											})}
 										/>
 										<span>{t(item.label)}</span>
-									</a>
+									</Link>
 								</li>
 							)
 						})}
@@ -85,14 +84,11 @@ export function HomeSidebarMenu() {
 			<aside className='flex lg:hidden flex-col items-center min-w-[90px] max-w-[90px] bg-background  shadow-md py-4'>
 				<ul className='flex flex-col items-center gap-3 w-full'>
 					{menuItems.map((item) => {
-						const isActive =
-							item.url === '/'
-								? pathname === '/'
-								: pathname.startsWith(item.url)
+						const isActive = isSidebarItemActive(pathname, item.url)
 
 						return (
 							<li key={item.id} className='w-full'>
-								<a
+								<Link
 									href={item.url}
 									className={clsx(
 										'flex flex-col items-center justify-center py-3 px-2 rounded-xl transition-all duration-200 text-[12px] text-center w-full',
@@ -114,7 +110,7 @@ export function HomeSidebarMenu() {
 										)}
 									/>
 									<span className='mt-1'>{t(item.label)}</span>
-								</a>
+								</Link>
 							</li>
 						)
 					})}

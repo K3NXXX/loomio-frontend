@@ -83,14 +83,16 @@ export default async function RootLayout({
 					<ClientProviders>{children}</ClientProviders>
 				</NextIntlClientProvider>
 				<Toaster
-					className='w-full max-w-[320px] max-[350px]:max-w-[280px] !z-60 !important '
+					className='w-full max-w-[320px] max-[350px]:max-w-[280px]'
 					position='top-right'
+					style={{ zIndex: 10100 }}
 					toastOptions={{
 						duration: 3000,
 						style: {
 							maxWidth: '320px',
 							width: '100%',
 							pointerEvents: 'auto',
+							zIndex: 10100,
 						},
 					}}
 				/>

@@ -7,7 +7,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import type { TUploadVideoSchema } from '@/schemas/videos/upload-video.schema'
 import { sanitizeChapterTimecodeInput } from '@/utils/chapterTimecode'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Clock, ListOrdered, Plus, Trash2 } from 'lucide-react'
+import { ListOrdered, Plus, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import type { Control, UseFormRegister } from 'react-hook-form'
 import { Controller, useFieldArray, useFormState } from 'react-hook-form'
@@ -33,10 +33,6 @@ export function UploadVideoStepFourth({
 			<div className='flex shrink-0 flex-col'>
 				<h3 className='mb-3 text-lg font-semibold text-foreground'>{t('title')}</h3>
 				<p className='mb-3 text-sm text-muted-foreground'>{t('description')}</p>
-				<p className='flex items-start gap-2 text-xs text-muted-foreground'>
-					<Clock className='mt-0.5 h-4 w-4 shrink-0 text-primary sm:h-5 sm:w-5' />
-					<span>{t('hintFormat')}</span>
-				</p>
 			</div>
 
 			{/* Column headers when there are rows */}

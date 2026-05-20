@@ -17,12 +17,15 @@ import {
 import { useChannelStore } from '@/zustand/store/channelStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export function Branding() {
-	const { channel } = useChannelStore()
+	const router = useRouter()
+	const pathname = usePathname()
+	const { channel, setChannel } = useChannelStore()
 	const { userData } = useGetMe()
 	const isPremium = Boolean(userData?.isPremium)
 	const allowAnimatedBanner = isPremium
@@ -136,7 +139,29 @@ export function Branding() {
 			return
 		}
 
-		editChannel({ channelId: channel.id, fd })
+		const previousUsername = channel.username
+
+		editChannel(
+			{ channelId: channel.id, fd },
+			{
+				onSuccess: (updated) => {
+					setChannel(updated)
+
+					if (
+						previousUsername &&
+						updated.username !== previousUsername &&
+						pathname.includes(`/workplace/channel/@${previousUsername}`)
+					) {
+						router.replace(
+							pathname.replace(
+								`/workplace/channel/@${previousUsername}`,
+								`/workplace/channel/@${updated.username}`,
+							),
+						)
+					}
+				},
+			},
+		)
 		setAvatarTouched(false)
 		setBannerTouched(false)
 	}

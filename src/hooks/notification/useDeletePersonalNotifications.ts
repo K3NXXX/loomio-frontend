@@ -1,6 +1,7 @@
 import { notificationService } from '@/services/notification.service'
 import { PERSONAL_ACTIVITY_NOTIFICATION_TYPES } from '@/types/notification.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 async function deletePersonalActivityOrphans(): Promise<void> {
@@ -15,6 +16,7 @@ async function deletePersonalActivityOrphans(): Promise<void> {
 
 export const useDeletePersonalNotifications = (onDone?: () => void) => {
 	const queryClient = useQueryClient()
+	const t = useTranslations('toast')
 
 	const { mutate: deletePersonalNotifications } = useMutation({
 		mutationKey: ['deletePersonalNotifications'],
@@ -29,7 +31,7 @@ export const useDeletePersonalNotifications = (onDone?: () => void) => {
 		},
 
 		onError: () => {
-			toast.error('Something went wrong. Try again later')
+			toast.error(t('genericErrorLater'))
 		},
 	})
 

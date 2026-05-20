@@ -259,39 +259,94 @@ export function WatchVideo({
 	useEffect(() => {
 		if (!isHls || !videoRef.current) return
 
-		let hls: any = null
+		let cancelled = false
+		let fallbackTimer: ReturnType<typeof setTimeout> | null = null
+		let metaHandler: (() => void) | null = null
+		let boundVideo: HTMLVideoElement | null = null
 
-		async function setupHls() {
+		void (async () => {
 			const Hls = (await import('hls.js')).default
-			if (!videoRef.current) return
+			const video = videoRef.current
+			if (!video || cancelled) return
 
-			if (Hls.isSupported()) {
-				hls = new Hls({ startLevel: -1 })
-				hlsRef.current = hls
+			boundVideo = video
 
-				hls.loadSource(videoSrc)
-				hls.attachMedia(videoRef.current)
+			let readyEmitted = false
+			const clearGuards = () => {
+				if (fallbackTimer != null) {
+					clearTimeout(fallbackTimer)
+					fallbackTimer = null
+				}
+				if (metaHandler) {
+					video.removeEventListener('loadedmetadata', metaHandler)
+					metaHandler = null
+				}
+			}
 
-				hls.on(Hls.Events.MANIFEST_PARSED, () => {
-					console.log(
-						'Доступні якості:',
-						hls.levels.map((l: any) => `${l.height}p`),
-					)
-					setIsReady(true)
-				})
-			} else if (
-				videoRef.current.canPlayType('application/vnd.apple.mpegurl')
-			) {
-				videoRef.current.src = videoSrc
+			const emitReady = () => {
+				if (cancelled || readyEmitted) return
+				readyEmitted = true
+				clearGuards()
 				setIsReady(true)
 			}
-		}
 
-		setupHls()
+			metaHandler = () => emitReady()
+			video.addEventListener('loadedmetadata', metaHandler, { once: true })
+
+			if (Hls.isSupported()) {
+				const hls = new Hls({ startLevel: -1 })
+				hlsRef.current = hls
+				hls.loadSource(videoSrc)
+				hls.attachMedia(video)
+
+				hls.on(Hls.Events.MANIFEST_PARSED, () => {
+					if (!cancelled) {
+						console.log(
+							'Доступні якості:',
+							hls.levels.map((l: any) => `${l.height}p`),
+						)
+					}
+				})
+
+				hls.on(Hls.Events.ERROR, (_e, data: { fatal?: boolean }) => {
+					if (cancelled || !data?.fatal) return
+					emitReady()
+				})
+
+				fallbackTimer = setTimeout(() => emitReady(), 6500)
+
+				if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+					queueMicrotask(emitReady)
+				}
+			} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+				video.src = videoSrc
+				fallbackTimer = setTimeout(() => emitReady(), 6500)
+				if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+					queueMicrotask(emitReady)
+				}
+			} else {
+				clearGuards()
+			}
+		})()
 
 		return () => {
-			if (hls) {
-				hls.destroy()
+			cancelled = true
+			if (fallbackTimer != null) {
+				clearTimeout(fallbackTimer)
+				fallbackTimer = null
+			}
+			const video = boundVideo
+			boundVideo = null
+			if (video && metaHandler) {
+				video.removeEventListener('loadedmetadata', metaHandler)
+				metaHandler = null
+			}
+			const hi = hlsRef.current
+			if (hi) {
+				try {
+					hi.destroy()
+				} catch {
+				}
 				hlsRef.current = null
 			}
 		}
@@ -564,9 +619,9 @@ export function WatchVideo({
 		}
 	}, [isPlyrReady, chapters, mediaDuration, videoId])
 
-	/** Другий HLS-плеєр лише для кадрів прев’ю на таймлайні (без обкладинки). */
+	/** Другий HLS лише при наявності глав і після готовності Plyr — інакше два одночасні HLS-підключення конфліктують. */
 	useEffect(() => {
-		if (!isHls || !videoSrc) {
+		if (!isHls || !videoSrc || !chapters?.length || !isPlyrReady) {
 			const prev = scrubPreviewHlsRef.current
 			if (prev) {
 				prev.destroy()
@@ -628,7 +683,7 @@ export function WatchVideo({
 			}
 			cleanupMedia()
 		}
-	}, [isHls, videoSrc])
+	}, [isHls, videoSrc, chapters, isPlyrReady])
 
 	useEffect(() => {
 		const ch = chaptersPropRef.current
@@ -1101,7 +1156,6 @@ export function WatchVideo({
 						hasFirstFrameRef.current = true
 						setHasFirstFrame(true)
 					}}
-					controls
 					autoPlay
 					muted
 					playsInline

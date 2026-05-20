@@ -1,5 +1,6 @@
 'use client'
 
+import { AudienceInfoHint } from '@/components/account/videos/AudienceInfoHint'
 import type { TEditVideoSchema } from '@/schemas/videos/edit-video.schema'
 import type { IVideo } from '@/types/video.types'
 import { getCroppedImg } from '@/utils/getCroppedImage'
@@ -208,9 +209,12 @@ export function EditVideoStepSecond({
 				)}
 
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-foreground'>
-					{t('audienceTitle')}
-				</h3>
+				<div className='mb-3 flex items-center gap-2'>
+					<h3 className='text-lg font-semibold text-foreground'>
+						{t('audienceTitle')}
+					</h3>
+					<AudienceInfoHint namespace='uploadVideoModal' />
+				</div>
 				<p className='text-sm text-muted-foreground mb-3'>{t('audienceQuestion')}</p>
 				<div className='flex gap-4'>
 					<label

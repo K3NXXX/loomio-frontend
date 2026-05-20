@@ -20,7 +20,7 @@ export const useEmailVerification = () => {
 			router.push(PAGES.LOGIN)
 		},
 		onError: () => {
-			toast('Invalid code. Try again')
+			toast.error(t('errors.auth.invalidVerificationCode'))
 		},
 	})
 

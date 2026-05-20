@@ -1,5 +1,6 @@
 'use client'
 
+import { AudienceInfoHint } from '@/components/account/videos/AudienceInfoHint'
 import type { TUploadVideoSchema } from '@/schemas/videos/upload-video.schema'
 import { getCroppedImg } from '@/utils/getCroppedImage'
 import { useVideoStore } from '@/zustand/store/videoStore'
@@ -239,9 +240,12 @@ export function UploadVideoStepSecond({
 			</div>
 
 			<div className='flex flex-col'>
-				<h3 className='text-lg font-semibold mb-3 text-foreground'>
-					{t('uploadVideoModal.stepSecond.audienceTitle')}
-				</h3>
+				<div className='mb-3 flex items-center gap-2'>
+					<h3 className='text-lg font-semibold text-foreground'>
+						{t('uploadVideoModal.stepSecond.audienceTitle')}
+					</h3>
+					<AudienceInfoHint namespace='uploadVideoModal' />
+				</div>
 				<p className='text-sm text-muted-foreground mb-3'>
 					{t('uploadVideoModal.stepSecond.audienceQuestion')}
 				</p>

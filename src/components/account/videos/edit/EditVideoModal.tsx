@@ -16,7 +16,6 @@ import {
 	type TEditVideoSchema,
 } from '@/schemas/videos/edit-video.schema'
 import type { IEditVideoRequest, IVideo } from '@/types/video.types'
-import { formatDateTimeLocal } from '@/utils/formatDateTimeLocal'
 import { getValidationMessage } from '@/utils/validationMessage'
 import { useVideoStore } from '@/zustand/store/videoStore'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -246,7 +245,9 @@ export function EditVideoModal({ open, onOpenChange }: IEditVideoModalProps) {
 			audience: editingVideo.audience === 'yes' ? 'yes' : 'no',
 			publishType:
 				editingVideo.publishType === 'scheduled' ? 'scheduled' : 'now',
-			publishDate: formatDateTimeLocal(editingVideo.publishDate),
+			publishDate: editingVideo.publishDate
+				? new Date(editingVideo.publishDate).toISOString()
+				: undefined,
 			thumbnail: [],
 			chapters: chaptersFromVideo(editingVideo),
 		})

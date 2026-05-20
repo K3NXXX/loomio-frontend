@@ -21,9 +21,18 @@
 	},
 	"sidebar": {
 		"home": "Home",
+		"kids": "Kids",
 		"playlists": "Playlists",
 		"followings": "Followings",
 		"account": "Account"
+	},
+	"homeFeed": {
+		"empty": "No videos yet",
+		"loadError": "Failed to load videos. Please try again later."
+	},
+	"kids": {
+		"empty": "No kids videos yet",
+		"loadError": "Failed to load videos. Please try again later."
 	},
 	"userMenu": {
 		"upgrade": "Upgrade to premium",
@@ -201,6 +210,7 @@
 	},
 	"pages": {
 		"home": "Home",
+		"kids": "Kids",
 		"account": "Account",
 		"editAccount": "Edit Account",
 		"followings": "Followings",
@@ -492,7 +502,8 @@
 		"ariaLabel": "Premium: floating mini player",
 		"close": "Close",
 		"openWatch": "Open watch page",
-		"tapToPlay": "Tap to play"
+		"tapToPlay": "Tap to play",
+		"dragHandle": "Move mini player"
 	},
 	"watchActions": {
 		"subscribersCount": "{count, plural, one {# subscriber} other {# subscribers}}",
@@ -500,7 +511,11 @@
 		"subscribed": "Subscribed",
 		"subscribe": "Subscribe",
 		"notifications": "Notifications",
-		"share": "Share"
+		"share": "Share",
+		"download": "Download",
+		"downloadTimedOut": "Preparing the file took too long. Try downloading again.",
+		"downloadPremiumOnly": "Video download is a Premium feature.",
+		"downloadFailed": "Couldn’t prepare the download link. Try again later."
 	},
 	"pwa": {
 		"offline": {
@@ -860,10 +875,13 @@
 			"privateHint": "Only you can see",
 			"audienceTitle": "Audience",
 			"audienceQuestion": "Is this video made for kids? (required)",
+			"audienceInfoAria": "Where your video will appear based on audience",
+			"audienceDifferenceTitle": "Where your video will appear",
+			"audienceDifferenceBody": "Yes — made for kids. The video appears in the Kids section and on your channel page, but not on Home or in recommendations next to general videos.\n\nNo — for a general audience. The video appears on Home, in recommendations, and on your channel. Kids videos are never mixed into those feeds.",
 			"yes": "Yes",
-			"yesHint": "Made for kids",
+			"yesHint": "Kids section only",
 			"no": "No",
-			"noHint": "Not made for kids"
+			"noHint": "Home, channel, recommendations"
 		},
 		"stepThird": {
 			"title": "Schedule",
@@ -878,7 +896,6 @@
 		"stepFourth": {
 			"title": "Chapters & timecodes",
 			"description": "Help viewers jump to key moments. Add a timestamp and a short label for each section.",
-			"hintFormat": "Format: m:ss or mm:ss or h:mm:ss",
 			"emptyState": "No chapters yet. Add your first timestamp to structure the video like on major platforms.",
 			"addFirst": "Add chapter",
 			"addAnother": "Add another chapter",
@@ -927,10 +944,23 @@
 			"privateHint": "Only you can see",
 			"audienceTitle": "Audience",
 			"audienceQuestion": "Is this video made for kids? (required)",
+			"audienceInfoAria": "Where your video will appear based on audience",
+			"audienceDifferenceTitle": "Where your video will appear",
+			"audienceDifferenceBody": "Yes — made for kids. The video appears in the Kids section and on your channel page, but not on Home or in recommendations next to general videos.\n\nNo — for a general audience. The video appears on Home, in recommendations, and on your channel. Kids videos are never mixed into those feeds.",
 			"yes": "Yes",
-			"yesHint": "Made for kids",
+			"yesHint": "Kids section only",
 			"no": "No",
-			"noHint": "Not made for kids"
+			"noHint": "Home, channel, recommendations"
+		},
+		"stepThird": {
+			"title": "Schedule",
+			"description": "Choose when you want your video to go live.",
+			"publishNow": "Publish now",
+			"publishNowHint": "Video will be visible right away",
+			"scheduleOption": "Schedule",
+			"scheduleHint": "Choose a specific date & time",
+			"publishDateTimeLabel": "Publish Date & Time",
+			"pickDate": "Pick a date"
 		}
 	},
 	"validation": {
@@ -991,7 +1021,7 @@
 			"publishDateRequired": "Publish date is required when scheduling",
 			"chapterTitleRequired": "Enter a chapter title for each row you started",
 			"chapterTimecodeRequired": "Enter a time for each chapter row you started",
-			"chapterTimeInvalid": "Use mm:ss or h:mm:ss — minutes and seconds must be 00–59",
+			"chapterTimeInvalid": "Use mm:ss or h:mm:ss — minutes and seconds 00–59, hours 00–60",
 			"chapterTitleMax120": "Chapter title must be at most 120 characters"
 		},
 		"report": {
@@ -1016,6 +1046,7 @@
 	},
 	"OauthLoading": "Authorization in progress, please wait...",
 	"errors": {
+		"unknown": "Something went wrong. Please try again.",
 		"auth": {
 			"invalidCredentials": "Invalid email or password",
 			"userInactive": "User account is inactive",
@@ -1026,6 +1057,29 @@
 	"success": {
 		"registrationCompleted": "Registration completed!",
 		"emailUpdated": "Email updated successfully."
+	},
+	"toast": {
+		"passwordChanged": "Password successfully changed",
+		"passwordResetLinkExpired": "The password reset link is invalid or has expired. Please request a new one.",
+		"accountUpdated": "Account successfully updated",
+		"channelUpdated": "Channel updated successfully",
+		"playlistDeleted": "Playlist deleted successfully",
+		"genericError": "Something went wrong. Try again.",
+		"genericErrorLater": "Something went wrong. Try again later.",
+		"checkoutSessionFailed": "Failed to create checkout session",
+		"oauthNotConfigured": "Authorization failed: OAuth URL is not configured.",
+		"removeVideoFromPlaylistFailed": "Failed to remove video from playlist",
+		"addVideoToPlaylistFailed": "Failed to add video. Try again later.",
+		"removeVideosFromPlaylistFailed": "Failed to remove videos",
+		"updatePlaylistFailed": "Failed to update playlist. Try again later.",
+		"createPlaylistFailed": "Something went wrong. Try later.",
+		"addVideosToPlaylistFailed": "Failed to add videos. Try again later.",
+		"updateNotificationsFailed": "Failed to update notifications",
+		"deleteChannelFailed": "Failed to delete channel. Try again later.",
+		"deleteTempVideoFailed": "Failed to delete temp video",
+		"markNotificationReadFailed": "Failed to mark notification as read",
+		"channelUsernameTaken": "This channel username is already taken",
+		"usernameTaken": "This username is already taken"
 	},
 	"premium": {
 		"title": "Loomio Premium",
@@ -1054,6 +1108,8 @@
 		"benefitSpeedBody": "Boost playback on the watch page up to 3× and 4× to save time.",
 		"benefitMiniPlayerTitle": "Floating mini player",
 		"benefitMiniPlayerBody": "Keep watching in a compact window while you browse the rest of the site.",
+		"benefitDownloadTitle": "Video downloads",
+		"benefitDownloadBody": "Save videos from the watch page with one click.",
 		"planFreeTitle": "Standard",
 		"planFreeTag": "Current plan",
 		"planFreeDesc": "Everything you need to watch and publish without premium polish.",
@@ -1063,24 +1119,26 @@
 		"planFreeF3": "Static banners; standard avatar frame",
 		"planFreeF4": "Playback speed up to 2×",
 		"planFreeF5": "No floating mini player",
+		"planFreeF6": "No option to download videos",
 		"planFreeCta": "Current plan",
 		"planPremiumTitle": "Premium",
 		"planPremiumDesc": "Full control over the look of the app, your channel, and how you watch.",
-		"planPremiumPrice": "$10 / mo",
-		"planPremiumPriceHint": "Monthly subscription. You can cancel anytime in your account billing settings.",
+		"planPremiumPrice": "$10",
+		"planPremiumPriceHint": "One-time payment. Premium stays on your account permanently.",
 		"planPremiumIntro": "Everything in Standard, plus:",
 		"planPremiumP1": "All premium palettes and custom theme",
 		"planPremiumP2": "Sidebar side and home grid columns",
 		"planPremiumP3": "GIF banners and custom avatar frame",
 		"planPremiumP4": "3× and 4× playback speeds",
 		"planPremiumP5": "Floating mini player",
+		"planPremiumP6": "Original video downloads",
 		"planPremiumCta": "Get Premium",
 		"planPremiumCtaActive": "Active plan",
 		"planPremiumBadgeActive": "Active",
 		"planPremiumBadgeOffer": "Premium",
 		"premiumSuccess": {
 			"title": "Welcome to Premium!",
-			"description": "Thanks for subscribing. Your account now has Loomio Premium — benefits stay active while your subscription is in good standing.",
+			"description": "Thanks for your purchase. Your account now has Loomio Premium — all benefits are yours permanently.",
 			"goHome": "Go home",
 			"myProfile": "My profile"
 		}

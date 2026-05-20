@@ -19,9 +19,13 @@ class CommentService {
 		return data
 	}
 
-	async getComments(videoId: string): Promise<IVideoCommentsResponse> {
+	async getComments(
+		videoId: string,
+		page = 1,
+		take = 20,
+	): Promise<IVideoCommentsResponse> {
 		const { data } = await axiosInstance.get<IVideoCommentsResponse>(
-			`${this.BASE_URL}/video/${videoId}`,
+			`${this.BASE_URL}/video/${videoId}?page=${page}&take=${take}`,
 		)
 		return data
 	}

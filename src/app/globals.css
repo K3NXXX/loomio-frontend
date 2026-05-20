@@ -493,27 +493,27 @@
 	pointer-events: none;
 }
 
-.watch-video-root .plyr__progress input[type='range'] {
+.watch-video-root--chapters .plyr__progress input[type='range'] {
 	position: relative;
 	z-index: 1;
 	background: transparent !important;
 	--plyr-range-fill-background: transparent;
 }
 
-.watch-video-root .plyr__progress input[type='range']::-webkit-slider-runnable-track {
+.watch-video-root--chapters .plyr__progress input[type='range']::-webkit-slider-runnable-track {
 	background: transparent !important;
 	box-shadow: none !important;
 }
 
-.watch-video-root .plyr__progress input[type='range']::-moz-range-track {
+.watch-video-root--chapters .plyr__progress input[type='range']::-moz-range-track {
 	background: transparent !important;
 }
 
-.watch-video-root .plyr__progress input[type='range']::-moz-range-progress {
+.watch-video-root--chapters .plyr__progress input[type='range']::-moz-range-progress {
 	background: transparent !important;
 }
 
-.watch-video-root .plyr__progress .plyr__progress__buffer {
+.watch-video-root--chapters .plyr__progress .plyr__progress__buffer {
 	opacity: 0 !important;
 }
 
@@ -655,4 +655,9 @@ input[type='range'].loomio-modal-range::-moz-range-thumb {
 
 .dark input[type='range'].loomio-modal-range::-moz-range-thumb {
 	border-color: oklch(0.22 0.02 280);
+}
+
+/* Above Radix dialogs (z-[10050]) so toasts stay visible inside modals */
+[data-sonner-toaster] {
+	z-index: 10100 !important;
 }

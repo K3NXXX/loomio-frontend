@@ -9,11 +9,13 @@ import { useState } from 'react'
 
 interface IWatchCommentsHeader {
 	allComments?: IVideoCommentsResponse
+	totalComments?: number
 	video: IVideo
 }
 
 export function WatchCommentsHeader({
 	allComments,
+	totalComments,
 	video,
 }: IWatchCommentsHeader) {
 	const t = useTranslations()
@@ -35,7 +37,9 @@ export function WatchCommentsHeader({
 	return (
 		<>
 			<h2 className='text-base min-[400px]:text-lg font-semibold mb-3 min-[400px]:mb-5 text-foreground'>
-				{t('watchComments.header', { count: allComments?.data.length ?? 0 })}
+				{t('watchComments.header', {
+					count: totalComments ?? allComments?.total ?? 0,
+				})}
 			</h2>
 
 			{userData ? (
