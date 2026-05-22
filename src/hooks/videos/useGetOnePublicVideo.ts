@@ -11,6 +11,7 @@ export const useGetOnePublicVideo = (videoId: string) => {
 		queryKey: ['getOnePublicVideo', videoId],
 		queryFn: () => videoService.getOneVideo(videoId),
 		enabled: !!videoId,
+		staleTime: 5 * 60 * 1000,
 	})
 
 	return { video, isLoading, isError }

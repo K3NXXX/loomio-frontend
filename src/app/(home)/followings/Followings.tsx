@@ -1,6 +1,5 @@
 'use client'
 
-import { ChannelAvatarFrame } from '@/components/account/channels/channel/ChannelAvatarFrame'
 import { FollowingsSkeleton } from '@/components/skeletons/followings/FollowingsSkeleton'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
@@ -57,19 +56,12 @@ function FollowingChannelRow({
 					'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 				)}
 			>
-				<ChannelAvatarFrame
-					variant='compact'
-					frameColor={channel.avatarFrameColor ?? undefined}
-					frameThickness={channel.avatarFrameThickness ?? undefined}
-					frameStyle={channel.avatarFrameStyle ?? undefined}
-				>
-					<Avatar className='size-16 border-2 border-background shadow-sm sm:size-[4.5rem]'>
-						<AvatarImage src={channel.avatarUrl ?? undefined} alt='' />
-						<AvatarFallback className='text-base font-semibold'>
-							{getInitials(channel.username)}
-						</AvatarFallback>
-					</Avatar>
-				</ChannelAvatarFrame>
+				<Avatar className='size-16 shrink-0 border border-border shadow-sm sm:size-[4.5rem]'>
+					<AvatarImage src={channel.avatarUrl ?? undefined} alt='' />
+					<AvatarFallback className='text-base font-semibold'>
+						{getInitials(channel.username)}
+					</AvatarFallback>
+				</Avatar>
 
 				<div className='flex min-w-0 flex-1 flex-col justify-center gap-1'>
 					<div className='flex items-start justify-between gap-3'>

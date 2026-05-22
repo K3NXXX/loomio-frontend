@@ -142,6 +142,13 @@ export function WatchVideo({
 		null,
 	)
 	const scrubPreviewGenRef = useRef(0)
+	const lastScrubPreviewBucketRef = useRef<number | null>(null)
+	const timelineHoverLeaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+		null,
+	)
+	const onNextRef = useRef(onNext)
+	onNextRef.current = onNext
+	const endedHandledRef = useRef(false)
 	const playerRef = useRef<any>(null)
 	const hlsRef = useRef<any>(null)
 	const hasSentView = useRef(false)
@@ -163,6 +170,43 @@ export function WatchVideo({
 	}
 
 	const { addView } = useAddView()
+
+	useLayoutEffect(() => {
+		endedHandledRef.current = false
+		setIsReady(false)
+		setIsLoading(true)
+		setHasFirstFrame(false)
+		hasFirstFrameRef.current = false
+		setIsPlyrReady(false)
+		setMediaDuration(0)
+		setChapterTimelineHint(null)
+		setChapterScrubPreviewUrl(null)
+		hasSentView.current = false
+
+		const p = playerRef.current
+		if (p) {
+			try {
+				p.destroy()
+			} catch {}
+			playerRef.current = null
+		}
+
+		const h = hlsRef.current
+		if (h) {
+			try {
+				h.destroy()
+			} catch {}
+			hlsRef.current = null
+		}
+
+		const scrubH = scrubPreviewHlsRef.current
+		if (scrubH) {
+			try {
+				scrubH.destroy()
+			} catch {}
+			scrubPreviewHlsRef.current = null
+		}
+	}, [videoId, videoSrc])
 
 	useEffect(() => {
 		if (!canUseBoostSpeed || !videoTitle) return
@@ -211,35 +255,21 @@ export function WatchVideo({
 	}, [])
 
 	useLayoutEffect(() => {
-		setIsReady(false)
-		setIsLoading(true)
-		setHasFirstFrame(false)
-		hasFirstFrameRef.current = false
-		setIsPlyrReady(false)
-		setMediaDuration(0)
-		hasSentView.current = false
-		if (viewTimer.current) {
-			clearTimeout(viewTimer.current)
-			viewTimer.current = null
-		}
-
 		const el = videoRef.current
-		if (!el) return
+		if (!el || isHls) return
 
 		function handleMetadata() {
 			if (el.videoWidth > 0 && el.videoHeight > 0) {
 				setAspectRatio(el.videoWidth / el.videoHeight)
 			}
-			if (!isHls) setIsReady(true)
+			setIsReady(true)
 		}
 
-		if (!isHls) {
-			el.load()
-			if (el.readyState >= 1) {
-				handleMetadata()
-			} else {
-				el.addEventListener('loadedmetadata', handleMetadata, { once: true })
-			}
+		el.load()
+		if (el.readyState >= 1) {
+			handleMetadata()
+		} else {
+			el.addEventListener('loadedmetadata', handleMetadata, { once: true })
 		}
 	}, [videoSrc, isHls])
 
@@ -300,12 +330,7 @@ export function WatchVideo({
 				hls.attachMedia(video)
 
 				hls.on(Hls.Events.MANIFEST_PARSED, () => {
-					if (!cancelled) {
-						console.log(
-							'Доступні якості:',
-							hls.levels.map((l: any) => `${l.height}p`),
-						)
-					}
+					if (!cancelled) emitReady()
 				})
 
 				hls.on(Hls.Events.ERROR, (_e, data: { fatal?: boolean }) => {
@@ -335,18 +360,17 @@ export function WatchVideo({
 				clearTimeout(fallbackTimer)
 				fallbackTimer = null
 			}
-			const video = boundVideo
-			boundVideo = null
-			if (video && metaHandler) {
-				video.removeEventListener('loadedmetadata', metaHandler)
+			if (metaHandler && boundVideo) {
+				boundVideo.removeEventListener('loadedmetadata', metaHandler)
 				metaHandler = null
 			}
+			boundVideo = null
 			const hi = hlsRef.current
 			if (hi) {
 				try {
+					hi.detachMedia()
 					hi.destroy()
-				} catch {
-				}
+				} catch {}
 				hlsRef.current = null
 			}
 		}
@@ -413,9 +437,6 @@ export function WatchVideo({
 
 			if (destroyed || !videoRef.current) return
 
-			const disablePlyrSeekTooltip =
-				normalizeChapters(chaptersPropRef.current ?? null).length > 0
-
 			plyrInstance = new Plyr(videoRef.current, {
 				controls: [...controls],
 				settings: hasHlsQualities
@@ -424,14 +445,13 @@ export function WatchVideo({
 				speed,
 				...(quality ? { quality } : {}),
 				tooltips: {
-					seek: !disablePlyrSeekTooltip,
+					seek: false,
 				},
 			})
 			playerRef.current = plyrInstance
 
 			plyrInstance.on('ready', () => {
 				plyrInstance.volume = getSavedVolume()
-
 				setIsPlyrReady(true)
 			})
 
@@ -453,7 +473,12 @@ export function WatchVideo({
 			})
 
 			plyrInstance.on('ended', () => {
+				if (endedHandledRef.current) return
+				endedHandledRef.current = true
 				removeSavedTime(videoId)
+				const goNext = onNextRef.current
+				if (!goNext) return
+				window.setTimeout(() => goNext(), 400)
 			})
 
 			plyrInstance.on('pause', () => {
@@ -619,80 +644,20 @@ export function WatchVideo({
 		}
 	}, [isPlyrReady, chapters, mediaDuration, videoId])
 
-	/** Другий HLS лише при наявності глав і після готовності Plyr — інакше два одночасні HLS-підключення конфліктують. */
 	useEffect(() => {
-		if (!isHls || !videoSrc || !chapters?.length || !isPlyrReady) {
-			const prev = scrubPreviewHlsRef.current
-			if (prev) {
-				prev.destroy()
-				scrubPreviewHlsRef.current = null
-			}
-			return
-		}
-
-		const el = scrubPreviewVideoRef.current
-		if (!el) return
-
-		let cancelled = false
-		let destroyed = false
-		const cleanupMedia = () => {
-			try {
-				el.pause()
-				el.removeAttribute('src')
-				el.load()
-			} catch {}
-		}
-
-		async function setup() {
-			const HlsMod = (await import('hls.js')).default
-			if (cancelled || !scrubPreviewVideoRef.current) return
-			const media = scrubPreviewVideoRef.current
-
-			if (HlsMod.isSupported()) {
-				const hls = new HlsMod({
-					startLevel: -1,
-					maxBufferLength: 6,
-					maxMaxBufferLength: 12,
-				})
-				hls.loadSource(videoSrc)
-				hls.attachMedia(media)
-				hls.on(HlsMod.Events.ERROR, (_e: unknown, data: { fatal?: boolean }) => {
-					if (data?.fatal) cleanupMedia()
-				})
-				if (cancelled) {
-					hls.destroy()
-					return
-				}
-				scrubPreviewHlsRef.current = hls
-			} else if (media.canPlayType('application/vnd.apple.mpegurl')) {
-				media.src = videoSrc
-			}
-		}
-
-		void setup()
-
 		return () => {
-			cancelled = true
 			const h = scrubPreviewHlsRef.current
-			scrubPreviewHlsRef.current = null
-			if (h && !destroyed) {
-				destroyed = true
+			if (h) {
 				try {
 					h.destroy()
 				} catch {}
+				scrubPreviewHlsRef.current = null
 			}
-			cleanupMedia()
 		}
-	}, [isHls, videoSrc, chapters, isPlyrReady])
+	}, [videoSrc])
 
 	useEffect(() => {
-		const ch = chaptersPropRef.current
-		if (
-			!isPlyrReady ||
-			!ch?.length ||
-			mediaDuration <= 0 ||
-			!plyrWrapperRef.current
-		) {
+		if (!isPlyrReady || mediaDuration <= 0 || !plyrWrapperRef.current) {
 			setChapterTimelineHint(null)
 			setChapterScrubPreviewUrl(null)
 			if (scrubPreviewDebounceRef.current) {
@@ -708,13 +673,39 @@ export function WatchVideo({
 		) as HTMLElement | null
 		if (!container) return
 
-		const sortedInitial = normalizeChapters(ch)
-		if (!sortedInitial.length) return
-
 		const duration = mediaDuration
 		let lastX = 0
 
+		const ensureScrubPreviewHls = async () => {
+			const pv = scrubPreviewVideoRef.current
+			if (!pv || !isHls || scrubPreviewHlsRef.current) return Boolean(pv)
+
+			const HlsMod = (await import('hls.js')).default
+			if (!scrubPreviewVideoRef.current) return false
+
+			if (HlsMod.isSupported()) {
+				const hls = new HlsMod({
+					startLevel: -1,
+					maxBufferLength: 6,
+					maxMaxBufferLength: 12,
+				})
+				hls.loadSource(videoSrc)
+				hls.attachMedia(scrubPreviewVideoRef.current)
+				scrubPreviewHlsRef.current = hls
+				return true
+			}
+			if (scrubPreviewVideoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+				scrubPreviewVideoRef.current.src = videoSrc
+				return true
+			}
+			return false
+		}
+
 		const scheduleScrubPreview = (tPos: number) => {
+			const bucket = Math.floor(tPos)
+			if (lastScrubPreviewBucketRef.current === bucket) return
+			lastScrubPreviewBucketRef.current = bucket
+
 			if (scrubPreviewDebounceRef.current) {
 				clearTimeout(scrubPreviewDebounceRef.current)
 				scrubPreviewDebounceRef.current = null
@@ -723,61 +714,63 @@ export function WatchVideo({
 				scrubPreviewDebounceRef.current = null
 				const gen = ++scrubPreviewGenRef.current
 				const pv = scrubPreviewVideoRef.current
-				if (!pv || pv.readyState < 2) {
-					return
-				}
-				const dur =
-					Number.isFinite(pv.duration) && pv.duration > 0
-						? pv.duration
-						: duration
-				const targ = Math.max(0, Math.min(tPos, dur - 0.05))
-				let finished = false
-				const snap = () => {
-					if (finished || gen !== scrubPreviewGenRef.current) return
-					finished = true
-					try {
-						const w = pv.videoWidth
-						const h = pv.videoHeight
-						if (!w || !h) {
-							return
-						}
-						const canvas = document.createElement('canvas')
-						const maxW = 320
-						const scale = Math.min(1, maxW / w)
-						canvas.width = Math.round(w * scale)
-						canvas.height = Math.round(h * scale)
-						const ctx = canvas.getContext('2d')
-						if (!ctx) {
-							return
-						}
-						ctx.drawImage(pv, 0, 0, canvas.width, canvas.height)
-						setChapterScrubPreviewUrl(canvas.toDataURL('image/jpeg', 0.85))
-					} catch {
+				if (!pv) return
+
+				const captureFrame = () => {
+					if (gen !== scrubPreviewGenRef.current) return
+					if (pv.readyState < 2) {
+						pv.addEventListener('loadeddata', captureFrame, { once: true })
 						return
 					}
+					const dur =
+						Number.isFinite(pv.duration) && pv.duration > 0
+							? pv.duration
+							: duration
+					const targ = Math.max(0, Math.min(tPos, dur - 0.05))
+					let finished = false
+					const snap = () => {
+						if (finished || gen !== scrubPreviewGenRef.current) return
+						finished = true
+						try {
+							const w = pv.videoWidth
+							const h = pv.videoHeight
+							if (!w || !h) return
+							const canvas = document.createElement('canvas')
+							const maxW = 320
+							const scale = Math.min(1, maxW / w)
+							canvas.width = Math.round(w * scale)
+							canvas.height = Math.round(h * scale)
+							const ctx = canvas.getContext('2d')
+							if (!ctx) return
+							ctx.drawImage(pv, 0, 0, canvas.width, canvas.height)
+							setChapterScrubPreviewUrl(
+								canvas.toDataURL('image/jpeg', 0.85),
+							)
+						} catch {
+							return
+						}
+					}
+					pv.addEventListener('seeked', snap, { once: true })
+					pv.currentTime = targ
+					requestAnimationFrame(() => {
+						if (gen !== scrubPreviewGenRef.current || finished) return
+						if (Math.abs(pv.currentTime - targ) < 0.06) snap()
+					})
 				}
-				pv.addEventListener('seeked', snap, { once: true })
-				pv.currentTime = targ
-				requestAnimationFrame(() => {
-					if (gen !== scrubPreviewGenRef.current || finished) return
-					if (Math.abs(pv.currentTime - targ) < 0.06) snap()
-				})
+
+				void (async () => {
+					if (isHls) {
+						const ok = await ensureScrubPreviewHls()
+						if (!ok || gen !== scrubPreviewGenRef.current) return
+					}
+					captureFrame()
+				})()
 			}, 90)
 		}
 
 		const publishHint = () => {
 			chapterHintFrameRef.current = null
 			const sorted = normalizeChapters(chaptersPropRef.current ?? null)
-			if (!sorted.length) {
-				if (scrubPreviewDebounceRef.current) {
-					clearTimeout(scrubPreviewDebounceRef.current)
-					scrubPreviewDebounceRef.current = null
-				}
-				scrubPreviewGenRef.current++
-				setChapterTimelineHint(null)
-				setChapterScrubPreviewUrl(null)
-				return
-			}
 			const rect = container.getBoundingClientRect()
 			const ratio = Math.max(0, Math.min(1, (lastX - rect.left) / rect.width))
 			const tPos = ratio * duration
@@ -787,16 +780,6 @@ export function WatchVideo({
 					title = sorted[i].title
 					break
 				}
-			}
-			if (!title) {
-				if (scrubPreviewDebounceRef.current) {
-					clearTimeout(scrubPreviewDebounceRef.current)
-					scrubPreviewDebounceRef.current = null
-				}
-				scrubPreviewGenRef.current++
-				setChapterTimelineHint(null)
-				setChapterScrubPreviewUrl(null)
-				return
 			}
 			const atTimeLabel = formatSecondsAsChapterTimecode(tPos)
 			setChapterTimelineHint({
@@ -808,13 +791,7 @@ export function WatchVideo({
 			scheduleScrubPreview(tPos)
 		}
 
-		const onMove = (e: MouseEvent) => {
-			lastX = e.clientX
-			if (chapterHintFrameRef.current != null) return
-			chapterHintFrameRef.current = requestAnimationFrame(publishHint)
-		}
-
-		const onLeave = () => {
+		const clearTimelineHover = () => {
 			if (chapterHintFrameRef.current != null) {
 				cancelAnimationFrame(chapterHintFrameRef.current)
 				chapterHintFrameRef.current = null
@@ -823,9 +800,37 @@ export function WatchVideo({
 				clearTimeout(scrubPreviewDebounceRef.current)
 				scrubPreviewDebounceRef.current = null
 			}
+			lastScrubPreviewBucketRef.current = null
 			scrubPreviewGenRef.current++
 			setChapterTimelineHint(null)
 			setChapterScrubPreviewUrl(null)
+			const h = scrubPreviewHlsRef.current
+			if (h) {
+				try {
+					h.destroy()
+				} catch {}
+				scrubPreviewHlsRef.current = null
+			}
+		}
+
+		const onMove = (e: MouseEvent) => {
+			if (timelineHoverLeaveTimerRef.current) {
+				clearTimeout(timelineHoverLeaveTimerRef.current)
+				timelineHoverLeaveTimerRef.current = null
+			}
+			lastX = e.clientX
+			if (chapterHintFrameRef.current != null) return
+			chapterHintFrameRef.current = requestAnimationFrame(publishHint)
+		}
+
+		const onLeave = () => {
+			if (timelineHoverLeaveTimerRef.current) {
+				clearTimeout(timelineHoverLeaveTimerRef.current)
+			}
+			timelineHoverLeaveTimerRef.current = setTimeout(() => {
+				timelineHoverLeaveTimerRef.current = null
+				clearTimelineHover()
+			}, 120)
 		}
 
 		container.addEventListener('mousemove', onMove)
@@ -833,9 +838,13 @@ export function WatchVideo({
 		return () => {
 			container.removeEventListener('mousemove', onMove)
 			container.removeEventListener('mouseleave', onLeave)
-			onLeave()
+			if (timelineHoverLeaveTimerRef.current) {
+				clearTimeout(timelineHoverLeaveTimerRef.current)
+				timelineHoverLeaveTimerRef.current = null
+			}
+			clearTimelineHover()
 		}
-	}, [isPlyrReady, mediaDuration, videoId, isHls])
+	}, [isPlyrReady, mediaDuration, videoId, isHls, videoSrc])
 
 	useEffect(() => {
 		const wrapMaybe = plyrWrapperRef.current
@@ -1003,18 +1012,6 @@ export function WatchVideo({
 		return () => document.removeEventListener('keydown', handleKeyDown)
 	}, [])
 
-	useEffect(() => {
-		const video = videoRef.current
-		if (!video) return
-
-		function handleEnded() {
-			if (onNext) onNext()
-		}
-
-		video.addEventListener('ended', handleEnded)
-		return () => video.removeEventListener('ended', handleEnded)
-	}, [onNext])
-
 	const showInitialLoader = !isPlyrReady || (isLoading && !hasFirstFrame)
 	const hasChapterMarkers = normalizeChapters(chapters ?? null).length > 0
 
@@ -1022,7 +1019,7 @@ export function WatchVideo({
 		<div
 			ref={containerRef}
 			className={cn(
-				'watch-video-root relative w-full max-w-full overflow-hidden rounded-xl bg-black transition-all duration-200',
+				'watch-video-root relative w-full max-w-full overflow-hidden rounded-xl bg-black',
 				hasChapterMarkers && 'watch-video-root--chapters',
 			)}
 			style={
@@ -1047,13 +1044,14 @@ export function WatchVideo({
 							{chapterScrubPreviewUrl ? (
 								// eslint-disable-next-line @next/next/no-img-element -- JPEG data URL from canvas
 								<img
+									key={chapterScrubPreviewUrl.slice(0, 48)}
 									src={chapterScrubPreviewUrl}
 									alt=''
 									className='aspect-video h-auto w-full object-cover'
 									draggable={false}
 								/>
 							) : (
-								<div className='aspect-video w-full animate-pulse bg-gradient-to-b from-neutral-800 to-neutral-950' />
+								<div className='aspect-video w-full bg-gradient-to-b from-neutral-800 to-neutral-950' />
 							)}
 							<div
 								className='pointer-events-none absolute inset-x-0 bottom-0 h-[28%] bg-gradient-to-t from-black/55 via-black/15 to-transparent'
@@ -1065,9 +1063,11 @@ export function WatchVideo({
 								<span className='shrink-0 rounded-md bg-white/[0.12] px-2 py-0.5 text-center text-[12px] font-semibold tabular-nums tracking-tight text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]'>
 									{chapterTimelineHint.atTimeLabel}
 								</span>
-								<span className='min-w-0 truncate text-[13px] font-medium leading-snug text-white/[0.96]'>
-									{chapterTimelineHint.title}
-								</span>
+								{chapterTimelineHint.title ? (
+									<span className='min-w-0 truncate text-[13px] font-medium leading-snug text-white/[0.96]'>
+										{chapterTimelineHint.title}
+									</span>
+								) : null}
 							</div>
 							<div
 								className='absolute left-1/2 top-full -translate-x-1/2 border-x-[7px] border-x-transparent border-t-[7px] border-t-[rgba(23,23,23,0.92)] drop-shadow-[0_2px_2px_rgba(0,0,0,0.35)]'
@@ -1083,11 +1083,18 @@ export function WatchVideo({
 				</div>
 			)}
 
-			<div
-				ref={plyrWrapperRef}
-				className='w-full h-full relative'
-				style={{ visibility: isPlyrReady ? 'visible' : 'hidden' }}
-			>
+			<video
+				ref={scrubPreviewVideoRef}
+				src={isHls ? undefined : videoSrc}
+				muted
+				playsInline
+				preload='auto'
+				tabIndex={-1}
+				className='pointer-events-none fixed left-0 top-0 h-px w-px opacity-0'
+				aria-hidden
+			/>
+
+			<div ref={plyrWrapperRef} className='w-full h-full relative'>
 				<div
 					className={`absolute left-0 top-50 w-32 h-[30%] z-20 flex items-center justify-start pl-8 opacity-0 hover:opacity-100 transition-opacity cursor-pointer ${isPlyrMenuOpen ? 'pointer-events-none' : ''}`}
 					onClick={() => {
@@ -1127,40 +1134,30 @@ export function WatchVideo({
 					</div>
 				</div>
 
-				<video
-					key={isHls ? `scrub-hls-${videoSrc}` : `scrub-${videoSrc}`}
-					ref={scrubPreviewVideoRef}
-					src={isHls ? undefined : videoSrc}
-					muted
-					playsInline
-					preload='auto'
-					tabIndex={-1}
-					className='pointer-events-none fixed left-0 top-0 h-px w-px opacity-0'
-					aria-hidden
-				/>
-				<video
-					key={videoSrc}
-					ref={videoRef}
-					src={isHls ? undefined : videoSrc}
-					className='w-full h-full object-contain'
-					onCanPlay={() => {
-						setIsLoading(false)
-						hasFirstFrameRef.current = true
-						setHasFirstFrame(true)
-					}}
-					onWaiting={() => {
-						if (!hasFirstFrameRef.current) setIsLoading(true)
-					}}
-					onPlaying={() => {
-						setIsLoading(false)
-						hasFirstFrameRef.current = true
-						setHasFirstFrame(true)
-					}}
-					autoPlay
-					muted
-					playsInline
-					preload='auto'
-				/>
+				<div key={videoId} className='w-full h-full'>
+					<video
+						ref={videoRef}
+						src={isHls ? undefined : videoSrc}
+						className='w-full h-full object-contain'
+						onCanPlay={() => {
+							setIsLoading(false)
+							hasFirstFrameRef.current = true
+							setHasFirstFrame(true)
+						}}
+						onWaiting={() => {
+							if (!hasFirstFrameRef.current) setIsLoading(true)
+						}}
+						onPlaying={() => {
+							setIsLoading(false)
+							hasFirstFrameRef.current = true
+							setHasFirstFrame(true)
+						}}
+						autoPlay
+						muted
+						playsInline
+						preload='auto'
+					/>
+				</div>
 			</div>
 		</div>
 	)

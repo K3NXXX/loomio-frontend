@@ -4,6 +4,7 @@ import { WatchVideoMoreMenu } from '@/components/account/videos/watch/WatchVideo
 import { VideoThumbnailDuration } from '@/components/ui/custom/VideoThumbnailDuration'
 import { useGetPublicPlaylist } from '@/hooks/playlists/useGetPublicPlaylist'
 import { formatDate } from '@/utils/formatDate'
+import { getPlaylistVideosInWatchOrder } from '@/utils/playlistWatchOrder'
 import Link from 'next/link'
 import { ChevronDown, ChevronUp, ListVideo, Play } from 'lucide-react'
 import { useState } from 'react'
@@ -19,7 +20,7 @@ export function WatchPlaylistSidebar({ videoId, playlistId }: Props) {
 
 	if (!playlist) return null
 
-	const videos = [...playlist.videos].reverse()
+	const videos = getPlaylistVideosInWatchOrder(playlist.videos)
 	const activeIndex = videos.findIndex((v) => v.id === videoId)
 
 	return (

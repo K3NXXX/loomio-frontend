@@ -10,16 +10,19 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 
+export type PlaylistsScope = 'user' | 'channel'
+
 interface PlaylistsProps {
-	channelId?: string
+	/** User playlists (`/playlists`) vs channel studio playlists (workplace). */
+	scope?: PlaylistsScope
 }
 
-export function Playlists({ }: PlaylistsProps) {
+export function Playlists({ scope = 'user' }: PlaylistsProps) {
 	const t = useTranslations()
 	const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
 	const { channel } = useChannelStore()
 
-	const isChannel = !!channel?.id
+	const isChannel = scope === 'channel'
 
 	return (
 		<div className='px-1 py-10'>
@@ -72,7 +75,7 @@ export function Playlists({ }: PlaylistsProps) {
 			<CreatePlaylistModal
 				open={isCreateFormOpen}
 				onOpenChange={setIsCreateFormOpen}
-				channelId={channel?.id} 
+				channelId={isChannel ? channel?.id : undefined}
 			/>
 		</div>
 	)

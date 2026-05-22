@@ -1,6 +1,7 @@
 import { commentService } from '@/services/comment.service'
 import type { IVideoComment, IVideoCommentsResponse } from '@/types/comment.types'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
 const COMMENTS_PAGE_SIZE = 20
 
@@ -16,8 +17,10 @@ export const useGetAllComments = (videoId: string) => {
 		refetchOnWindowFocus: false,
 	})
 
-	const rootComments: IVideoComment[] =
-		q.data?.pages.flatMap((p) => p.data) ?? []
+	const rootComments = useMemo<IVideoComment[]>(
+		() => q.data?.pages.flatMap((p) => p.data) ?? [],
+		[q.data],
+	)
 
 	const total = q.data?.pages[0]?.total ?? 0
 

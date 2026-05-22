@@ -83,14 +83,15 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 		const rootId = getRootId(rootComments, commentId)
 		if (!rootId) return
 
-		setExpandedReplies((prev) => ({
-			...prev,
-			[rootId]: true,
-		}))
+		setExpandedReplies((prev) => {
+			if (prev[rootId]) return prev
+			return { ...prev, [rootId]: true }
+		})
 	}, [commentId, rootComments])
 
 	useEffect(() => {
 		if (!commentId) return
+		if (!findCommentInRoots(rootComments, commentId)) return
 
 		let attempts = 0
 
@@ -112,7 +113,7 @@ export function WatchCommentsList({ video }: IWatchCommentsProps) {
 		}, 150)
 
 		return () => clearInterval(interval)
-	}, [commentId, expandedReplies, rootComments])
+	}, [commentId, rootComments])
 
 	return (
 		<div className='mt-8'>

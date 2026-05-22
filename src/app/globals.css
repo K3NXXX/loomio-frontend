@@ -441,15 +441,15 @@
 	position: relative;
 }
 
-/* Уникаємо подвійної підказки: при глахах вимикаємо Plyr seek tooltip (див. tooltips.seek у WatchVideo) */
-.watch-video-root--chapters .plyr__progress .plyr__tooltip,
-.watch-video-root--chapters .plyr__progress__container .plyr__tooltip {
+/* Уникаємо подвійної підказки: власне прев’ю кадру замість Plyr seek tooltip */
+.watch-video-root .plyr__progress .plyr__tooltip,
+.watch-video-root .plyr__progress__container .plyr__tooltip {
 	display: none !important;
 	opacity: 0 !important;
 	visibility: hidden !important;
 	pointer-events: none !important;
 }
-.watch-video-root--chapters .plyr__progress .plyr__tooltip--visible {
+.watch-video-root .plyr__progress .plyr__tooltip--visible {
 	display: none !important;
 }
 

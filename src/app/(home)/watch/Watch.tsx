@@ -13,16 +13,20 @@ import { WatchVideoSkeleton } from '@/components/skeletons/videos/WatchVideoSkel
 import { PAGES } from '@/constants/pages.constants'
 import { useGetMe } from '@/hooks/auth/useGetMe'
 import { useGetChannel } from '@/hooks/channel/useGetChannel'
+import { useGetPublicPlaylist } from '@/hooks/playlists/useGetPublicPlaylist'
 import { useGetOnePublicVideo } from '@/hooks/videos/useGetOnePublicVideo'
 import { useGetPublicVideos } from '@/hooks/videos/useGetPublicVideos'
+import { getNextPlaylistVideo } from '@/utils/playlistWatchOrder'
 import { useViewsCountLabel } from '@/hooks/useCompactNumberFormat'
 import { cn } from '@/lib/utils'
 import { formatDate } from '@/utils/formatDate'
 import type { IVideoChapter } from '@/types/video.types'
 import { ChevronRight, ListVideo } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { videoService } from '@/services/video.service'
+import { useQueryClient } from '@tanstack/react-query'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 function coerceVideoChapters(raw: unknown): IVideoChapter[] {
 	if (!Array.isArray(raw)) return []
@@ -52,32 +56,73 @@ export default function Watch() {
 	const channelVideos = channel?.videos || []
 	const publicVideos = allVideos || []
 	const playlistId = searchParams.get('playlist')
+	const { playlist } = useGetPublicPlaylist(playlistId ?? undefined)
 
-	const channelIndex = channelVideos.findIndex((v) => v.id === video?.id)
+	const nextVideo = useMemo(() => {
+		if (!video?.id) return null
 
-	const publicIndex = publicVideos.findIndex((v) => v.id === video?.id)
+		if (playlistId) {
+			if (!playlist?.videos?.length) return null
+			return getNextPlaylistVideo(playlist.videos, video.id)
+		}
 
-	let nextVideo = null
+		const channelIndex = channelVideos.findIndex((v) => v.id === video.id)
+		if (channelIndex >= 0 && channelIndex + 1 < channelVideos.length) {
+			return channelVideos[channelIndex + 1]
+		}
 
-	if (channelIndex >= 0 && channelIndex + 1 < channelVideos.length) {
-		nextVideo = channelVideos[channelIndex + 1]
-	} else if (publicIndex >= 0 && publicIndex + 1 < publicVideos.length) {
-		nextVideo = publicVideos[publicIndex + 1]
-	}
+		const publicIndex = publicVideos.findIndex((v) => v.id === video.id)
+		if (publicIndex >= 0 && publicIndex + 1 < publicVideos.length) {
+			return publicVideos[publicIndex + 1]
+		}
+
+		return null
+	}, [
+		video?.id,
+		playlistId,
+		playlist?.videos,
+		channelVideos,
+		publicVideos,
+	])
 
 	const router = useRouter()
+	const queryClient = useQueryClient()
+	const navigatingToNextRef = useRef(false)
 
 	const playerControlRef = useRef<{ seek?: (t: number) => void } | null>(null)
 	const [playback, setPlayback] = useState({ currentTime: 0, duration: 0 })
 	const [chaptersTrayOpen, setChaptersTrayOpen] = useState(false)
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
-	const chapters = coerceVideoChapters(video?.chapters)
+	const chapters = useMemo(
+		() => coerceVideoChapters(video?.chapters),
+		[video?.chapters],
+	)
 	const hasChapters = chapters.length > 0
 
 	useEffect(() => {
 		setChaptersTrayOpen(false)
+		navigatingToNextRef.current = false
 	}, [video?.id])
+
+	useEffect(() => {
+		if (!playlist?.videos?.length) return
+		for (const item of playlist.videos) {
+			void queryClient.prefetchQuery({
+				queryKey: ['getOnePublicVideo', item.id],
+				queryFn: () => videoService.getOneVideo(item.id),
+			})
+		}
+	}, [playlist?.videos, queryClient])
+
+	const handleAutoNext = useCallback(() => {
+		if (!nextVideo || navigatingToNextRef.current) return
+		navigatingToNextRef.current = true
+		const url = playlistId
+			? PAGES.WATCH_WITH_PLAYLIST(nextVideo.id, playlistId)
+			: PAGES.WATCH(nextVideo.id)
+		router.push(url, { scroll: false })
+	}, [nextVideo, playlistId, router])
 
 	const toggleDescription = () => {
 		setIsDescriptionExpanded((prev) => !prev)
@@ -113,7 +158,9 @@ export default function Watch() {
 		return () => clearInterval(interval)
 	}, [commentId, video])
 
-	if (isLoading) {
+	const isInitialLoad = isLoading && !video
+
+	if (isInitialLoad) {
 		return (
 			<div className='flex gap-5'>
 				<div>
@@ -144,10 +191,7 @@ export default function Watch() {
 						chapters={hasChapters ? chapters : null}
 						playerControlRef={playerControlRef}
 						onPlaybackUpdate={setPlayback}
-						onNext={() => {
-							if (!nextVideo) return
-							router.push(PAGES.WATCH(nextVideo.id))
-						}}
+						onNext={nextVideo ? handleAutoNext : undefined}
 					/>
 				</WatchMiniPlayerLeaveBridge>
 				{hasChapters && (
