@@ -25,7 +25,6 @@ export function WatchPlaylistSidebar({ videoId, playlistId }: Props) {
 
 	return (
 		<div className='flex flex-col gap-1'>
-			{/* хедер */}
 			<div
 				onClick={() => setIsCollapsed((prev) => !prev)}
 				className='flex items-center gap-2 px-1 py-1.5 cursor-pointer group'

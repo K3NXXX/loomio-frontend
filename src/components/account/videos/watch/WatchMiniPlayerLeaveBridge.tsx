@@ -8,17 +8,11 @@ function normalizePath(p: string) {
 	return p.replace(/\/+$/, '')
 }
 
-/** `/watch` та префікси на кшталт `/uk/watch` */
 function isWatchPath(path: string) {
 	const n = normalizePath(path)
 	return n === '/watch' || /\/watch$/.test(n)
 }
 
-/**
- * При повному відмонтуванні сторінки /watch відкриває міні-плеєр за знімком.
- * WatchVideo як дочірній елемент розмонтовується першим і оновлює знімок у своєму cleanup.
- * Подвійний rAF дає час Next.js оновити URL; перевірка шляху зменшує хибне відкриття під Strict Mode.
- */
 export function WatchMiniPlayerLeaveBridge({
 	premium,
 	children,

@@ -34,7 +34,6 @@ export interface IVideo {
 	title: string
 	audience: string
 	visibility: string
-	/** Moderator restriction reason (studio / restricted tooltip) */
 	restrictionModeratorReason?: string | null
 	restrictionModeratorNote?: string | null
 	description: string | null
@@ -45,7 +44,6 @@ export interface IVideo {
 	createdAt: string
 	durationSeconds?: number | null
 	videoPublicId: string
-	/** Saved chapter markers — shape `{ title, timecode }[]` from API */
 	chapters?: IVideoChapter[] | null
 	likesCount: number
 	dislikesCount: number

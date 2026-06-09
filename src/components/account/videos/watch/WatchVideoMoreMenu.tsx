@@ -22,11 +22,8 @@ import { WatchReportVideoModal } from './WatchReportVideoModal'
 interface IWatchVideoMoreMenuProps {
 	videoId: string
 	videoAuthorId: string
-	/** When set (e.g. from video cards), shows Share and opens ShareVideoModal */
 	video?: IVideo | null
-	/** Hide "Report" (e.g. recommended sidebar on watch) */
 	hideReport?: boolean
-	/** Playlist detail pages: remove this video from the current playlist */
 	removeFromPlaylist?: {
 		onRemove: () => void
 	}

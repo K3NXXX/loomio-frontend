@@ -5,7 +5,6 @@ export interface ISearchSuggestion {
 	id: string
 	label: string
 	type: 'video' | 'channel' | 'tag'
-	/** Video thumbnail URL or channel avatar URL (from API). */
 	imageUrl?: string | null
 }
 

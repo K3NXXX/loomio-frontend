@@ -1,4 +1,3 @@
-/** Same playback order as WatchPlaylistSidebar (reversed API order). */
 export function getPlaylistVideosInWatchOrder<T extends { id: string }>(
 	videos: T[],
 ): T[] {

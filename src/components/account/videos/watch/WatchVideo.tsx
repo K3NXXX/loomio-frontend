@@ -1,9 +1,10 @@
 'use client'
 
 import { useAddView } from '@/hooks/view/useAddView'
-import { watchMiniSnapshotRef } from '@/lib/watch-mini-player-snapshot'
 import { cn } from '@/lib/utils'
+import { watchMiniSnapshotRef } from '@/lib/watch-mini-player-snapshot'
 import type { IVideoChapter } from '@/types/video.types'
+import { formatSecondsAsChapterTimecode } from '@/utils/chapterTimecode'
 import { useTranslations } from 'next-intl'
 import 'plyr/dist/plyr.css'
 import {
@@ -14,7 +15,6 @@ import {
 	useState,
 } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
-import { formatSecondsAsChapterTimecode } from '@/utils/chapterTimecode'
 import { normalizeChapters } from './WatchChaptersTray'
 
 const PREMIUM_SPEED_THRESHOLD = 3
@@ -114,13 +114,12 @@ export function WatchVideo({
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const plyrWrapperRef = useRef<HTMLDivElement>(null)
-	/** Останні глави без залежності useEffect від нестабільного масиву з батька. */
 	const chaptersPropRef = useRef(chapters)
 	chaptersPropRef.current = chapters
 	const [aspectRatio, setAspectRatio] = useState<number | null>(null)
 	const [isReady, setIsReady] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
-	/** After first canplay/playing we ignore `waiting` for the full-screen spinner (HLS rebuffers fire waiting often). */
+
 	const [hasFirstFrame, setHasFirstFrame] = useState(false)
 	const hasFirstFrameRef = useRef(false)
 	const [isPlyrReady, setIsPlyrReady] = useState(false)
@@ -143,9 +142,9 @@ export function WatchVideo({
 	)
 	const scrubPreviewGenRef = useRef(0)
 	const lastScrubPreviewBucketRef = useRef<number | null>(null)
-	const timelineHoverLeaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
-		null,
-	)
+	const timelineHoverLeaveTimerRef = useRef<ReturnType<
+		typeof setTimeout
+	> | null>(null)
 	const onNextRef = useRef(onNext)
 	onNextRef.current = onNext
 	const endedHandledRef = useRef(false)
@@ -505,8 +504,7 @@ export function WatchVideo({
 			if (p) {
 				try {
 					p.destroy()
-				} catch {
-				}
+				} catch {}
 			}
 			if (playerRef.current === p) {
 				playerRef.current = null
@@ -578,7 +576,9 @@ export function WatchVideo({
 			return
 		}
 		const wrap = plyrWrapperRef.current
-		const progressBar = wrap.querySelector('.plyr__progress') as HTMLElement | null
+		const progressBar = wrap.querySelector(
+			'.plyr__progress',
+		) as HTMLElement | null
 		const video = videoRef.current
 		if (!progressBar || !video) return
 
@@ -586,7 +586,9 @@ export function WatchVideo({
 		if (sorted.length === 0) return
 
 		const duration = mediaDuration
-		progressBar.querySelectorAll('.loomio-chapter-layer').forEach((el) => el.remove())
+		progressBar
+			.querySelectorAll('.loomio-chapter-layer')
+			.forEach((el) => el.remove())
 
 		progressBar.style.position = 'relative'
 
@@ -594,7 +596,9 @@ export function WatchVideo({
 			.map((c) => c.startSeconds)
 			.filter((s) => s > 0 && s < duration)
 		const boundarySet = new Set<number>([0, ...starts, duration])
-		const b = [...boundarySet].filter((x) => x >= 0 && x <= duration).sort((a, c) => a - c)
+		const b = [...boundarySet]
+			.filter((x) => x >= 0 && x <= duration)
+			.sort((a, c) => a - c)
 
 		const layer = document.createElement('div')
 		layer.className = 'loomio-chapter-layer'
@@ -694,7 +698,11 @@ export function WatchVideo({
 				scrubPreviewHlsRef.current = hls
 				return true
 			}
-			if (scrubPreviewVideoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+			if (
+				scrubPreviewVideoRef.current.canPlayType(
+					'application/vnd.apple.mpegurl',
+				)
+			) {
 				scrubPreviewVideoRef.current.src = videoSrc
 				return true
 			}
@@ -743,9 +751,7 @@ export function WatchVideo({
 							const ctx = canvas.getContext('2d')
 							if (!ctx) return
 							ctx.drawImage(pv, 0, 0, canvas.width, canvas.height)
-							setChapterScrubPreviewUrl(
-								canvas.toDataURL('image/jpeg', 0.85),
-							)
+							setChapterScrubPreviewUrl(canvas.toDataURL('image/jpeg', 0.85))
 						} catch {
 							return
 						}
@@ -857,31 +863,28 @@ export function WatchVideo({
 			const panel = wrap.querySelector('[id^="plyr-settings-"][id$="-speed"]')
 			if (!panel) return
 
-			panel
-				.querySelectorAll('button[role="menuitemradio"]')
-				.forEach((node) => {
-					const btn = node as HTMLButtonElement
-					const val = Number.parseFloat(String(btn.value ?? ''))
-					const isBoost =
-						Number.isFinite(val) && val >= PREMIUM_SPEED_THRESHOLD
-					if (!isBoost) return
+			panel.querySelectorAll('button[role="menuitemradio"]').forEach((node) => {
+				const btn = node as HTMLButtonElement
+				const val = Number.parseFloat(String(btn.value ?? ''))
+				const isBoost = Number.isFinite(val) && val >= PREMIUM_SPEED_THRESHOLD
+				if (!isBoost) return
 
-					if (!canUseBoostSpeed) {
-						btn.classList.add('plyr-speed-premium-locked')
-						btn.setAttribute('aria-disabled', 'true')
-						btn.setAttribute(PREMIUM_SPEED_LOCK_ATTR, '')
-						btn.title = lockedHint
-						syncPremiumSpeedCrown(btn, true)
-					} else {
-						btn.classList.remove('plyr-speed-premium-locked')
-						btn.removeAttribute('aria-disabled')
-						syncPremiumSpeedCrown(btn, false)
-						if (btn.hasAttribute(PREMIUM_SPEED_LOCK_ATTR)) {
-							btn.removeAttribute(PREMIUM_SPEED_LOCK_ATTR)
-							btn.removeAttribute('title')
-						}
+				if (!canUseBoostSpeed) {
+					btn.classList.add('plyr-speed-premium-locked')
+					btn.setAttribute('aria-disabled', 'true')
+					btn.setAttribute(PREMIUM_SPEED_LOCK_ATTR, '')
+					btn.title = lockedHint
+					syncPremiumSpeedCrown(btn, true)
+				} else {
+					btn.classList.remove('plyr-speed-premium-locked')
+					btn.removeAttribute('aria-disabled')
+					syncPremiumSpeedCrown(btn, false)
+					if (btn.hasAttribute(PREMIUM_SPEED_LOCK_ATTR)) {
+						btn.removeAttribute(PREMIUM_SPEED_LOCK_ATTR)
+						btn.removeAttribute('title')
 					}
-				})
+				}
+			})
 		}
 
 		function blockBoostSpeedInteraction(ev: Event) {

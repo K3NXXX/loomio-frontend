@@ -1,4 +1,3 @@
-/** Same name as backend `CookieService.CUSTOM_THEME_COOKIE`. */
 export const CUSTOM_THEME_COOKIE_NAME = 'loomio_custom_theme'
 
 export type CustomThemePayload = {
@@ -43,7 +42,6 @@ export function foregroundForPrimary(primaryHex: string): string {
 		: 'oklch(0.99 0.01 280)'
 }
 
-/** Builds CSS variable map for `<html style=…>` (SSR) and client `document.documentElement`. */
 export function buildCustomThemeCssVariablesRecord(
 	bg: string,
 	primary: string,

@@ -10,7 +10,6 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { FaPlay } from 'react-icons/fa'
 
-/** Shared main column for first-time video report & re-review modals. */
 export function ModerationVideoReportMainColumn({ report }: { report: any }) {
 	const [isPlaying, setIsPlaying] = useState(false)
 	const tLabels = useTranslations('moderation.modals.labels')

@@ -5,10 +5,6 @@ import type { IPublicVideosPage, IVideo } from '@/types/video.types'
 class VideoService {
 	private BASE_URL = `${process.env.NEXT_PUBLIC_API_URL!.replace(/\/$/, '')}/videos`
 
-	/**
-	 * Direct URL so the browser’s download manager streams the attachment (XHR/blob would buffer first).
-	 * Requires auth cookies accepted on navigations (SameSite/session as API).
-	 */
 	premiumVideoAttachmentUrl(videoId: string): string {
 		return `${this.BASE_URL}/${videoId}/download`
 	}
@@ -29,7 +25,6 @@ class VideoService {
 		)
 		return data
 	}
-
 
 	async getRecommendedVideos(videoId: string): Promise<IVideo[]> {
 		const { data } = await axiosInstance.get<IVideo[]>(

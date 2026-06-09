@@ -17,7 +17,6 @@ interface EditVideoStepSecondProps {
 	setValue: UseFormSetValue<TEditVideoSchema>
 	register: UseFormRegister<TEditVideoSchema>
 	video: IVideo
-	/** Restrict/review flow: existing thumbnail is kept if user does not upload a new one */
 	restrictReviewFlow?: boolean
 }
 

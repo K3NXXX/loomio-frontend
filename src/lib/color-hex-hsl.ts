@@ -1,4 +1,3 @@
-/** Convert #RRGGBB ↔ HSL for theme sliders (0–360 / 0–100 / 0–100). */
 
 export function hexToHsl(hex: string): { h: number; s: number; l: number } {
 	const { r, g, b } = (() => {

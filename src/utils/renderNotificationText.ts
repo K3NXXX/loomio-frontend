@@ -18,7 +18,6 @@ type NotificationTextTranslator = (
 	values?: Record<string, string | number | Date>,
 ) => string
 
-/** Resolves `notifications.restrictReason.{code}` */
 export type TranslateNotificationRestrictReason = (code: string) => string
 
 function normalizeNotificationType(type: Notification['type']): string {

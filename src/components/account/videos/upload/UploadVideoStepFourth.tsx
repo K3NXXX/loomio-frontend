@@ -35,7 +35,6 @@ export function UploadVideoStepFourth({
 				<p className='mb-3 text-sm text-muted-foreground'>{t('description')}</p>
 			</div>
 
-			{/* Column headers when there are rows */}
 			{fields.length > 0 && (
 				<div className='grid shrink-0 grid-cols-[44px_92px_1fr_36px] gap-2 border-b border-border/60 px-1 pb-1.5 pt-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground'>
 					<span className='text-center'>#</span>

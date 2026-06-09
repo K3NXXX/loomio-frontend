@@ -105,7 +105,6 @@ export function CommentReports() {
 		>
 			<div />
 
-			{/* Comment content */}
 			<div className='flex items-start min-w-0'>
 				<div className='min-w-0 space-y-1'>
 					<div className='font-medium text-[15px] leading-[1.45] text-foreground/90'>
@@ -126,7 +125,6 @@ export function CommentReports() {
 			<div className='text-center'>{renderUser(r.comment?.user)}</div>
 			<div className='text-center'>{renderUser(r.author)}</div>
 
-			{/* Assigned to */}
 			<div className='text-center'>
 				{r.assignedTo ? (
 					<div className='text-xs text-emerald-700 dark:text-emerald-400 font-medium'>
@@ -137,7 +135,6 @@ export function CommentReports() {
 				)}
 			</div>
 
-			{/* Reason */}
 			<div className='text-center'>
 				<Badge
 					variant='outline'
@@ -147,7 +144,6 @@ export function CommentReports() {
 				</Badge>
 			</div>
 
-			{/* Status */}
 			<div className='text-center text-[12px] font-medium'>
 				<span
 					className={cn(
@@ -163,7 +159,6 @@ export function CommentReports() {
 				</span>
 			</div>
 
-			{/* Date */}
 			<div className='text-center text-[12px] text-muted-foreground/80'>
 				{new Date(r.createdAt).toLocaleString(dateLocale)}
 			</div>

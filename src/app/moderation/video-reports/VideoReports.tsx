@@ -6,8 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { useGetVideoReports } from '@/hooks/report/useGetVideoReports'
 import { cn } from '@/lib/utils'
-import { truncateName } from '@/utils/truncateName'
 import { getDateLocaleTag } from '@/utils/date-locale'
+import { truncateName } from '@/utils/truncateName'
 import { useLocale, useTranslations } from 'next-intl'
 import { useState } from 'react'
 
@@ -105,7 +105,6 @@ export function VideoReports() {
 		>
 			<div />
 
-			{/* --- VIDEO TITLE --- */}
 			<div className='flex items-start min-w-0'>
 				<div className='min-w-0 space-y-1'>
 					<div className='font-medium text-[15px] leading-[1.45] text-foreground/90'>
@@ -123,10 +122,8 @@ export function VideoReports() {
 				</div>
 			</div>
 
-			{/* --- VIDEO AUTHOR --- */}
 			<div className='text-center'>{renderUser(r.video?.channel)}</div>
 
-			{/* --- REPORT AUTHOR --- */}
 			<div className='text-center'>{renderUser(r.author)}</div>
 
 			<div className='text-center'>
@@ -139,7 +136,6 @@ export function VideoReports() {
 				)}
 			</div>
 
-			{/* --- REASON --- */}
 			<div className='text-center'>
 				<Badge
 					variant='outline'
@@ -164,7 +160,6 @@ export function VideoReports() {
 				</span>
 			</div>
 
-			{/* --- DATE --- */}
 			<div className='text-center text-[12px] text-muted-foreground/80'>
 				{new Date(r.createdAt).toLocaleString(dateLocale)}
 			</div>

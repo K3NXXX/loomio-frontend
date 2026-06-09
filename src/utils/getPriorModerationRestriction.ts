@@ -1,6 +1,5 @@
 import type { IReportItem } from '@/types/report.types'
 
-/** Restriction context from the last moderator action, stored on the report and/or video snapshot. */
 export function getPriorModerationRestriction(report: IReportItem) {
 	const reason =
 		report.moderatorRestrictionReason ??

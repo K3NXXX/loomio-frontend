@@ -33,9 +33,7 @@ export const useGetMe = () => {
 
 	const userData = query.data ?? undefined
 
-	/** Лише перше завантаження профілю; фонові `invalidate`/`refetch` це не вмикають. */
 	const isLoading = !mounted || query.isLoading
-	/** Профіль хоч раз успішно підвантажили (або гість/null); фонові refetch лишають isFetched=true. */
 	const authReady = mounted && query.isFetched
 
 	return {

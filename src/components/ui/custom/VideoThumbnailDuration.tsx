@@ -7,7 +7,6 @@ export type VideoThumbnailDurationSize = 'default' | 'compact' | 'prominent'
 
 interface VideoThumbnailDurationProps {
 	seconds: number | null | undefined
-	/** default: home / channel grid; compact: narrow sidebars; prominent: large search cards */
 	size?: VideoThumbnailDurationSize
 	className?: string
 }

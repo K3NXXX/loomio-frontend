@@ -1,6 +1,4 @@
-import { FaGithub, FaGoogle } from 'react-icons/fa'
-import { IoLogoGithub } from 'react-icons/io5'
-import { FaFacebook } from 'react-icons/fa'
+import { FaGoogle } from 'react-icons/fa'
 
 import type { IconType } from 'react-icons'
 
@@ -18,10 +16,4 @@ export const providers: IProvidersList[] = [
 		color: '#fb2c36',
 		url: process.env.NEXT_PUBLIC_GOOGLE_AUTH,
 	},
-	// {
-	// 	name: 'github',
-	// 	icon: FaGithub,
-	// 	color: '#106aff',
-	// 	url: process.env.NEXT_PUBLIC_GITHUB_AUTH,
-	// },
 ]

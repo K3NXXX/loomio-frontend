@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 import { isValidChapterTimecode } from '@/utils/chapterTimecode'
 
-/** Shared chapter rows validation (upload wraps with optional + default([])). */
 export const videoChaptersSchema = z
 	.array(
 		z.object({

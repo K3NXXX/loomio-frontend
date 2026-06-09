@@ -5,7 +5,6 @@ import { applyThemeClassOnDocument } from '@/lib/theme-dom'
 import { THEME_COLORS } from '@/types/colors.types'
 import { useEffect } from 'react'
 
-/** Reconciles API custom palette after client navigation (getMe may arrive after SSR HTML + cookie). */
 export function CustomThemeSync() {
 	const { userData, authReady } = useGetMe()
 

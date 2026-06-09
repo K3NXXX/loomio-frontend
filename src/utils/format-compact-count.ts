@@ -1,4 +1,3 @@
-/** From this value we use locale compact notation (e.g. 1.3K / 1,3 тис.). */
 const COMPACT_FROM = 1000
 
 export function formatCompactCount(value: number, locale: string): string {

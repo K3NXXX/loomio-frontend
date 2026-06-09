@@ -1,6 +1,5 @@
 import { THEME_COLORS } from '@/types/colors.types'
 
-/** Premium rows — `colorCss` ≈ primary for legacy / solid fallback when preview unavailable. */
 export const UIConfiguratorPremiumColors: {
 	id: number
 	color: THEME_COLORS

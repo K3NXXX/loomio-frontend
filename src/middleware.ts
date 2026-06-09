@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { jwtDecode } from 'jwt-decode'
 import { PAGES } from './constants/pages.constants'
 
 export function middleware(req: NextRequest) {
-	console.log('middleware called:', req.nextUrl.pathname)
-
 	if (req.nextUrl.pathname === PAGES.PREMIUM_SUCCESS) {
 		const sessionId = req.nextUrl.searchParams.get('session_id')
 		if (!sessionId) return NextResponse.redirect(new URL('/', req.url))

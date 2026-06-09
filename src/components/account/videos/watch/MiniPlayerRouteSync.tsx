@@ -9,7 +9,6 @@ function normalizePath(p: string) {
 	return p.replace(/\/+$/, '')
 }
 
-/** `/watch` та префікси на кшталт `/uk/watch` */
 function isWatchPath(path: string) {
 	const n = normalizePath(path)
 	return n === '/watch' || /\/watch$/.test(n)
@@ -23,7 +22,6 @@ function readWatchVideoId(): string | null {
 	return v && v.length > 0 ? v : null
 }
 
-/** При вході на /watch за тим самим відео, що в міні-плеєрі — закрити міні-плеєр */
 export function MiniPlayerRouteSync() {
 	const pathname = usePathname()
 	const searchParams = useSearchParams()

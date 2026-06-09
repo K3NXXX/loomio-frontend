@@ -111,13 +111,10 @@ export function VideoReportsHistory() {
 				</div>
 			</div>
 
-			{/* VIDEO AUTHOR */}
 			<div className='text-center'>{renderUser(r.video?.channel)}</div>
 
-			{/* REPORT AUTHOR */}
 			<div className='text-center'>{renderUser(r.author)}</div>
 
-			{/* RESOLVED BY */}
 			<div className='text-center'>
 				{r.assignedTo ? (
 					<div className='text-xs text-emerald-700 dark:text-emerald-400 font-medium'>
@@ -128,7 +125,6 @@ export function VideoReportsHistory() {
 				)}
 			</div>
 
-			{/* REASON */}
 			<div className='text-center'>
 				<Badge
 					variant='outline'
@@ -151,7 +147,6 @@ export function VideoReportsHistory() {
 				</span>
 			</div>
 
-			{/* DATE */}
 			<div className='text-center text-[12px] text-muted-foreground/80'>
 				{new Date(r.createdAt).toLocaleString(dateLocale)}
 			</div>

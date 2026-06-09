@@ -91,7 +91,6 @@ const ALL_THEME_SWATCHES = [
 const DEFAULT_CUSTOM_BG = '#121212'
 const DEFAULT_CUSTOM_PRIMARY = '#6366f1'
 
-/** Soft diagonal blend — avoids conic seam lines & stepped edges at small sizes. */
 function linearPremiumPreview(colors: readonly string[]): string {
 	if (colors.length === 2) {
 		return `linear-gradient(126deg, ${colors[0]} 0%, ${colors[1]} 100%)`
@@ -112,7 +111,6 @@ function readCustomPayloadFromCookie(): CustomThemePayload | null {
 	return null
 }
 
-/** Colors shown on the custom swatch + default when activating custom theme. */
 function resolveSwatchCustomPayload(
 	userData: { customTheme?: CustomThemePayload | null } | undefined,
 ): CustomThemePayload {
@@ -140,7 +138,6 @@ function CustomThemeSwatchCircle({
 	disabled?: boolean
 	onPick: () => void
 	title: string
-	/** Напр. `mx-0 shrink-0` у рядку поруч із кнопкою. */
 	className?: string
 }) {
 	const grad = linearPremiumPreview([payload.background, payload.primary])
@@ -156,7 +153,6 @@ function CustomThemeSwatchCircle({
 			aria-label={title}
 			className={cn(
 				'relative flex size-7 items-center justify-center overflow-visible rounded-full bg-muted/20 transition-transform duration-150 dark:bg-muted/15',
-				/* Пунктирне «власна тема» — не як у пресетів */
 				'border-2 border-dashed border-amber-500/70 ring-1 ring-amber-400/20 dark:border-amber-400/60 dark:ring-amber-300/12',
 				'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 				disabled
@@ -200,7 +196,6 @@ function ThemeSwatchButton({
 	active: boolean
 	onPick: () => void
 	disabled?: boolean
-	/** Tooltip / name (defaults to `item.color` when enabled). */
 	title?: string
 }) {
 	const resolvedTitle = title ?? item.color
@@ -259,7 +254,6 @@ function PanelSection({
 	label: ReactNode
 	children: ReactNode
 	className?: string
-	/** Лише для підписників Premium — золотистий акцент секції. */
 	premiumChrome?: boolean
 }) {
 	return (
@@ -438,7 +432,6 @@ export function HomeUIConfiguratorMenu() {
 			})
 			setActiveColor(THEME_COLORS.CUSTOM)
 		} catch {
-			/* silent */
 		}
 	}
 
@@ -458,7 +451,6 @@ export function HomeUIConfiguratorMenu() {
 			setActiveColor(THEME_COLORS.CUSTOM)
 			setCustomThemeEditorOpen(false)
 		} catch {
-			/* silent; theme left unchanged until retry */
 		}
 	}
 

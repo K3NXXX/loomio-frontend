@@ -1,9 +1,5 @@
 import axios from 'axios'
 
-/**
- * Maps backend English messages to next-intl keys under the `toast` namespace.
- * Values are relative keys (no `toast.` prefix) when `t` is from `useTranslations('toast')`.
- */
 const TOAST_API_MESSAGE_KEY: Record<string, string> = {
 	'The password reset link is invalid or has expired. Please request a new one':
 		'passwordResetLinkExpired',
@@ -16,7 +12,9 @@ export const PASSWORD_RESET_LINK_EXPIRED_MESSAGE =
 
 export function extractApiErrorMessage(error: unknown): string | undefined {
 	if (!axios.isAxiosError(error)) return undefined
-	const data = error.response?.data as { message?: string | string[] } | undefined
+	const data = error.response?.data as
+		| { message?: string | string[] }
+		| undefined
 	const m = data?.message
 	if (Array.isArray(m) && m[0]) return m[0]
 	if (typeof m === 'string' && m.trim()) return m

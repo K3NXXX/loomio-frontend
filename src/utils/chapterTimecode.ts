@@ -12,7 +12,6 @@ function clampNumericPart(raw: string, max: number): string {
 	return capped
 }
 
-/** Max lengths while typing: mm:ss or h:mm:ss (minutes/seconds 00–59, hours 00–60). */
 export function sanitizeChapterTimecodeInput(value: string): string {
 	let v = value.replace(/[^\d:]/g, '')
 	v = v.replace(/:+/g, ':')
@@ -53,7 +52,6 @@ export function isValidChapterTimecode(trimmed: string): boolean {
 	)
 }
 
-/** Convert stored chapter timecode to seconds (same rules as upload validation). */
 export function chapterTimecodeToSeconds(timecode: string): number {
 	const tc = timecode.trim()
 	if (!isValidChapterTimecode(tc)) return 0
@@ -66,7 +64,6 @@ export function chapterTimecodeToSeconds(timecode: string): number {
 	return h * 3600 + m * 60 + s
 }
 
-/** Display seconds as a scrub timestamp (e.g. `0:30`, `28:08`, `1:05:03`). */
 export function formatSecondsAsChapterTimecode(totalSeconds: number): string {
 	if (!Number.isFinite(totalSeconds) || totalSeconds < 0) return '0:00'
 	const total = Math.floor(totalSeconds)

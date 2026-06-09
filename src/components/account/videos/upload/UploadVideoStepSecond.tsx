@@ -278,7 +278,6 @@ export function UploadVideoStepSecond({
 						</div>
 					</label>
 
-					{/* No */}
 					<label
 						className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer transition w-full max-w-[180px]
 				${isForKids === 'no' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'}

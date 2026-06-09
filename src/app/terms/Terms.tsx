@@ -32,7 +32,6 @@ export default function Terms() {
 	return (
 		<div className='min-h-screen bg-gradient-to-br from-background via-muted/30 to-background text-foreground'>
 			<div className='max-w-3xl mx-auto px-4 py-16'>
-				{/* Header */}
 				<div className='text-center mb-14'>
 					<div className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/25 bg-primary/10 text-primary text-sm font-medium mb-5'>
 						<FileText className='w-4 h-4' />
@@ -46,9 +45,7 @@ export default function Terms() {
 					</p>
 				</div>
 
-				{/* Card */}
 				<div className='rounded-2xl border border-border bg-card shadow-sm overflow-hidden'>
-					{/* Intro */}
 					<div className='p-8 text-sm text-muted-foreground leading-relaxed border-b border-border'>
 						Ласкаво просимо до{' '}
 						<span className='text-foreground font-medium'>Loomio</span> —
@@ -157,7 +154,6 @@ export default function Terms() {
 						</Section>
 					</div>
 
-					{/* Footer */}
 					<div className='px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground border-t border-border'>
 						<span>© 2026 Loomio. Всі права захищені.</span>
 						<Link

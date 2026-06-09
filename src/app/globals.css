@@ -242,7 +242,6 @@
 	--sidebar-ring: oklch(0.6397 0.172 36.4421);
 }
 
-/** Premium palette — magenta / orchid preset */
 .theme-premium_orchid {
 	--radius: 0.625rem;
 	--background: oklch(0.9816 0.0017 247.839);
@@ -328,7 +327,6 @@
 		@apply bg-primary/20 transition-colors duration-500 rounded-2xl;
 	}
 
-	/** Hide browser-native password reveal (Edge/Chrome); custom toggle stays in UI. */
 	.no-native-password-toggle::-ms-reveal,
 	.no-native-password-toggle::-ms-clear {
 		display: none;
@@ -397,7 +395,6 @@
 	color: var(--primary) !important;
 }
 
-/* Premium-locked speeds: flex row so crown sits on the far right (Plyr gives label span width:100%) */
 .plyr__menu__container .plyr__control.plyr-speed-premium-locked {
 	cursor: not-allowed;
 	display: flex !important;
@@ -436,12 +433,10 @@
 	flex-shrink: 0;
 }
 
-/* Watch page: chapter segments — theme colors, fine gaps (YouTube-like) */
 .watch-video-root .plyr__progress {
 	position: relative;
 }
 
-/* Уникаємо подвійної підказки: власне прев’ю кадру замість Plyr seek tooltip */
 .watch-video-root .plyr__progress .plyr__tooltip,
 .watch-video-root .plyr__progress__container .plyr__tooltip {
 	display: none !important;
@@ -478,7 +473,8 @@
 	height: 5px;
 	border-radius: 3px;
 	background: color-mix(in oklch, var(--foreground) 22%, transparent);
-	box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent);
+	box-shadow: inset 0 0 0 1px
+		color-mix(in oklch, var(--foreground) 10%, transparent);
 }
 
 .watch-video-root .loomio-chapter-seg-fill {
@@ -500,16 +496,22 @@
 	--plyr-range-fill-background: transparent;
 }
 
-.watch-video-root--chapters .plyr__progress input[type='range']::-webkit-slider-runnable-track {
+.watch-video-root--chapters
+	.plyr__progress
+	input[type='range']::-webkit-slider-runnable-track {
 	background: transparent !important;
 	box-shadow: none !important;
 }
 
-.watch-video-root--chapters .plyr__progress input[type='range']::-moz-range-track {
+.watch-video-root--chapters
+	.plyr__progress
+	input[type='range']::-moz-range-track {
 	background: transparent !important;
 }
 
-.watch-video-root--chapters .plyr__progress input[type='range']::-moz-range-progress {
+.watch-video-root--chapters
+	.plyr__progress
+	input[type='range']::-moz-range-progress {
 	background: transparent !important;
 }
 
@@ -517,7 +519,6 @@
 	opacity: 0 !important;
 }
 
-/* Premium mini floating player — compact Plyr bar */
 .premium-mini-player .plyr {
 	border-radius: 0;
 }
@@ -559,7 +560,6 @@
 	max-width: 72px;
 }
 
-/* ── Custom theme modal: styled range inputs ── */
 input[type='range'].loomio-modal-range {
 	--loomio-range-track: oklch(0.9 0.01 280 / 0.55);
 	width: 100%;
@@ -657,7 +657,6 @@ input[type='range'].loomio-modal-range::-moz-range-thumb {
 	border-color: oklch(0.22 0.02 280);
 }
 
-/* Above Radix dialogs (z-[10050]) so toasts stay visible inside modals */
 [data-sonner-toaster] {
 	z-index: 10100 !important;
 }

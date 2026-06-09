@@ -26,7 +26,6 @@ export interface IChannel {
 	}
 }
 
-/** Payload of `GET /user/following` — subscriptions list (no `videos` array). */
 export interface IFollowedChannel {
 	id: string
 	name: string

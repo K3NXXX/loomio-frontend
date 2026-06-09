@@ -4,7 +4,6 @@ import { create } from 'zustand'
 
 export type MiniPlayerActive = Omit<WatchMiniSnapshot, 'paused' | 'currentTime'> & {
 	startTime: number
-	/** Чи показувати міні-плеєр на паузі (як на сторінці перегляду). */
 	startPaused: boolean
 }
 

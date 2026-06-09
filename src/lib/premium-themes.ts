@@ -1,6 +1,5 @@
 import { THEME_COLORS } from '@/types/colors.types'
 
-/** Themes persisted as enum variants — Premium subscribers only in API/UI. */
 export const PREMIUM_THEME_COLORS: readonly THEME_COLORS[] = [
 	THEME_COLORS.PREMIUM,
 	THEME_COLORS.PREMIUM_ORCHID,

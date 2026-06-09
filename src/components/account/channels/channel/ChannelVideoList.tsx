@@ -17,7 +17,6 @@ interface ChannelVideoListProps {
 	videos: IVideo[]
 	className?: string
 	makeWatchHref?: (id: string) => string
-	/** Channel list API omits `video.channel`; use the page channel owner id for menus / report */
 	channelOwnerUserId?: string
 }
 

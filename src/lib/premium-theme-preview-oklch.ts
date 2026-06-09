@@ -1,10 +1,5 @@
 import { THEME_COLORS } from '@/types/colors.types'
 
-/**
- * Premium swatch stripes: **`--primary`, `--secondary`, `--accent`** from CSS
- * (`globals.css` / `premium-theme-presets.css`), except light **Citrine / Lagoon**
- * where `--accent` equals `--secondary` — third stop uses **`--border`**.
- */
 export type PremiumPreviewStrip = {
 	light: readonly [string, string, string]
 	dark: readonly [string, string, string]
@@ -110,11 +105,7 @@ export const PREMIUM_THEME_PREVIEW_OKLCH: Partial<
 		],
 	},
 	[THEME_COLORS.PREMIUM_CITRINE]: {
-		light: [
-			'oklch(0.205 0 0)',
-			'oklch(0.97 0 0)',
-			'oklch(0.922 0 0)',
-		],
+		light: ['oklch(0.205 0 0)', 'oklch(0.97 0 0)', 'oklch(0.922 0 0)'],
 		dark: [
 			'oklch(0.926 0.195 104.561)',
 			'oklch(0.521 0 263.283)',
@@ -122,11 +113,7 @@ export const PREMIUM_THEME_PREVIEW_OKLCH: Partial<
 		],
 	},
 	[THEME_COLORS.PREMIUM_LAGOON]: {
-		light: [
-			'oklch(0.205 0 0)',
-			'oklch(0.97 0 0)',
-			'oklch(0.922 0 0)',
-		],
+		light: ['oklch(0.205 0 0)', 'oklch(0.97 0 0)', 'oklch(0.922 0 0)'],
 		dark: [
 			'oklch(0.901 0.154 195.798)',
 			'oklch(0.819 0.158 91.654)',

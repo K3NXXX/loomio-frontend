@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils'
 
-/** Shared DialogContent wrapper for moderation report modals (video, comment, re-review). */
 export const moderationReportModalContentClass = cn(
 	'!max-w-[1000px] w-[92vw] sm:w-[90vw] min-h-[85vh] max-h-[92vh] p-0 overflow-hidden',
 	'flex flex-col',

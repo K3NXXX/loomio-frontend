@@ -6,7 +6,6 @@ import { buildCustomThemeCssVariablesRecord } from '@/lib/custom-theme-vars'
 const DUMMY_CUSTOM = buildCustomThemeCssVariablesRecord('#000000', '#ffffff')
 export const CUSTOM_THEME_CSS_KEYS = Object.keys(DUMMY_CUSTOM) as string[]
 
-/** Applies `theme-*` class on `<html>` and optional CUSTOM CSS variables (client-only). */
 export function applyThemeClassOnDocument(
 	theme: THEME_COLORS,
 	custom?: CustomThemePayload | null,

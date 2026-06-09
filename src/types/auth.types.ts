@@ -4,7 +4,6 @@ export enum FORGOT_PASSWORD_STEPS {
 }
 
 export interface ISignupRequest {
-	// name: string
 	username: string
 	email: string
 	password: string
@@ -21,7 +20,6 @@ export interface ILogInRequest {
 	password: string
 }
 
-/** Response body from POST /auth/login (cookies set by server; includes user.role). */
 export interface ILoginSuccessResponse {
 	success: boolean
 	message: string
