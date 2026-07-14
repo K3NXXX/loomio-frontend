@@ -31,7 +31,7 @@ export function DangerZone() {
 	const router = useRouter()
 
 	const { deleteChannel, deleteChannelLoading } = useDeleteChannel(() => {
-		router.replace(PAGES.CHANNELS)
+		router.replace(PAGES.HOME)
 	})
 
 	return (

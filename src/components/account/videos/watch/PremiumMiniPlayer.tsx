@@ -62,7 +62,6 @@ function persistMiniPlayerPosition(left: number, top: number) {
 			JSON.stringify({ left, top }),
 		)
 	} catch {
-		// ignore quota / private mode
 	}
 }
 

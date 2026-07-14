@@ -24,6 +24,5 @@ export function getAccessRefreshIntervalMs(): number {
 	if (raw != null && raw !== '' && !Number.isNaN(Number(raw))) {
 		return Math.max(10_000, Number(raw))
 	}
-	/** Default: every 10 minutes (override with NEXT_PUBLIC_ACCESS_REFRESH_INTERVAL_MS). */
 	return 10 * 60_000
 }
